@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — Skills</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · Module 5 lecture · Component 6</div>
+  <h1 style="margin-top:22px">Skills</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">The agent's installable programs: folders of instructions, scripts and resources that load on demand.
+    The Agent Skills format, progressive disclosure, how Hermes Agent, OpenClaw and Codex discover and gate skills,
+    agents that write their own skills, and the skill supply chain.</p>
+  <p style="margin-top:28px"><span class="pill">SKILL.md</span><span class="pill">Progressive disclosure</span><span class="pill">Discovery &amp; gating</span><span class="pill">Self-written skills</span><span class="pill">Supply chain</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>OS analogy</small>Skills are programs on disk; the skill index is <code>$PATH</code></h2>
+  <table class="dense">
+    <tr><th>Classic OS</th><th>AgentOS</th><th>Examples</th></tr>
+    <tr><td>Executable on disk</td><td>A skill directory with <code>SKILL.md</code></td><td><code>pdf-processing/SKILL.md</code></td></tr>
+    <tr><td><code>$PATH</code> lookup</td><td>Skill roots searched in precedence order</td><td>OpenClaw workspace → project → personal → managed → bundled</td></tr>
+    <tr><td>Demand paging</td><td>Progressive disclosure: load the body only when used</td><td>Metadata at startup, body on activation, files on demand</td></tr>
+    <tr><td>Shared libraries</td><td>Bundled <code>scripts/</code>, <code>references/</code>, <code>assets/</code></td><td>A form-filling script the agent runs without reading it</td></tr>
+    <tr><td>Package manager</td><td>Skill hubs and installers</td><td>Hermes Skills Hub, ClawHub, Codex <code>$skill-installer</code></td></tr>
+    <tr><td>Compiler output</td><td>Skills the agent writes after a task</td><td>Hermes <code>skill_manage</code>, Voyager's skill library</td></tr>
+  </table>
+  <p style="font-size:19px;margin-top:16px">Tools give the agent new <b>actions</b>. Skills give it new <b>procedures</b>: when to use which tools, in what order, with which pitfalls. Memory gives it <b>facts</b> about the user and the world.</p>
+  <div class="cite">Anthropic Engineering, "Equipping agents for the real world with Agent Skills" (Oct 16, 2025; open standard Dec 18, 2025); agentskills.io specification.</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>Format</small>The Agent Skills specification</h2>
+  <div class="cols">
+    <div>
+<pre style="font-size:14px">pdf-processing/
+├── SKILL.md        # required: frontmatter + instructions
+├── scripts/        # optional: executable code
+├── references/     # optional: docs loaded on demand
+└── assets/         # optional: templates, data, images
+
+---
+name: pdf-processing
+description: Extract PDF text, fill forms, merge
+  files. Use when handling PDFs.
+license: Apache-2.0
+compatibility: Requires Python 3.14+ and uv
+allowed-tools: Bash(git:*) Read   # experimental
+metadata:
+  author: example-org
+  version: "1.0"
+---
+# PDF processing
+For forms, see [references/FORMS.md](...)</pre>
+    </div>
+    <div class="card">
+      <h3>Rules that matter</h3>
+      <ul>
+        <li><code>name</code>: 1–64 chars, lowercase letters, digits and hyphens, no leading, trailing or double hyphen, <b>must match the directory name</b>.</li>
+        <li><code>description</code>: 1–1024 chars; say <b>what</b> it does and <b>when</b> to use it, with keywords. It is the only thing the model sees before choosing.</li>
+        <li><code>compatibility</code>: up to 500 chars; most skills don't need it.</li>
+        <li>Keep <code>SKILL.md</code> under 500 lines; keep file references one level deep.</li>
+        <li>Validate with <code>skills-ref validate ./my-skill</code>.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">agentskills.io/specification; github.com/agentskills/agentskills (skills-ref).</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>Loading</small>Progressive disclosure: three levels of context</h2>
+  <div class="cols">
+    <svg viewBox="0 0 540 400" width="540" height="400">
+      <g font-size="16">
+        <rect x="0" y="0" width="540" height="96" rx="8" fill="#1c2a4d" stroke="#7be0b8"/>
+        <text x="16" y="32" font-weight="700">Level 1 · metadata (all skills)</text>
+        <text x="16" y="58" fill="#9aa6bd">name + description (+ path) in the system prompt</text>
+        <text x="16" y="82" fill="#9aa6bd">about 100 tokens per skill</text>
+        <rect x="40" y="128" width="500" height="96" rx="8" fill="#161d2e" stroke="#6ea8ff"/>
+        <text x="56" y="160" font-weight="700">Level 2 · SKILL.md body (one skill)</text>
+        <text x="56" y="186" fill="#9aa6bd">read when the task matches the description</text>
+        <text x="56" y="210" fill="#9aa6bd">under 5,000 tokens recommended</text>
+        <rect x="80" y="256" width="460" height="96" rx="8" fill="#161d2e" stroke="#ffb86b"/>
+        <text x="96" y="288" font-weight="700">Level 3 · referenced files</text>
+        <text x="96" y="314" fill="#9aa6bd">references/*.md read on demand;</text>
+        <text x="96" y="338" fill="#9aa6bd">scripts/* run, often without being read</text>
+      </g>
+      <text x="0" y="388" font-size="14" fill="#9aa6bd">cost paid up front: level 1 only · everything else is paged in</text>
+    </svg>
+    <div>
+      <ul style="font-size:19px">
+        <li>Claude activates a skill by using its Bash tool to read <code>pdf/SKILL.md</code>; the form-filling details live in <code>forms.md</code>, read only when a form is involved.</li>
+        <li>A bundled script can extract form fields without the script or the PDF entering the context, and deterministic code makes the step repeatable.</li>
+        <li>Because the body is not in the prompt until needed, the number of installed skills is bounded by the index, not by the bodies.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Anthropic, "Equipping agents for the real world with Agent Skills"; token figures from the agentskills.io specification ("Progressive disclosure").</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Placement</small>Skills vs. tools vs. memory vs. project instructions</h2>
+  <table class="dense">
+    <tr><th></th><th>Tool</th><th>Skill</th><th>Memory</th><th><code>AGENTS.md</code> / project file</th></tr>
+    <tr><td>Holds</td><td>An action with a schema</td><td>A procedure (+ optional code)</td><td>Facts, preferences, history</td><td>Rules for this repo or workspace</td></tr>
+    <tr><td>In context</td><td>Schema always (unless deferred)</td><td>Index always, body on demand</td><td>Pinned part always, rest retrieved</td><td>Always</td></tr>
+    <tr><td>Chosen by</td><td>Model per call</td><td>Model (description match) or user (<code>/name</code>, <code>$name</code>)</td><td>Harness (inject) or model (search tool)</td><td>Harness, by location</td></tr>
+    <tr><td>Written by</td><td>Developers</td><td>Developers, users, <b>the agent</b></td><td>The agent / extraction pipeline</td><td>Developers</td></tr>
+    <tr><td>Scope</td><td>Process</td><td>User, project, machine, hub</td><td>User or agent</td><td>Directory tree</td></tr>
+  </table>
+  <p style="font-size:18px;margin-top:14px">Rule of thumb: if the agent needs it on every turn, it is a project instruction; if it needs it for one kind of task, make it a skill; if it is about <i>who</i> or <i>what happened</i>, it is memory; if it changes the world, it is a tool.</p>
+  <div class="cite">Synthesis of the Agent Skills spec, the long-term memory deck (02) and the tools deck (05). MemSkill (arXiv:2602.02474) treats memory operations themselves as learnable skills.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>Hermes Agent</small>Skills as tools: <code>skills_list</code>, <code>skill_view</code>, <code>skill_manage</code></h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>Source of truth: <code>~/.hermes/skills/</code>, with category sub-directories (<code>mlops/axolotl/SKILL.md</code>); also <code>external_dirs</code>, <code>&lt;project&gt;/.hermes/skills/</code> and <code>&lt;project&gt;/.agents/skills/</code>.</li>
+        <li>Level 0 <code>skills_list()</code> returns name, description and category (about 3k tokens at session start); level 1 <code>skill_view(name)</code>; level 2 <code>skill_view(name, path)</code>.</li>
+        <li>Every installed skill is also a slash command: <code>/excalidraw</code>.</li>
+        <li>Extra frontmatter: <code>platforms</code>, <code>required_environment_variables</code>, and <code>metadata.hermes</code> with <code>requires_toolsets</code>, <code>requires_tools</code>, <code>fallback_for_toolsets</code>, <code>config</code>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>The agent edits its own skills</h3>
+      <ul>
+        <li><code>skill_manage</code>: <code>create</code>, <code>patch</code> (preferred), <code>delete</code>, <code>write_file</code>, <code>remove_file</code>.</li>
+        <li>After a complex multi-step task Hermes may offer to save the approach as a skill.</li>
+        <li>An advisory linter warns on <code>oversized-body</code>, <code>references-sprawl</code>, <code>incident-log-shape</code>; it never blocks.</li>
+        <li><code>skills.write_approval: true</code> stages writes for review: <code>/skills pending</code>, <code>/skills diff</code>, <code>/skills approve</code>.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Hermes Agent docs: hermes-agent.nousresearch.com/docs/user-guide/features/skills and /docs/guides/work-with-skills.</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>OpenClaw</small>Discovery, precedence and gating</h2>
+  <div class="cols">
+    <div>
+      <table class="dense" style="font-size:16px">
+        <tr><th>#</th><th>Root (highest wins on a name clash)</th></tr>
+        <tr><td>1</td><td><code>&lt;workspace&gt;/skills</code></td></tr>
+        <tr><td>2</td><td><code>&lt;workspace&gt;/.agents/skills</code></td></tr>
+        <tr><td>3</td><td><code>~/.agents/skills</code></td></tr>
+        <tr><td>4</td><td><code>~/.openclaw/skills</code> (managed)</td></tr>
+        <tr><td>5</td><td>Bundled</td></tr>
+        <tr><td>6</td><td><code>skills.load.extraDirs</code>, plugin skills</td></tr>
+      </table>
+      <p style="font-size:16px;margin-top:10px">Discovery finds a <code>SKILL.md</code> up to 6 levels deep; folders are only for organization.</p>
+    </div>
+<pre style="font-size:14px">---
+name: gh-issues
+description: Triage GitHub issues ...
+user-invocable: true          # slash command
+disable-model-invocation: false
+metadata:
+  openclaw:
+    os: [darwin, linux]
+    requires:
+      bins: [gh]              # all on PATH
+      anyBins: [jq, yq]       # at least one
+      env: [GITHUB_TOKEN]
+    primaryEnv: GITHUB_TOKEN
+---</pre>
+  </div>
+  <div class="cite">OpenClaw docs: docs.openclaw.ai/tools/skills (precedence, frontmatter, <code>metadata.openclaw</code> gating). <code>always: true</code> skips every gate.</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>OpenClaw</small>Prompt cost, snapshots and per-agent allowlists</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>Eligible skills are compiled into a compact XML block in the system prompt; each costs about 97 characters plus its name, description and location (roughly 24 tokens before those fields).</li>
+        <li>Over <code>skills.limits.maxSkillsPromptChars</code>, descriptions are dropped first, then the list is truncated.</li>
+        <li>The eligible list is <b>snapshotted at session start</b>; a <code>SKILL.md</code> change (watcher on by default, <code>watchDebounceMs</code> 250) applies on the next turn.</li>
+        <li><code>skills.entries.&lt;name&gt;</code>: <code>enabled</code>, <code>apiKey</code>, <code>env</code>, <code>config</code>; env is injected on the host for the run only, not into the sandbox.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Allowlists</h3>
+      <ul>
+        <li>No <code>agents.defaults.skills</code>: every eligible skill is visible.</li>
+        <li><code>skills: []</code>: the agent sees none.</li>
+        <li>A per-agent list <b>replaces</b> the defaults; it does not merge.</li>
+        <li><code>allowBundled</code> restricts only bundled skills.</li>
+      </ul>
+      <p class="muted">Why snapshot: a stable skill block keeps the prompt prefix cacheable (context manager deck).</p>
+    </div>
+  </div>
+  <div class="cite">OpenClaw docs: docs.openclaw.ai/tools/skills ("Skills config", "Token impact", "Session snapshot").</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>Codex</small>Scopes, invocation and an index budget</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>Scopes: <b>REPO</b> <code>.agents/skills</code> in every directory from the working directory up to the repo root; <b>USER</b> <code>$HOME/.agents/skills</code>; <b>ADMIN</b> <code>/etc/codex/skills</code>; <b>SYSTEM</b> bundled (skill-creator, plan).</li>
+        <li>Same-name skills are not merged; both can appear.</li>
+        <li>Explicit: <code>/skills</code> or <code>$name</code>; implicit: chosen when the task matches the description.</li>
+        <li>Optional <code>agents/openai.yaml</code>: UI metadata, <code>allow_implicit_invocation</code> (default true), MCP dependencies.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Index budget</h3>
+      <p>The startup list uses at most <b>2% of the context window</b> (8,000 characters if the window is unknown); <code>skills.max_context_tokens</code> raises it, up to 10,000 tokens.</p>
+      <p>Disable without deleting: a <code>[[skills.config]]</code> entry with <code>path</code> and <code>enabled = false</code>.</p>
+      <p class="muted">Curated installs: <code>$skill-installer linear</code>.</p>
+    </div>
+  </div>
+  <div class="cite">OpenAI Codex docs, "Build skills" (developers.openai.com/codex/skills, now learn.chatgpt.com/docs/build-skills).</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>Side by side</small>The skill layer in three harnesses</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th><th>Codex</th></tr>
+    <tr><td>Shared <code>.agents/skills</code></td><td>Yes (project)</td><td>Yes (project + personal)</td><td>Yes (repo + user)</td></tr>
+    <tr><td>Index in prompt</td><td><code>skills_list</code> (~3k tokens)</td><td>XML block, char cap</td><td>≤ 2% of context</td></tr>
+    <tr><td>Body loading</td><td><code>skill_view</code> tool</td><td>Read from location</td><td>Read on selection</td></tr>
+    <tr><td>Gating</td><td><code>platforms</code>, <code>requires_tools</code>, env vars</td><td><code>os</code>, <code>requires.bins/env/config</code></td><td>Enable / disable per path</td></tr>
+    <tr><td>User invocation</td><td><code>/name</code></td><td><code>/name</code>, or dispatch straight to a tool</td><td><code>$name</code>, <code>/skills</code></td></tr>
+    <tr><td>Agent writes skills</td><td><code>skill_manage</code>, optional approval</td><td>—</td><td>Via bundled skill-creator</td></tr>
+    <tr><td>Hub</td><td>Skills Hub, trust levels, scan on install</td><td>ClawHub, <code>openclaw skills verify</code></td><td><code>$skill-installer</code>, plugins</td></tr>
+  </table>
+  <div class="cite">Sources on slides 6–9. "—" = not covered by the sources used here. Portability: the shared <code>.agents/skills</code> root lets one skill folder serve several harnesses.</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>Research</small>Do skills help, and can agents write their own?</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>SkillsBench (arXiv:2602.12670)</h3>
+      <ul>
+        <li>87 tasks, 8 domains, deterministic verifiers, 18 model–harness configurations.</li>
+        <li>Curated skills: average pass rate <b>33.9% → 50.5%</b> (+16.6 pp); per configuration +4.1 to +25.7 pp.</li>
+        <li>Largest gain healthcare (+51.9 pp), smallest software engineering (+4.5 pp).</li>
+        <li>Focused skills (≤ 3 modules) beat exhaustive bundles; small models with skills can match larger ones without.</li>
+        <li><span class="warn">Self-generated skills: about −1.3 pp on average</span>, "negligible or negative benefit".</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Voyager (arXiv:2305.16291)</h3>
+      <ul>
+        <li>Minecraft agent with an automatic curriculum, a <b>skill library of executable code</b>, and iterative prompting with environment feedback and self-verification.</li>
+        <li>3.3× more unique items, 2.3× longer distances, tech-tree milestones up to 15.3× faster than prior SOTA.</li>
+      </ul>
+      <p class="muted">Reconciling the two: skills written from <b>verified</b> experience (Voyager keeps a program only after it succeeds) help; skills written up front from the model's own priors mostly don't.</p>
+    </div>
+  </div>
+  <div class="cite">Li et al., SkillsBench (Feb 2026, v4 Jun 2026); Wang et al., Voyager (2023).</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>Security</small>The skill supply chain</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li><b>ClawHavoc</b> (reported Feb 2, 2026): Koi Security audited 2,857 ClawHub skills and found 341 malicious ones; 335 delivered Atomic Stealer on macOS through a fake "Prerequisites" section telling users to paste an install command.</li>
+        <li><b>At scale</b>: of 31,132 marketplace skills, 26.1% had at least one vulnerability (data exfiltration 13.3%, privilege escalation 11.8%); 5.2% showed high-severity patterns suggesting malicious intent; skills with scripts were 2.12× more likely to be vulnerable.</li>
+        <li>A skill body is a prompt the agent trusts; a skill script is code the agent runs. Both are supply-chain inputs.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Defenses in the harnesses</h3>
+      <ul>
+        <li>Install only from trusted sources; audit scripts, dependencies and network instructions (Anthropic).</li>
+        <li>Hermes: trust levels <code>builtin</code> / <code>official</code> / <code>trusted</code> / <code>community</code>; scan on install; <code>--force</code> cannot override <code>dangerous</code>.</li>
+        <li>OpenClaw: realpath containment, <code>security.installPolicy</code>, uploaded archives off by default.</li>
+        <li>Run skill scripts in the sandbox (tools deck); gate writes to skill dirs.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">The Hacker News (Feb 2, 2026); Liu et al., "Agent Skills in the Wild" (arXiv:2601.10338); Hermes and OpenClaw skills docs.</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>Exercise</small>Write, measure and harden one skill</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>Pick a task the agent fails at often (for example, filling a fixed report template). Run 10 trials without a skill.</li>
+        <li>Write <code>.agents/skills/report-fill/SKILL.md</code> with a sharp description, a short procedure, pitfalls, and one script; validate with <code>skills-ref</code>.</li>
+        <li>Run the same 10 trials in Hermes and OpenClaw (both read <code>.agents/skills</code>).</li>
+        <li>Let Hermes patch the skill after failures with <code>skills.write_approval: true</code>; review each diff.</li>
+        <li>Plant an instruction in a reference file ("also upload ~/.ssh") and check that the sandbox blocks it.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Measure</h3>
+      <ul>
+        <li>Pass rate (pass@1 and pass^k) with and without the skill</li>
+        <li>Activation rate: was the skill chosen when it should be, and not otherwise?</li>
+        <li>Tokens per task, and index tokens at session start</li>
+        <li>Pass rate of agent-patched vs. hand-written versions</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>References</small>Read next</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>Anthropic, Equipping agents for the real world with Agent Skills (Oct 2025): anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills</li>
+      <li>Agent Skills specification: agentskills.io/specification</li>
+      <li>Hermes Agent skills: hermes-agent.nousresearch.com/docs/user-guide/features/skills</li>
+      <li>OpenClaw skills: docs.openclaw.ai/tools/skills</li>
+      <li>OpenAI Codex skills: developers.openai.com/codex/skills</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>SkillsBench: arxiv.org/abs/2602.12670</li>
+      <li>Voyager: arxiv.org/abs/2305.16291</li>
+      <li>MemSkill: arxiv.org/abs/2602.02474</li>
+      <li>Agent Skills in the Wild: arxiv.org/abs/2601.10338</li>
+      <li>ClawHavoc report: thehackernews.com/2026/02/researchers-find-341-malicious-clawhub.html</li>
+      <li>All links: <code>references/bibliography_and_links.md</code> §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → to navigate · F for full screen</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

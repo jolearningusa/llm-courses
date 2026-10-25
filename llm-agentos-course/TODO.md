@@ -16,7 +16,7 @@ The master deck (slide 5) defines a nine-component reference architecture. Curre
 | 3 | Context manager (select / compress / isolate) | Master deck 8, Lab 1 context engines, **`01_context_manager_deck.html`** | Yes |
 | 4 | Memory manager | Master deck 9–14, **`02_long_term_memory_deck.html`** | Yes (cognitive plane); KV plane in Lab 2 |
 | 5 | Tools and execution / sandbox | Master deck 17–18 (component map), **`05_tools_sandbox_deck.html`** | Yes |
-| 6 | Skills | Master deck 17–18, Hermes deep-dive 22 | Not yet |
+| 6 | Skills | Master deck 17–18, Hermes deep-dive 22, **`05_skills_deck.html`** | Yes |
 | 7 | Multi-agent | Master deck 17–18, Lab 1C (Letta shared blocks) | Not yet |
 | 8 | Access control | Master deck 15–16 | Not yet |
 | 9 | Extension layer (plugins) | Companion deck 28 (plugin APIs side by side) | Not yet |
@@ -37,7 +37,7 @@ OpenClaw, Letta (and a Rust runtime where relevant) implement it, failure modes,
   Start from: Hermes `ContextEngine`, OpenClaw `registerContextEngine`, Manus and Anthropic context-engineering posts.
 - [x] **Tools and sandbox.** Done as deck **`slides/05_tools_sandbox_deck.html`**. Tool schemas and selection, MCP, tool-result handling, execution backends
   (local, Docker, remote), filesystem and network isolation, timeouts and resource limits.
-- [ ] **Skills.** Progressive disclosure, skill discovery and loading, agents that write their own skills,
+- [x] **Skills.** Done as deck **`slides/05_skills_deck.html`**. Progressive disclosure, skill discovery and loading, agents that write their own skills,
   skills vs. tools vs. memory. Start from: Hermes `skills_list` / `skill_view` / `skill_manage`, MemSkill.
 - [ ] **Multi-agent.** Delegation (Hermes `delegate_task`, OpenClaw sub-agents with isolated or forked context),
   shared memory (Letta blocks), message passing vs. shared state, cost and failure amplification.
