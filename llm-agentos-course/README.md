@@ -4,7 +4,7 @@ An introductory course on treating LLM agents as an **operating-system problem**
 memory is paged in and out of the context window, how the serving engine manages KV-cache as a system
 resource, and how a harness can rewrite itself between tasks.
 
-The course pairs a slide deck with three hands-on labs built on real open-source projects:
+The course pairs slide decks with three hands-on labs built on real open-source projects:
 Hermes Agent, OpenClaw, Letta, vLLM + LMCache + NIXL, and Google Research's Harness².
 
 > **Audience.** Engineers and graduate students who have built at least one tool-using agent and are comfortable
@@ -17,7 +17,7 @@ Hermes Agent, OpenClaw, Letta, vLLM + LMCache + NIXL, and Google Research's Harn
 | # | Module | Core ideas | Key sources |
 |---|--------|-----------|-------------|
 | 1 | **AgentOS architecture, AIOS kernel & program-aware scheduling** | A nine-component reference architecture (loop, scheduler, context manager, memory, tools/sandbox, skills, multi-agent, access control, extensions); agent "system calls", context snapshot/restore; scheduling whole agent programs; context engineering (select, compress, isolate) | AIOS (arXiv:2403.16971), ThunderAgent (2602.13692), Continuum (2511.02230), Autellix (2502.13965), KVFlow (2507.07400) |
-| 2 | **Plane 1: user / cognitive memory** | MemGPT-style virtual context, core vs. archival memory, bi-temporal knowledge graphs, Zettelkasten-style note evolution, single-pass extraction, memory as skills | MemGPT (2310.08560), Zep/Graphiti (2501.13956), A-MEM (2502.12110), Mem0 (2504.19413), MemSkill (2602.02474) |
+| 2 | **Plane 1: user / cognitive memory** | MemGPT-style virtual context, core vs. archival memory, bi-temporal knowledge graphs, Zettelkasten-style note evolution, single-pass extraction, memory as skills. Separate lecture deck on how long-term memory is built: write path, indexes (keyword / vector / graph), retrieval scoring, automatic injection vs. agent-invoked search tools, how Hermes, OpenClaw and Letta do it, RAG and memory tooling, evaluation | MemGPT (2310.08560), Generative Agents (2304.03442), Zep/Graphiti (2501.13956), A-MEM (2502.12110), Mem0 (2504.19413), MemSkill (2602.02474), GraphRAG (2404.16130), LongMemEval (2410.10813) |
 | 3 | **Plane 2: system / KV-cache memory** | PagedAttention, RadixAttention prefix sharing, chunked (non-prefix) KV reuse, multi-tier offload (HBM → DRAM → NVMe → RDMA), cache engineering for agents | vLLM, SGLang, AsymCache / Multi-Segment Attention (2606.02964), Predictive Multi-Tier KV (2604.26968), AKV / Cache Engineering for Agents (2610.28577) |
 | 4 | **Tool arbitration & memory security** | Memory lifecycle threat model (write → store → retrieve → execute → share → forget), memory poisoning, consensus-based defenses | Long-term memory security survey (2604.16548), A-MemGuard (2510.02373, ICML 2026) |
 | 5 | **How open harnesses implement AgentOS** | Component-by-component map of Hermes Agent, OpenClaw, Letta and AIOS, one deep-dive per harness, Rust runtimes (Goose, OpenFang, ZeroClaw) and the Python / TypeScript / Rust trade-off, and their plugin APIs: Hermes `MemoryProvider` / `ContextEngine`, OpenClaw `registerContextEngine` + `plugins.slots`, Letta shared blocks and sleep-time agents | Hermes Agent docs, OpenClaw docs, Letta docs, AIOS / Cerebrum |
@@ -37,6 +37,7 @@ llm-agentos-course/
 ├── .gitignore                                 # Python, Node, vLLM/LMCache and Harness² run artifacts
 ├── slides/
 │   ├── 00_master_agentos_deck.html            # Master deck, slides 1–21: AgentOS architecture & component map
+│   ├── 02_long_term_memory_deck.html          # Module 2 lecture, 20 slides: how long-term memory is built
 │   └── 05_opensource_plugin_apis_slides.html  # Slides 22–31: harness deep-dives (incl. Rust), plugin APIs, vLLM KV, Harness²
 ├── labs/
 │   ├── lab1_memory_plugins/
@@ -55,7 +56,7 @@ llm-agentos-course/
 
 ### Viewing the slides
 
-Open either HTML file directly in a browser; no build step or network is needed. Use **← / →** (or click) to move
+Open any HTML file directly in a browser; no build step or network is needed. Use **← / →** (or click) to move
 between slides, **F** for full screen. Slides are laid out at 16:9 (1280×720) and scale to the window.
 
 ---
