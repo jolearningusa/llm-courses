@@ -1,0 +1,33 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# --- Node / TypeScript (OpenClaw plugin lab) ---
+node_modules/
+dist/
+*.tsbuildinfo
+npm-debug.log*
+
+# --- vLLM / LMCache run artifacts ---
+*.log
+lmcache_config.local.yaml
+lmcache_disk_cache/
+.cache/vllm/
+
+# --- Harness² (google-research/harness2) ---
+# The lab clones the upstream repo next to the scripts; results land under runs/.
+labs/lab3_google_harness2/harness2/
+runs/
+
+# --- Secrets & OS noise ---
+.env
+.env.*
+!.env.example
+.DS_Store

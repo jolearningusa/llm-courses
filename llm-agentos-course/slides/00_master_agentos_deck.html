@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — Master Deck</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); fill: var(--ink); }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- 1 -->
+<section class="slide title-slide">
+  <span class="pill">LLM AgentOS · Introductory course</span>
+  <h1 style="margin-top:24px">Agent Operating Systems,<br>Dual-Plane Memory &amp;<br>Self-Improving Harnesses</h1>
+  <p class="muted" style="max-width:900px">Treating LLM agents as an operating-system problem: scheduling, memory paging, KV-cache as a system resource, plugin APIs, evaluation, and harnesses that rewrite themselves.</p>
+  <p style="margin-top:28px"><span class="pill">7 modules</span><span class="pill">3 labs</span><span class="pill">Hermes Agent · OpenClaw · Letta · vLLM · Harness²</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>Motivation</small>Why talk about an "AgentOS"?</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>An agent is a <b>long-running program</b>: many LLM calls, tool calls and waits, not one request.</li>
+        <li>Many agents share <b>scarce resources</b>: GPU time, context windows, KV-cache memory, tools.</li>
+        <li>Without an OS layer, every agent re-solves scheduling, memory and isolation, badly.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>The questions an OS answers</h3>
+      <ul>
+        <li>Who runs next? <span class="muted">→ scheduling</span></li>
+        <li>What stays resident? <span class="muted">→ memory management</span></li>
+        <li>What can a program touch? <span class="muted">→ access control</span></li>
+        <li>How do we know it's healthy? <span class="muted">→ metrics &amp; evaluation</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Framing from Packer et al. (MemGPT, arXiv:2310.08560) and Mei et al. (AIOS, arXiv:2403.16971).</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>Course map</small>Seven modules, three labs</h2>
+  <table>
+    <tr><th>#</th><th>Module</th><th>Lab</th></tr>
+    <tr><td>1</td><td>AIOS kernel &amp; program-aware scheduling</td><td></td></tr>
+    <tr><td>2</td><td>Plane 1: user / cognitive memory</td><td></td></tr>
+    <tr><td>3</td><td>Plane 2: system / KV-cache memory</td><td class="accent2">Lab 2: vLLM + LMCache + NIXL</td></tr>
+    <tr><td>4</td><td>Tool arbitration &amp; memory security</td><td></td></tr>
+    <tr><td>5</td><td>Production harnesses &amp; stable plugin APIs</td><td class="accent2">Lab 1: Hermes, OpenClaw, Letta plugins</td></tr>
+    <tr><td>6</td><td>OS-level &amp; trajectory evaluation</td><td></td></tr>
+    <tr><td>7</td><td>Self-improving harnesses (Harness²)</td><td class="accent2">Lab 3: google-research/harness2</td></tr>
+  </table>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>Module 1</small>The OS analogy, made concrete</h2>
+  <table>
+    <tr><th>Classic OS</th><th>AgentOS</th><th>Example</th></tr>
+    <tr><td>Process</td><td>Agent (a program of LLM + tool calls)</td><td>A coding agent working one ticket</td></tr>
+    <tr><td>CPU</td><td>LLM inference engine</td><td>vLLM / SGLang worker</td></tr>
+    <tr><td>System call</td><td>LLM call, tool call, memory read/write</td><td>AIOS SDK calls into the kernel</td></tr>
+    <tr><td>RAM</td><td>Context window (+ KV-cache on GPU)</td><td>MemGPT core memory blocks</td></tr>
+    <tr><td>Disk / swap</td><td>Archival memory, vector/graph stores, CPU/NVMe KV tiers</td><td>Letta archival memory, LMCache</td></tr>
+    <tr><td>Page fault</td><td>Retrieval because something isn't in context</td><td>Memory search tool call</td></tr>
+    <tr><td>Context switch</td><td>Snapshot / restore of generation state</td><td>AIOS context manager</td></tr>
+  </table>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Module 1</small>AIOS: an LLM agent operating system</h2>
+  <svg viewBox="0 0 1136 470" width="1136" height="470">
+    <rect x="0" y="0" width="1136" height="90" rx="12" fill="#1a2440" stroke="#2a3550"/>
+    <text x="24" y="38" font-size="20" font-weight="600">Application layer</text>
+    <text x="24" y="68" font-size="17" fill="#9aa6bd">Agents built with the AIOS SDK (Cerebrum): travel agent, coding agent, research agent…</text>
+    <rect x="0" y="110" width="1136" height="250" rx="12" fill="#14213a" stroke="#6ea8ff"/>
+    <text x="24" y="146" font-size="20" font-weight="600" fill="#6ea8ff">AIOS kernel</text>
+    <g font-size="17">
+      <rect x="24" y="166" width="250" height="76" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="40" y="200">Agent scheduler</text><text x="40" y="226" fill="#9aa6bd" font-size="15">FIFO, round-robin</text>
+      <rect x="298" y="166" width="250" height="76" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="314" y="200">Context manager</text><text x="314" y="226" fill="#9aa6bd" font-size="15">snapshot / restore</text>
+      <rect x="572" y="166" width="250" height="76" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="588" y="200">Memory manager</text><text x="588" y="226" fill="#9aa6bd" font-size="15">per-agent working memory</text>
+      <rect x="846" y="166" width="266" height="76" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="862" y="200">Storage manager</text><text x="862" y="226" fill="#9aa6bd" font-size="15">persistent files, vectors</text>
+      <rect x="24" y="260" width="250" height="76" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="40" y="294">Tool manager</text><text x="40" y="320" fill="#9aa6bd" font-size="15">conflict-free tool calls</text>
+      <rect x="298" y="260" width="250" height="76" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="314" y="294">Access manager</text><text x="314" y="320" fill="#9aa6bd" font-size="15">privileges, confirmation</text>
+      <rect x="572" y="260" width="540" height="76" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="588" y="294">LLM core(s)</text><text x="588" y="320" fill="#9aa6bd" font-size="15">each backend model wrapped as a schedulable "core"</text>
+    </g>
+    <rect x="0" y="380" width="1136" height="90" rx="12" fill="#1a2440" stroke="#2a3550"/>
+    <text x="24" y="418" font-size="20" font-weight="600">Hardware / host OS</text>
+    <text x="24" y="448" font-size="17" fill="#9aa6bd">GPUs, CPU, memory, disk, network</text>
+  </svg>
+  <div class="cite">Mei et al., AIOS: LLM Agent Operating System, arXiv:2403.16971 · github.com/agiresearch/AIOS · SDK: github.com/agiresearch/Cerebrum</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>Module 1</small>Context switching for LLMs</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>A time-sliced scheduler (e.g. round-robin) may <b>pause</b> an agent mid-generation.</li>
+        <li>The context manager <b>snapshots</b> generation state so another agent can run, then <b>restores</b> it.</li>
+        <li>Two options for the snapshot:
+          <ul>
+            <li><b>Text-based</b>: save the decoded tokens so far (works with any API model).</li>
+            <li><b>Logits/KV-based</b>: save internal state (needs an open-weights engine; cheaper to resume).</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Discussion</h3>
+      <p>Why is a "context switch" so much more expensive for an LLM than for a CPU process?</p>
+      <p class="muted">Hint: the "registers" are the KV-cache, which is gigabytes for long contexts. Module 3 returns to this.</p>
+    </div>
+  </div>
+  <div class="cite">arXiv:2403.16971, §context manager.</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>Module 1</small>Scheduling whole agent programs</h2>
+  <div class="cols">
+    <div class="card"><h3>Autellix (2025)</h3><p>Treats an agent as a <b>program</b> of LLM calls and prioritizes by the program's accumulated service, cutting head-of-line blocking across calls.</p></div>
+    <div class="card"><h3>Continuum (2025)</h3><p>When an agent pauses for a tool call, keep its KV-cache resident for a <b>time-to-live</b> instead of evicting it, so the next turn doesn't re-prefill.</p></div>
+    <div class="card"><h3>KVFlow (NeurIPS 2025)</h3><p>Uses the multi-agent <b>workflow graph</b> to predict which agent runs next, guiding prefix-cache eviction and prefetch.</p></div>
+    <div class="card"><h3>ThunderAgent (2026)</h3><p>A <b>program-aware</b> agentic inference system: the serving layer sees the agent program, not just isolated requests.</p></div>
+  </div>
+  <div class="cite">Autellix arXiv:2502.13965 · Continuum arXiv:2511.02230 · KVFlow arXiv:2507.07400 · ThunderAgent arXiv:2602.13692</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>Modules 2–3</small>Two memory planes</h2>
+  <svg viewBox="0 0 1136 420" width="1136" height="420">
+    <rect x="0" y="0" width="540" height="420" rx="14" fill="#14213a" stroke="#7be0b8"/>
+    <text x="28" y="44" font-size="24" font-weight="700" fill="#7be0b8">Plane 1 · cognitive memory</text>
+    <text x="28" y="76" font-size="17" fill="#9aa6bd">What the agent knows. Unit: text, facts, graph edges.</text>
+    <g font-size="18">
+      <rect x="28" y="100" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="46" y="138">Core / in-context blocks (always resident)</text>
+      <rect x="28" y="176" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="46" y="214">Recall: conversation history</text>
+      <rect x="28" y="252" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="46" y="290">Archival: vector / knowledge-graph store</text>
+    </g>
+    <text x="28" y="360" font-size="17">Managed by: the agent + harness plugins</text>
+    <text x="28" y="388" font-size="17" fill="#9aa6bd">MemGPT/Letta, Zep, A-MEM, Mem0, Hermes MemoryProvider</text>
+
+    <rect x="596" y="0" width="540" height="420" rx="14" fill="#14213a" stroke="#6ea8ff"/>
+    <text x="624" y="44" font-size="24" font-weight="700" fill="#6ea8ff">Plane 2 · system memory</text>
+    <text x="624" y="76" font-size="17" fill="#9aa6bd">What the engine has computed. Unit: KV blocks.</text>
+    <g font-size="18">
+      <rect x="624" y="100" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="642" y="138">GPU HBM: paged KV blocks</text>
+      <rect x="624" y="176" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="642" y="214">CPU DRAM / CXL: offloaded KV</text>
+      <rect x="624" y="252" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="642" y="290">NVMe / remote via RDMA</text>
+    </g>
+    <text x="624" y="360" font-size="17">Managed by: the serving engine</text>
+    <text x="624" y="388" font-size="17" fill="#9aa6bd">vLLM PagedAttention, SGLang, LMCache, NIXL</text>
+  </svg>
+  <div class="cite">The planes interact: every Plane-1 edit to the prompt prefix invalidates Plane-2 cache.</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>Module 2</small>MemGPT / Letta: virtual context</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>The context window is "RAM"; the model <b>pages</b> data in and out itself via tool calls.</li>
+        <li><b>Core memory blocks</b>: labeled, size-limited text that is always in context (e.g. <code>persona</code>, <code>human</code>).</li>
+        <li><b>Archival memory</b>: unbounded store, searched on demand.</li>
+        <li>The agent <b>edits its own memory</b> with tools like <code>memory_replace</code>.</li>
+        <li>A block can be <b>shared</b> by several agents: one write, visible everywhere (Lab 1C).</li>
+      </ul>
+    </div>
+    <pre>shared = client.blocks.create(
+    label="sprint_state",
+    value="Phase: scheduler benchmark",
+    limit=2000)
+
+for name in ["supervisor", "worker"]:
+    client.agents.create(
+        name=name, model=MODEL,
+        memory_blocks=[{"label": "persona",
+            "value": f"I am the {name}"}],
+        block_ids=[shared.id])  # same block</pre>
+  </div>
+  <div class="cite">Packer et al., arXiv:2310.08560 · docs.letta.com/guides/core-concepts/memory/shared-memory</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>Module 2</small>Structuring long-term memory</h2>
+  <div class="cols">
+    <div class="card"><h3>Zep / Graphiti</h3><p><b>Temporal knowledge graph</b>: edges carry when a fact was true and when it was recorded (bi-temporal), so outdated facts are invalidated rather than deleted.</p></div>
+    <div class="card"><h3>A-MEM</h3><p><b>Zettelkasten-style notes</b>: each memory gets keywords, tags and links; new memories can update older notes ("memory evolution").</p></div>
+    <div class="card"><h3>Mem0</h3><p>An LLM <b>extracts</b> candidate facts from each exchange, then decides to add / update / delete against existing memories; a graph variant adds relations.</p></div>
+    <div class="card"><h3>MemSkill</h3><p>Memory operations as <b>learnable, evolving skills</b> rather than fixed hand-written procedures.</p></div>
+  </div>
+  <div class="cite">Zep arXiv:2501.13956 · A-MEM arXiv:2502.12110 · Mem0 arXiv:2504.19413 · MemSkill arXiv:2602.02474</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>Module 3</small>KV-cache as paged memory</h2>
+  <div class="cols">
+    <div>
+      <h3 class="accent2" style="font-size:24px;margin:0 0 8px">PagedAttention (vLLM)</h3>
+      <ul>
+        <li>KV-cache split into fixed-size <b>blocks</b>, mapped through a per-sequence <b>block table</b>, like virtual memory pages.</li>
+        <li>Near-zero fragmentation; blocks can be <b>shared copy-on-write</b> across sequences.</li>
+      </ul>
+      <h3 class="accent2" style="font-size:24px;margin:20px 0 8px">RadixAttention (SGLang)</h3>
+      <ul>
+        <li>Keeps KV for past requests in a <b>radix tree</b> keyed by tokens; any request sharing a prefix reuses it.</li>
+        <li>LRU eviction of leaves.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Why agents love prefix caching</h3>
+      <p>Agents resend the same system prompt, tool schemas and history every turn. If the prefix is byte-identical, only the new suffix is prefilled.</p>
+      <p class="warn">Anything that rewrites the head of the prompt (timestamps, re-ordered tools, early compaction) throws the cache away.</p>
+    </div>
+  </div>
+  <div class="cite">Kwon et al., arXiv:2309.06180 · Zheng et al., arXiv:2312.07104</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>Module 3</small>Beyond exact-prefix reuse</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>Agent prompts are <b>assembled</b> from pieces: skills, retrieved docs, tool outputs. The same piece often appears at a different offset.</li>
+        <li><b>LMCache</b> hashes KV in fixed chunks (256 tokens by default) and stores them across GPU, CPU DRAM and disk tiers, so repeated chunks can be reused.</li>
+        <li><b>AsymCache</b> introduces Multi-Segment Attention plus a matching eviction policy and adaptive chunking to manage KV for segmented prompts losslessly.</li>
+      </ul>
+    </div>
+    <pre># lmcache_config.yaml
+chunk_size: 256
+local_cpu: true
+max_local_cpu_size: 64   # GiB
+
+# vllm serve (Lab 2)
+vllm serve Qwen/Qwen3-8B \
+  --kv-offloading-backend lmcache \
+  --kv-offloading-size 64</pre>
+  </div>
+  <div class="cite">docs.lmcache.ai · AsymCache: Shi et al., arXiv:2606.02964 · docs.vllm.ai/en/stable/examples/disaggregated/lmcache/</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>Module 3</small>A deeper KV memory hierarchy</h2>
+  <div class="cols">
+    <div>
+      <table>
+        <tr><th>Tier</th><th>Role</th></tr>
+        <tr><td>1 GPU HBM</td><td>Active KV blocks</td></tr>
+        <tr><td>2 CPU DRAM</td><td>Hot offload</td></tr>
+        <tr><td>3 CXL memory</td><td>Expanded host memory</td></tr>
+        <tr><td>4 NVMe (GPUDirect Storage)</td><td>Warm, large</td></tr>
+        <tr><td>5 RDMA fabric</td><td>Peer / pooled memory</td></tr>
+        <tr><td>6 Parallel filesystem</td><td>Cold, shared</td></tr>
+      </table>
+      <p class="muted" style="font-size:17px">Predictive placement moves blocks before they are needed.</p>
+    </div>
+    <div class="card">
+      <h3>Cache engineering for agents (AKV)</h3>
+      <p>Treat what the agent sends as something to <b>engineer for cache reuse</b>, the way prompt engineering targets accuracy, and co-design the serving engine (AKV) to support it behind a stateless, API-compatible interface.</p>
+    </div>
+  </div>
+  <div class="cite">Ganjihal, arXiv:2604.26968 (six-tier hierarchy) · Fu et al., Cache Engineering for Agents, arXiv:2610.28577</div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>Module 4</small>Memory is an attack surface</h2>
+  <p>Threats follow the <b>memory lifecycle</b>. Each phase has its own attacks and defenses:</p>
+  <div class="cols3" style="margin-top:12px">
+    <div class="card"><h3>1 · Write</h3><p>Poisoned content enters memory (injected via a web page, email or tool output).</p></div>
+    <div class="card"><h3>2 · Store</h3><p>Tampering or leakage at rest.</p></div>
+    <div class="card"><h3>3 · Retrieve</h3><p>Malicious entries engineered to be recalled for target queries.</p></div>
+    <div class="card"><h3>4 · Execute</h3><p>Recalled memory steers tool calls and actions.</p></div>
+    <div class="card"><h3>5 · Share &amp; propagate</h3><p>Shared blocks spread a poisoned fact to other agents.</p></div>
+    <div class="card"><h3>6 · Forget &amp; rollback</h3><p>Can a bad memory actually be removed, and its effects undone?</p></div>
+  </div>
+  <div class="cite">Lin et al., A Survey on Long-Term Memory Security in LLM Agents, arXiv:2604.16548</div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>Module 4</small>Defenses and tool arbitration</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>A-MemGuard</h3>
+      <ul>
+        <li><b>Consensus validation</b>: compare reasoning paths built from several related memories; a poisoned entry produces a divergent path.</li>
+        <li><b>Dual memory</b>: detected failures are distilled into "lessons" kept separately and consulted before acting.</li>
+        <li>No change to the agent's core architecture.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>OS-style arbitration</h3>
+      <ul>
+        <li>Access manager: which agent may read/write which block or tool.</li>
+        <li>Provenance on every write (source, time, agent).</li>
+        <li>Human confirmation for irreversible tool calls.</li>
+        <li>Shared blocks get stricter write policy than private ones.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Wei et al., arXiv:2510.02373 (ICML 2026 per authors' repo) · AIOS access manager, arXiv:2403.16971</div>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <h2><small>Module 5</small>Where memory plugs into real harnesses</h2>
+  <table>
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th><th>Letta</th><th>AIOS</th></tr>
+    <tr><td>Language</td><td>Python</td><td>TypeScript</td><td>Python / TS SDKs</td><td>Python</td></tr>
+    <tr><td>Memory hook</td><td><code>MemoryProvider</code> ABC</td><td><code>plugins.slots.memory</code></td><td>Memory blocks + archival</td><td>Memory manager</td></tr>
+    <tr><td>Context hook</td><td><code>ContextEngine</code> ABC</td><td><code>registerContextEngine</code></td><td>Server-side context mgmt</td><td>Context manager</td></tr>
+    <tr><td>Select via</td><td><code>memory.provider</code>, <code>context.engine</code></td><td><code>plugins.slots.contextEngine</code></td><td>Agent config</td><td>Kernel config</td></tr>
+    <tr><td>Multi-agent sharing</td><td>Via provider backend</td><td>Subagent spawn hooks</td><td><code>block_ids</code></td><td>Kernel-mediated</td></tr>
+  </table>
+  <p class="muted" style="font-size:17px;margin-top:16px">Details and code on slides 22–24 (<code>05_opensource_plugin_apis_slides.html</code>) and in Lab 1.</p>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+  <h2><small>Module 5</small>One turn, every hook</h2>
+  <svg viewBox="0 0 1136 400" width="1136" height="400">
+    <line x1="20" y1="200" x2="1116" y2="200" stroke="#2a3550" stroke-width="3"/>
+    <g font-size="17">
+      <circle cx="80" cy="200" r="12" fill="#7be0b8"/><text x="30" y="160">user msg</text><text x="30" y="250" fill="#9aa6bd">ingest()</text>
+      <circle cx="260" cy="200" r="12" fill="#7be0b8"/><text x="200" y="160">prefetch()</text><text x="200" y="250" fill="#9aa6bd">recall memory</text>
+      <circle cx="450" cy="200" r="12" fill="#6ea8ff"/><text x="390" y="160">assemble()</text><text x="390" y="250" fill="#9aa6bd">fit token budget</text>
+      <circle cx="640" cy="200" r="12" fill="#ffb86b"/><text x="590" y="160">LLM call</text><text x="590" y="250" fill="#9aa6bd">prefix cache hit?</text>
+      <circle cx="830" cy="200" r="12" fill="#7be0b8"/><text x="770" y="160">sync_turn()</text><text x="770" y="250" fill="#9aa6bd">persist (async)</text>
+      <circle cx="1040" cy="200" r="12" fill="#ff7a85"/><text x="960" y="160">compress()</text><text x="930" y="250" fill="#9aa6bd">on_pre_compress first</text>
+    </g>
+    <text x="20" y="330" font-size="18">Green = Hermes MemoryProvider hooks · Blue = OpenClaw ContextEngine · Red = Hermes ContextEngine</text>
+    <text x="20" y="362" font-size="18" fill="#9aa6bd">Exercise: mark which hooks can change the prompt prefix, and therefore the KV-cache hit rate.</text>
+  </svg>
+</section>
+
+<!-- 18 -->
+<section class="slide">
+  <h2><small>Module 6</small>Measuring the OS</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li><b>Throughput</b>: agent tasks or tokens per second.</li>
+        <li><b>Latency</b>: time-to-first-token and <b>P99</b> per LLM / tool syscall, not just the mean.</li>
+        <li><b>KV-cache hit rate</b> and prefill tokens saved.</li>
+        <li><b>Fairness</b> across concurrent agents:</li>
+      </ul>
+      <p style="font-size:30px;text-align:center;margin:18px 0">J(x) = (Σ x<sub>i</sub>)² / (n · Σ x<sub>i</sub>²)</p>
+      <p class="muted" style="font-size:17px">J = 1 when all n agents get equal service; J = 1/n when one agent gets everything.</p>
+    </div>
+    <div class="card">
+      <h3>Experiment (Lab 2)</h3>
+      <p>Run 8 agents sharing one long system prompt. Compare FIFO vs. round-robin, with and without LMCache offload. Report TTFT P50/P99 and J over per-agent throughput.</p>
+    </div>
+  </div>
+  <div class="cite">Jain, Chiu &amp; Hawe, DEC-TR-301 (1984).</div>
+</section>
+
+<!-- 19 -->
+<section class="slide">
+  <h2><small>Module 6</small>Evaluating trajectories, not just answers</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>Agents can reach a right answer the wrong way (unsafe tool call, wasted steps), or a wrong answer for a fixable reason.</li>
+        <li><b>Trajectory evaluation</b>: compare the actual sequence of tool calls to an expected one.</li>
+        <li><b>Response evaluation</b>: score the final answer against a reference or rubric.</li>
+        <li>Google ADK supports both, from test files or the CLI.</li>
+      </ul>
+    </div>
+    <pre># ADK: run an eval set against an agent
+adk eval path/to/agent eval_set.evalset.json
+
+# criteria (test_config.json)
+{
+  "criteria": {
+    "tool_trajectory_avg_score": 1.0,
+    "response_match_score": 0.8
+  }
+}</pre>
+  </div>
+  <div class="cite">adk.dev/evaluate · github.com/google/adk-python</div>
+</section>
+
+<!-- 20 -->
+<section class="slide">
+  <h2><small>Module 7</small>Harness²: harnesses that improve themselves</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>Model weights stay <b>fixed</b>; the <b>harness</b> around the model changes.</li>
+        <li><b>Task-level recursion</b>: <span class="accent2">propose</span> edits to the execution harness, <span class="accent2">probe</span> them on the same task, <span class="accent2">compose</span> a refined harness from behavioral contrasts. No ground-truth feedback.</li>
+        <li><b>Harnessing-level recursion</b>: after each task, keep the adopted harness and the <b>lessons supported by evidence</b> to guide future tasks.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>8 editable components</h3>
+      <p>system prompt · guardrails · memory · tool guidance · subagents · skills · scripts · plugins</p>
+      <h3 style="margin-top:16px">Benchmarks</h3>
+      <p>LAB, WorkBuddy-Bench, JobBench (<code>harness2-setup lab|wb|jb</code>)</p>
+    </div>
+  </div>
+  <div class="cite">Xu et al., Harness²: Recursive Agent Harnessing for an Open World, arXiv:2610.14224 · github.com/google-research/harness2</div>
+</section>
+
+<!-- 21 -->
+<section class="slide">
+  <h2><small>Wrap-up</small>Labs and what's next</h2>
+  <div class="cols3">
+    <div class="card"><h3>Lab 1 · Plugins</h3><p>Write a Hermes <code>MemoryProvider</code> + <code>ContextEngine</code>, an OpenClaw context engine, and Letta shared blocks.</p></div>
+    <div class="card"><h3>Lab 2 · KV plane</h3><p>Serve with LMCache CPU offload; compose LMCache + NIXL with <code>MultiConnector</code>; measure TTFT.</p></div>
+    <div class="card"><h3>Lab 3 · Harness²</h3><p>Run the demo, read the adopted harness and lessons, and fill in the evidence-backed lesson worksheet.</p></div>
+  </div>
+  <div class="card" style="margin-top:24px">
+    <h3>Open questions</h3>
+    <ul>
+      <li>Should Plane-1 memory edits be scheduled to preserve Plane-2 cache?</li>
+      <li>Who arbitrates when a self-improving harness edits a shared memory or tool policy?</li>
+      <li>What is the right "process isolation" for agents that share blocks?</li>
+    </ul>
+  </div>
+  <div class="cite">Continue with slides 22–24: 05_opensource_plugin_apis_slides.html</div>
+</section>
+
+</div>
+<div id="hint">← / → to navigate · F for full screen</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>
