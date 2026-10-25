@@ -210,6 +210,19 @@ Papers (AIOS, Autellix, Continuum, KVFlow, ThunderAgent) are in §1. Harness and
 - OpenClaw, sandboxing (`mode`, `scope`, `workspaceAccess`, backends, `tools.elevated`): https://docs.openclaw.ai/gateway/sandboxing
 - OpenAI Codex, sandboxing and approvals (`read-only`, `workspace-write`, `danger-full-access`; `on-request`, `never`): https://developers.openai.com/codex/concepts/sandboxing
 
+### Skills (deck `05_skills_deck.html`)
+
+- Anthropic, *Equipping agents for the real world with Agent Skills* (progressive disclosure), Oct 2025: https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
+- Agent Skills specification (`name` ≤ 64 characters, `description` ≤ 1024): https://agentskills.io/specification
+- Hermes Agent, skills (`skills_list`, `skill_view`, `skill_manage`): https://hermes-agent.nousresearch.com/docs/user-guide/features/skills
+- OpenClaw, skills (precedence, `metadata.openclaw` gating, snapshots): https://docs.openclaw.ai/tools/skills
+- OpenAI Codex, skills (REPO / USER / ADMIN / SYSTEM scopes): https://developers.openai.com/codex/skills
+- SkillsBench (curated vs. self-generated skills): https://arxiv.org/abs/2602.12670
+- Voyager (skill library for lifelong learning): https://arxiv.org/abs/2305.16291
+- MemSkill: https://arxiv.org/abs/2602.02474
+- Agent Skills in the Wild (vulnerabilities in public skills): https://arxiv.org/abs/2601.10338
+- ClawHavoc: 341 malicious skills on ClawHub, Feb 2026: https://thehackernews.com/2026/02/researchers-find-341-malicious-clawhub.html
+
 ## 6. Evaluation (Module 6)
 
 - **Google Agent Development Kit (ADK) evaluation**: https://adk.dev/evaluate/ · https://github.com/google/adk-python
