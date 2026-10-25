@@ -247,6 +247,15 @@ Papers (AIOS, Autellix, Continuum, KVFlow, ThunderAgent) are in §1. Harness and
 - OpenClaw, security (`dmPolicy`, hardened baseline, `openclaw security audit`): https://docs.openclaw.ai/gateway/security
 - Hermes Agent, security (`approvals.mode`, DM pairing, context-file scanning): https://hermes-agent.nousresearch.com/docs/user-guide/security
 
+### The extension layer (deck `05_extension_layer_deck.html`)
+
+- Hermes Agent, plugins (plugin types, `plugin.yaml`, `register(ctx)`, hooks): https://hermes-agent.nousresearch.com/docs/user-guide/features/plugins
+- OpenClaw, plugins (`plugins.allow` / `plugins.deny` / `plugins.slots`): https://docs.openclaw.ai/tools/plugin
+- OpenClaw, plugin manifest (`openclaw.plugin.json`, required `id` and `configSchema`): https://docs.openclaw.ai/plugins/manifest
+- OpenClaw, plugin hooks (`api.on`, priorities): https://docs.openclaw.ai/plugins/hooks
+- Model Context Protocol 2026-07-28 release (stateless core, deprecations): https://blog.modelcontextprotocol.io/posts/2026-07-28/
+- Anthropic, Claude Code plugins, Oct 2025: https://claude.com/resources/articles/claude-code-plugins
+
 ## 6. Evaluation (Module 6)
 
 - **Google Agent Development Kit (ADK) evaluation**: https://adk.dev/evaluate/ · https://github.com/google/adk-python

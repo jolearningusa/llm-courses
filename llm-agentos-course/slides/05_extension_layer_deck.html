@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — The Extension Layer</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · Module 5 lecture · Component 9</div>
+  <h1 style="margin-top:22px">The extension layer</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">Loadable kernel modules for agents: how plugins are discovered, described, enabled and slotted,
+    which hook points they get, how in-process plugins differ from out-of-process MCP servers,
+    and how versioning and trust are handled in Hermes Agent, OpenClaw and Claude Code.</p>
+  <p style="margin-top:28px"><span class="pill">Manifests</span><span class="pill">Discovery</span><span class="pill">Slots</span><span class="pill">Hooks</span><span class="pill">Versioning</span><span class="pill">Plugin security</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>OS analogy</small>Plugins are kernel modules; MCP servers are user-space daemons</h2>
+  <table class="dense">
+    <tr><th>Classic OS</th><th>AgentOS</th><th>Examples</th></tr>
+    <tr><td>Loadable kernel module</td><td>In-process plugin with full access</td><td>Hermes Python plugins, OpenClaw native plugins</td></tr>
+    <tr><td><code>modinfo</code> metadata</td><td>Manifest read before code runs</td><td><code>plugin.yaml</code>, <code>openclaw.plugin.json</code></td></tr>
+    <tr><td>Driver for one device class</td><td>Exclusive slot (one provider per role)</td><td>Memory provider, context engine</td></tr>
+    <tr><td>Netfilter / LSM hooks</td><td>Lifecycle hooks that observe, modify or block</td><td><code>pre_tool_call</code>, <code>before_tool_call</code></td></tr>
+    <tr><td>User-space daemon over a socket</td><td>Out-of-process server over a protocol</td><td>MCP servers (stdio, HTTP)</td></tr>
+    <tr><td>Package manager + signatures</td><td>Hubs, marketplaces, install scans</td><td>ClawHub, Hermes plugin scan, Claude Code marketplaces</td></tr>
+  </table>
+  <p style="font-size:19px;margin-top:16px">The extension layer is where the other eight components become replaceable: memory, context, tools, skills, channels and model providers all arrive as plugins.</p>
+  <div class="cite">Hermes Agent plugins docs; OpenClaw plugin and manifest docs; MCP specification 2026-07-28.</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>What can be extended</small>Extension points in two harnesses</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Hermes Agent plugin types</h3>
+      <ul>
+        <li><b>General</b> (multi-select): tools, hooks, slash commands, CLI commands, skills.</li>
+        <li><b>Memory provider</b> (single-select).</li>
+        <li><b>Context engine</b> (single-select).</li>
+        <li><b>Model providers</b> (many load; one chosen per run).</li>
+        <li>Also platforms and approval transports (<code>register_platform</code>, <code>register_approval_transport</code>).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>OpenClaw native plugins</h3>
+      <ul>
+        <li>Tools, hooks, channels, providers, CLI backends, skills.</li>
+        <li>Exclusive kinds <code>"memory"</code> and <code>"context-engine"</code>, chosen with <code>plugins.slots.memory</code> and <code>plugins.slots.contextEngine</code>.</li>
+        <li>Compatible bundles: Codex, Claude and Cursor plugin layouts are mapped into OpenClaw's inventory.</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:18px;margin-top:12px">The code for the memory and context slots is on companion-deck slide 28 and in Lab 1; this deck covers the machinery around them.</p>
+  <div class="cite">hermes-agent.nousresearch.com/docs/user-guide/features/plugins; docs.openclaw.ai/tools/plugin; docs.openclaw.ai/plugins/manifest.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>Describe</small>Manifests: metadata before code</h2>
+  <div class="cols">
+    <div>
+<pre style="font-size:14px"># Hermes: ~/.hermes/plugins/my-plugin/plugin.yaml
+name: my-plugin
+version: 0.3.0
+description: Ticket tools and an audit hook
+requires_env: [TICKETS_TOKEN]
+capabilities: [tools, hooks]
+manifest_version: 2
+api_version: ...
+requires_plugins: [...]</pre>
+<pre style="font-size:14px;margin-top:10px">// OpenClaw: openclaw.plugin.json (plugin root)
+{
+  "id": "voice-call",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}</pre>
+    </div>
+    <div class="card">
+      <h3>Why a manifest</h3>
+      <ul>
+        <li>OpenClaw reads it to validate config <b>without executing plugin code</b>; a missing or invalid manifest is a plugin error.</li>
+        <li>Only <code>id</code> and <code>configSchema</code> are required; optional fields include <code>kind</code>, <code>channels</code>, <code>providers</code>, <code>skills</code>, <code>uiHints</code>, <code>requiresPlugins</code>, <code>enabledByDefault</code>; <code>version</code> is informational.</li>
+        <li>Runtime hooks and entry points stay in code and <code>package.json</code>.</li>
+        <li>Hermes v2 manifests add <code>api_version</code> and <code>requires_plugins</code>; changing <code>update_url</code> needs approval.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Hermes plugins docs ("plugin.yaml"); OpenClaw manifest docs (field reference). Hermes values marked "..." are not given in the docs.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Discover &amp; enable</small>Where plugins come from, and who turns them on</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th></tr>
+    <tr><td>Sources</td><td>Bundled <code>plugins/</code>, <code>~/.hermes/plugins/</code>, project <code>.hermes/plugins/</code>, pip entry points <code>hermes_agent.plugins</code>, Nix</td><td><code>clawhub:</code>, <code>npm:</code>, <code>git:</code>, local path (<code>--link</code>), Claude-compatible marketplaces, <code>plugins.load.paths</code></td></tr>
+    <tr><td>Name clash</td><td>Later sources override earlier ones</td><td>Use an explicit source prefix for deterministic selection</td></tr>
+    <tr><td>Default state</td><td>General and user plugins <b>disabled</b> until enabled; gateway never loads project plugins</td><td>Workspace-origin plugins disabled; if <code>plugins.allow</code> is empty, non-bundled plugins may auto-load</td></tr>
+    <tr><td>Allow / deny</td><td><code>plugins.enabled</code> / <code>plugins.disabled</code> (deny wins)</td><td><code>plugins.allow</code> / <code>plugins.deny</code> (deny wins), <code>plugins.entries.&lt;id&gt;.enabled</code></td></tr>
+    <tr><td>Commands</td><td><code>hermes plugins enable | disable | list</code></td><td><code>openclaw plugins install | enable | inspect --runtime</code></td></tr>
+    <tr><td>Activation</td><td>—</td><td>Gateway restart after install / update</td></tr>
+  </table>
+  <div class="cite">Hermes plugins docs; docs.openclaw.ai/tools/plugin. "—" = not covered by the sources used here.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>Register</small>The registration API</h2>
+  <div class="cols">
+<pre style="font-size:14px"># Hermes: __init__.py
+def register(ctx):
+    ctx.register_tool(name="search_tickets",
+        toolset="tickets", schema=SCHEMA,
+        handler=search_tickets)
+    ctx.register_hook("post_tool_call", audit)
+    ctx.register_command("tickets", show,
+        "Show open tickets")
+    ctx.register_skill("triage", "skills/triage")
+    # also: dispatch_tool, inject_message,
+    #       call_mcp(server, tool, args, timeout=30)</pre>
+<pre style="font-size:14px">// OpenClaw: runtime module
+export default function register(api) {
+  api.on("before_tool_call", async (ev) => {
+    if (isDangerous(ev)) return { block: true };
+  }, { priority: 100, timeoutMs: 2000 });
+
+  api.on("before_prompt_build", async () => ({
+    appendSystemPrompt: "..."   // illustrative
+  }));
+  // slots: api.registerContextEngine(...)
+  // policy: api.registerTrustedToolPolicy(...)
+}</pre>
+  </div>
+  <p style="font-size:18px;margin-top:12px">One entry point, many registrations: the harness, not the plugin, decides when each piece runs. This is what makes plugins composable.</p>
+  <div class="cite">Hermes plugins docs ("register(ctx)"); OpenClaw plugin hooks docs (<code>api.on(name, handler, opts)</code>). Return shapes marked illustrative are simplified.</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>Hooks</small>Observe, transform, or decide</h2>
+  <div class="cols">
+    <div>
+      <table class="dense" style="font-size:15px">
+        <tr><th>Power</th><th>Hermes</th><th>OpenClaw</th></tr>
+        <tr><td>Decide (block / approve)</td><td><code>pre_tool_call</code>, <code>pre_llm_call</code>, <code>pre_gateway_dispatch</code></td><td><code>before_tool_call</code>, <code>before_agent_run</code>, <code>message_sending</code>, <code>before_install</code></td></tr>
+        <tr><td>Transform</td><td><code>transform_tool_result</code>, <code>transform_llm_output</code></td><td><code>before_prompt_build</code>, <code>tool_result_persist</code>, <code>reply_payload_sending</code></td></tr>
+        <tr><td>Observe</td><td><code>post_tool_call</code>, <code>on_session_start</code>, <code>subagent_stop</code>, <code>post_compaction</code></td><td><code>llm_output</code>, <code>session_end</code>, <code>subagent_ended</code>, <code>after_compaction</code></td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>OpenClaw ordering rules</h3>
+      <ul>
+        <li>Handlers run in descending <code>priority</code>; ties in registration order.</li>
+        <li>Trusted tool policies run before ordinary <code>before_tool_call</code> hooks.</li>
+        <li>A terminal block skips lower-priority handlers.</li>
+        <li><code>before_agent_run</code> and <code>before_install</code> fail closed on bad output or errors.</li>
+        <li>Observer failures are logged and ignored.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Hermes plugins docs ("Available hooks"); docs.openclaw.ai/plugins/hooks.</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>Exclusive roles</small>Slots: exactly one provider per role</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>Some components must have exactly one owner per session: who stores memory, who assembles and compacts context.</li>
+        <li>OpenClaw: a plugin declares <code>kind: "memory"</code> or <code>"context-engine"</code>; config picks one with <code>plugins.slots.*</code>. Selecting a plugin for a slot force-enables it, but <code>plugins.deny</code> and <code>enabled: false</code> still win.</li>
+        <li>Hermes: memory providers and context engines are single-select (<code>memory.provider</code>, <code>context.engine</code>); default engine <code>compressor</code>.</li>
+        <li>OpenClaw's <code>legacy</code> context engine is the default slot owner (context manager deck).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Why not let two run?</h3>
+      <p>Two context engines would both rewrite the transcript; two memory providers would both inject recall and double the tokens. A slot turns that conflict into a config error instead of a runtime surprise.</p>
+      <p class="muted">Same idea as one active display driver or one init system.</p>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/tools/plugin ("slots"); Hermes plugins docs ("plugin types"); companion deck slide 28.</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>In or out of process</small>Plugins vs. MCP servers</h2>
+  <table class="dense">
+    <tr><th></th><th>In-process plugin</th><th>MCP server</th></tr>
+    <tr><td>Runs as</td><td>Code inside the harness (Python / Node)</td><td>Separate process or remote service</td></tr>
+    <tr><td>Can do</td><td>Anything: hooks, slots, prompt edits, tools</td><td>Offer tools, resources, prompts; ask the user for input (elicitation)</td></tr>
+    <tr><td>Portability</td><td>One harness</td><td>Any MCP client</td></tr>
+    <tr><td>Failure / trust</td><td>Crash or compromise = the harness</td><td>Process boundary; env filtered (Hermes passes a short allowlist)</td></tr>
+    <tr><td>Contract</td><td>Harness API version</td><td>Protocol version + client capabilities in every request's <code>_meta</code></td></tr>
+  </table>
+  <p style="font-size:18px;margin-top:14px">Since MCP 2026-07-28 there is no <code>initialize</code> handshake and no session: each request carries its protocol version, client info and capabilities, and a client can call the optional <code>server/discover</code> first. Sampling, roots and logging are deprecated.</p>
+  <div class="cite">MCP 2026-07-28 release notes (blog.modelcontextprotocol.io/posts/2026-07-28); Hermes security docs (MCP env filtering). Hermes <code>plugins.isolation: host</code> runs user plugins in a separate host process.</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>Bundles</small>Plugins as distribution units</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li><b>Claude Code plugins</b> (Oct 9, 2025, public beta): any combination of slash commands, sub-agents, MCP servers and hooks; <code>/plugin marketplace add owner/repo</code>, then <code>/plugin install</code>.</li>
+        <li><b>OpenClaw</b> installs Claude-compatible marketplace plugins (<code>--marketplace</code>) and maps Codex, Claude and Cursor bundles.</li>
+        <li><b>Codex</b> recommends plugins for distributing your own skills (skills deck).</li>
+        <li><b>Hermes</b> plugins can register skills (<code>register_skill</code>).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Trend</h3>
+      <p>The plugin is becoming the <b>package</b>: skills + MCP servers + hooks + commands shipped together, installable across harnesses that share layouts.</p>
+      <p class="muted">Compatibility layers (OpenClaw reading other vendors' bundles) are how a de facto standard forms before a formal one.</p>
+    </div>
+  </div>
+  <div class="cite">claude.com/resources/articles/claude-code-plugins; docs.openclaw.ai/tools/plugin; Codex "Build skills" docs.</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>Versioning</small>Keeping plugins compatible</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li><b>Declare the API you target</b>: Hermes manifest v2 <code>api_version</code>; MCP <code>protocolVersion</code>.</li>
+        <li><b>Declare dependencies</b>: Hermes <code>requires_plugins</code>, OpenClaw <code>requiresPlugins</code>.</li>
+        <li><b>Deprecate with aliases</b>: OpenClaw keeps <code>deactivate</code> as a deprecated alias for <code>gateway_stop</code>, <code>before_agent_start</code> for compatibility, and <code>legacyPluginIds</code> for renames.</li>
+        <li><b>Validate config without running code</b>: JSON Schema in the manifest.</li>
+        <li><b>Pin in production</b>: OpenClaw recommends pinned versions; the Hermes skills hub skips locally edited skills on update unless <code>--force</code>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Checklist for a plugin author</h3>
+      <ul>
+        <li>Semantic version + target API version</li>
+        <li>Config schema with <code>additionalProperties: false</code></li>
+        <li>Feature-detect hooks; don't assume new ones exist</li>
+        <li>Fail closed in deciding hooks, open in observers</li>
+        <li>Timeouts on every hook</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Hermes plugins docs; OpenClaw manifest, plugin and hooks docs; MCP lifecycle spec.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>Security</small>A plugin is code you run with the agent's privileges</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>Hermes: capabilities are "a consent and audit layer, not isolation"; plugins are in-process Python. Install-time scan with safe / caution / dangerous verdicts.</li>
+        <li>OpenClaw: "Treat plugin installs like running code"; native plugins load in process; <code>security.installPolicy</code> runs an operator policy command before installs; <code>before_install</code> hooks can block and fail closed.</li>
+        <li>The skill supply-chain attacks (ClawHavoc, skills deck) apply to plugins with even more power.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Controls that work</h3>
+      <ul>
+        <li>Default off; explicit allowlist (<code>plugins.allow</code>, <code>plugins.enabled</code>)</li>
+        <li>Never auto-load plugins from a cloned repo</li>
+        <li>Pin versions; review diffs on update</li>
+        <li>Out-of-process where possible (MCP, Hermes <code>plugins.isolation: host</code>)</li>
+        <li>Audit: <code>openclaw security audit</code> covers plugins</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Hermes plugins docs ("security"); docs.openclaw.ai/tools/plugin ("security"); OpenClaw security docs; access control deck.</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>Exercise</small>One feature, three extension mechanisms</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>Feature: "log every shell command the agent runs and block <code>curl | sh</code>".</li>
+        <li>Build it as (a) a Hermes plugin with a <code>pre_tool_call</code> hook, (b) an OpenClaw plugin with <code>before_tool_call</code>, (c) an MCP server that wraps shell execution.</li>
+        <li>Add a manifest with a config schema to each plugin; give it a bad config and see what fails.</li>
+        <li>Install a second plugin that also hooks tool calls; check ordering.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Compare</h3>
+      <ul>
+        <li>Lines of code and setup steps</li>
+        <li>Can the model bypass it? (Hooks: no. MCP wrapper: yes, if a native shell tool also exists.)</li>
+        <li>Added latency per tool call</li>
+        <li>What happens when the plugin crashes</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>References</small>Read next</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>Hermes Agent plugins: hermes-agent.nousresearch.com/docs/user-guide/features/plugins</li>
+      <li>OpenClaw plugins: docs.openclaw.ai/tools/plugin</li>
+      <li>OpenClaw manifest: docs.openclaw.ai/plugins/manifest</li>
+      <li>OpenClaw plugin hooks: docs.openclaw.ai/plugins/hooks</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>MCP 2026-07-28 release (stateless core, deprecations): blog.modelcontextprotocol.io/posts/2026-07-28</li>
+      <li>Claude Code plugins (Oct 2025): claude.com/resources/articles/claude-code-plugins</li>
+      <li>Companion deck slide 28 and Lab 1 (memory and context plugins)</li>
+      <li>All links: <code>references/bibliography_and_links.md</code> §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → to navigate · F for full screen</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>
