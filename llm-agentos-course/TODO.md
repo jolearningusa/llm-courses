@@ -17,7 +17,7 @@ The master deck (slide 5) defines a nine-component reference architecture. Curre
 | 4 | Memory manager | Master deck 9–14, **`02_long_term_memory_deck.html`** | Yes (cognitive plane); KV plane in Lab 2 |
 | 5 | Tools and execution / sandbox | Master deck 17–18 (component map), **`05_tools_sandbox_deck.html`** | Yes |
 | 6 | Skills | Master deck 17–18, Hermes deep-dive 22, **`05_skills_deck.html`** | Yes |
-| 7 | Multi-agent | Master deck 17–18, Lab 1C (Letta shared blocks) | Not yet |
+| 7 | Multi-agent | Master deck 17–18, Lab 1C (Letta shared blocks), **`05_multi_agent_deck.html`** | Yes |
 | 8 | Access control | Master deck 15–16 | Not yet |
 | 9 | Extension layer (plugins) | Companion deck 28 (plugin APIs side by side) | Not yet |
 
@@ -39,7 +39,7 @@ OpenClaw, Letta (and a Rust runtime where relevant) implement it, failure modes,
   (local, Docker, remote), filesystem and network isolation, timeouts and resource limits.
 - [x] **Skills.** Done as deck **`slides/05_skills_deck.html`**. Progressive disclosure, skill discovery and loading, agents that write their own skills,
   skills vs. tools vs. memory. Start from: Hermes `skills_list` / `skill_view` / `skill_manage`, MemSkill.
-- [ ] **Multi-agent.** Delegation (Hermes `delegate_task`, OpenClaw sub-agents with isolated or forked context),
+- [x] **Multi-agent.** Done as deck **`slides/05_multi_agent_deck.html`**. Delegation (Hermes `delegate_task`, OpenClaw sub-agents with isolated or forked context),
   shared memory (Letta blocks), message passing vs. shared state, cost and failure amplification.
 - [ ] **Access control and safety.** Permission models, user confirmation, credential handling, prompt-injection
   defenses for tools and memory, audit logs. Start from: AIOS access manager, memory security survey, A-MemGuard.

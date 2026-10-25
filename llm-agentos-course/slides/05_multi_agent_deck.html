@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — Multi-Agent Systems</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · Module 5 lecture · Component 7</div>
+  <h1 style="margin-top:22px">Multi-agent systems</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">Processes, fork and IPC for agents: when splitting work across agents pays off and when it backfires,
+    the orchestrator-worker pattern, how Hermes Agent, OpenClaw and Letta spawn, isolate and connect agents, the A2A protocol,
+    and why multi-agent systems fail.</p>
+  <p style="margin-top:28px"><span class="pill">Orchestrator-worker</span><span class="pill">Context isolation</span><span class="pill">Sub-agents</span><span class="pill">A2A</span><span class="pill">Failure taxonomy</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>OS analogy</small>Agents as processes</h2>
+  <table class="dense">
+    <tr><th>Classic OS</th><th>AgentOS</th><th>Examples</th></tr>
+    <tr><td><code>fork()</code> / <code>spawn()</code></td><td>Start a sub-agent with its own context</td><td>Hermes <code>delegate_task</code>, OpenClaw <code>sessions_spawn</code></td></tr>
+    <tr><td>Copy-on-write vs. fresh image</td><td>Forked transcript vs. isolated context</td><td>OpenClaw <code>context: "fork"</code> / <code>"isolated"</code></td></tr>
+    <tr><td>Exit status + stdout</td><td>Final summary returned to the parent</td><td>Hermes: "only its final summary enters the parent's context"</td></tr>
+    <tr><td>Process limits (<code>ulimit</code>)</td><td>Depth, fan-out and concurrency caps</td><td><code>max_spawn_depth</code>, <code>maxChildrenPerAgent</code></td></tr>
+    <tr><td>Signals</td><td>Stop / interrupt propagation</td><td>Hermes <code>/stop</code> ends background children</td></tr>
+    <tr><td>Shared memory / IPC</td><td>Shared blocks, repos, agent-to-agent messages</td><td>Letta shared memory, OpenClaw <code>tools.agentToAgent</code></td></tr>
+    <tr><td>Network protocol between hosts</td><td>Agent-to-agent protocol across vendors</td><td>A2A (Agent Card, Task, Message, Artifact)</td></tr>
+  </table>
+  <div class="cite">Hermes Agent delegation docs; OpenClaw sub-agents and multi-agent docs; Letta shared-memory docs; a2a-protocol.org specification.</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>The debate</small>Two production reports, two conclusions</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Anthropic: multi-agent research (Jun 13, 2025)</h3>
+      <ul>
+        <li>Opus 4 lead + Sonnet 4 sub-agents beat a single Opus 4 agent by <b>90.2%</b> on an internal research eval.</li>
+        <li>On BrowseComp, token usage alone explained <b>80%</b> of performance variance (95% with tool calls and model choice).</li>
+        <li>Cost: agents use about <b>4×</b> the tokens of chat; multi-agent systems about <b>15×</b>.</li>
+        <li>Parallel sub-agents (3–5) and parallel tool calls cut research time by up to 90%.</li>
+        <li>Poor fit: tasks where all agents need the same context or many dependencies, including most coding.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Cognition: "Don't build multi-agents" (Jun 12, 2025)</h3>
+      <ul>
+        <li>Principle 1: share context, and share full agent traces, not just individual messages.</li>
+        <li>Principle 2: actions carry implicit decisions, and conflicting decisions carry bad results.</li>
+        <li>Flappy Bird example: one sub-agent builds a Mario-style background, another a bird that doesn't match; the merger fails.</li>
+        <li>Default: a single-threaded linear agent; for long tasks, add a model that compresses history.</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:18px;margin-top:12px">Both agree: split when sub-tasks are <b>read-mostly and parallel</b> (search, research, review); keep one thread when sub-tasks <b>write shared state</b> (code, documents).</p>
+  <div class="cite">anthropic.com/engineering/multi-agent-research-system; cognition.com/blog/dont-build-multi-agents.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>Pattern</small>Orchestrator-worker</h2>
+  <div class="cols">
+    <svg viewBox="0 0 540 420" width="540" height="420">
+      <g font-size="16">
+        <rect x="150" y="0" width="240" height="70" rx="8" fill="#1c2a4d" stroke="#7be0b8"/>
+        <text x="170" y="30" font-weight="700">Lead / orchestrator</text>
+        <text x="170" y="54" fill="#9aa6bd">plan → spawn → merge</text>
+        <rect x="0" y="160" width="160" height="80" rx="8" fill="#161d2e" stroke="#6ea8ff"/>
+        <text x="14" y="192" font-weight="700">Worker A</text><text x="14" y="216" fill="#9aa6bd">own context</text>
+        <rect x="190" y="160" width="160" height="80" rx="8" fill="#161d2e" stroke="#6ea8ff"/>
+        <text x="204" y="192" font-weight="700">Worker B</text><text x="204" y="216" fill="#9aa6bd">own context</text>
+        <rect x="380" y="160" width="160" height="80" rx="8" fill="#161d2e" stroke="#6ea8ff"/>
+        <text x="394" y="192" font-weight="700">Worker C</text><text x="394" y="216" fill="#9aa6bd">own context</text>
+        <rect x="150" y="320" width="240" height="70" rx="8" fill="#161d2e" stroke="#ffb86b"/>
+        <text x="170" y="350" font-weight="700">Checker / citation agent</text>
+        <text x="170" y="374" fill="#9aa6bd">verifies the merged result</text>
+      </g>
+      <g stroke="#9aa6bd" stroke-width="2" fill="none">
+        <path d="M230 70 L80 160"/><path d="M270 70 L270 160"/><path d="M310 70 L460 160"/>
+        <path d="M80 240 L230 320"/><path d="M270 240 L270 320"/><path d="M460 240 L310 320"/>
+      </g>
+      <text x="0" y="412" font-size="14" fill="#9aa6bd">down: goal + context · up: summary only (1–2k tokens)</text>
+    </svg>
+    <div>
+      <ul style="font-size:18px">
+        <li><b>Brief each worker fully</b>: objective, output format, tools, boundaries. Workers do not see the parent's history.</li>
+        <li><b>Scale effort to the query</b>: 1 agent and 3–10 tool calls for a fact; 2–4 sub-agents for a comparison; more than 10 for complex research.</li>
+        <li><b>Return condensed results</b>: the parent's context grows by summaries, not transcripts.</li>
+        <li><b>Persist the plan</b>: the lead saves its plan to memory because context past 200k tokens is truncated.</li>
+        <li><b>Verify at the end</b>: a separate citation / checker pass.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Anthropic multi-agent research system; Anthropic "Building effective agents" (Dec 19, 2024) for orchestrator-workers as a workflow pattern.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Hermes Agent</small><code>delegate_task</code>: fresh context, summary back</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>One task (<code>goal</code>, <code>context</code>) or a batch (<code>tasks</code>, each with optional <code>output_schema</code>); children inherit the parent's toolsets.</li>
+        <li>A child starts with <b>no access to the parent's history</b>; it gets <code>goal</code>, <code>context</code> and the workspace's project context files (not <code>SOUL.md</code>).</li>
+        <li>Only the child's final summary enters the parent's context.</li>
+        <li><code>delegation.model</code> / <code>provider</code> run children on a cheaper model.</li>
+        <li><code>delegation.worktree_isolation: true</code>: one git worktree per child, so parallel coders don't collide.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Roles and limits</h3>
+      <ul>
+        <li>Leaf children lose <code>delegate_task</code>, <code>clarify</code>, <code>memory</code>, <code>send_message</code>, <code>cronjob</code>.</li>
+        <li><code>role="orchestrator"</code> keeps <code>delegate_task</code>, only if <code>max_spawn_depth</code> &gt; 1 (default 1).</li>
+        <li>10 children per batch, 250 iterations per child (scheduler deck).</li>
+        <li><code>/stop</code> ends background children; they return <code>status="interrupted"</code> with partial output. A restart does not resume them.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">hermes-agent.nousresearch.com/docs/user-guide/features/delegation.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>OpenClaw</small>Sub-agents: spawn, announce, archive</h2>
+  <div class="cols">
+    <div>
+<pre style="font-size:14px">sessions_spawn({
+  task: "Compare the three vendors' SLAs",
+  label: "sla-compare",
+  model: "cheap-model",        // optional
+  context: "isolated",         // or "fork"
+  mode: "run",                 // "session" needs thread
+  cleanup: "keep"              // or "delete"
+})
+→ { status: "accepted", runId, childSessionKey }
+// child session: agent:&lt;agentId&gt;:subagent:&lt;uuid&gt;
+// result arrives later as an announce event;
+// the parent waits with sessions_yield, not polling</pre>
+    </div>
+    <div class="card">
+      <h3>Defaults</h3>
+      <ul>
+        <li><code>maxSpawnDepth</code> 1 (1–5); 2 enables orchestrators.</li>
+        <li><code>maxChildrenPerAgent</code> 5; <code>subagent</code> lane <code>maxConcurrent</code> 8.</li>
+        <li><code>archiveAfterMinutes</code> 60; <code>runTimeoutSeconds</code> 0 (none); <code>announceTimeoutMs</code> 120000.</li>
+        <li>Children get only <code>AGENTS.md</code> and <code>TOOLS.md</code>, not <code>SOUL.md</code>, <code>USER.md</code> or <code>MEMORY.md</code>.</li>
+        <li>Always denied: <code>gateway</code>, <code>agents_list</code>, <code>session_status</code>, <code>cron</code>, <code>sessions_send</code>; leaves also lose spawn and history tools.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">OpenClaw docs: docs.openclaw.ai/tools/subagents (tool reference, nesting, announce, tool policy, operations).</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>OpenClaw</small>Many agents in one gateway: routing and IPC</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>An <b>agent</b> is a full persona scope: workspace files, auth profiles, model registry and session store under <code>~/.openclaw/agents/&lt;agentId&gt;/</code>. Never share an <code>agentDir</code>.</li>
+        <li><b>Bindings</b> route inbound messages to agents, deterministic and most-specific-wins: exact peer → parent peer → peer wildcard → guild+roles → guild → team → account → channel → default agent.</li>
+        <li><b>Agent-to-agent messaging</b> is off by default: <code>tools.agentToAgent: { enabled, allow: ["home", "work"] }</code>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Two kinds of multi-agent</h3>
+      <p><b>Vertical</b>: a parent spawns short-lived children for one task (sub-agents).</p>
+      <p><b>Horizontal</b>: long-lived peer agents with separate identities and data (home vs. work), connected only where allowed.</p>
+      <p class="muted">Horizontal separation is also an access-control boundary: a work agent cannot read the home agent's memory unless you allow it.</p>
+    </div>
+  </div>
+  <div class="cite">OpenClaw docs: docs.openclaw.ai/concepts/multi-agent.</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>Shared state</small>Letta: shared memory between agents</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li><b>Shared memory blocks</b> (older API, still supported): one in-context memory block attached to several agents.</li>
+        <li><b>Shared memory repositories</b> (current): a Git repository per organization, attached per agent with <code>letta shared-memory attach &lt;name&gt; --agent &lt;agent-id&gt;</code>.</li>
+        <li>Agents edit files with file and Git tools, commit and push; other agents pull. Concurrency is resolved the way Git resolves it.</li>
+        <li>Requires cloud-hosted agents.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Message passing vs. shared memory</h3>
+      <ul>
+        <li><b>Messages / summaries</b>: explicit, small, easy to trace; information is lost at each hop.</li>
+        <li><b>Shared memory</b>: everyone sees the same facts; needs write discipline, history and conflict handling.</li>
+        <li>Cognition's principle 1 argues for sharing <i>more</i>; Anthropic's design shares <i>less</i> and pays for it with careful briefs.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">docs.letta.com/concepts/shared-memory. Sleep-time agents that edit a primary agent's memory: memory deck (02).</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>Across vendors</small>A2A: agent-to-agent protocol</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>Open standard for independent, possibly <b>opaque</b> agents: they collaborate without sharing internal state, memory or tools.</li>
+        <li><b>Agent Card</b>: JSON describing identity, skills, endpoint and auth, commonly served at <code>/.well-known/agent-card.json</code>.</li>
+        <li><b>Task</b> (stateful, with an ID), <b>Message</b> (<code>role</code> user / agent, made of <b>Parts</b>: text, file, data), <b>Artifact</b> (task output).</li>
+        <li>States include working, input-required, auth-required, completed, failed, canceled, rejected.</li>
+        <li>Bindings: JSON-RPC, gRPC, HTTP+JSON; streaming and webhook push notifications. Latest release 1.0.0.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>MCP vs. A2A</h3>
+      <table class="dense" style="font-size:15px">
+        <tr><th></th><th>MCP</th><th>A2A</th></tr>
+        <tr><td>Peer</td><td>Tool / resource server</td><td>Another agent</td></tr>
+        <tr><td>Unit</td><td>Tool call</td><td>Task with lifecycle</td></tr>
+        <tr><td>Duration</td><td>Usually short</td><td>Can be long, may ask for input</td></tr>
+        <tr><td>Inside the peer</td><td>Transparent schema</td><td>Opaque</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="cite">a2a-protocol.org/latest/specification (Linux Foundation; joined the Agentic AI Foundation); Agent Card path per Redpanda's A2A docs.</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>Side by side</small>Multi-agent support in three harnesses</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th><th>Letta</th></tr>
+    <tr><td>Spawn</td><td><code>delegate_task</code> (single or batch)</td><td><code>sessions_spawn</code> (non-blocking)</td><td>—</td></tr>
+    <tr><td>Child context</td><td>Fresh: goal + context + project files</td><td><code>isolated</code> or <code>fork</code>; AGENTS.md + TOOLS.md</td><td>—</td></tr>
+    <tr><td>Result path</td><td>Final summary into parent context</td><td>Announce event to requester</td><td>—</td></tr>
+    <tr><td>Default depth</td><td>1</td><td>1 (up to 5)</td><td>—</td></tr>
+    <tr><td>Fan-out cap</td><td>10 per batch</td><td>5 children per agent, 8 concurrent</td><td>—</td></tr>
+    <tr><td>Peer agents</td><td>—</td><td>Bindings + <code>tools.agentToAgent</code></td><td>Separate agents</td></tr>
+    <tr><td>Shared state</td><td>Shared worktree (or isolated)</td><td>Opt-in messaging</td><td>Shared memory repos / blocks</td></tr>
+  </table>
+  <div class="cite">Sources on slides 5–8. "—" = not covered by the sources used here.</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>Research</small>Why do multi-agent systems fail? (MAST)</h2>
+  <div class="cols">
+    <div>
+      <p style="font-size:18px">Cemri et al. annotated 1,600+ traces from 7 frameworks (κ = 0.88) and found <b>14 failure modes</b> in 3 categories:</p>
+      <table class="dense" style="font-size:15px">
+        <tr><th>System design</th><th>Inter-agent misalignment</th><th>Task verification</th></tr>
+        <tr><td>Disobey task spec</td><td>Conversation reset</td><td>Premature termination</td></tr>
+        <tr><td>Disobey role spec</td><td>Fail to ask for clarification</td><td>No or incomplete verification</td></tr>
+        <tr><td>Step repetition</td><td>Task derailment</td><td>Incorrect verification</td></tr>
+        <tr><td>Loss of conversation history</td><td>Information withholding</td><td></td></tr>
+        <tr><td>Unaware of stopping conditions</td><td>Ignored other agent's input</td><td></td></tr>
+        <tr><td></td><td>Reasoning-action mismatch</td><td></td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Takeaways</h3>
+      <ul>
+        <li>Most failures are <b>organizational</b>, not model errors: unclear roles, lost context, nobody checking.</li>
+        <li>Fixes look like management: role specs, explicit hand-off formats, termination rules, a verifier.</li>
+        <li>Use the taxonomy as labels for trace review (observability deck).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Cemri et al., "Why Do Multi-Agent LLM Systems Fail?", arXiv:2503.13657.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>Systems</small>Serving cost of multi-agent workflows</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>Sub-agents multiply tokens (about 15× chat) and requests; each child has its own prompt prefix.</li>
+        <li>Shared prefixes (system prompt, tool schemas, skill index) should be identical across children so prefix caching can reuse them.</li>
+        <li><b>KVFlow</b> uses the workflow graph to predict which agent runs next and keeps its prefix cached: 1.83× (single workflow) and 2.19× (many concurrent) over SGLang with hierarchical cache.</li>
+        <li>Program-aware schedulers (Autellix, Continuum) treat the whole agent program, not each call, as the unit to schedule.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Rules of thumb</h3>
+      <ul>
+        <li>Use a cheaper model for workers, a strong one for the lead.</li>
+        <li>Cap depth and fan-out; recursion is the agent fork bomb.</li>
+        <li>Give each child a timeout and a budget.</li>
+        <li>Measure cost per <i>task</i>, not per call.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">KVFlow, arXiv:2507.07400 (NeurIPS 2025); scheduler deck (Autellix 2502.13965, Continuum 2511.02230); Anthropic multi-agent research system.</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>Decide</small>Single agent, sub-agents, or peers?</h2>
+  <table class="dense">
+    <tr><th>Situation</th><th>Choose</th><th>Why</th></tr>
+    <tr><td>Sequential edits to one codebase or document</td><td>Single agent (+ compaction)</td><td>Decisions stay consistent (Cognition)</td></tr>
+    <tr><td>Breadth-first research, many independent sources</td><td>Orchestrator + parallel workers</td><td>Parallel tokens buy quality and time (Anthropic)</td></tr>
+    <tr><td>Large read-only exploration that would flood context</td><td>Sub-agent returning a summary</td><td>Context isolation (context manager deck)</td></tr>
+    <tr><td>Parallel coding on separate parts</td><td>Sub-agents + worktree isolation</td><td>No write conflicts until merge</td></tr>
+    <tr><td>Different users, data or trust levels</td><td>Separate peer agents</td><td>Identity and data boundaries</td></tr>
+    <tr><td>Agents from other vendors or teams</td><td>A2A</td><td>Opaque, task-based contract</td></tr>
+  </table>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>Exercise</small>Same task, three architectures</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>Pick a research task with 4–6 independent sub-questions and a verifiable answer key.</li>
+        <li>Run it as (a) one Hermes agent, (b) Hermes with <code>delegate_task</code> batch of workers, (c) OpenClaw with <code>sessions_spawn</code> workers on a cheaper model.</li>
+        <li>Repeat each 5 times.</li>
+        <li>Label every failed trace with a MAST failure mode.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Measure</h3>
+      <ul>
+        <li>Answer accuracy and pass^5</li>
+        <li>Total tokens and cost per task</li>
+        <li>Wall-clock time</li>
+        <li>Parent context size at the end</li>
+        <li>Most common MAST category per architecture</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>References</small>Read next</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>Anthropic, How we built our multi-agent research system (Jun 2025): anthropic.com/engineering/multi-agent-research-system</li>
+      <li>Cognition, Don't build multi-agents (Jun 2025): cognition.com/blog/dont-build-multi-agents</li>
+      <li>Cemri et al., Why Do Multi-Agent LLM Systems Fail?: arxiv.org/abs/2503.13657</li>
+      <li>A2A specification: a2a-protocol.org/latest/specification</li>
+      <li>KVFlow: arxiv.org/abs/2507.07400</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>Hermes delegation: hermes-agent.nousresearch.com/docs/user-guide/features/delegation</li>
+      <li>OpenClaw sub-agents: docs.openclaw.ai/tools/subagents</li>
+      <li>OpenClaw multi-agent routing: docs.openclaw.ai/concepts/multi-agent</li>
+      <li>Letta shared memory: docs.letta.com/concepts/shared-memory</li>
+      <li>All links: <code>references/bibliography_and_links.md</code> §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → to navigate · F for full screen</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>
