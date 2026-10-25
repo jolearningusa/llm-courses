@@ -35,6 +35,7 @@ llm-agentos-course/
 ├── README.md                                  # This file: overview, syllabus, reading list
 ├── LICENSE                                    # Apache-2.0
 ├── .gitignore                                 # Python, Node, vLLM/LMCache and Harness² run artifacts
+├── TODO.md                                    # Roadmap: component deep-dives, observability & evaluation
 ├── slides/
 │   ├── 00_master_agentos_deck.html            # Master deck, slides 1–21: AgentOS architecture & component map
 │   ├── 02_long_term_memory_deck.html          # Module 2 lecture, 20 slides: how long-term memory is built
@@ -121,6 +122,11 @@ first. Known caveats:
 - LMCache's in-process mode (environment variables / `LMCACHE_CONFIG_FILE`) is deprecated in favor of LMCache
   MP mode; `--kv-offloading-backend lmcache` is the current `vllm serve` path.
 - `kv_role="kv_both"` is deprecated for `NixlConnector`; Lab 2 uses explicit producer/consumer roles for NIXL.
+
+## Roadmap
+
+Planned deep-dives (the remaining AgentOS components, and logging, telemetry, dashboards and quality evaluation
+for harnesses) are tracked in [`TODO.md`](TODO.md).
 
 ## License
 

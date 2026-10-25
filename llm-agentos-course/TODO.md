@@ -1,0 +1,87 @@
+# LLM AgentOS course: TODO and roadmap
+
+Future deep-dives for the course. Each item becomes its own PR (one task, one PR, see the repo's
+[AGENTS.md](../AGENTS.md)). Tick an item when its PR is merged. Sources listed under "Start from" are
+already in [`references/bibliography_and_links.md`](references/bibliography_and_links.md); anything new
+must be checked against its primary source before it goes on a slide.
+
+## Status of the nine components
+
+The master deck (slide 5) defines a nine-component reference architecture. Current coverage:
+
+| # | Component | Covered today | Own deep-dive? |
+|---|-----------|--------------|----------------|
+| 1 | Agent loop | Master deck 19 (hook timeline), harness slides 22–25 | Not yet |
+| 2 | Scheduler | Master deck 6–7 (AIOS, Autellix, Continuum, KVFlow, ThunderAgent) | Not yet |
+| 3 | Context manager (select / compress / isolate) | Master deck 8, Lab 1 context engines | Not yet |
+| 4 | Memory manager | Master deck 9–14, **`02_long_term_memory_deck.html`** | Yes (cognitive plane); KV plane in Lab 2 |
+| 5 | Tools and execution / sandbox | Master deck 17–18 (component map) | Not yet |
+| 6 | Skills | Master deck 17–18, Hermes deep-dive 22 | Not yet |
+| 7 | Multi-agent | Master deck 17–18, Lab 1C (Letta shared blocks) | Not yet |
+| 8 | Access control | Master deck 15–16 | Not yet |
+| 9 | Extension layer (plugins) | Companion deck 28 (plugin APIs side by side) | Not yet |
+
+## A. Component deep-dives
+
+Each deck should follow the same shape as the memory deck: the concept, the design space, how Hermes Agent,
+OpenClaw, Letta (and a Rust runtime where relevant) implement it, failure modes, and an exercise.
+
+- [ ] **Agent loop.** Turn structure (think, act, observe), stop conditions, retries and error recovery,
+  streaming, interrupts, where each hook fires. Compare Hermes hooks, OpenClaw's gateway with per-session
+  run serialization, Letta steps, and Codex CLI / Goose loops.
+- [ ] **Scheduler.** Request-level vs. program-level scheduling, fairness across agents, priority and
+  preemption, rate limits and API quotas, how the scheduler interacts with KV-cache reuse.
+  Start from: AIOS, Autellix, Continuum, KVFlow, ThunderAgent.
+- [ ] **Context manager.** Compression strategies (summaries, pruning, structured notes), context isolation
+  through sub-agents, prompt-prefix stability and caching, measuring context quality.
+  Start from: Hermes `ContextEngine`, OpenClaw `registerContextEngine`, Manus and Anthropic context-engineering posts.
+- [ ] **Tools and sandbox.** Tool schemas and selection, MCP, tool-result handling, execution backends
+  (local, Docker, remote), filesystem and network isolation, timeouts and resource limits.
+- [ ] **Skills.** Progressive disclosure, skill discovery and loading, agents that write their own skills,
+  skills vs. tools vs. memory. Start from: Hermes `skills_list` / `skill_view` / `skill_manage`, MemSkill.
+- [ ] **Multi-agent.** Delegation (Hermes `delegate_task`, OpenClaw sub-agents with isolated or forked context),
+  shared memory (Letta blocks), message passing vs. shared state, cost and failure amplification.
+- [ ] **Access control and safety.** Permission models, user confirmation, credential handling, prompt-injection
+  defenses for tools and memory, audit logs. Start from: AIOS access manager, memory security survey, A-MemGuard.
+- [ ] **Extension layer.** Plugin manifests, slots and lifecycles, versioning and compatibility, plugin
+  security. Start from: companion deck 28 and Lab 1.
+- [ ] **KV-cache plane, second pass.** A standalone deck for Module 3 beyond the master-deck slides and Lab 2.
+
+## B. Observability and evaluation deep-dive (logging, telemetry, analytics, dashboards)
+
+Goal: how to tell whether an AgentOS / harness is healthy and whether its quality is going up or down.
+Likely one deck plus one lab.
+
+- [ ] **Logging and tracing.**
+  - What to record per run: turns, model calls, tool calls, memory reads and writes, compaction, sub-agents,
+    and the hook events that wrap them.
+  - Trace structure: a run as a tree of spans (agent → turn → LLM call / tool call / retrieval).
+  - Standards to check: OpenTelemetry semantic conventions for generative AI.
+  - Where each harness exposes events today (Hermes hooks, OpenClaw gateway and plugin hooks, Letta run and step records).
+  - Privacy: redacting prompts, user data and secrets in logs.
+- [ ] **Telemetry and metrics.**
+  - System: throughput, latency (TTFT, P50/P99 per turn and per task), token usage and cost, prefix-cache hit
+    rate, queueing time, fairness across agents (Jain's index). vLLM serves Prometheus metrics, which
+    can link this to Lab 2.
+  - Agent behavior: steps per task, tool-call error and retry rates, loop and stall detection, context size
+    over time, compaction frequency, memory recall hit rate and injection precision (see memory deck slide 17).
+- [ ] **Evaluating quality.**
+  - Offline: task success on benchmark suites, trajectory evaluation (expected tool sequence), response
+    evaluation, LLM-as-judge and its biases, regression sets built from production failures.
+  - Online: user feedback signals, sampled human review, A/B tests of harness changes.
+  - Link to Module 6 (ADK evaluation) and Module 7 (Harness² probes and judge).
+- [ ] **Analytics and dashboards.**
+  - What a harness dashboard should show: success rate, cost per task, latency, top failing tools,
+    regressions after a harness or model change.
+  - Tooling to survey and verify before teaching: open-source LLM tracing and evaluation platforms (for
+    example Langfuse, Arize Phoenix, OpenLLMetry, MLflow tracing), hosted options (for example LangSmith),
+    and a plain Prometheus + Grafana setup for system metrics.
+- [ ] **Lab idea.** Instrument one harness (for example a Hermes plugin that turns hook events into
+  OpenTelemetry spans). Send the spans to a local tracing backend, run a small task suite, and build a
+  dashboard that compares two harness configurations.
+
+## C. Course-wide housekeeping
+
+- [ ] Re-verify fast-moving APIs (Hermes, OpenClaw, Letta, vLLM / LMCache, Harness²) before each run of the course.
+- [ ] Add a lab for the memory deck exercise (same store, automatic injection vs. search tool).
+- [ ] Add a link checker as the repo's first CI job (see `docs/git-workflow.md`).
