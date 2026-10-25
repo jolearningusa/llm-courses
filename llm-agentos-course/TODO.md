@@ -13,7 +13,7 @@ The master deck (slide 5) defines a nine-component reference architecture. Curre
 |---|-----------|--------------|----------------|
 | 1 | Agent loop | Master deck 19 (hook timeline), harness slides 22–25, **`01_agent_loop_deck.html`** | Yes |
 | 2 | Scheduler | Master deck 6–7 (AIOS, Autellix, Continuum, KVFlow, ThunderAgent), **`01_scheduler_deck.html`** | Yes |
-| 3 | Context manager (select / compress / isolate) | Master deck 8, Lab 1 context engines | Not yet |
+| 3 | Context manager (select / compress / isolate) | Master deck 8, Lab 1 context engines, **`01_context_manager_deck.html`** | Yes |
 | 4 | Memory manager | Master deck 9–14, **`02_long_term_memory_deck.html`** | Yes (cognitive plane); KV plane in Lab 2 |
 | 5 | Tools and execution / sandbox | Master deck 17–18 (component map) | Not yet |
 | 6 | Skills | Master deck 17–18, Hermes deep-dive 22 | Not yet |
@@ -32,7 +32,7 @@ OpenClaw, Letta (and a Rust runtime where relevant) implement it, failure modes,
 - [x] **Scheduler.** Done as deck **`slides/01_scheduler_deck.html`**. Request-level vs. program-level scheduling, fairness across agents, priority and
   preemption, rate limits and API quotas, how the scheduler interacts with KV-cache reuse.
   Start from: AIOS, Autellix, Continuum, KVFlow, ThunderAgent.
-- [ ] **Context manager.** Compression strategies (summaries, pruning, structured notes), context isolation
+- [x] **Context manager.** Done as deck **`slides/01_context_manager_deck.html`**. Compression strategies (summaries, pruning, structured notes), context isolation
   through sub-agents, prompt-prefix stability and caching, measuring context quality.
   Start from: Hermes `ContextEngine`, OpenClaw `registerContextEngine`, Manus and Anthropic context-engineering posts.
 - [ ] **Tools and sandbox.** Tool schemas and selection, MCP, tool-result handling, execution backends

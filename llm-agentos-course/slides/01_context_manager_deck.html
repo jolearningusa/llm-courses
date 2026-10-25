@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — The Context Manager</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · Module 1 lecture · Component 3</div>
+  <h1 style="margin-top:22px">The context manager</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">Deciding what the model sees on every call: assembling, selecting, compressing and isolating context,
+    keeping the prompt cache warm, and the pluggable context engines in Hermes Agent and OpenClaw.</p>
+  <p style="margin-top:28px"><span class="pill">Write</span><span class="pill">Select</span><span class="pill">Compress</span><span class="pill">Isolate</span><span class="pill">Context engines</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>Why</small>Context is a budget, not a bucket</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li><b>Attention budget</b>: every token draws it down; recall from context degrades as it grows. Aim for the smallest set of high-signal tokens.</li>
+        <li><b>Context rot</b>: across 18 models, performance became less reliable as input length grew, even on simple tasks; distractors made it worse.</li>
+        <li><b>Lost in the middle</b>: accuracy is highest when the relevant information is at the start or end of the input (U-shaped).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>And it is a cost budget</h3>
+      <ul>
+        <li>Manus reports about <b>100:1 input-to-output tokens</b> for its agent.</li>
+        <li>Cached input on Claude Sonnet costs about <b>a tenth</b> of uncached input.</li>
+        <li>So Manus calls <b>KV-cache hit rate</b> "the single most important metric for a production-stage AI agent".</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Anthropic, "Effective context engineering for AI agents" (Sep 29, 2025); Chroma, "Context Rot" (Jul 14, 2025); Liu et al., Lost in the Middle (arXiv:2307.03172, TACL); Ji, Manus context-engineering lessons (Jul 18, 2025).</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>Framework</small>Four strategies: write, select, compress, isolate</h2>
+  <table class="dense">
+    <tr><th>Strategy</th><th>Meaning</th><th>Examples</th><th>AgentOS component</th></tr>
+    <tr><td>Write</td><td>Save context outside the window for later</td><td>Scratchpads, todo files, long-term memories</td><td>Memory manager, file system</td></tr>
+    <tr><td>Select</td><td>Pull the right context in when needed</td><td>Read a scratchpad, load CLAUDE.md / AGENTS.md, RAG over memories or over tool descriptions</td><td>Memory recall, skills, tool selection</td></tr>
+    <tr><td>Compress</td><td>Keep only the tokens the task needs</td><td>Auto-compact (summaries), trimming old messages, clearing old tool results</td><td>Context engine</td></tr>
+    <tr><td>Isolate</td><td>Split context so each part has a narrow job</td><td>Sub-agents with their own windows, sandboxes that hold heavy outputs, state not shown to the model</td><td>Multi-agent, sandbox</td></tr>
+  </table>
+  <div class="card" style="margin-top:18px">
+    <h3>Context failure modes to design against</h3>
+    <p style="margin:0"><b>Poisoning</b> (a hallucination enters and persists) · <b>Distraction</b> (context overwhelms training) · <b>Confusion</b> (irrelevant context steers the answer) · <b>Clash</b> (parts of the context contradict each other).</p>
+  </div>
+  <div class="cite">LangChain, "Context Engineering" (Jul 2, 2025), citing Drew Breunig for the failure modes. Master deck slide 8 introduced select / compress / isolate.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>Assemble</small>What goes into the window, in what order</h2>
+  <div class="cols" style="grid-template-columns: 0.9fr 1.1fr">
+    <svg viewBox="0 0 520 450" width="520" height="450">
+      <g font-size="16">
+        <rect x="0" y="0" width="520" height="52" rx="6" fill="#1c2a4d" stroke="#7be0b8"/><text x="14" y="32">System prompt + tool definitions</text>
+        <rect x="0" y="60" width="520" height="52" rx="6" fill="#1c2a4d" stroke="#7be0b8"/><text x="14" y="92">Pinned memory (MEMORY.md, USER.md, blocks)</text>
+        <rect x="0" y="120" width="520" height="52" rx="6" fill="#1c2a4d" stroke="#7be0b8"/><text x="14" y="152">Project / skill context (AGENTS.md, skill index)</text>
+        <rect x="0" y="180" width="520" height="52" rx="6" fill="#161d2e" stroke="#ffb86b"/><text x="14" y="212">Compacted summary of older turns</text>
+        <rect x="0" y="240" width="520" height="52" rx="6" fill="#161d2e" stroke="#6ea8ff"/><text x="14" y="272">Recent turns: messages, tool calls, results</text>
+        <rect x="0" y="300" width="520" height="52" rx="6" fill="#161d2e" stroke="#6ea8ff"/><text x="14" y="332">Per-turn injections (recalled memories, todo)</text>
+        <rect x="0" y="360" width="520" height="52" rx="6" fill="#161d2e" stroke="#ff7a85"/><text x="14" y="392">New user message</text>
+      </g>
+      <text x="0" y="440" font-size="14" fill="#9aa6bd">stable prefix (cacheable) at the top → volatile at the bottom</text>
+    </svg>
+    <div>
+      <ul style="font-size:19px">
+        <li>Put what rarely changes first, so the provider's prompt cache (and vLLM prefix cache) can reuse it.</li>
+        <li>Put the newest and most task-relevant content last, where models attend well (lost in the middle).</li>
+        <li>OpenClaw assembles the system prompt from the base prompt, skills prompt, bootstrap context and per-run overrides, within model limits and a compaction reserve.</li>
+        <li>Codex: the server orders the first prompt items (sandbox, config, AGENTS.md-style instructions, environment); the user message is appended last.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">OpenClaw agent-loop docs (prompt assembly); OpenAI, "Unrolling the Codex agent loop".</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Cache-aware context</small>Keep the prefix stable</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Do</h3>
+      <ul>
+        <li>Keep context <b>append-only</b>; never edit earlier items. To change settings mid-session, append a message describing the change (Codex).</li>
+        <li>Serialize deterministically (stable key order in JSON).</li>
+        <li>Freeze injected memory for the session (Hermes freezes its MEMORY.md / USER.md snapshot at session start).</li>
+        <li>Place cache breakpoints where the provider needs them.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Don't</h3>
+      <ul>
+        <li>Put a timestamp at the top of the system prompt.</li>
+        <li>Add or remove tools mid-task; Manus instead <b>masks</b> token logits per state and uses tool-name prefixes (<code>browser_</code>, <code>shell_</code>) to allow groups.</li>
+        <li>Switch model, sandbox mode or working directory without expecting a cache miss.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:16px">Measure it: prefix-cache hit rate in vLLM (<code>vllm:prefix_cache_hits</code> / <code>_queries</code>) or cached-token counts from the provider.</p>
+  <div class="cite">Manus lessons 1–2; Codex agent-loop post; Hermes memory docs; vLLM metrics. Module 3 covers prefix caching itself.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>Select</small>Just-in-time context</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li>Keep <b>lightweight identifiers</b> (file paths, stored queries, links) in context and load content with tools when needed.</li>
+        <li>Trade-off: slower than pre-loading, but fresher and more focused.</li>
+        <li>Hybrids are common: Claude Code loads CLAUDE.md up front and searches files just in time.</li>
+        <li>Large tool sets degrade tool choice. Select tools too: RAG over tool descriptions, or mask unavailable tools instead of removing them.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Select from memory</h3>
+      <p>The memory deck covers the read paths in detail: pinned profile, auto-recall per turn, and on-demand search tools (OpenClaw <code>memory_search</code>, Letta <code>archival_memory_search</code>).</p>
+      <p class="muted">The context manager decides the budget; the memory manager decides what is worth spending it on.</p>
+    </div>
+  </div>
+  <div class="cite">Anthropic, "Effective context engineering for AI agents"; LangChain, "Context Engineering"; Manus lesson 2; 02_long_term_memory_deck.html.</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>Compress</small>Compaction and its lighter cousins</h2>
+  <table class="dense">
+    <tr><th>Technique</th><th>How</th><th>Example</th></tr>
+    <tr><td>Tool-result clearing</td><td>Drop raw outputs of old tool calls; keep the call</td><td>Anthropic calls it "one of the safest lightest touch forms of compaction"</td></tr>
+    <tr><td>Restorable compression</td><td>Drop content but keep a way back (URL, file path)</td><td>Manus: web page dropped, URL kept</td></tr>
+    <tr><td>Trimming</td><td>Remove oldest messages beyond a window</td><td>Simple, loses information</td></tr>
+    <tr><td>Summary compaction</td><td>Summarize history near the limit, continue with the summary</td><td>Claude Code auto-compact past 95% (LangChain); Hermes 50% preflight / 85% gateway, last 20 messages kept</td></tr>
+    <tr><td>Opaque compaction</td><td>Provider-side compressed state</td><td>Codex <code>/responses/compact</code> → <code>encrypted_content</code></td></tr>
+    <tr><td>Hierarchical summaries</td><td>Summaries of summaries in a DAG; raw messages kept and expandable</td><td>OpenClaw <code>lossless-claw</code> plugin</td></tr>
+  </table>
+  <p style="font-size:18px;margin-top:14px">Tune compaction for <b>recall first</b>, then cut what is superfluous. Never split a tool call from its result. Expect a prefix-cache miss after every compaction.</p>
+  <div class="cite">Anthropic context-engineering post; Manus lesson 3; LangChain post; Hermes agent-loop docs; Codex post; lossless-claw README (clawhub.ai).</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>Write &amp; isolate</small>Notes outside the window, sub-agents beside it</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Write: structured notes and recitation</h3>
+      <ul>
+        <li>Agents keep notes outside the window and reload them: Anthropic's Claude-plays-Pokémon agent tracks progress and maps across thousands of steps.</li>
+        <li>Manus tasks take about 50 tool calls; it keeps a <code>todo.md</code> and rewrites it as it goes, keeping goals in recent attention.</li>
+        <li><b>Keep the wrong stuff in</b>: leave failed actions and errors in context so the model updates its beliefs.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Isolate: clean windows</h3>
+      <ul>
+        <li>Sub-agents explore in their own windows and return a condensed summary, often 1,000–2,000 tokens.</li>
+        <li>Hermes children see only the <code>goal</code> and <code>context</code> fields; only their final summary returns to the parent.</li>
+        <li>Sandboxes keep heavy outputs (files, logs) out of the model's context until needed.</li>
+        <li><b>Don't get few-shotted</b>: repetitive past actions in context make the agent repeat them; add controlled variation.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Anthropic context-engineering post; Manus lessons 4–6; Hermes delegation docs.</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>Harness · Hermes Agent</small>The <code style="font-size:30px">ContextEngine</code> plugin interface</h2>
+  <div class="cols">
+<pre style="font-size:15px">from agent.context_engine import ContextEngine
+
+class MyEngine(ContextEngine):
+    @property
+    def name(self): return "my-engine"
+
+    def update_from_response(self, usage):
+        ...   # track prompt tokens
+
+    def should_compress(self, prompt_tokens=None):
+        ...   # threshold policy
+
+    def compress(self, messages, current_tokens=None):
+        ...   # return the new message list
+
+def register(ctx):
+    ctx.register_context_engine(MyEngine())
+
+# config.yaml:  context: { engine: my-engine }</pre>
+    <div>
+      <ul style="font-size:19px">
+        <li>Default engine: <code>agent/context_compressor.py</code>, a lossy summarization algorithm.</li>
+        <li>Built-in policy: preflight compression above 50% of the window, gateway auto-compression above 85% between turns, keep the last 20 messages, flush memory first, never split tool pairs.</li>
+        <li>Memory providers get <code>on_pre_compress</code> to extract facts before history is summarized.</li>
+        <li>Lab 1A implements a threshold engine with this interface.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">hermes-agent.nousresearch.com/docs/developer-guide/context-engine-plugin and agent-loop; signatures as in labs/lab1_memory_plugins/hermes_custom_memory.py.</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>Harness · OpenClaw</small>The context-engine slot</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><th>Lifecycle</th><th>When</th></tr>
+        <tr><td>ingest</td><td>A new message is added to the session: store or index it</td></tr>
+        <tr><td>assemble</td><td>Before each model run: return ordered messages + optional <code>systemPromptAddition</code> within the token budget</td></tr>
+        <tr><td>compact</td><td>Window full, or the user runs <code>/compact</code></td></tr>
+        <tr><td>afterTurn</td><td>After a run: persist state, background compaction, update indexes</td></tr>
+        <tr><td>maintain</td><td>Optional transcript maintenance; can run in the background</td></tr>
+      </table>
+      <p style="font-size:17px;margin-top:10px">Select with <code>plugins.slots.contextEngine</code>; unset or <code>"legacy"</code> uses the built-in engine.</p>
+    </div>
+    <div class="card">
+      <h3>Example: <code>lossless-claw</code></h3>
+      <ul>
+        <li>Stores every message in SQLite; "nothing is lost".</li>
+        <li>Summarizes older chunks, then condenses summaries into higher-level nodes: a DAG linked back to source messages.</li>
+        <li><code>assemble</code> = summaries + recent raw messages (<code>freshTailCount</code>, default 64).</li>
+        <li>Recall tools <code>lcm_grep</code>, <code>lcm_describe</code>, <code>lcm_expand</code> let the agent drill back into detail.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/concepts/context-engine; clawhub.ai/martian-engineering/plugins/lossless-claw. Lab 1B implements an OpenClaw context engine.</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>Comparison</small>Choosing a compaction strategy</h2>
+  <table class="dense">
+    <tr><th>Strategy</th><th>Information kept</th><th>Cost</th><th>Cache impact</th><th>Good for</th></tr>
+    <tr><td>Trim oldest</td><td>Low</td><td>None</td><td>Prefix shifts each time</td><td>Chat with short memory</td></tr>
+    <tr><td>Tool-result clearing</td><td>High (calls kept)</td><td>None</td><td>One break per clearing</td><td>Tool-heavy agents</td></tr>
+    <tr><td>Rolling summary</td><td>Medium, lossy</td><td>One LLM call</td><td>Break per compaction</td><td>General assistants (Hermes default)</td></tr>
+    <tr><td>DAG summaries + expand tools</td><td>High (raw kept, expandable)</td><td>LLM calls + storage</td><td>Break per compaction</td><td>Long-running sessions (lossless-claw)</td></tr>
+    <tr><td>Files / notes offload</td><td>High, restorable</td><td>Tool calls to reload</td><td>Append-only friendly</td><td>Coding and research agents</td></tr>
+    <tr><td>Sub-agent isolation</td><td>Summary only in parent</td><td>Extra agent runs</td><td>Parent prefix untouched</td><td>Broad exploration</td></tr>
+  </table>
+  <div class="cite">Synthesized from the sources on slides 5–10.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>Measure</small>Is the context manager doing its job?</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li><b>Context tokens per call</b> over a session (OpenClaw exports <code>openclaw.context.tokens</code>).</li>
+        <li><b>Cache hit rate</b>: cached / total input tokens; prefix-cache hits in vLLM.</li>
+        <li><b>Compactions per session</b>, and task success on tasks that crossed a compaction vs. those that didn't.</li>
+        <li><b>Recall after compaction</b>: ask about a fact from before the compaction (a needle test on your own transcripts).</li>
+        <li><b>Cost per task</b>: input tokens dominate at 100:1.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Red flags</h3>
+      <ul>
+        <li>Cache hit rate drops after a harness change</li>
+        <li>Agent repeats work it already did (lost notes)</li>
+        <li>Answers contradict earlier decisions (clash)</li>
+        <li>Context grows linearly with no compaction (bloat)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Metrics: 06_observability_evaluation_deck.html; OpenClaw OpenTelemetry docs.</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>Exercise</small>Compare two context engines</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>Start from Lab 1: the Hermes threshold engine or the OpenClaw window engine.</li>
+        <li>Implement a second engine: tool-result clearing + todo recitation, or hierarchical summaries with an expand tool.</li>
+        <li>Run a 40+ step task (for example, refactor a small repo) with each engine, three times.</li>
+        <li>Instrument with the observability deck's setup.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Report</h3>
+      <ul>
+        <li>Tokens and cost per task</li>
+        <li>Cache hit rate</li>
+        <li>Compactions and recall-after-compaction score</li>
+        <li>Task success (pass^3)</li>
+        <li>One example where an engine lost a needed fact</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>References</small>Read next</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>Anthropic, Effective context engineering for AI agents (Sep 2025): anthropic.com/engineering/effective-context-engineering-for-ai-agents</li>
+      <li>Ji, Lessons from Building Manus (Jul 2025): manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus</li>
+      <li>LangChain, Context Engineering (Jul 2025): langchain.com/blog/context-engineering-for-agents</li>
+      <li>Chroma, Context Rot (Jul 2025): research.trychroma.com/context-rot</li>
+      <li>Liu et al., Lost in the Middle: arxiv.org/abs/2307.03172</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>Hermes context engine plugins: hermes-agent.nousresearch.com/docs/developer-guide/context-engine-plugin</li>
+      <li>OpenClaw context engine: docs.openclaw.ai/concepts/context-engine</li>
+      <li>lossless-claw: clawhub.ai/martian-engineering/plugins/lossless-claw</li>
+      <li>OpenAI, Unrolling the Codex agent loop: openai.com/index/unrolling-the-codex-agent-loop</li>
+      <li>All links: <code>references/bibliography_and_links.md</code> §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → to navigate · F for full screen</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

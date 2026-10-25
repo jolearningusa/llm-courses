@@ -190,6 +190,16 @@ Papers (AIOS, Autellix, Continuum, KVFlow, ThunderAgent) are in §1. Harness and
 - Hermes Agent, delegation limits (`max_concurrent_children`, `max_spawn_depth`, `max_iterations`, stall monitor): https://hermes-agent.nousresearch.com/docs/user-guide/features/delegation
 - vLLM, `SchedulerConfig` (`policy` fcfs / priority, `max_num_seqs`, `max_num_batched_tokens`, chunked prefill): https://docs.vllm.ai/en/stable/api/vllm/config/scheduler/
 - AIOS source (FIFO and round-robin schedulers): https://github.com/agiresearch/AIOS
+### Context manager (deck `01_context_manager_deck.html`)
+
+- Anthropic, *Effective context engineering for AI agents* (attention budget, compaction, just-in-time retrieval, sub-agents), Sep 29 2025: https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
+- Yichao "Peak" Ji, *Context Engineering for AI Agents: Lessons from Building Manus* (KV-cache hit rate, mask don't remove, file system as context), Jul 18 2025: https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus
+- LangChain, *Context Engineering* (write / select / compress / isolate; poisoning, distraction, confusion, clash), Jul 2 2025: https://www.langchain.com/blog/context-engineering-for-agents
+- Chroma, *Context Rot: How Increasing Input Tokens Impacts LLM Performance* (18 models), Jul 14 2025: https://research.trychroma.com/context-rot
+- Liu et al., *Lost in the Middle: How Language Models Use Long Contexts*, TACL 2024, arXiv:2307.03172. https://arxiv.org/abs/2307.03172
+- Hermes Agent, context engine plugins: https://hermes-agent.nousresearch.com/docs/developer-guide/context-engine-plugin
+- OpenClaw, context engine (`ingest`, `assemble`, `compact`, `afterTurn`, `maintain`; `legacy` default): https://docs.openclaw.ai/concepts/context-engine
+- lossless-claw (SQLite + DAG summaries, `lcm_grep` / `lcm_describe` / `lcm_expand`): https://clawhub.ai/martian-engineering/plugins/lossless-claw
 
 ## 6. Evaluation (Module 6)
 
