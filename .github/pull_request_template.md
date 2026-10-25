@@ -4,6 +4,12 @@
 ## Why
 
 
+## Prompt history
+
+<!-- The user's requests that led to this PR, quoted with their dates, and the instructions the agent
+     followed (AGENTS.md, coordinator notes). For a PR written by hand, say so. -->
+
+
 ## Verification
 
 - [ ] Branch is rebased on the latest `origin/main`

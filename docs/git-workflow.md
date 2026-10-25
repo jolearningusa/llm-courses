@@ -18,7 +18,7 @@ main ──┬────────────── squash merge ───�
 3. push 前先确认该分支的 PR 状态（用户常在几分钟内合并）：若已合并，从最新 `origin/main`
    重新开始该分支，不要在已合并的历史上继续提交；然后 fetch `origin/main` 并 rebase，
    完成 [AGENTS.md](../AGENTS.md) 中的本地检查（`check_site.py`、`check_slides.mjs`）。
-4. 按 `.github/pull_request_template.md` 填写 PR，目标分支为 `main`。
+4. 按 `.github/pull_request_template.md` 填写 PR，目标分支为 `main`。PR 描述中的 **Prompt history** 一节需引用促成该 PR 的用户请求（附日期），并列出 agent 遵循的指令。
 5. 通过 squash merge 进入 `main`，随后删除分支（远端由 GitHub 自动删除，本地手动删除）。
 6. 不允许直接 push、force-push 或在 `main` 上修复。
 
