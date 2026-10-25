@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — The Agent Loop</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · Module 1 lecture · Component 1</div>
+  <h1 style="margin-top:22px">The agent loop</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">The "process" of an AgentOS: how a turn runs from user message to final answer, and how Hermes Agent,
+    OpenClaw, Codex CLI and Letta handle budgets, tools, errors, interrupts, compaction and hooks inside it.</p>
+  <p style="margin-top:28px"><span class="pill">Iteration</span><span class="pill">Stop conditions</span><span class="pill">Interrupts &amp; steering</span><span class="pill">Hooks</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>Core idea</small>One loop: think, act, observe, repeat</h2>
+  <svg viewBox="0 0 1136 330" width="1136" height="330">
+    <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9aa6bd"/></marker></defs>
+    <g font-size="18" text-anchor="middle">
+      <rect x="0" y="40" width="170" height="70" rx="10" fill="#14213a" stroke="#2a3550"/><text x="85" y="81">user message</text>
+      <rect x="210" y="40" width="200" height="70" rx="10" fill="#14213a" stroke="#7be0b8"/><text x="310" y="72">assemble prompt</text><text x="310" y="96" font-size="14" fill="#9aa6bd">system + history + memory</text>
+      <rect x="450" y="40" width="170" height="70" rx="10" fill="#14213a" stroke="#6ea8ff"/><text x="535" y="81">call model</text>
+      <rect x="660" y="40" width="200" height="70" rx="10" fill="#14213a" stroke="#ffb86b"/><text x="760" y="72">tool calls?</text><text x="760" y="96" font-size="14" fill="#9aa6bd">parse the response</text>
+      <rect x="906" y="40" width="230" height="70" rx="10" fill="#14213a" stroke="#7be0b8"/><text x="1021" y="72">final answer</text><text x="1021" y="96" font-size="14" fill="#9aa6bd">turn ends, persist</text>
+      <rect x="660" y="200" width="200" height="70" rx="10" fill="#14213a" stroke="#ffb86b"/><text x="760" y="232">execute tools</text><text x="760" y="256" font-size="14" fill="#9aa6bd">append results</text>
+    </g>
+    <g stroke="#9aa6bd" stroke-width="2" marker-end="url(#ar)" fill="none">
+      <line x1="170" y1="75" x2="208" y2="75"/><line x1="410" y1="75" x2="448" y2="75"/><line x1="620" y1="75" x2="658" y2="75"/><line x1="860" y1="75" x2="904" y2="75"/>
+      <path d="M760,110 L760,198"/><path d="M660,235 L310,235 L310,112"/>
+    </g>
+    <text x="872" y="62" font-size="14" fill="#9aa6bd">no</text><text x="772" y="160" font-size="14" fill="#9aa6bd">yes</text>
+    <text x="330" y="300" font-size="16" fill="#9aa6bd">Each pass through the loop is one iteration (step). A turn is user input → final assistant message.</text>
+  </svg>
+  <ul style="font-size:19px">
+    <li>ReAct (Yao et al., ICLR 2023) named the pattern: interleave reasoning with actions and feed observations back.</li>
+    <li>Today the model emits structured tool calls; the harness runs them and appends results until the model answers in text.</li>
+  </ul>
+  <div class="cite">Yao et al., ReAct (arXiv:2210.03629); OpenAI, "Unrolling the Codex agent loop" (Jan 2026).</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>Design space</small>Workflows vs. agents</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li><b>Workflow</b>: LLMs and tools orchestrated through <i>predefined code paths</i>. The harness owns control flow.</li>
+        <li><b>Agent</b>: the LLM <i>dynamically directs its own process and tool usage</i>. The loop owns only the mechanics.</li>
+        <li>Building block for both: the <b>augmented LLM</b> (retrieval, tools, memory).</li>
+        <li>Agents run in a loop, so add stopping conditions such as a maximum number of iterations.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Workflow patterns (inside or around a loop)</h3>
+      <ol style="font-size:18px;padding-left:22px;margin:0">
+        <li>Prompt chaining</li>
+        <li>Routing</li>
+        <li>Parallelization (sectioning, voting)</li>
+        <li>Orchestrator-workers</li>
+        <li>Evaluator-optimizer</li>
+      </ol>
+      <p class="muted" style="font-size:16px;margin-top:12px">Harnesses mix both: a free agent loop, plus workflow-style pieces such as compaction, approvals and sub-agent delegation.</p>
+    </div>
+  </div>
+  <div class="cite">Anthropic, "Building effective agents" (Dec 19, 2024), anthropic.com/research/building-effective-agents.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>Harness · Hermes Agent</small>Inside one iteration</h2>
+  <table class="dense">
+    <tr><th>#</th><th>Step in <code>AIAgent.run_conversation()</code> (<code>agent/conversation_loop.py</code>)</th><th>OS analogy</th></tr>
+    <tr><td>1</td><td>Generate a <code>task_id</code>; append the user message to history</td><td>process start</td></tr>
+    <tr><td>2</td><td>Build or reuse the cached system prompt (<code>prompt_builder.py</code>)</td><td>load image</td></tr>
+    <tr><td>3</td><td>Preflight compression if the history is too large</td><td>page out</td></tr>
+    <tr><td>4</td><td>Convert history to the API mode: <code>chat_completions</code>, <code>codex_responses</code> or <code>anthropic_messages</code></td><td>ABI</td></tr>
+    <tr><td>5</td><td>Inject ephemeral layers (budget warnings, context pressure); add prompt-caching markers on Anthropic</td><td>signals</td></tr>
+    <tr><td>6</td><td>Interruptible API call (<code>_interruptible_api_call</code>)</td><td>blocking syscall</td></tr>
+    <tr><td>7</td><td>Tool calls → execute, append results, go back to step 4; text → persist and return</td><td>trap / return</td></tr>
+  </table>
+  <p class="muted" style="font-size:17px;margin-top:12px">After each turn, messages are saved to SQLite (<code>hermes_state.py</code>) and memory is flushed to MEMORY.md / USER.md.</p>
+  <div class="cite">hermes-agent.nousresearch.com/docs/developer-guide/agent-loop.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Harness · Codex CLI</small>A turn is a growing, stateless prompt</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li>A <b>turn</b> runs from user input to an assistant message; it ends when the model stops emitting tool calls.</li>
+        <li>Each Responses API request carries <code>instructions</code>, <code>tools</code> and <code>input</code> items, and resends the full history. Codex does not use <code>previous_response_id</code>, to stay stateless and support Zero Data Retention.</li>
+        <li>Resending is quadratic in principle. Because each new prompt <b>starts with the exact previous prompt</b>, prompt caching makes sampling roughly linear.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>What breaks the cache</h3>
+      <ul>
+        <li>Changing <code>tools</code> mid-conversation (an MCP bug listed tools in inconsistent order)</li>
+        <li>Changing the model</li>
+        <li>Changing sandbox config, approval mode or working directory</li>
+      </ul>
+      <p><b>Fix</b>: never edit earlier items; append a new developer or user message that describes the change.</p>
+    </div>
+  </div>
+  <div class="cite">Michael Bolin, OpenAI, "Unrolling the Codex agent loop" (Jan 23, 2026), openai.com/index/unrolling-the-codex-agent-loop. Links to Module 3 (prefix caching).</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>Control</small>Stop conditions and budgets</h2>
+  <table class="dense">
+    <tr><th>Harness</th><th>Budget / timeout</th><th>What happens at the limit</th></tr>
+    <tr><td>Hermes Agent</td><td><code>IterationBudget</code> default 500 (<code>agent.max_turns</code>); sub-agents capped by <code>delegation.max_iterations</code> (250 in the delegation guide; the agent-loop page says 50)</td><td>Agent stops and returns a summary; budget warnings are injected before that</td></tr>
+    <tr><td>OpenClaw</td><td>Run timeout <code>agents.defaults.timeoutSeconds</code> = 172800 s (48 h); model idle timeout capped at 120 s; <code>agent.wait</code> 30 s (wait only)</td><td>Abort timer in <code>runEmbeddedAgent</code>; stuck-session warning after <code>diagnostics.stuckSessionWarnMs</code> = 120 s</td></tr>
+    <tr><td>Codex CLI</td><td>Turn ends on an assistant message; <code>auto_compact_limit</code> for context</td><td>Compaction instead of stopping</td></tr>
+    <tr><td>Letta (MemGPT era)</td><td><code>request_heartbeat</code> defaulted to false: the agent stopped unless it asked for another step</td><td>Deprecated in <code>letta_v1_agent</code> (Oct 2025)</td></tr>
+  </table>
+  <div class="card" style="margin-top:16px">
+    <h3>Design rule</h3>
+    <p style="margin:0">Use several limits at once: steps, wall-clock time, tokens / cost, and a "no progress" detector (same tool and args repeated). Warn the model before the hard stop so it can wrap up.</p>
+  </div>
+  <div class="cite">Hermes agent-loop docs; docs.openclaw.ai/concepts/agent-loop; Codex agent-loop post; letta.com/blog/letta-v1-agent.</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>Act</small>Running tools inside the loop</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li><b>Parallel when safe</b>: Hermes runs one tool call on the main thread, several concurrently in a <code>ThreadPoolExecutor</code>.</li>
+        <li><b>Sequential when interactive</b>: tools like <code>clarify</code> force sequential execution.</li>
+        <li><b>Keep order</b>: results go back in the original call order, whatever order they finish in.</li>
+        <li><b>Keep pairs</b>: every tool result stays paired with the call that produced it (compaction never splits a pair).</li>
+        <li><b>Intercept OS-level tools</b>: Hermes routes <code>todo</code>, <code>memory</code>, <code>session_search</code>, <code>delegate_task</code> to the agent itself before normal dispatch.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Before results re-enter the prompt</h3>
+      <ul>
+        <li>OpenClaw sanitizes tool results for size and images; a <code>tool_result_persist</code> hook can transform them before they are written.</li>
+        <li>Dangerous commands wait on an approval callback (Hermes <code>tools/approval.py</code>).</li>
+        <li>OpenClaw <code>before_tool_call</code> can return <code>{ block: true }</code> to stop a call.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Hermes agent-loop docs; OpenClaw agent-loop docs. Tools and sandboxing get their own deck.</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>Resilience</small>Errors, retries and fallback</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Model errors</h3>
+      <ul>
+        <li>Hermes fails over on 429, 5xx and 401/403, trying <code>fallback_providers</code> in order; on 401/403 it first tries a credential refresh.</li>
+        <li>A Codex Responses turn that stalls on reasoning-only output for three continuations fails over with reason <code>incomplete_response</code>.</li>
+        <li>Auxiliary work (vision, compression, web extraction) has its own fallback chains.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Tool errors and empty turns</h3>
+      <ul>
+        <li>Return errors to the model as tool results with enough detail to recover, instead of crashing the loop.</li>
+        <li>OpenClaw: if nothing renderable remains and a tool errored, it sends a fallback tool-error reply.</li>
+        <li>OpenClaw exports <code>openclaw.model.failover</code> and tool-loop metrics (observability deck).</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:16px">Retries multiply cost. Count them per turn and alert on retry storms.</p>
+  <div class="cite">Hermes agent-loop docs; OpenClaw agent-loop docs; 06_observability_evaluation_deck.html.</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>Control</small>Interrupts and steering</h2>
+  <div class="cols">
+    <div>
+      <h3 class="accent2" style="margin:0 0 8px">Hermes: interruptible model call</h3>
+      <ul style="font-size:18px">
+        <li>The HTTP call runs in a background thread; the main thread waits for the response, an interrupt, or a timeout.</li>
+        <li>On interrupt the API thread is abandoned and its response discarded: no partial response enters history.</li>
+      </ul>
+      <h3 class="accent2" style="margin:16px 0 8px">OpenClaw: queue modes</h3>
+      <table class="dense">
+        <tr><td>steer</td><td>Default. Inject the new message into the active run</td></tr>
+        <tr><td>followup</td><td>Run it after the active run ends</td></tr>
+        <tr><td>collect</td><td>Merge queued messages into one later turn</td></tr>
+        <tr><td>interrupt</td><td>Abort the active run, start the newest message</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Steering happens at model boundaries</h3>
+      <ol style="font-size:18px;padding-left:22px;margin:0">
+        <li>The model requests tool calls.</li>
+        <li>That batch of tools runs to completion.</li>
+        <li>Queued steering messages are drained.</li>
+        <li>They are added as user messages before the next model call.</li>
+      </ol>
+      <p style="font-size:17px;margin-top:12px">Steering never interrupts a running tool, so tool results stay paired with their requests.</p>
+    </div>
+  </div>
+  <div class="cite">Hermes agent-loop docs; docs.openclaw.ai/concepts/queue-steering.</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>Concurrency</small>One run per session at a time</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li>OpenClaw serializes runs <b>per session key</b> (a session lane), optionally also through a global lane.</li>
+        <li>Transcript writes take a file-based, process-aware <b>session write lock</b>; writers wait up to <code>session.writeLock.acquireTimeoutMs</code> (60 000 ms) before the session is reported busy.</li>
+        <li>The <code>agent</code> RPC returns <code>{ runId, acceptedAt }</code> immediately; <code>agent.wait</code> waits for lifecycle end or error.</li>
+        <li>Events stream on three channels: <code>tool</code>, <code>assistant</code>, <code>lifecycle</code> (<code>start</code> / <code>end</code> / <code>error</code>).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Why serialize?</h3>
+      <p>Two concurrent runs on one transcript would interleave tool calls and results and corrupt history. Serializing per session keeps each history linear, while different sessions still run in parallel.</p>
+      <p class="muted">This is the agent version of a per-process lock; the scheduler deck covers scheduling across sessions and agents.</p>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/concepts/agent-loop (openclaw 2026.7).</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>Memory pressure</small>Compaction inside the loop</h2>
+  <table class="dense">
+    <tr><th>Harness</th><th>Trigger</th><th>What it keeps</th></tr>
+    <tr><td>Hermes Agent</td><td>Preflight compression above 50% of the context window; gateway auto-compression above 85%, between turns</td><td>Flushes memory first, summarizes middle turns, keeps the last 20 messages (<code>compression.protect_last_n</code>), never splits tool-call pairs; starts a child session lineage</td></tr>
+    <tr><td>Codex CLI</td><td><code>auto_compact_limit</code> exceeded</td><td>Calls <code>/responses/compact</code>; gets a <code>compaction</code> item with opaque <code>encrypted_content</code></td></tr>
+    <tr><td>OpenClaw</td><td>Auto-compaction near the limit</td><td>Emits <code>compaction</code> stream events and may retry; <code>before_compaction</code> / <code>after_compaction</code> hooks; memory flush to daily notes first</td></tr>
+  </table>
+  <p style="font-size:19px;margin-top:16px">Compaction changes the prompt prefix, so it also resets prefix-cache reuse (Module 3). The context manager deck compares strategies in depth.</p>
+  <div class="cite">Hermes agent-loop docs; Codex agent-loop post; OpenClaw agent-loop and memory-architecture docs.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>Extension points</small>Hooks along the loop</h2>
+  <table class="dense">
+    <tr><th>Moment</th><th>OpenClaw plugin hooks</th><th>Hermes hooks (examples)</th></tr>
+    <tr><td>Message in</td><td><code>message_received</code></td><td><code>on_session_start</code></td></tr>
+    <tr><td>Before prompt / model</td><td><code>before_model_resolve</code>, <code>before_prompt_build</code>, <code>before_agent_reply</code> (can synthesize or silence a reply)</td><td><code>pre_llm_call</code>, <code>pre_api_request</code></td></tr>
+    <tr><td>After model</td><td>(stream events)</td><td><code>post_api_request</code>, <code>post_llm_call</code>, <code>api_request_error</code></td></tr>
+    <tr><td>Around tools</td><td><code>before_tool_call</code> (<code>{ block: true }</code> is terminal), <code>after_tool_call</code></td><td><code>pre_tool_call</code>, <code>post_tool_call</code>, <code>pre_approval_request</code>, <code>post_approval_response</code></td></tr>
+    <tr><td>Compaction</td><td><code>before_compaction</code>, <code>after_compaction</code></td><td>memory provider <code>on_pre_compress</code></td></tr>
+    <tr><td>Sub-agents</td><td>(sub-agent runs)</td><td><code>subagent_start</code>, <code>subagent_stop</code></td></tr>
+    <tr><td>Message out / end</td><td><code>message_sending</code> (<code>{ cancel: true }</code> is terminal), <code>message_sent</code>, <code>agent_end</code></td><td><code>on_session_end</code>, <code>on_session_finalize</code></td></tr>
+  </table>
+  <div class="cite">OpenClaw agent-loop docs (plugin hooks); Hermes hook names as consumed by the hermes-otel plugin. Master deck slide 19 shows the same timeline.</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>Harness · Letta</small>From MemGPT heartbeats to <code style="font-size:30px">letta_v1_agent</code></h2>
+  <div class="cols">
+    <div class="card">
+      <h3>MemGPT-style loop (legacy)</h3>
+      <ul>
+        <li>Every action was a tool call, including replies via <code>send_message</code>.</li>
+        <li>Each tool took <code>request_heartbeat</code>; the loop continued only if the model asked (default false).</li>
+        <li>Reasoning was prompted: a <code>thinking</code> argument injected into tool schemas.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><code>letta_v1_agent</code> (Oct 2025)</h3>
+      <ul>
+        <li><code>request_heartbeat</code> and <code>send_message</code> are deprecated.</li>
+        <li>The model's direct assistant messages end the turn, as in other harnesses.</li>
+        <li>Native reasoning only (Responses API for OpenAI; encrypted reasoning handled across providers).</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:19px;margin-top:16px">The lesson: as models learned tool calling natively, harnesses removed loop-control tricks from the prompt and moved them into the API and the harness.</p>
+  <div class="cite">Letta, "Rearchitecting Letta's agent loop" (Oct 14, 2025), letta.com/blog/letta-v1-agent; Packer et al., MemGPT (arXiv:2310.08560).</div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>Side by side</small>Four agent loops</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th><th>Codex CLI</th><th>Letta v1</th></tr>
+    <tr><td>Entry</td><td><code>run_conversation()</code></td><td>Gateway <code>agent</code> RPC</td><td>Turn on a thread</td><td><code>agents.messages.create</code></td></tr>
+    <tr><td>Turn ends</td><td>Text response</td><td>Lifecycle end / error</td><td>Assistant message</td><td>Assistant message</td></tr>
+    <tr><td>Budget</td><td>500 iterations</td><td>48 h run timeout</td><td>—</td><td>—</td></tr>
+    <tr><td>Parallel tools</td><td>Yes (thread pool)</td><td>Batches per model call</td><td>—</td><td>—</td></tr>
+    <tr><td>Interrupt</td><td>Abandon API call</td><td>steer / interrupt modes</td><td><code>turn/steer</code></td><td>—</td></tr>
+    <tr><td>Compaction</td><td>50% / 85%</td><td>Auto + hooks</td><td><code>/responses/compact</code></td><td>—</td></tr>
+    <tr><td>Concurrency</td><td>—</td><td>Per-session lane + lock</td><td>—</td><td>—</td></tr>
+  </table>
+  <p class="muted" style="font-size:17px;margin-top:12px">"—" means not covered by the sources used here, not that the feature is absent. Codex <code>turn/steer</code> is how OpenClaw steers its native Codex app-server harness.</p>
+  <div class="cite">Hermes and OpenClaw agent-loop docs; OpenClaw queue-steering docs; Codex agent-loop post; Letta v1 agent post.</div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>Failure modes</small>What goes wrong in agent loops</h2>
+  <table class="dense">
+    <tr><th>Failure</th><th>Symptom</th><th>Mitigation in the loop</th></tr>
+    <tr><td>Runaway loop</td><td>Same tool, same args, no progress</td><td>Iteration budget, repeat detection, budget warnings</td></tr>
+    <tr><td>Premature stop</td><td>Model answers before the task is done</td><td>Outcome checks, todo / plan tools, evaluator-optimizer step</td></tr>
+    <tr><td>Context flood</td><td>Huge tool output fills the window</td><td>Truncate and sanitize results; store large outputs as files</td></tr>
+    <tr><td>Orphaned tool calls</td><td>Call without result after an interrupt or compaction</td><td>Never split pairs; discard partial responses</td></tr>
+    <tr><td>Lost user input</td><td>Message during a run is ignored</td><td>Queue modes: steer or follow up</td></tr>
+    <tr><td>Cache thrash</td><td>Latency and cost jump mid-session</td><td>Append-only history, stable tool list</td></tr>
+    <tr><td>Hung run</td><td>Waits forever on a provider or tool</td><td>Idle and run timeouts, stuck-session detection</td></tr>
+  </table>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <h2><small>Exercise</small>Write a minimal agent loop</h2>
+  <div class="cols">
+<pre style="font-size:14px">def run_turn(history, tools, budget=25):
+    for step in range(budget):
+        resp = model(history, tools=schemas(tools))
+        history.append(resp.message)
+        if not resp.tool_calls:
+            return resp.text            # turn ends
+        results = run_parallel(resp.tool_calls)
+        for call, out in zip(resp.tool_calls, results):
+            history.append(tool_result(call.id,
+                                       truncate(out)))
+        if repeated(history):
+            history.append(user("You are repeating "
+                                "the same call. Stop or "
+                                "change approach."))
+        if step == budget - 3:
+            history.append(user("3 steps left: wrap up."))
+    return summarize(history)            # budget hit</pre>
+    <div class="card">
+      <h3>Extend it, then compare with Hermes</h3>
+      <ul>
+        <li>Make the model call interruptible (thread + event).</li>
+        <li>Keep tool results in call order.</li>
+        <li>Add a steering queue drained between model calls.</li>
+        <li>Add hooks: <code>pre_tool_call</code>, <code>post_tool_call</code>.</li>
+        <li>Emit one span per step (observability deck).</li>
+        <li>Measure: steps per task and prefix-cache hit rate.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+  <h2><small>References</small>Read next</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>Yao et al., ReAct (ICLR 2023): arxiv.org/abs/2210.03629</li>
+      <li>Anthropic, Building effective agents (Dec 2024): anthropic.com/research/building-effective-agents</li>
+      <li>OpenAI, Unrolling the Codex agent loop (Jan 2026): openai.com/index/unrolling-the-codex-agent-loop</li>
+      <li>Letta, Rearchitecting Letta's agent loop (Oct 2025): letta.com/blog/letta-v1-agent</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>Hermes Agent agent loop: hermes-agent.nousresearch.com/docs/developer-guide/agent-loop</li>
+      <li>OpenClaw agent loop: docs.openclaw.ai/concepts/agent-loop</li>
+      <li>OpenClaw queue steering: docs.openclaw.ai/concepts/queue-steering</li>
+      <li>Packer et al., MemGPT: arxiv.org/abs/2310.08560</li>
+      <li>All links: <code>references/bibliography_and_links.md</code> §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → to navigate · F for full screen</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

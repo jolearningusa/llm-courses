@@ -168,6 +168,21 @@ appear on arXiv. Venues are listed only where a primary source states them.
     https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
   - Addy Osmani, *Agent Harness Engineering*, Apr 2026: https://addyosmani.com/blog/agent-harness-engineering/
 
+## 5b. Component lecture decks (Modules 1 and 5)
+
+One subsection per component deck. Every link was checked against its source when the deck was written.
+
+### Agent loop (deck `01_agent_loop_deck.html`)
+
+- Yao et al., *ReAct: Synergizing Reasoning and Acting in Language Models*, ICLR 2023, arXiv:2210.03629. https://arxiv.org/abs/2210.03629
+- Anthropic, *Building effective agents* (workflows vs. agents), Dec 19 2024: https://www.anthropic.com/research/building-effective-agents
+- Michael Bolin (OpenAI), *Unrolling the Codex agent loop*, Jan 23 2026: https://openai.com/index/unrolling-the-codex-agent-loop/
+- Letta, *Rearchitecting Letta's agent loop* (the v1 agent), Oct 14 2025: https://www.letta.com/blog/letta-v1-agent
+- Hermes Agent, agent loop (`run_conversation`, `IterationBudget`, fallback, compression): https://hermes-agent.nousresearch.com/docs/developer-guide/agent-loop
+- Hermes Agent, delegation guide (`delegation.max_iterations`): https://hermes-agent.nousresearch.com/docs/user-guide/features/delegation
+- OpenClaw, agent loop (per-session lanes, timeouts, plugin hooks): https://docs.openclaw.ai/concepts/agent-loop
+- OpenClaw, queue steering (`steer`, `followup`, `collect`, interrupts): https://docs.openclaw.ai/concepts/queue-steering
+
 ## 6. Evaluation (Module 6)
 
 - **Google Agent Development Kit (ADK) evaluation**: https://adk.dev/evaluate/ · https://github.com/google/adk-python

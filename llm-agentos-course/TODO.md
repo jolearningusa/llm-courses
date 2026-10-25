@@ -11,7 +11,7 @@ The master deck (slide 5) defines a nine-component reference architecture. Curre
 
 | # | Component | Covered today | Own deep-dive? |
 |---|-----------|--------------|----------------|
-| 1 | Agent loop | Master deck 19 (hook timeline), harness slides 22–25 | Not yet |
+| 1 | Agent loop | Master deck 19 (hook timeline), harness slides 22–25, **`01_agent_loop_deck.html`** | Yes |
 | 2 | Scheduler | Master deck 6–7 (AIOS, Autellix, Continuum, KVFlow, ThunderAgent) | Not yet |
 | 3 | Context manager (select / compress / isolate) | Master deck 8, Lab 1 context engines | Not yet |
 | 4 | Memory manager | Master deck 9–14, **`02_long_term_memory_deck.html`** | Yes (cognitive plane); KV plane in Lab 2 |
@@ -26,7 +26,7 @@ The master deck (slide 5) defines a nine-component reference architecture. Curre
 Each deck should follow the same shape as the memory deck: the concept, the design space, how Hermes Agent,
 OpenClaw, Letta (and a Rust runtime where relevant) implement it, failure modes, and an exercise.
 
-- [ ] **Agent loop.** Turn structure (think, act, observe), stop conditions, retries and error recovery,
+- [x] **Agent loop.** Done as deck **`slides/01_agent_loop_deck.html`**. Turn structure (think, act, observe), stop conditions, retries and error recovery,
   streaming, interrupts, where each hook fires. Compare Hermes hooks, OpenClaw's gateway with per-session
   run serialization, Letta steps, and Codex CLI / Goose loops.
 - [ ] **Scheduler.** Request-level vs. program-level scheduling, fairness across agents, priority and
