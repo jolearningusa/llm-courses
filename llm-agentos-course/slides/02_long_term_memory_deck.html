@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — Long-Term Memory</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); fill: var(--ink); }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · Module 2 lecture</div>
+  <h1 style="margin-top:22px">How long-term memory is built</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">User memory, RAG and memory search tools: how an agent writes what it learns, stores it, finds it again,
+    and gets it back into the context window. With the real designs in Hermes Agent, OpenClaw and Letta.</p>
+  <p style="margin-top:28px"><span class="pill">Write path</span><span class="pill">Index</span><span class="pill">Read path: auto-inject vs. tool call</span><span class="pill">Tooling</span><span class="pill">Evaluation</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>Framing</small>The context window is not memory</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>The model is stateless. Anything it "remembers" across sessions was <b>written somewhere</b> and <b>put back into the prompt</b> by the harness.</li>
+        <li>So long-term memory is a small data system: a write path, a store, an index and a read path.</li>
+        <li>In OS terms the context window is RAM and the memory store is disk. The harness decides what gets paged in (MemGPT).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Three kinds of long-term memory</h3>
+      <table class="dense">
+        <tr><td>Semantic</td><td>Facts and preferences about the user or world: "prefers Rust", "lives in Seattle". Kept as a profile or a growing collection.</td></tr>
+        <tr><td>Episodic</td><td>What happened: past sessions, decisions, worked examples. Often reused as few-shot examples.</td></tr>
+        <tr><td>Procedural</td><td>How to act: system prompt, rules, skills. Usually updated by reflection.</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="cite">Taxonomy as used in the LangGraph memory docs (docs.langchain.com/oss/python/langgraph/memory); OS framing: Packer et al., MemGPT (arXiv:2310.08560).</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>Key distinction</small>RAG, user memory, and a search tool are different things</h2>
+  <table>
+    <tr><th></th><th>Knowledge RAG</th><th>Long-term (user) memory</th><th>Memory search tool</th></tr>
+    <tr><td class="accent2">What it is</td><td>Retrieval over a document corpus</td><td>A store the agent <b>writes</b> from its own conversations</td><td>One <b>read path</b> into a store</td></tr>
+    <tr><td class="accent2">Who writes</td><td>Humans, offline ingestion</td><td>The agent or a background job, every turn or session</td><td>Nobody: it only reads</td></tr>
+    <tr><td class="accent2">Changes?</td><td>Rarely, re-index in batches</td><td>Constantly: facts get updated, contradicted, forgotten</td><td>n/a</td></tr>
+    <tr><td class="accent2">Scope</td><td>Shared by all users</td><td>Per user / agent / session</td><td>Whatever the store is scoped to</td></tr>
+    <tr><td class="accent2">Hard part</td><td>Chunking, ranking</td><td>Extraction, dedup, updates, staleness, privacy</td><td>The model knowing <i>when</i> to search</td></tr>
+  </table>
+  <p style="margin-top:18px">Memory systems <b>reuse RAG machinery</b> (embeddings, vector + BM25 search, reranking) for the read path. What they add is the write path and lifecycle.
+    A search tool can sit on top of either one.</p>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>The pipeline</small>Seven stages of a memory system</h2>
+  <svg viewBox="0 0 1136 300" width="1136" height="300">
+    <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9aa6bd"/></marker></defs>
+    <g font-size="19" font-weight="700" text-anchor="middle">
+      <rect x="0" y="40" width="140" height="70" rx="10" fill="#14213a" stroke="#7be0b8"/><text x="70" y="82" fill="#7be0b8">1 Capture</text>
+      <rect x="166" y="40" width="140" height="70" rx="10" fill="#14213a" stroke="#7be0b8"/><text x="236" y="82" fill="#7be0b8">2 Extract</text>
+      <rect x="332" y="40" width="160" height="70" rx="10" fill="#14213a" stroke="#7be0b8"/><text x="412" y="82" fill="#7be0b8">3 Consolidate</text>
+      <rect x="518" y="40" width="140" height="70" rx="10" fill="#14213a" stroke="#ffb86b"/><text x="588" y="82" fill="#ffb86b">4 Index</text>
+      <rect x="684" y="40" width="140" height="70" rx="10" fill="#14213a" stroke="#6ea8ff"/><text x="754" y="82" fill="#6ea8ff">5 Retrieve</text>
+      <rect x="850" y="40" width="130" height="70" rx="10" fill="#14213a" stroke="#6ea8ff"/><text x="915" y="82" fill="#6ea8ff">6 Inject</text>
+      <rect x="1006" y="40" width="130" height="70" rx="10" fill="#14213a" stroke="#ff7a85"/><text x="1071" y="82" fill="#ff7a85">7 Forget</text>
+    </g>
+    <g stroke="#9aa6bd" stroke-width="2" marker-end="url(#ar)">
+      <line x1="140" y1="75" x2="164" y2="75"/><line x1="306" y1="75" x2="330" y2="75"/><line x1="492" y1="75" x2="516" y2="75"/>
+      <line x1="658" y1="75" x2="682" y2="75"/><line x1="824" y1="75" x2="848" y2="75"/><line x1="980" y1="75" x2="1004" y2="75"/>
+    </g>
+    <g font-size="15" fill="#9aa6bd" text-anchor="middle">
+      <text x="70" y="140">turns, tool results,</text><text x="70" y="160">transcripts</text>
+      <text x="236" y="140">LLM pulls out facts,</text><text x="236" y="160">entities, events</text>
+      <text x="412" y="140">dedup, merge, update,</text><text x="412" y="160">resolve contradictions</text>
+      <text x="588" y="140">keyword, vector,</text><text x="588" y="160">graph, plain files</text>
+      <text x="754" y="140">score: relevance,</text><text x="754" y="160">recency, importance</text>
+      <text x="915" y="140">prompt block or</text><text x="915" y="160">tool result</text>
+      <text x="1071" y="140">decay, expire,</text><text x="1071" y="160">delete on request</text>
+    </g>
+    <rect x="0" y="200" width="658" height="70" rx="10" fill="none" stroke="#7be0b8" stroke-dasharray="6 5"/>
+    <text x="329" y="242" font-size="19" text-anchor="middle" fill="#7be0b8">Write path: hot path (during the turn) or background (after it)</text>
+    <rect x="684" y="200" width="452" height="70" rx="10" fill="none" stroke="#6ea8ff" stroke-dasharray="6 5"/>
+    <text x="910" y="242" font-size="19" text-anchor="middle" fill="#6ea8ff">Read path: automatic or agent-invoked</text>
+  </svg>
+  <p class="muted" style="font-size:19px">Every harness implements all seven stages. They differ in <b>who triggers</b> each one (the harness, the model, or a background job) and in the <b>index</b> they choose.</p>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Write path</small>Capture and extract: when do memories get written?</h2>
+  <div class="cols">
+    <div>
+      <h3 class="accent2" style="margin:0 0 8px">Hot path (in the turn)</h3>
+      <ul style="font-size:18px">
+        <li>The model calls a write tool: Letta <code>archival_memory_insert</code>, Mem0-in-Hermes <code>mem0_add</code>, LanceDB <code>memory_store</code>.</li>
+        <li>Available immediately; costs latency and model attention.</li>
+      </ul>
+      <h3 class="accent2" style="margin:10px 0 6px">Background (after the turn)</h3>
+      <ul style="font-size:18px">
+        <li>A hook or job extracts memories without the model asking: Hermes <code>sync_turn</code>, <code>on_pre_compress</code>, <code>on_session_end</code>.</li>
+        <li>OpenClaw flushes unwritten context into daily notes before compaction; Letta sleep-time agents rewrite memory between steps.</li>
+        <li>No reply latency; harder to decide <i>when</i> to run.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>What extraction looks like (Mem0)</h3>
+      <ol style="font-size:18px;padding-left:22px;margin:0">
+        <li>Look up related existing memories.</li>
+        <li>LLM extracts preferences, decisions, plans.</li>
+        <li>Deduplicate, then embed each memory.</li>
+        <li>Extract entities for entity matching.</li>
+      </ol>
+<pre style="margin-top:14px">from mem0 import Memory
+m = Memory()
+m.add(messages, user_id="alice")
+# infer=False stores raw text, no extraction</pre>
+    </div>
+  </div>
+  <div class="cite">LangGraph memory docs (hot path vs. background); docs.mem0.ai/core-concepts/how-it-works and memory-operations/add; Hermes MemoryProvider hooks; docs2.openclaw.ai/concepts/memory-architecture.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>Write path</small>Consolidate: memories must change, not just pile up</h2>
+  <table class="dense">
+    <tr><th>Approach</th><th>How updates and contradictions are handled</th><th>Source</th></tr>
+    <tr><td>LLM decides an operation</td><td>For each candidate fact, choose ADD / UPDATE / DELETE / NOOP against similar existing memories.</td><td>Mem0 paper (arXiv:2504.19413)</td></tr>
+    <tr><td>Additive + explicit edits</td><td>Current Mem0 docs: automatic extraction is additive; correcting or removing a fact is an explicit update or delete call.</td><td>docs.mem0.ai</td></tr>
+    <tr><td>Bi-temporal edges</td><td>Facts are graph edges with <code>valid_at</code> / <code>invalid_at</code>; a new fact invalidates the old edge instead of deleting it.</td><td>Zep / Graphiti (arXiv:2501.13956)</td></tr>
+    <tr><td>Note evolution</td><td>New notes link to related notes and can rewrite their descriptions (Zettelkasten-style).</td><td>A-MEM (arXiv:2502.12110)</td></tr>
+    <tr><td>Single gated writer</td><td>Daily notes are appended freely; only the "dreaming" pass promotes candidates into MEMORY.md, after a deterministic gate and a consolidation model turn. USER.md updates replace old directives.</td><td>OpenClaw memory architecture</td></tr>
+    <tr><td>Sleep-time rewrite</td><td>A second agent reorganizes the primary agent's memory blocks in the background.</td><td>Letta; Lin et al. (arXiv:2504.13171)</td></tr>
+    <tr><td>Reflection</td><td>Periodically synthesize higher-level "reflections" from raw observations and store them as memories too.</td><td>Generative Agents (arXiv:2304.03442)</td></tr>
+  </table>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>Index</small>Four ways to store and index memories</h2>
+  <table class="dense">
+    <tr><th>Index</th><th>Good at</th><th>Weak at</th><th>Seen in</th></tr>
+    <tr><td>Plain files in context</td><td>Small, curated, always visible, human-editable</td><td>Does not scale; every token costs every turn</td><td>MEMORY.md / USER.md (Hermes, OpenClaw), Letta core blocks</td></tr>
+    <tr><td>Keyword (BM25, FTS5)</td><td>Exact terms: IDs, names, error strings; no embedding cost</td><td>Synonyms and paraphrase</td><td>Hermes session search (SQLite FTS5), Holographic provider</td></tr>
+    <tr><td>Vector (embeddings)</td><td>Meaning and paraphrase</td><td>Exact tokens, numbers; needs an embedding model</td><td>Letta archival memory, Mem0, memory-lancedb</td></tr>
+    <tr><td>Knowledge graph</td><td>Entities, relations, multi-hop and temporal questions</td><td>Costly extraction; schema drift</td><td>Graphiti / Zep, Hindsight, Mem0 graph memory</td></tr>
+  </table>
+  <div class="card" style="margin-top:18px">
+    <h3>In practice: hybrid</h3>
+    <p style="margin:0">OpenClaw's <code>memory_search</code> runs vector and BM25 in parallel and merges results (either side runs alone if the other is unavailable).
+      Graphiti merges semantic + BM25 with Reciprocal Rank Fusion and can rerank by graph distance from a node.</p>
+  </div>
+  <div class="cite">docs.openclaw.ai concepts/memory-search; graphiti-core README (pypi); Hermes memory-providers docs.</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>Retrieve</small>Scoring: relevance is not enough</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li><b>Relevance</b>: embedding similarity and/or BM25.</li>
+        <li><b>Recency</b>: newer memories score higher. OpenClaw decays dated daily notes; MEMORY.md never decays.</li>
+        <li><b>Importance</b>: how much a memory matters, often rated by an LLM at write time.</li>
+        <li>Generative Agents combine recency + importance + relevance; OpenClaw's <code>memory_search</code> ranks by relevance, recency decay and importance.</li>
+        <li>Mem0 search fuses semantic, keyword, entity and temporal signals.</li>
+        <li><b>Scope first</b>: filter by <code>user_id</code> / <code>agent_id</code> / <code>run_id</code> before ranking, or memories leak across users.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Better chunks, better recall</h3>
+      <p>Anthropic's Contextual Retrieval prepends a short, chunk-specific context before embedding and BM25-indexing each chunk. Top-20 retrieval failure rate:</p>
+      <table class="dense">
+        <tr><td>Contextual embeddings</td><td>−35% (5.7% → 3.7%)</td></tr>
+        <tr><td>+ contextual BM25</td><td>−49% (→ 2.9%)</td></tr>
+        <tr><td>+ reranking</td><td>−67% (→ 1.9%)</td></tr>
+      </table>
+<pre style="margin-top:12px">m.search("coffee or tea?",
+         filters={"user_id": "alice"})</pre>
+    </div>
+  </div>
+  <div class="cite">Park et al., Generative Agents (arXiv:2304.03442); OpenClaw memory-search and memory-architecture docs; docs.mem0.ai search; anthropic.com/news/contextual-retrieval.</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>Read path</small>Two ways memory gets back into the prompt</h2>
+  <svg viewBox="0 0 1136 380" width="1136" height="380">
+    <defs><marker id="ar2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9aa6bd"/></marker></defs>
+    <rect x="0" y="0" width="550" height="380" rx="14" fill="#14213a" stroke="#7be0b8"/>
+    <text x="24" y="40" font-size="24" font-weight="700" fill="#7be0b8">A · Automatic injection</text>
+    <text x="24" y="70" font-size="16" fill="#9aa6bd">The harness searches before the model runs</text>
+    <g font-size="17" text-anchor="middle">
+      <rect x="24" y="96" width="140" height="54" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="94" y="129">user message</text>
+      <rect x="186" y="96" width="146" height="54" rx="8" fill="#161d2e" stroke="#7be0b8"/><text x="259" y="129">harness: search</text>
+      <rect x="354" y="96" width="172" height="54" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="440" y="129">prompt + memories</text>
+      <rect x="354" y="182" width="172" height="54" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="440" y="215">LLM replies</text>
+    </g>
+    <g stroke="#9aa6bd" stroke-width="2" marker-end="url(#ar2)"><line x1="164" y1="123" x2="184" y2="123"/><line x1="332" y1="123" x2="352" y2="123"/><line x1="440" y1="150" x2="440" y2="180"/></g>
+    <g font-size="17"><text x="24" y="280">+ always on: the model never has to "know" to ask</text><text x="24" y="308">+ one model call per turn</text><text x="24" y="336">− pays tokens and latency every turn, even when useless</text><text x="24" y="364">− query is just the user message; misses indirect needs</text></g>
+
+    <rect x="586" y="0" width="550" height="380" rx="14" fill="#14213a" stroke="#6ea8ff"/>
+    <text x="610" y="40" font-size="24" font-weight="700" fill="#6ea8ff">B · Agent-invoked search tool</text>
+    <text x="610" y="70" font-size="16" fill="#9aa6bd">The model decides to call memory_search(query)</text>
+    <g font-size="17" text-anchor="middle">
+      <rect x="610" y="96" width="150" height="54" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="685" y="129">user message</text>
+      <rect x="786" y="96" width="150" height="54" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="861" y="129">LLM: tool call</text>
+      <rect x="962" y="96" width="150" height="54" rx="8" fill="#161d2e" stroke="#6ea8ff"/><text x="1037" y="129">search store</text>
+      <rect x="786" y="182" width="150" height="54" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="861" y="215">LLM replies</text>
+    </g>
+    <g stroke="#9aa6bd" stroke-width="2" marker-end="url(#ar2)"><line x1="760" y1="123" x2="784" y2="123"/><line x1="936" y1="123" x2="960" y2="123"/><path d="M1037,150 L1037,209 L938,209" fill="none"/></g>
+    <text x="990" y="232" font-size="14" fill="#9aa6bd">tool result</text>
+    <g font-size="17"><text x="610" y="280">+ model writes a targeted query; can search again</text><text x="610" y="308">+ zero cost on turns that need no memory</text><text x="610" y="336">− extra round trip; model may not realize it should search</text><text x="610" y="364">− same mechanism as web search, so needs good tool docs</text></g>
+  </svg>
+  <p class="muted" style="font-size:18px;margin-top:10px">The "search tool" is just option B over the memory store. Most production harnesses use <b>both</b>: a small auto-injected profile plus a tool for deep recall.</p>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>Read path</small>The hybrid pattern most harnesses converge on</h2>
+  <div class="cols3">
+    <div class="card">
+      <h3>Tier 1 · always resident</h3>
+      <p>A small curated profile pinned in the prompt: MEMORY.md / USER.md, Letta core memory blocks.</p>
+      <p class="muted">Cheap to reason about. Keep it small, and freeze it per session to keep the prompt prefix cacheable (Hermes).</p>
+    </div>
+    <div class="card">
+      <h3>Tier 2 · auto-recall per turn</h3>
+      <p>The harness prefetches a few relevant memories and injects them as hidden context.</p>
+      <p class="muted">Hermes provider <code>prefetch</code> (background, non-blocking); OpenClaw trigger injection (≤3 curated entries); LanceDB auto-recall.</p>
+    </div>
+    <div class="card">
+      <h3>Tier 3 · on demand</h3>
+      <p>Large or noisy stores (transcripts, daily notes, archival) only through tools.</p>
+      <p class="muted">OpenClaw <code>memory_search</code>; Letta <code>archival_memory_search</code>; Hermes <code>session_search</code> and provider tools.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px">
+    <h3>Escalation: a recall sub-agent</h3>
+    <p style="margin:0">OpenClaw's <b>Active Memory</b> (default mode <code>escalate</code>) runs a blocking recall sub-agent only when the message asks about the past and the rule-based lane found no strong match.
+      It can also be set to always or off. This targets prior decisions and temporal or multi-hop questions without paying for search on every turn.</p>
+  </div>
+  <div class="cite">docs.openclaw.ai concepts/active-memory and memory-architecture; Hermes memory-providers docs; Letta archival memory docs.</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>Harness · Hermes Agent</small>Built-in memory plus one external provider</h2>
+  <div class="cols" style="grid-template-columns: 0.9fr 1.1fr">
+    <div>
+      <ul style="font-size:19px">
+        <li><b>Built-in</b> (always on): MEMORY.md + USER.md, frozen snapshot per session; SQLite FTS5 session search across past conversations.</li>
+        <li><b>External provider</b>: exactly one active, added via <code>hermes memory setup</code> or <code>memory.provider</code>.</li>
+        <li>An active provider prefetches before each turn (background, non-blocking) and its context is injected into the system prompt.</li>
+        <li>Its tools come from <code>get_tool_schemas()</code>; writes from <code>sync_turn</code>, <code>on_pre_compress</code>, <code>on_session_end</code>.</li>
+      </ul>
+    </div>
+    <table class="dense">
+      <tr><th>Provider</th><th>Recall</th><th>Store</th></tr>
+      <tr><td>Honcho</td><td><code>recallMode</code> hybrid: auto + 5 tools</td><td>Honcho cloud / self-host</td></tr>
+      <tr><td>Hindsight</td><td><code>auto_recall</code> on; hybrid / context / tools</td><td>Knowledge graph, entity resolution</td></tr>
+      <tr><td>Supermemory</td><td><code>auto_recall</code> on + 4 tools</td><td>Cloud / self-host</td></tr>
+      <tr><td>Mem0</td><td>Tools: <code>mem0_search</code>, <code>mem0_add</code>, …</td><td>Vector (Qdrant, pgvector in OSS)</td></tr>
+      <tr><td>OpenViking</td><td>Tools: <code>viking_search</code>, <code>viking_read</code>, …</td><td><code>viking://</code> file hierarchy</td></tr>
+      <tr><td>Holographic</td><td>Tools: <code>fact_store</code>, <code>fact_feedback</code></td><td>Local SQLite FTS5 + HRR</td></tr>
+      <tr><td>RetainDB</td><td>Tools incl. <code>retaindb_search</code></td><td>Vector + BM25 + rerank</td></tr>
+    </table>
+  </div>
+  <div class="cite">hermes-agent.nousresearch.com/docs/user-guide/features/memory-providers (Oct 2026). RetainDB and ByteRover leave core on Oct 15, 2026.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>Harness · OpenClaw</small>Files, a gated writer, and three recall lanes</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><th>Layer</th><th>Role</th></tr>
+        <tr><td>MEMORY.md / USER.md</td><td>Curated core and user model; loaded within budgets, refreshed each turn</td></tr>
+        <tr><td>Daily notes</td><td><code>memory/YYYY-MM-DD.md</code>; episodic, appended, decays in ranking</td></tr>
+        <tr><td>Dreaming</td><td>Scheduled consolidation (Light, REM, Deep); the only writer of durable memory; logs to DREAMS.md</td></tr>
+        <tr><td>Standing intents</td><td>Prospective memory: time-based intents become cron jobs</td></tr>
+        <tr><td>Memory slot plugin</td><td><code>plugins.slots.memory</code>, e.g. <code>@openclaw/memory-lancedb</code></td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Recall lanes</h3>
+        <ul>
+          <li><b>Auto, no model call</b>: up to 3 curated entries whose trigger phrases match the message.</li>
+          <li><b>Tool</b>: <code>memory_search</code> / <code>memory_get</code>, hybrid vector + BM25. Daily notes and transcripts are only reachable this way: they "never auto-inject".</li>
+          <li><b>Escalation</b>: Active Memory sub-agent.</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h3>memory-lancedb plugin</h3>
+        <p style="margin:0">LanceDB vector store with auto-recall and auto-capture; tools <code>memory_store</code>, <code>memory_recall</code>, <code>memory_forget</code>.</p>
+      </div>
+    </div>
+  </div>
+  <div class="cite">docs2.openclaw.ai/concepts/memory-architecture; docs.openclaw.ai concepts/memory-search, active-memory; hub.openclaw.ai/openclaw/plugins/memory-lancedb.</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>Harness · Letta</small>MemGPT's hierarchy: the agent pages its own memory</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li><b>Core memory blocks</b> (label, description, value, limit) are always in the context window. The agent edits them with memory tools; blocks can be shared between agents via <code>block_ids</code>.</li>
+        <li><b>Archival memory</b> is a vector database of passages with optional tags. It is <b>not</b> in context: it "must be queried on-demand via tools".</li>
+        <li><b>Conversation search</b> retrieves past messages.</li>
+        <li><b>Sleep-time agents</b> consolidate memory in the background (every N steps, default 5).</li>
+      </ul>
+    </div>
+    <div>
+<pre># the agent's own tools
+archival_memory_insert(content, tags)
+archival_memory_search(query)
+
+# the developer can write passages too
+client.agents.passages.insert(
+    agent_id=agent.id,
+    content="Alice prefers tea",
+    tags=["prefs"])</pre>
+      <p class="muted" style="font-size:17px;margin-top:12px">Letta is the purest form of option B: apart from core blocks, recall happens only when the model calls a tool.</p>
+    </div>
+  </div>
+  <div class="cite">docs.letta.com memory blocks, archival memory (V1 SDK) and sleep-time agents; Packer et al., MemGPT (arXiv:2310.08560).</div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>Side by side</small>Who triggers each stage?</h2>
+  <table class="dense">
+    <tr><th>Stage</th><th>Hermes Agent</th><th>OpenClaw</th><th>Letta</th></tr>
+    <tr><td>Always in context</td><td>MEMORY.md, USER.md (frozen per session)</td><td>MEMORY.md, USER.md (refreshed per turn)</td><td>Core memory blocks</td></tr>
+    <tr><td>Write: model</td><td><code>memory</code> tool; provider tools</td><td>Writes to daily notes; LanceDB <code>memory_store</code></td><td>Memory-edit tools, <code>archival_memory_insert</code></td></tr>
+    <tr><td>Write: background</td><td><code>sync_turn</code>, <code>on_pre_compress</code>, <code>on_session_end</code></td><td>Pre-compaction flush; dreaming</td><td>Sleep-time agent</td></tr>
+    <tr><td>Read: automatic</td><td>Provider <code>prefetch</code> into system prompt</td><td>Trigger injection; LanceDB auto-recall</td><td>(core blocks only)</td></tr>
+    <tr><td>Read: tool</td><td><code>session_search</code>, provider tools</td><td><code>memory_search</code>, <code>memory_get</code></td><td><code>archival_memory_search</code>, conversation search</td></tr>
+    <tr><td>Escalation</td><td class="muted">—</td><td>Active Memory sub-agent</td><td class="muted">—</td></tr>
+    <tr><td>Index</td><td>Files + FTS5; provider's own</td><td>Files + SQLite index; vector + BM25</td><td>Vector DB of passages</td></tr>
+    <tr><td>Plug point</td><td><code>MemoryProvider</code> ABC</td><td><code>plugins.slots.memory</code></td><td>Custom tools, shared blocks</td></tr>
+  </table>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>Toolkit</small>Common tools to build memory (and RAG) systems</h2>
+  <table class="dense">
+    <tr><th>Layer</th><th>Common choices</th><th>Notes</th></tr>
+    <tr><td>Embeddings</td><td>OpenAI, Voyage, Gemini, Mistral; open: BGE, Nomic, served via Ollama or vLLM</td><td>OpenClaw supports 10+ embedding providers; <code>provider: "none"</code> = keyword only</td></tr>
+    <tr><td>Vector store</td><td>pgvector, Qdrant, Chroma, LanceDB, Milvus, FAISS, sqlite-vec</td><td>Start embedded (LanceDB, sqlite-vec, Chroma); pgvector if you already run Postgres</td></tr>
+    <tr><td>Keyword index</td><td>SQLite FTS5, Tantivy, Elasticsearch / OpenSearch</td><td>Pair with vectors for hybrid search</td></tr>
+    <tr><td>Rerankers</td><td>Cross-encoders (BGE reranker), hosted rerank APIs</td><td>Raised the failure reduction from 49% to 67% in Contextual Retrieval tests</td></tr>
+    <tr><td>Graph</td><td>Graphiti (Neo4j), Microsoft GraphRAG, LightRAG</td><td>For entities, relations, multi-hop</td></tr>
+    <tr><td>RAG frameworks</td><td>LlamaIndex, LangChain / LangGraph Store, Haystack</td><td>LangGraph <code>store.put</code> / <code>store.search</code> with an embedding index</td></tr>
+    <tr><td>Memory layers</td><td>Mem0, Zep / Graphiti, Letta, LangMem, Honcho, Supermemory, Hindsight, Cognee</td><td>Do extraction + consolidation for you; Mem0, Honcho, Supermemory, Hindsight ship Hermes providers</td></tr>
+  </table>
+  <div class="cite">Links for every tool are in references/bibliography_and_links.md §2b. Choose by index type first, product second.</div>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <h2><small>Beyond flat chunks</small>Structured retrieval ideas memory systems borrow</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Graph-shaped</h3>
+      <ul>
+        <li><b>GraphRAG</b>: build an entity graph and community summaries for global, query-focused questions.</li>
+        <li><b>LightRAG</b>: graph + vector dual-level retrieval with incremental updates.</li>
+        <li><b>HippoRAG</b>: knowledge graph + Personalized PageRank, modeled on hippocampal indexing.</li>
+        <li><b>Zep / Graphiti</b>: temporal graph built from episodes.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Hierarchy and context</h3>
+      <ul>
+        <li><b>RAPTOR</b>: recursively cluster and summarize chunks into a tree; retrieve at any level.</li>
+        <li><b>Contextual Retrieval</b>: add chunk-specific context before indexing.</li>
+        <li><b>Reflections</b> (Generative Agents) and <b>dreaming</b> (OpenClaw) are the memory analogue: summaries stored as memories.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Edge et al. arXiv:2404.16130; Guo et al. arXiv:2410.05779; Gutiérrez et al. arXiv:2405.14831; Sarthi et al. arXiv:2401.18059; Rasmussen et al. arXiv:2501.13956.</div>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+  <h2><small>Evaluation</small>How do you know memory works?</h2>
+  <div class="cols">
+    <div>
+      <h3 class="accent2" style="margin:0 0 8px">Benchmarks</h3>
+      <ul style="font-size:19px">
+        <li><b>LoCoMo</b>: very long-term conversations (many sessions) with QA, summarization and generation tasks.</li>
+        <li><b>LongMemEval</b>: five abilities: information extraction, multi-session reasoning, temporal reasoning, knowledge updates, abstention. Commercial assistants and long-context LLMs drop about 30% accuracy over sustained interactions.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>What to measure in your own harness</h3>
+      <ul>
+        <li>Recall@k on a labeled set of "should remember" questions</li>
+        <li>Injection precision: share of injected memories actually used</li>
+        <li>Staleness: answers that use superseded facts</li>
+        <li>Abstention: says "I don't know" when nothing was stored</li>
+        <li>Tokens and latency added per turn, auto vs. tool</li>
+        <li>Cross-user leakage: always zero</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Maharana et al., LoCoMo (arXiv:2402.17753); Wu et al., LongMemEval (arXiv:2410.10813).</div>
+</section>
+
+<!-- 18 -->
+<section class="slide">
+  <h2><small>Failure modes</small>What goes wrong, and the usual fix</h2>
+  <table class="dense">
+    <tr><th>Failure</th><th>Symptom</th><th>Mitigation</th></tr>
+    <tr><td>Stale facts</td><td>"You live in Austin" after the user moved</td><td>Explicit updates, bi-temporal validity, recency decay</td></tr>
+    <tr><td>Memory bloat</td><td>Profile grows, every turn gets slower and costlier</td><td>Budgets on Tier 1; consolidation; move detail to Tier 3</td></tr>
+    <tr><td>Missed recall</td><td>Model never calls the search tool</td><td>Auto-inject a small profile; tool descriptions that say when to search; escalation sub-agent</td></tr>
+    <tr><td>Noisy recall</td><td>Irrelevant memories distract the model</td><td>Hybrid search + reranking; score thresholds; fewer, better injections</td></tr>
+    <tr><td>Cross-user leak</td><td>One user's facts appear for another</td><td>Scope every read and write by user / agent / session id</td></tr>
+    <tr><td>Poisoning</td><td>Injected text stored as a "fact" later steers the agent</td><td>Gate writes (OpenClaw single writer), provenance, see master deck slides 15–16</td></tr>
+    <tr><td>Right to forget</td><td>User asks to delete data</td><td>Delete APIs and expiry (Mem0 <code>expiration_date</code>), forget tools</td></tr>
+  </table>
+  <div class="cite">Threat model: Lin et al., long-term memory security survey (arXiv:2604.16548); A-MemGuard (arXiv:2510.02373).</div>
+</section>
+
+<!-- 19 -->
+<section class="slide">
+  <h2><small>Design checklist</small>Building memory for your own agent</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:20px;padding-left:26px">
+        <li>Decide <b>what</b> to remember: semantic, episodic, procedural.</li>
+        <li>Pick the <b>write trigger</b>: hot path tool, background hook, or both.</li>
+        <li>Pick the <b>index</b> by question type: exact → BM25, fuzzy → vector, relational → graph. Usually hybrid.</li>
+        <li>Pick the <b>read trigger</b> per tier: pinned, auto-recall, tool.</li>
+        <li>Define <b>update and forget</b> rules before launch.</li>
+        <li><b>Scope</b> everything by user.</li>
+        <li><b>Measure</b> recall, staleness, cost.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Exercise: same memory, two read paths</h3>
+      <p>Implement one store (e.g. Mem0 OSS or LanceDB) and wire it both ways in the Lab 1A Hermes provider:</p>
+      <ul>
+        <li><b>A</b>: return memories from <code>prefetch()</code></li>
+        <li><b>B</b>: expose a <code>search_memory</code> tool via <code>get_tool_schemas()</code></li>
+      </ul>
+      <p>Run 20 questions that need memory and 20 that don't. Compare accuracy, tokens per turn and how often the model actually calls the tool.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 20 -->
+<section class="slide">
+  <h2><small>References</small>Read next</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:17px">
+        <li>Packer et al., MemGPT, arXiv:2310.08560</li>
+        <li>Park et al., Generative Agents, arXiv:2304.03442</li>
+        <li>Rasmussen et al., Zep, arXiv:2501.13956</li>
+        <li>Xu et al., A-MEM, arXiv:2502.12110</li>
+        <li>Chhikara et al., Mem0, arXiv:2504.19413</li>
+        <li>Edge et al., GraphRAG, arXiv:2404.16130</li>
+        <li>Guo et al., LightRAG, arXiv:2410.05779</li>
+        <li>Gutiérrez et al., HippoRAG, arXiv:2405.14831</li>
+        <li>Sarthi et al., RAPTOR, arXiv:2401.18059</li>
+        <li>Maharana et al., LoCoMo, arXiv:2402.17753</li>
+        <li>Wu et al., LongMemEval, arXiv:2410.10813</li>
+      </ul>
+    </div>
+    <div>
+      <ul style="font-size:17px">
+        <li>Hermes Agent: memory providers guide</li>
+        <li>OpenClaw: memory architecture, memory search, active memory</li>
+        <li>OpenClaw hub: memory-lancedb plugin</li>
+        <li>Letta: memory blocks, archival memory, sleep-time agents</li>
+        <li>Mem0 docs: how it works, add, search</li>
+        <li>Graphiti README (getzep/graphiti)</li>
+        <li>LangGraph docs: memory and stores</li>
+        <li>Anthropic: Introducing Contextual Retrieval</li>
+      </ul>
+      <p class="muted" style="font-size:16px;margin-top:16px">Full URLs: <code>references/bibliography_and_links.md</code>, §2 and §2b.</p>
+    </div>
+  </div>
+</section>
+</div>
+<div id="hint">← / → to navigate · F for full screen</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

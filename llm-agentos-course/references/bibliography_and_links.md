@@ -35,6 +35,72 @@ appear on arXiv. Venues are listed only where a primary source states them.
 - **Memory for Autonomous LLM Agents: Mechanisms, Evaluation, and Emerging Frontiers** (survey), Du, Mar 2026, arXiv:2603.07670.
   https://arxiv.org/abs/2603.07670
 
+## 2b. Building long-term memory: papers, docs and tools (Module 2, deck `02_long_term_memory_deck.html`)
+
+### Papers
+
+- **MemGPT: Towards LLMs as Operating Systems**, Packer et al., arXiv:2310.08560 (see §1). https://arxiv.org/abs/2310.08560
+- **Generative Agents: Interactive Simulacra of Human Behavior**, Park, O'Brien, Cai, Morris, Liang, Bernstein, UIST 2023, arXiv:2304.03442
+  (memory stream, retrieval by recency + importance + relevance, reflection). https://arxiv.org/abs/2304.03442
+- **From Local to Global: A Graph RAG Approach to Query-Focused Summarization** (GraphRAG), Edge et al., arXiv:2404.16130.
+  https://arxiv.org/abs/2404.16130 · https://github.com/microsoft/graphrag
+- **LightRAG: Simple and Fast Retrieval-Augmented Generation**, Guo, Xia, Yu, Ao, Huang, arXiv:2410.05779.
+  https://arxiv.org/abs/2410.05779 · https://github.com/HKUDS/LightRAG
+- **HippoRAG: Neurobiologically Inspired Long-Term Memory for Large Language Models**, Gutiérrez et al., arXiv:2405.14831.
+  https://arxiv.org/abs/2405.14831 · https://github.com/OSU-NLP-Group/HippoRAG
+- **RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval**, Sarthi et al., arXiv:2401.18059.
+  https://arxiv.org/abs/2401.18059
+- **Evaluating Very Long-Term Conversational Memory of LLM Agents** (LoCoMo), Maharana, Lee, Tulyakov, Bansal, Barbieri, Fang, arXiv:2402.17753.
+  https://arxiv.org/abs/2402.17753
+- **LongMemEval: Benchmarking Chat Assistants on Long-Term Interactive Memory**, Wu, Wang, Yu, Zhang, Chang, Yu, arXiv:2410.10813
+  (five abilities: information extraction, multi-session reasoning, temporal reasoning, knowledge updates, abstention). https://arxiv.org/abs/2410.10813
+
+### How the harnesses do it (docs)
+
+- Hermes Agent, memory providers (built-in MEMORY.md / USER.md, one external provider, per-provider recall modes and tools):
+  https://hermes-agent.nousresearch.com/docs/user-guide/features/memory-providers
+- OpenClaw, memory architecture (MEMORY.md, USER.md, daily notes, dreaming, trigger injection, standing intents):
+  https://docs2.openclaw.ai/concepts/memory-architecture
+- OpenClaw, memory search (hybrid vector + BM25, temporal decay, embedding providers):
+  https://docs.openclaw.ai/concepts/memory-search
+- OpenClaw, Active Memory (escalation recall sub-agent, default mode `escalate`): https://docs.openclaw.ai/concepts/active-memory
+- OpenClaw, `@openclaw/memory-lancedb` plugin (auto-recall, auto-capture, `memory_store` / `memory_recall` / `memory_forget`):
+  https://hub.openclaw.ai/openclaw/plugins/memory-lancedb
+- Letta, archival memory (`archival_memory_insert` / `archival_memory_search`, passages, tags):
+  https://docs.letta.com/guides/agents/archival-memory
+- Mem0, how it works (extraction, storage, search signals, scoping): https://docs.mem0.ai/core-concepts/how-it-works
+  · add: https://docs.mem0.ai/core-concepts/memory-operations/add · search: https://docs.mem0.ai/core-concepts/memory-operations/search
+- LangGraph, memory concepts (semantic / episodic / procedural; hot path vs. background writes) and stores:
+  https://docs.langchain.com/oss/python/langgraph/memory
+- Anthropic, Introducing Contextual Retrieval (contextual embeddings + contextual BM25 + reranking):
+  https://www.anthropic.com/news/contextual-retrieval
+
+### Common tools for building memory and RAG
+
+| Layer | Tool | Link |
+|---|---|---|
+| Vector store | pgvector (Postgres) | https://github.com/pgvector/pgvector |
+| Vector store | Qdrant | https://github.com/qdrant/qdrant |
+| Vector store | Chroma | https://github.com/chroma-core/chroma |
+| Vector store | LanceDB (embedded) | https://github.com/lancedb/lancedb |
+| Vector store | Milvus | https://github.com/milvus-io/milvus |
+| Vector index | FAISS | https://github.com/facebookresearch/faiss |
+| Vector index | sqlite-vec | https://github.com/asg017/sqlite-vec |
+| Keyword index | SQLite FTS5 | https://www.sqlite.org/fts5.html |
+| Keyword index | Tantivy | https://github.com/quickwit-oss/tantivy |
+| Embeddings / reranker | BGE (FlagEmbedding) | https://github.com/FlagOpen/FlagEmbedding |
+| Graph memory | Graphiti (Zep) | https://github.com/getzep/graphiti |
+| Graph RAG | Microsoft GraphRAG, LightRAG, HippoRAG | see papers above |
+| RAG framework | LlamaIndex | https://github.com/run-llama/llama_index |
+| RAG framework | Haystack | https://github.com/deepset-ai/haystack |
+| Memory layer | Mem0 | https://github.com/mem0ai/mem0 |
+| Memory layer | Letta | https://github.com/letta-ai/letta |
+| Memory layer | LangMem (LangChain) | https://github.com/langchain-ai/langmem |
+| Memory layer | Honcho | https://github.com/plastic-labs/honcho |
+| Memory layer | Supermemory | https://github.com/supermemoryai/supermemory |
+| Memory layer | Hindsight (Vectorize) | https://vectorize.io/blog/introducing-hindsight-agent-memory-that-works-like-human-memory |
+| Memory layer | Cognee | https://github.com/topoteretes/cognee |
+
 ## 3. Plane 2: system / KV-cache memory (Module 3)
 
 - **Efficient Memory Management for Large Language Model Serving with PagedAttention** (vLLM), Kwon et al., SOSP 2023, arXiv:2309.06180.
