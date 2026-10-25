@@ -39,6 +39,8 @@ push, finishes later and overwrites the site with a plain rendering of the READM
    if it is already merged, restart the branch from the latest `origin/main` instead of pushing
    onto merged history. Then fetch `origin/main` and rebase the branch onto it.
 5. Push the branch and open a PR against `main`, filled in from `.github/pull_request_template.md`.
+   Its **Prompt history** section quotes the user's requests that led to the PR (with dates) and lists
+   the instructions the agent followed, so readers can learn how the PR was produced.
 6. When the user has authorized the merge, **squash-merge** the PR into `main`.
 7. **Delete the branch after the merge**: GitHub deletes the remote head branch automatically
    (see repository settings below); delete it manually only after confirming the merge. Then fetch
