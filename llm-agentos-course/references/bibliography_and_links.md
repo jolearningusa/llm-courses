@@ -235,6 +235,18 @@ Papers (AIOS, Autellix, Continuum, KVFlow, ThunderAgent) are in §1. Harness and
 - OpenClaw, multi-agent routing (bindings, `tools.agentToAgent`): https://docs.openclaw.ai/concepts/multi-agent
 - Letta, shared memory: https://docs.letta.com/concepts/shared-memory
 
+### Access control and safety (deck `04_access_control_deck.html`)
+
+- Simon Willison, *The lethal trifecta for AI agents* (private data + untrusted content + external communication), Jun 16 2025: https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/
+- Meta, *Agents Rule of Two: a practical approach to AI agent security*, Oct 31 2025: https://ai.meta.com/blog/practical-ai-agent-security/
+- OWASP Top 10 for Agentic Applications (ASI01–ASI10): https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+- Nasr et al., *The Attacker Moves Second* (adaptive attacks break published defenses): https://arxiv.org/abs/2510.09023
+- Debenedetti et al., *Defeating Prompt Injections by Design* (CaMeL): https://arxiv.org/abs/2503.18813
+- Beurer-Kellner et al., *Design Patterns for Securing LLM Agents against Prompt Injections*: https://arxiv.org/abs/2506.08837
+- AgentDojo benchmark: https://arxiv.org/abs/2406.13352
+- OpenClaw, security (`dmPolicy`, hardened baseline, `openclaw security audit`): https://docs.openclaw.ai/gateway/security
+- Hermes Agent, security (`approvals.mode`, DM pairing, context-file scanning): https://hermes-agent.nousresearch.com/docs/user-guide/security
+
 ## 6. Evaluation (Module 6)
 
 - **Google Agent Development Kit (ADK) evaluation**: https://adk.dev/evaluate/ · https://github.com/google/adk-python
