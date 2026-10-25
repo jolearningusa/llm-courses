@@ -5,6 +5,15 @@ This repository holds LLM course material. Each course lives in its own top-leve
 `git init` inside a course directory, and keep shared, repo-wide files (this file, `docs/`,
 `.github/`) at the root.
 
+## Website (GitHub Pages)
+
+`.github/workflows/pages.yml` runs `scripts/build_site.py` on every push to `main` and deploys the
+result to GitHub Pages; pull requests only build it. Every top-level directory with a `README.md`
+is published as a course, with no list to maintain: READMEs and other Markdown are rendered,
+`slides/*.html` decks are served unchanged, and lab files get a highlighted view plus the raw file.
+Preview locally with `pip install markdown pygments && python scripts/build_site.py`, then open
+`_site/index.html`. Add new repo-wide directories that are not courses to `SKIP_DIRS` in the script.
+
 ## Git workflow: trunk-based, one task one PR
 
 `main` is the only long-lived branch and must always be in a publishable state. There is no
@@ -37,7 +46,7 @@ This repository holds LLM course material. Each course lives in its own top-leve
 
 ## Before pushing
 
-There is no CI yet, so check locally:
+The Pages workflow builds the site on each PR; there is no other CI, so also check locally:
 
 - Slides (`*.html`) open in a browser without console errors and slide numbering is continuous.
 - Relative links in Markdown and HTML resolve; external references have been checked.
