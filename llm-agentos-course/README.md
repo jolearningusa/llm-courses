@@ -16,7 +16,7 @@ Hermes Agent, OpenClaw, Letta, vLLM + LMCache + NIXL, and Google Research's Harn
 
 | # | Module | Core ideas | Key sources |
 |---|--------|-----------|-------------|
-| 1 | **AgentOS architecture, AIOS kernel & program-aware scheduling** | A nine-component reference architecture (loop, scheduler, context manager, memory, tools/sandbox, skills, multi-agent, access control, extensions); agent "system calls", context snapshot/restore; scheduling whole agent programs; context engineering (select, compress, isolate) | AIOS (arXiv:2403.16971), ThunderAgent (2602.13692), Continuum (2511.02230), Autellix (2502.13965), KVFlow (2507.07400) |
+| 1 | **AgentOS architecture, AIOS kernel & program-aware scheduling** | A nine-component reference architecture (loop, scheduler, context manager, memory, tools/sandbox, skills, multi-agent, access control, extensions); agent "system calls", context snapshot/restore; scheduling whole agent programs; context engineering (select, compress, isolate). Separate lecture deck on the agent loop: ReAct and workflows vs. agents, Hermes / OpenClaw / Codex / Letta turn structure, budgets and stop conditions, retries and fallback, interrupts and steering queues, compaction, hooks | AIOS (arXiv:2403.16971), ThunderAgent (2602.13692), Continuum (2511.02230), Autellix (2502.13965), KVFlow (2507.07400) |
 | 2 | **Plane 1: user / cognitive memory** | MemGPT-style virtual context, core vs. archival memory, bi-temporal knowledge graphs, Zettelkasten-style note evolution, single-pass extraction, memory as skills. Separate lecture deck on how long-term memory is built: write path, indexes (keyword / vector / graph), retrieval scoring, automatic injection vs. agent-invoked search tools, how Hermes, OpenClaw and Letta do it, RAG and memory tooling, evaluation | MemGPT (2310.08560), Generative Agents (2304.03442), Zep/Graphiti (2501.13956), A-MEM (2502.12110), Mem0 (2504.19413), MemSkill (2602.02474), GraphRAG (2404.16130), LongMemEval (2410.10813) |
 | 3 | **Plane 2: system / KV-cache memory** | PagedAttention, RadixAttention prefix sharing, chunked (non-prefix) KV reuse, multi-tier offload (HBM → DRAM → NVMe → RDMA), cache engineering for agents | vLLM, SGLang, AsymCache / Multi-Segment Attention (2606.02964), Predictive Multi-Tier KV (2604.26968), AKV / Cache Engineering for Agents (2610.28577) |
 | 4 | **Tool arbitration & memory security** | Memory lifecycle threat model (write → store → retrieve → execute → share → forget), memory poisoning, consensus-based defenses | Long-term memory security survey (2604.16548), A-MemGuard (2510.02373, ICML 2026) |
@@ -38,6 +38,7 @@ llm-agentos-course/
 ├── TODO.md                                    # Roadmap: component deep-dives, observability & evaluation
 ├── slides/
 │   ├── 00_master_agentos_deck.html            # Master deck, slides 1–21: AgentOS architecture & component map
+│   ├── 01_agent_loop_deck.html                # Module 1 lecture, 17 slides: the agent loop (turns, budgets, retries, interrupts, hooks)
 │   ├── 02_long_term_memory_deck.html          # Module 2 lecture, 20 slides: how long-term memory is built
 │   ├── 05_opensource_plugin_apis_slides.html  # Slides 22–31: harness deep-dives (incl. Rust), plugin APIs, vLLM KV, Harness²
 │   └── 06_observability_evaluation_deck.html  # Module 6 lecture, 20 slides: tracing, telemetry, evals, dashboards
