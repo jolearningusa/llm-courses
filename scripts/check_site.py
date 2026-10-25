@@ -3,7 +3,9 @@
 
 Run after scripts/build_site.py. It reads each HTML page under the site
 directory, follows every relative href and src, and fails if the target file
-does not exist (a link to a directory needs an index.html there). Links to
+does not exist (a link to a directory needs an index.html there). It also
+fails if a course README does not link every deck in its slides/ folder, so
+the course page lists each deck however the README is rendered. Links to
 other sites are skipped unless --external is given, which sends a request to
 each one; use that locally, not in CI, because remote sites rate-limit and
 time out. Usage:
@@ -61,6 +63,18 @@ def check_external(urls: set[str]) -> list[str]:
     return bad
 
 
+def unlisted_decks() -> list[str]:
+    """Decks under <course>/slides/ that the course README does not link to."""
+    missing = []
+    for readme in sorted(ROOT.glob("*/README.md")):
+        course = readme.parent
+        text = readme.read_text(encoding="utf-8")
+        for deck in sorted((course / "slides").glob("*.html")):
+            if f"](slides/{deck.name})" not in text:
+                missing.append(f"{course.name}/README.md: no link to slides/{deck.name}")
+    return missing
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--site", default=str(ROOT / "_site"))
@@ -89,12 +103,15 @@ def main() -> int:
 
     for line in broken:
         print(f"broken link  {line}")
+    unlisted = unlisted_decks()
+    for line in unlisted:
+        print(f"unlisted deck {line}")
     bad_external = check_external(external) if args.external else []
     for line in bad_external:
         print(f"bad external {line}")
     checked = f"{len(external)} external link(s) checked" if args.external else f"{len(external)} external link(s) skipped"
-    print(f"Checked {len(pages)} page(s): {len(broken)} broken relative link(s); {checked}")
-    return 1 if broken or bad_external else 0
+    print(f"Checked {len(pages)} page(s): {len(broken)} broken relative link(s); {len(unlisted)} unlisted deck(s); {checked}")
+    return 1 if broken or unlisted or bad_external else 0
 
 
 if __name__ == "__main__":

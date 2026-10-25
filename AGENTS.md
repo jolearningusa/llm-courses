@@ -16,6 +16,11 @@ Preview locally with `pip install markdown pygments && python scripts/build_site
 The root `README.md` describes the repository and is not published as a course (only directories are);
 when a course is added, also add a row to its course table. Links from a course to repo-wide files
 (`AGENTS.md`, `docs/`) are rewritten to point at GitHub, since those files are not on the site.
+Each course README has a "Slide decks" table that links every deck in its `slides/` folder;
+`scripts/check_site.py` fails if a deck is missing from it, so add a row with every new deck.
+The site is only deployed by this workflow when **Settings → Pages → Source** is "GitHub Actions". If it
+is "Deploy from a branch", GitHub's own Jekyll build ("pages build and deployment") also runs on each
+push, finishes later and overwrites the site with a plain rendering of the READMEs.
 
 ## Git workflow: trunk-based, one task one PR
 

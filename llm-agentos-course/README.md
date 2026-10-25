@@ -12,6 +12,19 @@ Hermes Agent, OpenClaw, Letta, vLLM + LMCache + NIXL, and Google Research's Harn
 
 ---
 
+## Slide decks
+
+Open a deck in the browser; use **← / →** to move between slides and **F** for full screen.
+
+| Deck | What it covers |
+|------|----------------|
+| [Master deck](slides/00_master_agentos_deck.html) (slides 1–21) | The AgentOS architecture, the nine components, and the map of all seven modules |
+| [Harness deep-dives](slides/05_opensource_plugin_apis_slides.html) (slides 22–31) | Hermes Agent, OpenClaw, Letta, AIOS, Rust runtimes, plugin APIs, vLLM KV connectors, Harness² |
+| [The agent loop](slides/01_agent_loop_deck.html) | Module 1 lecture: turns, budgets, retries, interrupts, compaction, hooks |
+| [The scheduler](slides/01_scheduler_deck.html) | Module 1 lecture: lanes and queues, delegation limits, engine and program-aware scheduling |
+| [Long-term memory](slides/02_long_term_memory_deck.html) | Module 2 lecture: write path, indexes, retrieval, how harnesses build memory, RAG tooling |
+| [Observability and evaluation](slides/06_observability_evaluation_deck.html) | Module 6 lecture: traces, OpenTelemetry, metrics, evals, dashboards |
+
 ## Syllabus (7 modules)
 
 | # | Module | Core ideas | Key sources |
