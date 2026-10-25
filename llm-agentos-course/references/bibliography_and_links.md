@@ -85,6 +85,13 @@ appear on arXiv. Venues are listed only where a primary source states them.
   - Memory: https://docs.openclaw.ai/concepts/memory
   - Skills: https://docs.openclaw.ai/tools/skills · Sub-agents: https://docs.openclaw.ai/tools/subagents
   - Sandboxing: https://docs.openclaw.ai/gateway/sandboxing
+- **Rust agent runtimes** (slides 26–27)
+  - Goose (Block, Apache-2.0): https://github.com/block/goose · Docs: https://goose-docs.ai/ (smart context management, subagents, permission modes)
+  - OpenFang, "Open-source Agent Operating System": https://github.com/RightNow-AI/openfang
+  - ZeroClaw: https://github.com/zeroclaw-labs/zeroclaw · IronClaw (Rust, OpenClaw-inspired): https://github.com/nearai/ironclaw
+  - OpenAI Codex CLI (`codex-rs`): https://github.com/openai/codex · Why it moved to Rust: https://www.devclass.com/ai-ml/2025/06/02/nodejs-frustrating-and-inefficient-openai-rewrites-ai-coding-tool-in-rust/1619589
+  - Rivet agentOS v0.2 (Rust rewrite): https://rivet.dev/changelog/2026-06-25-introducing-agentos-v0-2/
+  - OSS Insight, *Rust AI agent infrastructure* (Apr 2026): https://ossinsight.io/blog/rust-ai-agent-infrastructure-2026
 - **Letta** shared memory blocks: https://docs.letta.com/guides/core-concepts/memory/shared-memory
   - Archival memory: https://docs.letta.com/guides/core-concepts/memory/archival-memory
   - Sleep-time agents: https://docs.letta.com/guides/agents/architectures/sleeptime

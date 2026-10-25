@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LLM AgentOS — Harness Deep-Dives (22–29)</title>
+<title>LLM AgentOS — Harness Deep-Dives (22–31)</title>
 <style>
   :root {
     --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
@@ -156,6 +156,49 @@
 
 <!-- 26 -->
 <section class="slide">
+  <h2><small>Harness deep-dive · Rust</small>Rust agent runtimes: Goose, OpenFang, ZeroClaw</h2>
+  <table class="dense">
+    <tr><th></th><th>Goose (Block · Apache-2.0)</th><th>OpenFang (Apache-2.0 / MIT)</th><th>ZeroClaw (MIT / Apache-2.0)</th></tr>
+    <tr><td>① Runtime</td><td>Desktop app + CLI + embeddable API; 15+ model providers</td><td>Kernel crate (orchestration, RBAC, scheduler, budgets) + runtime crate (agent loop, 53 tools)</td><td>Single binary; channels → gateway → agent loop</td></tr>
+    <tr><td>② Scheduling</td><td>Scheduled tasks</td><td>"Hands": autonomous packages that run on schedules</td><td>SOP engine</td></tr>
+    <tr><td>③ Context</td><td>Auto-compaction at 80% of the window (or 225k tokens); summarize / truncate / clear</td><td>Session compaction</td><td>—</td></tr>
+    <tr><td>④ Memory</td><td>—</td><td>SQLite + vector embeddings</td><td>SQLite + embeddings</td></tr>
+    <tr><td>⑤ Tools &amp; sandbox</td><td>70+ MCP extensions</td><td>MCP + A2A; tool code in a WASM sandbox with fuel metering</td><td>OS sandboxes: Landlock, Bubblewrap, Seatbelt, Docker</td></tr>
+    <tr><td>⑥ Skills</td><td>Recipes (YAML)</td><td><code>SKILL.md</code> parser; 60 bundled skills</td><td>—</td></tr>
+    <tr><td>⑦ Multi-agent</td><td>Subagents: isolated, up to 5 in parallel, no nesting</td><td>A2A + signed peer protocol</td><td>—</td></tr>
+    <tr><td>⑧ Access control</td><td>Modes: autonomous, manual, smart approval, chat-only</td><td>Capability gates (RBAC), signed manifests, hash-chain audit log</td><td>Security policy layer</td></tr>
+  </table>
+  <div class="cite">github.com/block/goose · goose-docs.ai (context management, subagents) · github.com/RightNow-AI/openfang · github.com/zeroclaw-labs/zeroclaw · "—" = not documented in the README/docs checked</div>
+</section>
+
+<!-- 27 -->
+<section class="slide">
+  <h2><small>Design choice</small>Python, TypeScript or Rust?</h2>
+  <div class="cols">
+    <div>
+      <table>
+        <tr><th>Language</th><th>Who uses it</th><th>Why</th></tr>
+        <tr><td>Python</td><td>Hermes, Letta, AIOS</td><td>ML / research ecosystem, fast iteration on memory and evaluation</td></tr>
+        <tr><td>TypeScript</td><td>OpenClaw, Letta Agent SDK</td><td>Chat and web integrations, Node ecosystem</td></tr>
+        <tr><td>Rust</td><td>Codex CLI, Goose, OpenFang, ZeroClaw, Rivet agentOS</td><td>Single binary, small footprint, native sandboxing, many agents per host</td></tr>
+      </table>
+      <p class="muted" style="font-size:16px;margin-top:12px">Codex CLI moved TypeScript → Rust in 2025 for: no Node dependency, native sandboxing (Seatbelt / Landlock), no GC and lower memory, and an existing Rust MCP implementation.</p>
+    </div>
+    <div class="card">
+      <h3>Does Rust make agents faster?</h3>
+      <ul>
+        <li><b>Per-turn latency</b> is dominated by model inference and tool calls (seconds), not harness code (milliseconds). Rust barely moves it.</li>
+        <li>Rust wins on <b>density and footprint</b>: startup time, idle memory, many concurrent agents, edge devices. OpenFang reports a ~32 MB binary, &lt;200 ms cold start and ~40 MB idle memory (self-reported).</li>
+        <li>Rust wins on <b>isolation</b>: in-process WASM sandboxes and OS sandboxes without extra services.</li>
+        <li>The big performance levers stay in <b>Plane 2</b>: KV-cache hit rate, scheduling, offload (Modules 1 and 3).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">DevClass, Jun 2 2025 (Codex CLI rewrite) · rivet.dev changelog, Jun 2026 · OSS Insight, "Rust AI agent infrastructure", Apr 2026 · OpenFang README</div>
+</section>
+
+<!-- 28 -->
+<section class="slide">
   <h2><small>Module 5 · Plugin APIs</small>Hermes Agent vs. OpenClaw, side by side</h2>
   <div class="cols">
     <div>
@@ -210,7 +253,7 @@ export default function (api) {
   <div class="cite">Hermes Agent developer guide (memory-provider-plugin, context-engine-plugin) · docs.openclaw.ai context engines</div>
 </section>
 
-<!-- 27 -->
+<!-- 29 -->
 <section class="slide">
   <h2><small>Module 3 · Lab 2</small>vLLM KV connectors: composing the system memory plane</h2>
   <div class="cols">
@@ -245,7 +288,7 @@ LMCACHE_MAX_LOCAL_CPU_SIZE=64   # GiB</pre>
   <div class="cite">docs.vllm.ai: kv_connector/v1/multi_connector · features/nixl_connector_usage · docs.lmcache.ai/getting_started/quickstart/offload_kv_cache</div>
 </section>
 
-<!-- 28 -->
+<!-- 30 -->
 <section class="slide">
   <h2><small>Module 7 · Lab 3</small>Harness² internals</h2>
   <svg viewBox="0 0 1136 250" width="1136" height="250">
@@ -282,7 +325,7 @@ harness2-report --bench lab --k 1 --mode parallel</pre>
 </section>
 
 
-<!-- 29 -->
+<!-- 31 -->
 <section class="slide">
   <h2><small>Wrap-up</small>Labs and what's next</h2>
   <div class="cols3">
@@ -309,7 +352,7 @@ harness2-report --bench lab --k 1 --mode parallel</pre>
   const offset = 21; // continues the master deck (slides 1–21)
   slides.forEach((s, i) => {
     const n = document.createElement('div');
-    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + 29;
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + 31;
     s.appendChild(n);
   });
   let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
