@@ -223,6 +223,18 @@ Papers (AIOS, Autellix, Continuum, KVFlow, ThunderAgent) are in §1. Harness and
 - Agent Skills in the Wild (vulnerabilities in public skills): https://arxiv.org/abs/2601.10338
 - ClawHavoc: 341 malicious skills on ClawHub, Feb 2026: https://thehackernews.com/2026/02/researchers-find-341-malicious-clawhub.html
 
+### Multi-agent systems (deck `05_multi_agent_deck.html`)
+
+- Anthropic, *How we built our multi-agent research system* (90.2% better than single agent on the internal eval, about 15× tokens), Jun 2025: https://www.anthropic.com/engineering/multi-agent-research-system
+- Cognition, *Don't build multi-agents* (share full context, actions carry implicit decisions), Jun 2025: https://cognition.com/blog/dont-build-multi-agents
+- Cemri et al., *Why Do Multi-Agent LLM Systems Fail?* (MAST, 14 failure modes): https://arxiv.org/abs/2503.13657
+- A2A protocol specification (Agent Card at `/.well-known/agent-card.json`): https://a2a-protocol.org/latest/specification/
+- KVFlow (workflow-aware KV-cache management): https://arxiv.org/abs/2507.07400
+- Hermes Agent, delegation (`delegate_task`): https://hermes-agent.nousresearch.com/docs/user-guide/features/delegation
+- OpenClaw, sub-agents (`sessions_spawn`): https://docs.openclaw.ai/tools/subagents
+- OpenClaw, multi-agent routing (bindings, `tools.agentToAgent`): https://docs.openclaw.ai/concepts/multi-agent
+- Letta, shared memory: https://docs.letta.com/concepts/shared-memory
+
 ## 6. Evaluation (Module 6)
 
 - **Google Agent Development Kit (ADK) evaluation**: https://adk.dev/evaluate/ · https://github.com/google/adk-python
