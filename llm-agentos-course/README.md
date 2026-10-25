@@ -16,11 +16,11 @@ Hermes Agent, OpenClaw, Letta, vLLM + LMCache + NIXL, and Google Research's Harn
 
 | # | Module | Core ideas | Key sources |
 |---|--------|-----------|-------------|
-| 1 | **AIOS kernel & program-aware scheduling** | Agent "system calls", context snapshot/restore, LLM-core scheduling; scheduling whole agent programs instead of single requests | AIOS (arXiv:2403.16971), ThunderAgent (2602.13692), Continuum (2511.02230), Autellix (2502.13965), KVFlow (2507.07400) |
+| 1 | **AgentOS architecture, AIOS kernel & program-aware scheduling** | A nine-component reference architecture (loop, scheduler, context manager, memory, tools/sandbox, skills, multi-agent, access control, extensions); agent "system calls", context snapshot/restore; scheduling whole agent programs; context engineering (select, compress, isolate) | AIOS (arXiv:2403.16971), ThunderAgent (2602.13692), Continuum (2511.02230), Autellix (2502.13965), KVFlow (2507.07400) |
 | 2 | **Plane 1: user / cognitive memory** | MemGPT-style virtual context, core vs. archival memory, bi-temporal knowledge graphs, Zettelkasten-style note evolution, single-pass extraction, memory as skills | MemGPT (2310.08560), Zep/Graphiti (2501.13956), A-MEM (2502.12110), Mem0 (2504.19413), MemSkill (2602.02474) |
 | 3 | **Plane 2: system / KV-cache memory** | PagedAttention, RadixAttention prefix sharing, chunked (non-prefix) KV reuse, multi-tier offload (HBM → DRAM → NVMe → RDMA), cache engineering for agents | vLLM, SGLang, AsymCache / Multi-Segment Attention (2606.02964), Predictive Multi-Tier KV (2604.26968), AKV / Cache Engineering for Agents (2610.28577) |
 | 4 | **Tool arbitration & memory security** | Memory lifecycle threat model (write → store → retrieve → execute → share → forget), memory poisoning, consensus-based defenses | Long-term memory security survey (2604.16548), A-MemGuard (2510.02373, ICML 2026) |
-| 5 | **Production harnesses & stable plugin APIs** | Where memory and context plug into real agents: Hermes `MemoryProvider` / `ContextEngine`, OpenClaw `registerContextEngine` + `plugins.slots`, Letta shared blocks, AIOS SDK | Hermes Agent docs, OpenClaw docs, Letta docs, AIOS / Cerebrum |
+| 5 | **How open harnesses implement AgentOS** | Component-by-component map of Hermes Agent, OpenClaw, Letta and AIOS, one deep-dive per harness, and their plugin APIs: Hermes `MemoryProvider` / `ContextEngine`, OpenClaw `registerContextEngine` + `plugins.slots`, Letta shared blocks and sleep-time agents | Hermes Agent docs, OpenClaw docs, Letta docs, AIOS / Cerebrum |
 | 6 | **OS-level & trajectory evaluation** | Throughput, P99 latency, Jain's fairness index across agents, prefix-cache hit rate; trajectory and response evaluation for agents | Google ADK evaluation (adk.dev/evaluate) |
 | 7 | **Self-improving harnesses (Harness²)** | Task-level recursion (propose harness edits → probe them on the same task → compose a refined harness) and harnessing-level recursion (keep adopted harnesses + evidence-backed lessons) over 8 editable components | Harness² (arXiv:2610.14224, github.com/google-research/harness2) |
 
@@ -36,8 +36,8 @@ llm-agentos-course/
 ├── LICENSE                                    # Apache-2.0
 ├── .gitignore                                 # Python, Node, vLLM/LMCache and Harness² run artifacts
 ├── slides/
-│   ├── 00_master_agentos_deck.html            # Master deck, slides 1–21
-│   └── 05_opensource_plugin_apis_slides.html  # Slides 22–24: plugin APIs, vLLM KV connectors, Harness² internals
+│   ├── 00_master_agentos_deck.html            # Master deck, slides 1–21: AgentOS architecture & component map
+│   └── 05_opensource_plugin_apis_slides.html  # Slides 22–29: harness deep-dives, plugin APIs, vLLM KV, Harness²
 ├── labs/
 │   ├── lab1_memory_plugins/
 │   │   ├── hermes_custom_memory.py            # Hermes Agent MemoryProvider + ContextEngine plugin template

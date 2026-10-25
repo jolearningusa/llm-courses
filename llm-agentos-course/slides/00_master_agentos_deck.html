@@ -35,6 +35,8 @@
   table { border-collapse: collapse; width: 100%; font-size: 18px; }
   th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
   th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
   .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
   .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
   .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
@@ -55,9 +57,9 @@
 <!-- 1 -->
 <section class="slide title-slide">
   <span class="pill">LLM AgentOS · Introductory course</span>
-  <h1 style="margin-top:24px">Agent Operating Systems,<br>Dual-Plane Memory &amp;<br>Self-Improving Harnesses</h1>
-  <p class="muted" style="max-width:900px">Treating LLM agents as an operating-system problem: scheduling, memory paging, KV-cache as a system resource, plugin APIs, evaluation, and harnesses that rewrite themselves.</p>
-  <p style="margin-top:28px"><span class="pill">7 modules</span><span class="pill">3 labs</span><span class="pill">Hermes Agent · OpenClaw · Letta · vLLM · Harness²</span></p>
+  <h1 style="margin-top:24px">How an Agent OS Works,<br>and How Today's Open<br>Harnesses Build One</h1>
+  <p class="muted" style="max-width:920px">Treating LLM agents as an operating-system problem: scheduling, context and memory management, KV-cache as a system resource, tools and isolation, and harnesses that rewrite themselves. Every component is mapped to how Hermes Agent, OpenClaw, Letta and AIOS actually implement it.</p>
+  <p style="margin-top:28px"><span class="pill">7 modules</span><span class="pill">3 labs</span><span class="pill">Hermes Agent · OpenClaw · Letta · AIOS · vLLM · Harness²</span></p>
 </section>
 
 <!-- 2 -->
@@ -67,36 +69,39 @@
     <div>
       <ul>
         <li>An agent is a <b>long-running program</b>: many LLM calls, tool calls and waits, not one request.</li>
-        <li>Many agents share <b>scarce resources</b>: GPU time, context windows, KV-cache memory, tools.</li>
-        <li>Without an OS layer, every agent re-solves scheduling, memory and isolation, badly.</li>
+        <li>Many agents share <b>scarce resources</b>: GPU time, context windows, KV-cache memory, tools, credentials.</li>
+        <li>Without an OS layer, every agent re-solves scheduling, memory and isolation, usually badly.</li>
+        <li>Today's open "harnesses" (Hermes Agent, OpenClaw, Letta) are converging on the same OS-like components. This course names them and compares implementations.</li>
       </ul>
     </div>
     <div class="card">
       <h3>The questions an OS answers</h3>
       <ul>
         <li>Who runs next? <span class="muted">→ scheduling</span></li>
-        <li>What stays resident? <span class="muted">→ memory management</span></li>
-        <li>What can a program touch? <span class="muted">→ access control</span></li>
-        <li>How do we know it's healthy? <span class="muted">→ metrics &amp; evaluation</span></li>
+        <li>What stays resident? <span class="muted">→ context &amp; memory management</span></li>
+        <li>What can a program touch? <span class="muted">→ sandboxing &amp; access control</span></li>
+        <li>How is it extended? <span class="muted">→ plugin APIs ("drivers")</span></li>
+        <li>Is it healthy? <span class="muted">→ metrics &amp; evaluation</span></li>
       </ul>
     </div>
   </div>
-  <div class="cite">Framing from Packer et al. (MemGPT, arXiv:2310.08560) and Mei et al. (AIOS, arXiv:2403.16971).</div>
+  <div class="cite">Framing: Packer et al. (MemGPT, arXiv:2310.08560); Ge et al. (LLM as OS, Agents as Apps, arXiv:2312.03815); Mei et al. (AIOS, arXiv:2403.16971).</div>
 </section>
 
 <!-- 3 -->
 <section class="slide">
   <h2><small>Course map</small>Seven modules, three labs</h2>
   <table>
-    <tr><th>#</th><th>Module</th><th>Lab</th></tr>
-    <tr><td>1</td><td>AIOS kernel &amp; program-aware scheduling</td><td></td></tr>
-    <tr><td>2</td><td>Plane 1: user / cognitive memory</td><td></td></tr>
-    <tr><td>3</td><td>Plane 2: system / KV-cache memory</td><td class="accent2">Lab 2: vLLM + LMCache + NIXL</td></tr>
-    <tr><td>4</td><td>Tool arbitration &amp; memory security</td><td></td></tr>
-    <tr><td>5</td><td>Production harnesses &amp; stable plugin APIs</td><td class="accent2">Lab 1: Hermes, OpenClaw, Letta plugins</td></tr>
-    <tr><td>6</td><td>OS-level &amp; trajectory evaluation</td><td></td></tr>
-    <tr><td>7</td><td>Self-improving harnesses (Harness²)</td><td class="accent2">Lab 3: google-research/harness2</td></tr>
+    <tr><th>#</th><th>Module</th><th>Slides</th><th>Lab</th></tr>
+    <tr><td>1</td><td>AgentOS architecture, AIOS kernel &amp; program-aware scheduling</td><td>4–8</td><td></td></tr>
+    <tr><td>2</td><td>Plane 1: user / cognitive memory</td><td>9–11</td><td></td></tr>
+    <tr><td>3</td><td>Plane 2: system / KV-cache memory</td><td>12–14, 27</td><td class="accent2">Lab 2: vLLM + LMCache + NIXL</td></tr>
+    <tr><td>4</td><td>Tool arbitration &amp; memory security</td><td>15–16</td><td></td></tr>
+    <tr><td>5</td><td>How open harnesses implement AgentOS</td><td>17–19, 22–26</td><td class="accent2">Lab 1: Hermes, OpenClaw, Letta plugins</td></tr>
+    <tr><td>6</td><td>OS-level &amp; trajectory evaluation</td><td>20</td><td></td></tr>
+    <tr><td>7</td><td>Self-improving harnesses (Harness²)</td><td>21, 28</td><td class="accent2">Lab 3: google-research/harness2</td></tr>
   </table>
+  <p class="muted" style="font-size:17px;margin-top:14px">Slides 22–29 are in the companion deck <code>05_opensource_plugin_apis_slides.html</code>.</p>
 </section>
 
 <!-- 4 -->
@@ -105,78 +110,107 @@
   <table>
     <tr><th>Classic OS</th><th>AgentOS</th><th>Example</th></tr>
     <tr><td>Process</td><td>Agent (a program of LLM + tool calls)</td><td>A coding agent working one ticket</td></tr>
-    <tr><td>CPU</td><td>LLM inference engine</td><td>vLLM / SGLang worker</td></tr>
+    <tr><td>CPU</td><td>LLM inference engine</td><td>vLLM / SGLang worker; AIOS "LLM core"</td></tr>
     <tr><td>System call</td><td>LLM call, tool call, memory read/write</td><td>AIOS SDK calls into the kernel</td></tr>
-    <tr><td>RAM</td><td>Context window (+ KV-cache on GPU)</td><td>MemGPT core memory blocks</td></tr>
-    <tr><td>Disk / swap</td><td>Archival memory, vector/graph stores, CPU/NVMe KV tiers</td><td>Letta archival memory, LMCache</td></tr>
-    <tr><td>Page fault</td><td>Retrieval because something isn't in context</td><td>Memory search tool call</td></tr>
+    <tr><td>RAM</td><td>Context window (+ KV-cache on GPU)</td><td>Letta memory blocks, Hermes MEMORY.md</td></tr>
+    <tr><td>Disk / swap</td><td>Archival stores, session DBs, CPU/NVMe KV tiers</td><td>Letta archival memory, Hermes SQLite, LMCache</td></tr>
+    <tr><td>Page fault</td><td>Retrieval because something isn't in context</td><td><code>memory_search</code>, <code>archival_memory_search</code></td></tr>
+    <tr><td>Device driver</td><td>Plugin behind a stable interface</td><td>Hermes <code>MemoryProvider</code>, OpenClaw <code>plugins.slots</code></td></tr>
     <tr><td>Context switch</td><td>Snapshot / restore of generation state</td><td>AIOS context manager</td></tr>
   </table>
 </section>
 
 <!-- 5 -->
 <section class="slide">
-  <h2><small>Module 1</small>AIOS: an LLM agent operating system</h2>
-  <svg viewBox="0 0 1136 470" width="1136" height="470">
-    <rect x="0" y="0" width="1136" height="90" rx="12" fill="#1a2440" stroke="#2a3550"/>
-    <text x="24" y="38" font-size="20" font-weight="600">Application layer</text>
-    <text x="24" y="68" font-size="17" fill="#9aa6bd">Agents built with the AIOS SDK (Cerebrum): travel agent, coding agent, research agent…</text>
-    <rect x="0" y="110" width="1136" height="250" rx="12" fill="#14213a" stroke="#6ea8ff"/>
-    <text x="24" y="146" font-size="20" font-weight="600" fill="#6ea8ff">AIOS kernel</text>
+  <h2><small>Module 1</small>A reference architecture for an AgentOS</h2>
+  <svg viewBox="0 0 1136 500" width="1136" height="500">
     <g font-size="17">
-      <rect x="24" y="166" width="250" height="76" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="40" y="200">Agent scheduler</text><text x="40" y="226" fill="#9aa6bd" font-size="15">FIFO, round-robin</text>
-      <rect x="298" y="166" width="250" height="76" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="314" y="200">Context manager</text><text x="314" y="226" fill="#9aa6bd" font-size="15">snapshot / restore</text>
-      <rect x="572" y="166" width="250" height="76" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="588" y="200">Memory manager</text><text x="588" y="226" fill="#9aa6bd" font-size="15">per-agent working memory</text>
-      <rect x="846" y="166" width="266" height="76" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="862" y="200">Storage manager</text><text x="862" y="226" fill="#9aa6bd" font-size="15">persistent files, vectors</text>
-      <rect x="24" y="260" width="250" height="76" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="40" y="294">Tool manager</text><text x="40" y="320" fill="#9aa6bd" font-size="15">conflict-free tool calls</text>
-      <rect x="298" y="260" width="250" height="76" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="314" y="294">Access manager</text><text x="314" y="320" fill="#9aa6bd" font-size="15">privileges, confirmation</text>
-      <rect x="572" y="260" width="540" height="76" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="588" y="294">LLM core(s)</text><text x="588" y="320" fill="#9aa6bd" font-size="15">each backend model wrapped as a schedulable "core"</text>
+      <rect x="0" y="0" width="1136" height="64" rx="10" fill="#1a2440" stroke="#2a3550"/>
+      <text x="20" y="28" font-weight="700">Interfaces</text><text x="20" y="52" fill="#9aa6bd" font-size="15">CLI · chat gateways (Telegram, Slack, WhatsApp…) · API / SDK · cron triggers</text>
+      <rect x="0" y="80" width="1136" height="250" rx="12" fill="#14213a" stroke="#6ea8ff"/>
+      <text x="20" y="108" font-weight="700" fill="#6ea8ff">Agent runtime ("kernel")</text>
+      <rect x="20" y="122" width="262" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="34" y="148">① Agent loop</text><text x="34" y="172" font-size="14" fill="#9aa6bd">think → call tool → observe</text><text x="34" y="194" font-size="14" fill="#9aa6bd">retries, streaming, persistence</text>
+      <rect x="296" y="122" width="262" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="310" y="148">② Scheduler</text><text x="310" y="172" font-size="14" fill="#9aa6bd">who runs next; per-session</text><text x="310" y="194" font-size="14" fill="#9aa6bd">serialization; cron; priorities</text>
+      <rect x="572" y="122" width="262" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="586" y="148">③ Context manager</text><text x="586" y="172" font-size="14" fill="#9aa6bd">select · compress · isolate;</text><text x="586" y="194" font-size="14" fill="#9aa6bd">keep the prefix cache-stable</text>
+      <rect x="848" y="122" width="268" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="862" y="148">④ Memory manager</text><text x="862" y="172" font-size="14" fill="#9aa6bd">in-context blocks; long-term</text><text x="862" y="194" font-size="14" fill="#9aa6bd">store; consolidation</text>
+      <rect x="20" y="226" width="262" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="34" y="252">⑤ Tools &amp; execution</text><text x="34" y="276" font-size="14" fill="#9aa6bd">registry, MCP; sandboxes</text><text x="34" y="298" font-size="14" fill="#9aa6bd">(Docker, SSH, cloud)</text>
+      <rect x="296" y="226" width="262" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="310" y="252">⑥ Skills</text><text x="310" y="276" font-size="14" fill="#9aa6bd">procedural memory (SKILL.md),</text><text x="310" y="298" font-size="14" fill="#9aa6bd">loaded on demand</text>
+      <rect x="572" y="226" width="262" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="586" y="252">⑦ Multi-agent</text><text x="586" y="276" font-size="14" fill="#9aa6bd">subagents with isolated context;</text><text x="586" y="298" font-size="14" fill="#9aa6bd">shared memory blocks</text>
+      <rect x="848" y="226" width="268" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="862" y="252">⑧ Access control</text><text x="862" y="276" font-size="14" fill="#9aa6bd">approvals, privileges,</text><text x="862" y="298" font-size="14" fill="#9aa6bd">pairing, tool policy</text>
+      <rect x="0" y="346" width="1136" height="64" rx="10" fill="#1a2440" stroke="#7be0b8"/>
+      <text x="20" y="374" font-weight="700" fill="#7be0b8">⑨ Extension layer</text><text x="20" y="398" fill="#9aa6bd" font-size="15">plugins and hooks: memory providers, context engines, tools, terminal backends, lifecycle hooks</text>
+      <rect x="0" y="426" width="1136" height="64" rx="10" fill="#1a2440" stroke="#2a3550"/>
+      <text x="20" y="454" font-weight="700">Inference engine &amp; storage</text><text x="20" y="478" fill="#9aa6bd" font-size="15">vLLM / SGLang / hosted APIs (KV-cache plane) · SQLite, files, vector DBs</text>
     </g>
-    <rect x="0" y="380" width="1136" height="90" rx="12" fill="#1a2440" stroke="#2a3550"/>
-    <text x="24" y="418" font-size="20" font-weight="600">Hardware / host OS</text>
-    <text x="24" y="448" font-size="17" fill="#9aa6bd">GPUs, CPU, memory, disk, network</text>
   </svg>
-  <div class="cite">Mei et al., AIOS: LLM Agent Operating System, arXiv:2403.16971 · github.com/agiresearch/AIOS · SDK: github.com/agiresearch/Cerebrum</div>
+  <div class="cite">Synthesized from AIOS (arXiv:2403.16971) and the Hermes Agent, OpenClaw and Letta docs; slides 17–18 map each box to each harness.</div>
 </section>
 
 <!-- 6 -->
 <section class="slide">
-  <h2><small>Module 1</small>Context switching for LLMs</h2>
+  <h2><small>Module 1</small>AIOS: the research reference kernel</h2>
   <div class="cols">
-    <div>
-      <ul>
-        <li>A time-sliced scheduler (e.g. round-robin) may <b>pause</b> an agent mid-generation.</li>
-        <li>The context manager <b>snapshots</b> generation state so another agent can run, then <b>restores</b> it.</li>
-        <li>Two options for the snapshot:
-          <ul>
-            <li><b>Text-based</b>: save the decoded tokens so far (works with any API model).</li>
-            <li><b>Logits/KV-based</b>: save internal state (needs an open-weights engine; cheaper to resume).</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+    <table>
+      <tr><th>Module</th><th>What it does (per the paper)</th></tr>
+      <tr><td>LLM core(s)</td><td>Each model instance wrapped as a schedulable unit, "akin to a CPU core"</td></tr>
+      <tr><td>Scheduler</td><td>Central queues for all syscalls; FIFO or round-robin (default)</td></tr>
+      <tr><td>Context manager</td><td>Snapshot / restore of interrupted generation</td></tr>
+      <tr><td>Memory manager</td><td>Agent interaction history in RAM; LRU-K eviction to disk past a block limit</td></tr>
+      <tr><td>Storage manager</td><td>Files + vector DB; serves swap from the memory manager</td></tr>
+      <tr><td>Tool manager</td><td>Loads and calls the SDK's API tools</td></tr>
+      <tr><td>Access manager</td><td>Privilege groups for cross-agent access; user confirmation before irreversible ops</td></tr>
+    </table>
     <div class="card">
-      <h3>Discussion</h3>
-      <p>Why is a "context switch" so much more expensive for an LLM than for a CPU process?</p>
-      <p class="muted">Hint: the "registers" are the KV-cache, which is gigabytes for long contexts. Module 3 returns to this.</p>
+      <h3>Context switching an LLM</h3>
+      <p>Round-robin can pause an agent mid-generation. The context manager saves state so another agent runs, then resumes:</p>
+      <ul>
+        <li><b>Text-based</b>: save decoded output so far (works with closed API models).</li>
+        <li><b>Logits-based</b>: save the intermediate search-tree state for finer-grained resume (open models).</li>
+      </ul>
+      <p class="muted">Agents are written against the AIOS SDK (Cerebrum), which turns their calls into kernel syscalls.</p>
     </div>
   </div>
-  <div class="cite">arXiv:2403.16971, §context manager.</div>
+  <div class="cite">Mei et al., arXiv:2403.16971 · github.com/agiresearch/AIOS · github.com/agiresearch/Cerebrum</div>
 </section>
 
 <!-- 7 -->
 <section class="slide">
   <h2><small>Module 1</small>Scheduling whole agent programs</h2>
   <div class="cols">
-    <div class="card"><h3>Autellix (2025)</h3><p>Treats an agent as a <b>program</b> of LLM calls and prioritizes by the program's accumulated service, cutting head-of-line blocking across calls.</p></div>
-    <div class="card"><h3>Continuum (2025)</h3><p>When an agent pauses for a tool call, keep its KV-cache resident for a <b>time-to-live</b> instead of evicting it, so the next turn doesn't re-prefill.</p></div>
-    <div class="card"><h3>KVFlow (NeurIPS 2025)</h3><p>Uses the multi-agent <b>workflow graph</b> to predict which agent runs next, guiding prefix-cache eviction and prefetch.</p></div>
-    <div class="card"><h3>ThunderAgent (2026)</h3><p>A <b>program-aware</b> agentic inference system: the serving layer sees the agent program, not just isolated requests.</p></div>
+    <div class="card"><h3>Autellix (2025)</h3><p>Intercepts LLM calls with <b>program-level context</b>; preempts and prioritizes each call by its program's previously completed calls, cutting head-of-line blocking. Reports 4–15× program throughput vs. vLLM at equal latency.</p></div>
+    <div class="card"><h3>Continuum (2025)</h3><p>When a request will make a tool call, <b>pin its KV-cache on GPU for a time-to-live</b> set from reload cost and queueing delay; pair with program-level FCFS. Over 8× better average job completion time.</p></div>
+    <div class="card"><h3>KVFlow (NeurIPS 2025)</h3><p>Builds an <b>Agent Step Graph</b>; each agent's steps-to-execution score drives KV eviction, and the next agents' KV is <b>prefetched</b> CPU→GPU in the background.</p></div>
+    <div class="card"><h3>ThunderAgent (2026)</h3><p>Models a workflow as an <b>"LLM Program"</b> spanning KV-cache, system state and tool assets (disk, ports); a program-aware scheduler raises KV hit rate and a tool resource manager prepares environments asynchronously.</p></div>
   </div>
   <div class="cite">Autellix arXiv:2502.13965 · Continuum arXiv:2511.02230 · KVFlow arXiv:2507.07400 · ThunderAgent arXiv:2602.13692</div>
 </section>
 
 <!-- 8 -->
+<section class="slide">
+  <h2><small>Module 1</small>The context manager: select, compress, isolate</h2>
+  <div class="cols">
+    <div>
+      <p style="margin-top:0">The agent loop appends every action and observation, so the input keeps growing, and long inputs degrade quality (lost-in-the-middle, "context rot"). The context manager's job is to <b>put in what is needed and clear out what isn't</b>.</p>
+      <ul>
+        <li><b>Select</b>: RAG over documents, <i>tool</i> RAG, memory RAG; just-in-time loading by reference.</li>
+        <li><b>Compress</b>: summarize old turns; keep outcomes, drop click-by-click detail; offload to files.</li>
+        <li><b>Isolate</b>: give subtasks to subagents with clean contexts that return only a summary.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Production lessons</h3>
+      <ul>
+        <li>"KV-cache hit rate is the single most important metric" (Manus): keep the prefix stable, make context append-only, serialize deterministically.</li>
+        <li>Mask tools rather than removing them mid-task.</li>
+        <li>Use the file system as external memory; make compression reversible (keep the URL, drop the page).</li>
+        <li>Compaction + structured note-taking + subagents for long horizons (Anthropic).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Hung-yi Lee, GenAI-ML 2025 Fall, "From LMs to AI Agents" (Agent.pdf) · Manus blog, Jul 2025 · Anthropic Engineering, Sep 2025</div>
+</section>
+
+<!-- 9 -->
 <section class="slide">
   <h2><small>Modules 2–3</small>Two memory planes</h2>
   <svg viewBox="0 0 1136 420" width="1136" height="420">
@@ -184,12 +218,12 @@
     <text x="28" y="44" font-size="24" font-weight="700" fill="#7be0b8">Plane 1 · cognitive memory</text>
     <text x="28" y="76" font-size="17" fill="#9aa6bd">What the agent knows. Unit: text, facts, graph edges.</text>
     <g font-size="18">
-      <rect x="28" y="100" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="46" y="138">Core / in-context blocks (always resident)</text>
-      <rect x="28" y="176" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="46" y="214">Recall: conversation history</text>
+      <rect x="28" y="100" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="46" y="138">In-context blocks (always resident)</text>
+      <rect x="28" y="176" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="46" y="214">Conversation history / session search</text>
       <rect x="28" y="252" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="46" y="290">Archival: vector / knowledge-graph store</text>
     </g>
-    <text x="28" y="360" font-size="17">Managed by: the agent + harness plugins</text>
-    <text x="28" y="388" font-size="17" fill="#9aa6bd">MemGPT/Letta, Zep, A-MEM, Mem0, Hermes MemoryProvider</text>
+    <text x="28" y="360" font-size="17">Managed by: the agent + harness</text>
+    <text x="28" y="388" font-size="17" fill="#9aa6bd">Letta, Hermes, OpenClaw, Zep, A-MEM, Mem0</text>
 
     <rect x="596" y="0" width="540" height="420" rx="14" fill="#14213a" stroke="#6ea8ff"/>
     <text x="624" y="44" font-size="24" font-weight="700" fill="#6ea8ff">Plane 2 · system memory</text>
@@ -202,20 +236,20 @@
     <text x="624" y="360" font-size="17">Managed by: the serving engine</text>
     <text x="624" y="388" font-size="17" fill="#9aa6bd">vLLM PagedAttention, SGLang, LMCache, NIXL</text>
   </svg>
-  <div class="cite">The planes interact: every Plane-1 edit to the prompt prefix invalidates Plane-2 cache.</div>
+  <div class="cite">The planes interact: a Plane-1 edit to the prompt prefix invalidates Plane-2 cache. Hermes freezes its memory snapshot for the whole session for exactly this reason.</div>
 </section>
 
-<!-- 9 -->
+<!-- 10 -->
 <section class="slide">
   <h2><small>Module 2</small>MemGPT / Letta: virtual context</h2>
   <div class="cols">
     <div>
       <ul>
-        <li>The context window is "RAM"; the model <b>pages</b> data in and out itself via tool calls.</li>
-        <li><b>Core memory blocks</b>: labeled, size-limited text that is always in context (e.g. <code>persona</code>, <code>human</code>).</li>
-        <li><b>Archival memory</b>: unbounded store, searched on demand.</li>
-        <li>The agent <b>edits its own memory</b> with tools like <code>memory_replace</code>.</li>
-        <li>A block can be <b>shared</b> by several agents: one write, visible everywhere (Lab 1C).</li>
+        <li>The context window is "RAM"; the agent <b>pages</b> data in and out itself through tool calls.</li>
+        <li><b>Memory blocks</b>: label, description, value, character limit; pinned in context. Can be <code>read_only</code>.</li>
+        <li><b>Archival memory</b>: vector store of passages, queried with <code>archival_memory_search</code>.</li>
+        <li><b>Conversation search</b> recovers messages that fell out of the window.</li>
+        <li>A block can be <b>shared</b> by several agents (Lab 1C), and <b>sleep-time agents</b> rewrite shared blocks in the background every N steps (default 5).</li>
       </ul>
     </div>
     <pre>shared = client.blocks.create(
@@ -228,57 +262,61 @@ for name in ["supervisor", "worker"]:
         name=name, model=MODEL,
         memory_blocks=[{"label": "persona",
             "value": f"I am the {name}"}],
-        block_ids=[shared.id])  # same block</pre>
-  </div>
-  <div class="cite">Packer et al., arXiv:2310.08560 · docs.letta.com/guides/core-concepts/memory/shared-memory</div>
-</section>
+        block_ids=[shared.id])  # same block
 
-<!-- 10 -->
-<section class="slide">
-  <h2><small>Module 2</small>Structuring long-term memory</h2>
-  <div class="cols">
-    <div class="card"><h3>Zep / Graphiti</h3><p><b>Temporal knowledge graph</b>: edges carry when a fact was true and when it was recorded (bi-temporal), so outdated facts are invalidated rather than deleted.</p></div>
-    <div class="card"><h3>A-MEM</h3><p><b>Zettelkasten-style notes</b>: each memory gets keywords, tags and links; new memories can update older notes ("memory evolution").</p></div>
-    <div class="card"><h3>Mem0</h3><p>An LLM <b>extracts</b> candidate facts from each exchange, then decides to add / update / delete against existing memories; a graph variant adds relations.</p></div>
-    <div class="card"><h3>MemSkill</h3><p>Memory operations as <b>learnable, evolving skills</b> rather than fixed hand-written procedures.</p></div>
+# background memory consolidation
+client.agents.create(..., enable_sleeptime=True)</pre>
   </div>
-  <div class="cite">Zep arXiv:2501.13956 · A-MEM arXiv:2502.12110 · Mem0 arXiv:2504.19413 · MemSkill arXiv:2602.02474</div>
+  <div class="cite">Packer et al., arXiv:2310.08560 · Lin et al., Sleep-time Compute, arXiv:2504.13171 · docs.letta.com (memory blocks, archival memory, sleep-time agents)</div>
 </section>
 
 <!-- 11 -->
+<section class="slide">
+  <h2><small>Module 2</small>Structuring long-term memory</h2>
+  <div class="cols">
+    <div class="card"><h3>Zep / Graphiti</h3><p><b>Bi-temporal knowledge graph</b>: timeline T (when facts held) and T′ (when ingested). A contradicting new edge sets the old edge's <code>t_invalid</code> instead of deleting it.</p></div>
+    <div class="card"><h3>A-MEM</h3><p><b>Zettelkasten notes</b>: each memory gets context, keywords and tags and is linked to related notes; new memories can update older notes' descriptions.</p></div>
+    <div class="card"><h3>Mem0</h3><p>Extract salient facts, then an LLM picks <b>ADD / UPDATE / DELETE / NOOP</b> against similar memories via a tool call. Mem0<sup>g</sup> stores a directed labeled graph.</p></div>
+    <div class="card"><h3>MemSkill</h3><p>Memory operations as <b>evolvable skills</b>: a controller picks skills, an LLM executor applies them, a designer refines or adds skills from hard cases.</p></div>
+  </div>
+  <div class="cite">Zep arXiv:2501.13956 · A-MEM arXiv:2502.12110 · Mem0 arXiv:2504.19413 · MemSkill arXiv:2602.02474 · Survey: Du, arXiv:2603.07670</div>
+</section>
+
+<!-- 12 -->
 <section class="slide">
   <h2><small>Module 3</small>KV-cache as paged memory</h2>
   <div class="cols">
     <div>
       <h3 class="accent2" style="font-size:24px;margin:0 0 8px">PagedAttention (vLLM)</h3>
       <ul>
-        <li>KV-cache split into fixed-size <b>blocks</b>, mapped through a per-sequence <b>block table</b>, like virtual memory pages.</li>
-        <li>Near-zero fragmentation; blocks can be <b>shared copy-on-write</b> across sequences.</li>
+        <li>KV-cache split into fixed-size <b>blocks</b> mapped through a per-sequence <b>block table</b>, like virtual-memory pages.</li>
+        <li>Near-zero fragmentation; blocks shared copy-on-write across sequences.</li>
       </ul>
       <h3 class="accent2" style="font-size:24px;margin:20px 0 8px">RadixAttention (SGLang)</h3>
       <ul>
-        <li>Keeps KV for past requests in a <b>radix tree</b> keyed by tokens; any request sharing a prefix reuses it.</li>
-        <li>LRU eviction of leaves.</li>
+        <li>Keeps past KV in a <b>radix tree</b> keyed by tokens; any request sharing a prefix reuses it; LRU eviction.</li>
       </ul>
     </div>
     <div class="card">
-      <h3>Why agents love prefix caching</h3>
+      <h3>Why agents care</h3>
       <p>Agents resend the same system prompt, tool schemas and history every turn. If the prefix is byte-identical, only the new suffix is prefilled.</p>
-      <p class="warn">Anything that rewrites the head of the prompt (timestamps, re-ordered tools, early compaction) throws the cache away.</p>
+      <p class="warn">Anything that rewrites the head of the prompt (timestamps, re-ordered tools, early compaction, mid-session memory edits) throws the cache away.</p>
+      <p class="muted">Harness-side answers: Hermes freezes memory at session start and applies prompt-cache breakpoints; Manus keeps context append-only.</p>
     </div>
   </div>
-  <div class="cite">Kwon et al., arXiv:2309.06180 · Zheng et al., arXiv:2312.07104</div>
+  <div class="cite">Kwon et al., arXiv:2309.06180 · Zheng et al., arXiv:2312.07104 · Hermes developer guide: architecture</div>
 </section>
 
-<!-- 12 -->
+<!-- 13 -->
 <section class="slide">
   <h2><small>Module 3</small>Beyond exact-prefix reuse</h2>
   <div class="cols">
     <div>
       <ul>
-        <li>Agent prompts are <b>assembled</b> from pieces: skills, retrieved docs, tool outputs. The same piece often appears at a different offset.</li>
-        <li><b>LMCache</b> hashes KV in fixed chunks (256 tokens by default) and stores them across GPU, CPU DRAM and disk tiers, so repeated chunks can be reused.</li>
-        <li><b>AsymCache</b> introduces Multi-Segment Attention plus a matching eviction policy and adaptive chunking to manage KV for segmented prompts losslessly.</li>
+        <li>Agent prompts are <b>assembled</b> from pieces (skills, retrieved docs, tool outputs); the same piece often appears at a different offset.</li>
+        <li><b>LMCache</b> stores KV in chunks (256 tokens in its examples) across GPU, CPU DRAM and disk, and shares it across engine instances.</li>
+        <li>Reusing a chunk at a <b>non-prefix</b> position needs <b>CacheBlend</b>: reuse the chunk's KV and recompute a small subset of tokens to fix cross-attention (<code>LMCACHE_ENABLE_BLENDING</code>).</li>
+        <li><b>AsymCache</b>: Multi-Segment Attention + matching eviction + adaptive chunking for lossless segmented KV management.</li>
       </ul>
     </div>
     <pre># lmcache_config.yaml
@@ -291,12 +329,12 @@ vllm serve Qwen/Qwen3-8B \
   --kv-offloading-backend lmcache \
   --kv-offloading-size 64</pre>
   </div>
-  <div class="cite">docs.lmcache.ai · AsymCache: Shi et al., arXiv:2606.02964 · docs.vllm.ai/en/stable/examples/disaggregated/lmcache/</div>
+  <div class="cite">docs.lmcache.ai (CPU offload; blending) · Yao et al., CacheBlend, arXiv:2405.16444 · Shi et al., AsymCache, arXiv:2606.02964</div>
 </section>
 
-<!-- 13 -->
+<!-- 14 -->
 <section class="slide">
-  <h2><small>Module 3</small>A deeper KV memory hierarchy</h2>
+  <h2><small>Module 3</small>A deeper KV hierarchy, and agents that edit their own cache</h2>
   <div class="cols">
     <div>
       <table>
@@ -308,174 +346,166 @@ vllm serve Qwen/Qwen3-8B \
         <tr><td>5 RDMA fabric</td><td>Peer / pooled memory</td></tr>
         <tr><td>6 Parallel filesystem</td><td>Cold, shared</td></tr>
       </table>
-      <p class="muted" style="font-size:17px">Predictive placement moves blocks before they are needed.</p>
+      <p class="muted" style="font-size:17px">Predictive placement extends KV capacity per node from ~40 GB to over 38 TB.</p>
     </div>
     <div class="card">
-      <h3>Cache engineering for agents (AKV)</h3>
-      <p>Treat what the agent sends as something to <b>engineer for cache reuse</b>, the way prompt engineering targets accuracy, and co-design the serving engine (AKV) to support it behind a stateless, API-compatible interface.</p>
+      <h3>Cache engineering (AKV)</h3>
+      <p>Instead of <i>context</i> engineering (trim or summarize history, then re-prefill), the <b>agent directly controls its active KV-cache</b>:</p>
+      <ul>
+        <li><b>Drop</b>: exclude chosen entries from future attention.</li>
+        <li><b>Repos</b>: adjust positions of retained keys.</li>
+      </ul>
+      <p>The AKV engine keeps a stateless, API-compatible interface and handles stateful reuse internally, since identical tokens can now map to different caches.</p>
     </div>
   </div>
-  <div class="cite">Ganjihal, arXiv:2604.26968 (six-tier hierarchy) · Fu et al., Cache Engineering for Agents, arXiv:2610.28577</div>
-</section>
-
-<!-- 14 -->
-<section class="slide">
-  <h2><small>Module 4</small>Memory is an attack surface</h2>
-  <p>Threats follow the <b>memory lifecycle</b>. Each phase has its own attacks and defenses:</p>
-  <div class="cols3" style="margin-top:12px">
-    <div class="card"><h3>1 · Write</h3><p>Poisoned content enters memory (injected via a web page, email or tool output).</p></div>
-    <div class="card"><h3>2 · Store</h3><p>Tampering or leakage at rest.</p></div>
-    <div class="card"><h3>3 · Retrieve</h3><p>Malicious entries engineered to be recalled for target queries.</p></div>
-    <div class="card"><h3>4 · Execute</h3><p>Recalled memory steers tool calls and actions.</p></div>
-    <div class="card"><h3>5 · Share &amp; propagate</h3><p>Shared blocks spread a poisoned fact to other agents.</p></div>
-    <div class="card"><h3>6 · Forget &amp; rollback</h3><p>Can a bad memory actually be removed, and its effects undone?</p></div>
-  </div>
-  <div class="cite">Lin et al., A Survey on Long-Term Memory Security in LLM Agents, arXiv:2604.16548</div>
+  <div class="cite">Ganjihal, arXiv:2604.26968 · Fu et al., Cache Engineering for Agents, arXiv:2610.28577</div>
 </section>
 
 <!-- 15 -->
 <section class="slide">
-  <h2><small>Module 4</small>Defenses and tool arbitration</h2>
-  <div class="cols">
-    <div class="card">
-      <h3>A-MemGuard</h3>
-      <ul>
-        <li><b>Consensus validation</b>: compare reasoning paths built from several related memories; a poisoned entry produces a divergent path.</li>
-        <li><b>Dual memory</b>: detected failures are distilled into "lessons" kept separately and consulted before acting.</li>
-        <li>No change to the agent's core architecture.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>OS-style arbitration</h3>
-      <ul>
-        <li>Access manager: which agent may read/write which block or tool.</li>
-        <li>Provenance on every write (source, time, agent).</li>
-        <li>Human confirmation for irreversible tool calls.</li>
-        <li>Shared blocks get stricter write policy than private ones.</li>
-      </ul>
-    </div>
+  <h2><small>Module 4</small>Memory is an attack surface</h2>
+  <p>Threats follow the <b>memory lifecycle</b>. Each phase has its own attacks and defenses:</p>
+  <div class="cols3" style="margin-top:12px">
+    <div class="card"><h3>1 · Write</h3><p>Poisoned content enters memory (via a web page, email or tool output).</p></div>
+    <div class="card"><h3>2 · Store</h3><p>Tampering or leakage at rest.</p></div>
+    <div class="card"><h3>3 · Retrieve</h3><p>Entries engineered to be recalled for target queries.</p></div>
+    <div class="card"><h3>4 · Execute</h3><p>Recalled memory steers tool calls and actions.</p></div>
+    <div class="card"><h3>5 · Share &amp; propagate</h3><p>Shared blocks spread a poisoned fact to other agents.</p></div>
+    <div class="card"><h3>6 · Forget &amp; rollback</h3><p>Can a bad memory be removed and its effects undone?</p></div>
   </div>
-  <div class="cite">Wei et al., arXiv:2510.02373 (ICML 2026 per authors' repo) · AIOS access manager, arXiv:2403.16971</div>
+  <div class="cite">Lin et al., A Survey on Long-Term Memory Security in LLM Agents, arXiv:2604.16548</div>
 </section>
 
 <!-- 16 -->
 <section class="slide">
-  <h2><small>Module 5</small>Where memory plugs into real harnesses</h2>
-  <table>
-    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th><th>Letta</th><th>AIOS</th></tr>
-    <tr><td>Language</td><td>Python</td><td>TypeScript</td><td>Python / TS SDKs</td><td>Python</td></tr>
-    <tr><td>Memory hook</td><td><code>MemoryProvider</code> ABC</td><td><code>plugins.slots.memory</code></td><td>Memory blocks + archival</td><td>Memory manager</td></tr>
-    <tr><td>Context hook</td><td><code>ContextEngine</code> ABC</td><td><code>registerContextEngine</code></td><td>Server-side context mgmt</td><td>Context manager</td></tr>
-    <tr><td>Select via</td><td><code>memory.provider</code>, <code>context.engine</code></td><td><code>plugins.slots.contextEngine</code></td><td>Agent config</td><td>Kernel config</td></tr>
-    <tr><td>Multi-agent sharing</td><td>Via provider backend</td><td>Subagent spawn hooks</td><td><code>block_ids</code></td><td>Kernel-mediated</td></tr>
-  </table>
-  <p class="muted" style="font-size:17px;margin-top:16px">Details and code on slides 22–24 (<code>05_opensource_plugin_apis_slides.html</code>) and in Lab 1.</p>
+  <h2><small>Module 4</small>Defenses and access control</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>A-MemGuard</h3>
+      <ul>
+        <li><b>Consensus validation</b>: compare reasoning paths derived from several related memories; a poisoned entry diverges.</li>
+        <li><b>Dual memory</b>: detected failures become "lessons", stored separately and consulted before acting.</li>
+        <li>No change to the agent's core architecture.</li>
+      </ul>
+      <h3 style="margin-top:14px">Agent libOS</h3>
+      <p>Separates operation admission (identity, capabilities, approvals, budgets) from information-flow admission, so a self-evolving agent's new tools and skills don't silently gain authority.</p>
+    </div>
+    <div class="card">
+      <h3>What harnesses ship today</h3>
+      <ul>
+        <li><b>AIOS</b>: privilege groups + confirmation for irreversible ops.</li>
+        <li><b>Hermes</b>: dangerous-command detection and approval prompts; DM pairing; controlled env/credential passthrough to sandboxes.</li>
+        <li><b>OpenClaw</b>: device pairing; optional sandbox (Docker by default), which docs call "not a perfect security boundary".</li>
+        <li><b>Letta</b>: <code>read_only</code> blocks for shared policy.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Wei et al., arXiv:2510.02373 (ICML 2026 per authors' repo) · Zhang, Agent libOS, arXiv:2606.03895 · harness docs (slides 22–25)</div>
 </section>
 
 <!-- 17 -->
 <section class="slide">
-  <h2><small>Module 5</small>One turn, every hook</h2>
-  <svg viewBox="0 0 1136 400" width="1136" height="400">
-    <line x1="20" y1="200" x2="1116" y2="200" stroke="#2a3550" stroke-width="3"/>
-    <g font-size="17">
-      <circle cx="80" cy="200" r="12" fill="#7be0b8"/><text x="30" y="160">user msg</text><text x="30" y="250" fill="#9aa6bd">ingest()</text>
-      <circle cx="260" cy="200" r="12" fill="#7be0b8"/><text x="200" y="160">prefetch()</text><text x="200" y="250" fill="#9aa6bd">recall memory</text>
-      <circle cx="450" cy="200" r="12" fill="#6ea8ff"/><text x="390" y="160">assemble()</text><text x="390" y="250" fill="#9aa6bd">fit token budget</text>
-      <circle cx="640" cy="200" r="12" fill="#ffb86b"/><text x="590" y="160">LLM call</text><text x="590" y="250" fill="#9aa6bd">prefix cache hit?</text>
-      <circle cx="830" cy="200" r="12" fill="#7be0b8"/><text x="770" y="160">sync_turn()</text><text x="770" y="250" fill="#9aa6bd">persist (async)</text>
-      <circle cx="1040" cy="200" r="12" fill="#ff7a85"/><text x="960" y="160">compress()</text><text x="930" y="250" fill="#9aa6bd">on_pre_compress first</text>
-    </g>
-    <text x="20" y="330" font-size="18">Green = Hermes MemoryProvider hooks · Blue = OpenClaw ContextEngine · Red = Hermes ContextEngine</text>
-    <text x="20" y="362" font-size="18" fill="#9aa6bd">Exercise: mark which hooks can change the prompt prefix, and therefore the KV-cache hit rate.</text>
-  </svg>
+  <h2><small>Module 5</small>How open harnesses implement AgentOS (1/2)</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent (Python)</th><th>OpenClaw (TypeScript)</th><th>Letta</th><th>AIOS</th></tr>
+    <tr><td>① Loop / runtime</td><td><code>AIAgent</code> loop; CLI + messaging gateway</td><td>One Gateway per host; embedded agent runner</td><td>Stateful agents on a server (Cloud or self-hosted)</td><td>Kernel serving SDK syscalls</td></tr>
+    <tr><td>② Scheduling</td><td>Cron jobs as first-class agent tasks</td><td>Runs serialized per session; cron events</td><td>Sleep-time agents every N steps</td><td>FIFO / round-robin syscall scheduler</td></tr>
+    <tr><td>③ Context</td><td><code>ContextEngine</code> plugin; default compressor summarizes middle turns</td><td>Context-engine slot: ingest / assemble / compact / afterTurn</td><td>Pinned blocks + message history; conversation search</td><td>Context manager snapshot / restore</td></tr>
+    <tr><td>④a In-context memory</td><td><code>MEMORY.md</code> (2,200 chars) + <code>USER.md</code>, frozen at session start</td><td><code>MEMORY.md</code> + <code>USER.md</code> loaded at session start</td><td>Memory blocks (label, description, value, limit)</td><td>Memory manager (RAM, LRU-K)</td></tr>
+    <tr><td>④b Long-term memory</td><td>SQLite + FTS5 session search; external providers (Honcho, Mem0…)</td><td>Daily notes via <code>memory_search</code>; "dreaming" distills into MEMORY.md</td><td>Archival memory (vector passages)</td><td>Storage manager (files + vector DB)</td></tr>
+  </table>
+  <div class="cite">Hermes developer guide (architecture, memory) · docs.openclaw.ai (architecture, agent loop, context engine, memory) · docs.letta.com · arXiv:2403.16971</div>
 </section>
 
 <!-- 18 -->
 <section class="slide">
-  <h2><small>Module 6</small>Measuring the OS</h2>
-  <div class="cols">
-    <div>
-      <ul>
-        <li><b>Throughput</b>: agent tasks or tokens per second.</li>
-        <li><b>Latency</b>: time-to-first-token and <b>P99</b> per LLM / tool syscall, not just the mean.</li>
-        <li><b>KV-cache hit rate</b> and prefill tokens saved.</li>
-        <li><b>Fairness</b> across concurrent agents:</li>
-      </ul>
-      <p style="font-size:30px;text-align:center;margin:18px 0">J(x) = (Σ x<sub>i</sub>)² / (n · Σ x<sub>i</sub>²)</p>
-      <p class="muted" style="font-size:17px">J = 1 when all n agents get equal service; J = 1/n when one agent gets everything.</p>
-    </div>
-    <div class="card">
-      <h3>Experiment (Lab 2)</h3>
-      <p>Run 8 agents sharing one long system prompt. Compare FIFO vs. round-robin, with and without LMCache offload. Report TTFT P50/P99 and J over per-agent throughput.</p>
-    </div>
-  </div>
-  <div class="cite">Jain, Chiu &amp; Hawe, DEC-TR-301 (1984).</div>
+  <h2><small>Module 5</small>How open harnesses implement AgentOS (2/2)</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th><th>Letta</th><th>AIOS</th></tr>
+    <tr><td>⑤ Tools &amp; execution</td><td>Tool registry (~28 toolsets); terminal backends: local, Docker, SSH, Daytona, Modal…</td><td>Sandbox off by default; Docker default, also Podman, SSH</td><td>Server tools (web search, <code>run_code</code> sandbox), custom tools</td><td>Tool manager</td></tr>
+    <tr><td>⑥ Skills</td><td><code>SKILL.md</code> (agentskills.io); progressive disclosure; agent writes skills via <code>skill_manage</code></td><td><code>SKILL.md</code> dirs with precedence; ClawHub registry</td><td>—</td><td>—</td></tr>
+    <tr><td>⑦ Multi-agent</td><td><code>delegate_task</code>: isolated children, 10 in parallel by default, depth 1</td><td>Sub-agents in own session; <code>context</code>: isolated (default) or fork; announce back</td><td>Shared blocks across agents</td><td>Agents share kernel services</td></tr>
+    <tr><td>⑧ Access control</td><td>Approval prompts for dangerous commands; DM pairing</td><td>Device pairing; sandbox + tool policy</td><td><code>read_only</code> blocks</td><td>Access manager</td></tr>
+    <tr><td>⑨ Extension</td><td>Plugins: tools, ~37 lifecycle hooks, memory providers, context engines</td><td>Plugins with exclusive kinds via <code>plugins.slots</code></td><td>Python / TS SDKs</td><td>AIOS SDK (Cerebrum)</td></tr>
+  </table>
+  <div class="cite">"—" = not documented as a first-class feature in the sources checked (Oct 2026). Per-harness detail: companion slides 22–25.</div>
 </section>
 
 <!-- 19 -->
 <section class="slide">
-  <h2><small>Module 6</small>Evaluating trajectories, not just answers</h2>
-  <div class="cols">
-    <div>
-      <ul>
-        <li>Agents can reach a right answer the wrong way (unsafe tool call, wasted steps), or a wrong answer for a fixable reason.</li>
-        <li><b>Trajectory evaluation</b>: compare the actual sequence of tool calls to an expected one.</li>
-        <li><b>Response evaluation</b>: score the final answer against a reference or rubric.</li>
-        <li>Google ADK supports both, from test files or the CLI.</li>
-      </ul>
-    </div>
-    <pre># ADK: run an eval set against an agent
-adk eval path/to/agent eval_set.evalset.json
-
-# criteria (test_config.json)
-{
-  "criteria": {
-    "tool_trajectory_avg_score": 1.0,
-    "response_match_score": 0.8
-  }
-}</pre>
-  </div>
-  <div class="cite">adk.dev/evaluate · github.com/google/adk-python</div>
+  <h2><small>Module 5</small>One turn, every hook</h2>
+  <svg viewBox="0 0 1136 420" width="1136" height="420">
+    <line x1="20" y1="170" x2="1116" y2="170" stroke="#2a3550" stroke-width="3"/>
+    <g font-size="16">
+      <circle cx="70" cy="170" r="12" fill="#ffb86b"/><text x="20" y="130">user msg</text>
+      <circle cx="230" cy="170" r="12" fill="#7be0b8"/><text x="180" y="130">recall</text>
+      <circle cx="400" cy="170" r="12" fill="#6ea8ff"/><text x="350" y="130">assemble</text>
+      <circle cx="570" cy="170" r="12" fill="#ffb86b"/><text x="520" y="130">LLM call</text>
+      <circle cx="740" cy="170" r="12" fill="#ffb86b"/><text x="690" y="130">tool call</text>
+      <circle cx="910" cy="170" r="12" fill="#7be0b8"/><text x="860" y="130">persist</text>
+      <circle cx="1070" cy="170" r="12" fill="#ff7a85"/><text x="1010" y="130">compact</text>
+    </g>
+    <g font-size="14">
+      <text x="0" y="206" fill="#7be0b8" font-weight="700">Hermes</text>
+      <text x="180" y="220">prefetch()</text><text x="520" y="220">pre_llm_call</text><text x="690" y="220">pre/post_tool_call</text><text x="860" y="220">sync_turn()</text><text x="980" y="220">on_pre_compress →</text><text x="980" y="238">compress()</text>
+      <text x="0" y="262" fill="#6ea8ff" font-weight="700">OpenClaw</text>
+      <text x="40" y="284">ingest()</text><text x="350" y="284">assemble()</text><text x="860" y="284">afterTurn()</text><text x="1010" y="284">compact()</text>
+      <text x="0" y="318" fill="#ffb86b" font-weight="700">Letta</text>
+      <text x="180" y="340">blocks always in context</text><text x="690" y="340">memory tools edit blocks</text><text x="910" y="340">sleep-time agent every N steps</text>
+    </g>
+    <text x="0" y="386" font-size="17">Exercise: mark which hooks can change the prompt prefix, and therefore the KV-cache hit rate (slide 12).</text>
+  </svg>
+  <div class="cite">Hermes plugin hook catalog and memory/context-engine guides · docs.openclaw.ai/concepts/context-engine · docs.letta.com sleep-time agents</div>
 </section>
 
 <!-- 20 -->
+<section class="slide">
+  <h2><small>Module 6</small>Measuring the OS and evaluating trajectories</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li><b>Throughput</b>: agent tasks or tokens per second.</li>
+        <li><b>Latency</b>: TTFT and <b>P99</b> per LLM / tool syscall.</li>
+        <li><b>KV-cache hit rate</b> and prefill tokens saved.</li>
+        <li><b>Fairness</b> across n concurrent agents:</li>
+      </ul>
+      <p style="font-size:28px;text-align:center;margin:12px 0">J(x) = (Σ x<sub>i</sub>)² / (n · Σ x<sub>i</sub>²)</p>
+      <p class="muted" style="font-size:16px">J = 1 when all agents get equal service; 1/n when one gets everything.</p>
+    </div>
+    <div>
+      <p style="margin:0 0 8px;font-size:19px"><b>Trajectory</b> (tool-call sequence) + <b>response</b> evaluation with Google ADK:</p>
+      <pre style="font-size:15px">adk eval &lt;AGENT_MODULE_FILE_PATH&gt; \
+  &lt;EVAL_SET_FILE_PATH_OR_ID&gt; \
+  [--config_file_path=test_config.json]
+
+# defaults when no criteria are given
+{ "criteria": {
+    "tool_trajectory_avg_score": 1.0,
+    "response_match_score": 0.8 } }</pre>
+    </div>
+  </div>
+  <div class="cite">Jain, Chiu &amp; Hawe, DEC-TR-301 (1984) · adk.dev/evaluate · Yehudai et al., Survey on Evaluation of LLM-based Agents, arXiv:2503.16416</div>
+</section>
+
+<!-- 21 -->
 <section class="slide">
   <h2><small>Module 7</small>Harness²: harnesses that improve themselves</h2>
   <div class="cols">
     <div>
       <ul>
-        <li>Model weights stay <b>fixed</b>; the <b>harness</b> around the model changes.</li>
-        <li><b>Task-level recursion</b>: <span class="accent2">propose</span> edits to the execution harness, <span class="accent2">probe</span> them on the same task, <span class="accent2">compose</span> a refined harness from behavioral contrasts. No ground-truth feedback.</li>
-        <li><b>Harnessing-level recursion</b>: after each task, keep the adopted harness and the <b>lessons supported by evidence</b> to guide future tasks.</li>
+        <li>Model weights stay <b>fixed</b>; the <b>harness</b> changes.</li>
+        <li><b>Task-level recursion</b>: <span class="accent2">propose</span> harness edits, <span class="accent2">probe</span> them on the same task, <span class="accent2">compose</span> a refined harness from behavioral contrasts. No ground-truth feedback.</li>
+        <li><b>Harnessing-level recursion</b>: keep the adopted harness and the <b>evidence-supported lessons</b> for future tasks.</li>
       </ul>
     </div>
     <div class="card">
-      <h3>8 editable components</h3>
-      <p>system prompt · guardrails · memory · tool guidance · subagents · skills · scripts · plugins</p>
+      <h3>Its 8 editable components = our AgentOS boxes</h3>
+      <p>system prompt · guardrails (⑧) · memory (④) · tool guidance (⑤) · subagents (⑦) · skills (⑥) · scripts (⑤) · plugins (⑨)</p>
       <h3 style="margin-top:16px">Benchmarks</h3>
       <p>LAB, WorkBuddy-Bench, JobBench (<code>harness2-setup lab|wb|jb</code>)</p>
     </div>
   </div>
-  <div class="cite">Xu et al., Harness²: Recursive Agent Harnessing for an Open World, arXiv:2610.14224 · github.com/google-research/harness2</div>
-</section>
-
-<!-- 21 -->
-<section class="slide">
-  <h2><small>Wrap-up</small>Labs and what's next</h2>
-  <div class="cols3">
-    <div class="card"><h3>Lab 1 · Plugins</h3><p>Write a Hermes <code>MemoryProvider</code> + <code>ContextEngine</code>, an OpenClaw context engine, and Letta shared blocks.</p></div>
-    <div class="card"><h3>Lab 2 · KV plane</h3><p>Serve with LMCache CPU offload; compose LMCache + NIXL with <code>MultiConnector</code>; measure TTFT.</p></div>
-    <div class="card"><h3>Lab 3 · Harness²</h3><p>Run the demo, read the adopted harness and lessons, and fill in the evidence-backed lesson worksheet.</p></div>
-  </div>
-  <div class="card" style="margin-top:24px">
-    <h3>Open questions</h3>
-    <ul>
-      <li>Should Plane-1 memory edits be scheduled to preserve Plane-2 cache?</li>
-      <li>Who arbitrates when a self-improving harness edits a shared memory or tool policy?</li>
-      <li>What is the right "process isolation" for agents that share blocks?</li>
-    </ul>
-  </div>
-  <div class="cite">Continue with slides 22–24: 05_opensource_plugin_apis_slides.html</div>
+  <div class="cite">Xu et al., Harness²: Recursive Agent Harnessing for an Open World, arXiv:2610.14224 · github.com/google-research/harness2 · Continue with slides 22–29</div>
 </section>
 
 </div>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LLM AgentOS — Plugin APIs, vLLM KV &amp; Harness² (22–24)</title>
+<title>LLM AgentOS — Harness Deep-Dives (22–29)</title>
 <style>
   :root {
     --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
@@ -35,6 +35,8 @@
   table { border-collapse: collapse; width: 100%; font-size: 18px; }
   th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
   th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
   .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
   .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
   .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
@@ -54,11 +56,111 @@
 
 <!-- 22 -->
 <section class="slide">
+  <h2><small>Harness deep-dive · Python · MIT</small>Hermes Agent (Nous Research)</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Runtime &amp; context</h3>
+      <ul>
+        <li><code>AIAgent</code> loop (<code>agent/conversation_loop.py</code>): provider selection, prompt build, tool execution, retries, compression, persistence.</li>
+        <li>Pluggable <code>ContextEngine</code>; default compressor summarizes middle turns past a threshold. System prompt never changes mid-conversation; Anthropic cache breakpoints applied.</li>
+        <li>Gateway: 25+ chat platforms; cron jobs run a fresh agent with attached skills.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Memory, skills, delegation, safety</h3>
+      <ul>
+        <li><code>MEMORY.md</code> (2,200 chars) + <code>USER.md</code> (1,375), snapshot frozen at session start; SQLite FTS5 search over past sessions; one external <code>MemoryProvider</code>.</li>
+        <li>Skills: <code>skills_list</code> → <code>skill_view</code>; the agent saves workflows as skills with <code>skill_manage</code> (procedural memory).</li>
+        <li><code>delegate_task</code>: isolated children, 10 concurrent by default, depth 1, only the summary returns.</li>
+        <li>Terminal backends (local, Docker, SSH, Daytona, Modal…); dangerous-command approval.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">hermes-agent.nousresearch.com/docs: developer-guide/architecture · features/memory · features/skills · guides/delegation-patterns</div>
+</section>
+
+<!-- 23 -->
+<section class="slide">
+  <h2><small>Harness deep-dive · TypeScript · MIT</small>OpenClaw</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Runtime &amp; context</h3>
+      <ul>
+        <li>One long-lived <b>Gateway</b> per host owns every channel (WhatsApp, Telegram, Slack, Discord, Signal, iMessage, WebChat); clients and device nodes connect over WebSocket.</li>
+        <li>Agent runs are <b>serialized per session</b>.</li>
+        <li><b>Context engine</b> slot: <code>ingest</code> → <code>assemble</code> (fit token budget) → <code>compact</code> → <code>afterTurn</code>; default <code>"legacy"</code>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Memory, skills, sub-agents, safety</h3>
+      <ul>
+        <li>Plain Markdown in the workspace: <code>MEMORY.md</code> + <code>USER.md</code> at session start; daily notes <code>memory/YYYY-MM-DD.md</code> via <code>memory_search</code>/<code>memory_get</code>; "dreaming" distills them into <code>MEMORY.md</code>. "No hidden state."</li>
+        <li>Skills: <code>SKILL.md</code> dirs, workspace &gt; personal &gt; bundled precedence; ClawHub registry.</li>
+        <li>Sub-agents in their own session; <code>context</code> isolated (default) or fork; results announced back.</li>
+        <li>Sandbox off by default; Docker default backend.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai: concepts/architecture · agent-loop · context-engine · memory · tools/skills · tools/subagents · gateway/sandboxing</div>
+</section>
+
+<!-- 24 -->
+<section class="slide">
+  <h2><small>Harness deep-dive · Apache-2.0</small>Letta (formerly MemGPT)</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Agents as server-side state</h3>
+      <ul>
+        <li>Agents live on a server (Letta Cloud or self-hosted), so memory and history persist across sessions and clients.</li>
+        <li><b>Memory blocks</b>: label, description ("the main information used by the agent to determine how to read and write"), value, limit; optionally <code>read_only</code>.</li>
+        <li><b>Archival memory</b>: vector passages via <code>archival_memory_insert/search</code>; developers use <code>client.agents.passages.*</code>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Multi-agent &amp; background compute</h3>
+      <ul>
+        <li><b>Shared blocks</b>: attach one block to many agents with <code>block_ids</code>.</li>
+        <li><b>Sleep-time agents</b> (<code>enable_sleeptime=True</code>) share the primary's blocks and rewrite them in the background every N steps (default 5).</li>
+        <li>Built-in server tools: web search, fetch, <code>run_code</code> sandbox.</li>
+        <li>Note: the Python V1 SDK is being deprecated in favor of the TypeScript Agent SDK.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">docs.letta.com: memory blocks · archival memory · shared memory · sleep-time agents · base tools · Lin et al., arXiv:2504.13171</div>
+</section>
+
+<!-- 25 -->
+<section class="slide">
+  <h2><small>Harness deep-dive · research kernel</small>AIOS (Rutgers)</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Kernel</h3>
+      <ul>
+        <li>Agents issue <b>syscalls</b> (LLM, memory, storage, tool) through the AIOS SDK (Cerebrum); the scheduler queues and dispatches them (FIFO or round-robin).</li>
+        <li>Context manager snapshots interrupted generation (text- or logits-based).</li>
+        <li>Memory manager keeps interaction history in RAM and evicts with <b>LRU-K</b> to the storage manager (files + vector DB) once usage passes a block limit.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Why it matters next to production harnesses</h3>
+      <ul>
+        <li>The cleanest <b>OS-shaped</b> decomposition: every component is a separate kernel module.</li>
+        <li>Production harnesses (Hermes, OpenClaw) embed the same functions inside one agent process rather than a shared kernel.</li>
+        <li>Access manager: privilege groups for cross-agent reads/writes; user confirmation before delete, overwrite or privilege changes.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Mei et al., arXiv:2403.16971 · Ge et al., arXiv:2312.03815 · github.com/agiresearch/AIOS</div>
+</section>
+
+
+<!-- 26 -->
+<section class="slide">
   <h2><small>Module 5 · Plugin APIs</small>Hermes Agent vs. OpenClaw, side by side</h2>
   <div class="cols">
     <div>
       <p class="accent2" style="margin:0 0 8px;font-size:19px"><b>Hermes Agent</b> (Python) · <code>~/.hermes/plugins/&lt;name&gt;/</code></p>
-      <pre style="font-size:14px">from agent.memory_provider import MemoryProvider
+      <pre style="font-size:13px">from agent.memory_provider import MemoryProvider
 
 class MyMemory(MemoryProvider):
     name = property(lambda self: "my-mem")
@@ -81,7 +183,7 @@ context: { engine: my-engine }   # default "compressor"</pre>
     </div>
     <div>
       <p class="accent" style="margin:0 0 8px;font-size:19px"><b>OpenClaw</b> (TypeScript) · <code>openclaw.plugin.json</code></p>
-      <pre style="font-size:14px">import { buildMemorySystemPromptAddition,
+      <pre style="font-size:13px">import { buildMemorySystemPromptAddition,
          delegateCompactionToRuntime }
   from "openclaw/plugin-sdk/core";
 
@@ -108,7 +210,7 @@ export default function (api) {
   <div class="cite">Hermes Agent developer guide (memory-provider-plugin, context-engine-plugin) · docs.openclaw.ai context engines</div>
 </section>
 
-<!-- 23 -->
+<!-- 27 -->
 <section class="slide">
   <h2><small>Module 3 · Lab 2</small>vLLM KV connectors: composing the system memory plane</h2>
   <div class="cols">
@@ -143,7 +245,7 @@ LMCACHE_MAX_LOCAL_CPU_SIZE=64   # GiB</pre>
   <div class="cite">docs.vllm.ai: kv_connector/v1/multi_connector · features/nixl_connector_usage · docs.lmcache.ai/getting_started/quickstart/offload_kv_cache</div>
 </section>
 
-<!-- 24 -->
+<!-- 28 -->
 <section class="slide">
   <h2><small>Module 7 · Lab 3</small>Harness² internals</h2>
   <svg viewBox="0 0 1136 250" width="1136" height="250">
@@ -179,6 +281,26 @@ harness2-report --bench lab --k 1 --mode parallel</pre>
   <div class="cite">Xu et al., arXiv:2610.14224 · github.com/google-research/harness2 (README, Oct 2026)</div>
 </section>
 
+
+<!-- 29 -->
+<section class="slide">
+  <h2><small>Wrap-up</small>Labs and what's next</h2>
+  <div class="cols3">
+    <div class="card"><h3>Lab 1 · Plugins</h3><p>Write a Hermes <code>MemoryProvider</code> + <code>ContextEngine</code>, an OpenClaw context engine, and Letta shared blocks.</p></div>
+    <div class="card"><h3>Lab 2 · KV plane</h3><p>Serve with LMCache CPU offload; compose LMCache + NIXL with <code>MultiConnector</code>; measure TTFT.</p></div>
+    <div class="card"><h3>Lab 3 · Harness²</h3><p>Run the demo, read the adopted harness and lessons, fill in the evidence-backed lesson worksheet.</p></div>
+  </div>
+  <div class="card" style="margin-top:24px">
+    <h3>Open questions</h3>
+    <ul>
+      <li>Should Plane-1 memory edits be scheduled to preserve Plane-2 cache?</li>
+      <li>Who arbitrates when a self-improving harness edits a shared memory, skill or tool policy?</li>
+      <li>Shared kernel (AIOS) or one runtime per agent (Hermes, OpenClaw): which wins as agents multiply?</li>
+    </ul>
+  </div>
+  <div class="cite">Further viewing: Hung-yi Lee, "Context Engineering: the key technology behind AI agents" (youtu.be/lVdajtNpaGI) · references/bibliography_and_links.md</div>
+</section>
+
 </div>
 <div id="hint">← / → to navigate · F for full screen</div>
 <script>
@@ -187,7 +309,7 @@ harness2-report --bench lab --k 1 --mode parallel</pre>
   const offset = 21; // continues the master deck (slides 1–21)
   slides.forEach((s, i) => {
     const n = document.createElement('div');
-    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + 24;
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + 29;
     s.appendChild(n);
   });
   let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
