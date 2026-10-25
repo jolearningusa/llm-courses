@@ -98,10 +98,10 @@
     <tr><td>3</td><td>Plane 2: system / KV-cache memory</td><td>12–14, 29</td><td class="accent2">Lab 2: vLLM + LMCache + NIXL</td></tr>
     <tr><td>4</td><td>Tool arbitration &amp; memory security</td><td>15–16</td><td></td></tr>
     <tr><td>5</td><td>How open harnesses implement AgentOS</td><td>17–19, 22–28</td><td class="accent2">Lab 1: Hermes, OpenClaw, Letta plugins</td></tr>
-    <tr><td>6</td><td>OS-level &amp; trajectory evaluation</td><td>20</td><td></td></tr>
+    <tr><td>6</td><td>OS-level &amp; trajectory evaluation</td><td>20, observability deck</td><td></td></tr>
     <tr><td>7</td><td>Self-improving harnesses (Harness²)</td><td>21, 30</td><td class="accent2">Lab 3: google-research/harness2</td></tr>
   </table>
-  <p class="muted" style="font-size:17px;margin-top:14px">Slides 22–31 are in the companion deck <code>05_opensource_plugin_apis_slides.html</code>; the Module 2 lecture on building long-term memory is <code>02_long_term_memory_deck.html</code>.</p>
+  <p class="muted" style="font-size:17px;margin-top:14px">Slides 22–31 are in the companion deck <code>05_opensource_plugin_apis_slides.html</code>; module lectures: <code>02_long_term_memory_deck.html</code> (memory), <code>06_observability_evaluation_deck.html</code> (observability &amp; evals).</p>
 </section>
 
 <!-- 4 -->
@@ -514,9 +514,10 @@ vllm serve Qwen/Qwen3-8B \
 (function () {
   const slides = Array.from(document.querySelectorAll('.slide'));
   const offset = 0; // first slide number in this file
+  const total = 31; // slides 1–21 here, 22–31 in 05_opensource_plugin_apis_slides.html
   slides.forEach((s, i) => {
     const n = document.createElement('div');
-    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + total;
     s.appendChild(n);
   });
   let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
