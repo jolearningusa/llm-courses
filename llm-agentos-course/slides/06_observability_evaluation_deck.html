@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — Observability & Evaluation</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · Module 6 lecture</div>
+  <h1 style="margin-top:22px">Observing and evaluating an AgentOS</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">Logging, tracing, telemetry, dashboards and evals: how to tell whether a harness is healthy,
+    and whether its quality is going up or down. With the real exporters in OpenClaw, Hermes Agent and vLLM.</p>
+  <p style="margin-top:28px"><span class="pill">Traces</span><span class="pill">Metrics</span><span class="pill">OpenTelemetry GenAI</span><span class="pill">Evals</span><span class="pill">Dashboards</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>Motivation</small>Why agents are harder to monitor than services</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li><b>Non-deterministic</b>: the same input can take a different path each run.</li>
+        <li><b>Long and branching</b>: one task is dozens of model calls, tool calls, memory reads and sub-agents.</li>
+        <li><b>Failures are often silent</b>: the agent says "booked" but nothing was booked. The transcript and the outcome disagree.</li>
+        <li><b>Cost is a quality metric</b>: tokens, retries and loops cost money even when the answer is right.</li>
+        <li><b>The harness changes often</b>: prompts, tools, models and plugins, so regressions are constant.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Four questions, four signals</h3>
+      <table class="dense">
+        <tr><td>What happened?</td><td><b>Traces</b>: a span tree per run</td></tr>
+        <tr><td>What exactly was said?</td><td><b>Logs</b> and captured content (opt-in)</td></tr>
+        <tr><td>How is it running?</td><td><b>Metrics</b>: latency, tokens, cost, queues</td></tr>
+        <tr><td>Is it any good?</td><td><b>Evals</b>: graded tasks, scores on traces</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="cite">Transcript vs. outcome: Anthropic, "Demystifying evals for AI agents" (Jan 2026).</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>Where signals come from</small>Three layers of an AgentOS emit telemetry</h2>
+  <svg viewBox="0 0 1136 420" width="1136" height="420">
+    <g font-size="18">
+      <rect x="0" y="0" width="1136" height="120" rx="12" fill="#14213a" stroke="#7be0b8"/>
+      <text x="24" y="38" font-size="22" font-weight="700" fill="#7be0b8">Agent / task layer</text>
+      <text x="24" y="70">Did the task succeed? Steps per task, tool errors, loops, memory recall, user feedback.</text>
+      <text x="24" y="98" fill="#9aa6bd">Source: eval graders, scores attached to traces, outcome checks in the environment</text>
+      <rect x="0" y="146" width="1136" height="120" rx="12" fill="#14213a" stroke="#6ea8ff"/>
+      <text x="24" y="184" font-size="22" font-weight="700" fill="#6ea8ff">Harness layer (the "kernel")</text>
+      <text x="24" y="216">Runs, turns, model calls, tool executions, context assembly, queues, sessions, cost.</text>
+      <text x="24" y="244" fill="#9aa6bd">Source: harness hooks and exporters: OpenClaw diagnostics-otel, Hermes Langfuse / OTel plugins</text>
+      <rect x="0" y="292" width="1136" height="120" rx="12" fill="#14213a" stroke="#ffb86b"/>
+      <text x="24" y="330" font-size="22" font-weight="700" fill="#ffb86b">Inference engine layer</text>
+      <text x="24" y="362">TTFT, inter-token latency, queue time, running / waiting requests, KV-cache use, prefix-cache hits.</text>
+      <text x="24" y="390" fill="#9aa6bd">Source: vLLM Prometheus /metrics (Lab 2), provider usage fields for hosted APIs</text>
+    </g>
+  </svg>
+  <p class="muted" style="font-size:18px;margin-top:8px">One trace ID should tie the three together: OpenClaw sends a W3C <code>traceparent</code> header on provider calls when the transport allows it.</p>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>Traces</small>Anatomy of an agent trace</h2>
+  <div class="cols" style="grid-template-columns: 1.15fr 0.85fr">
+    <svg viewBox="0 0 640 470" width="580" height="426">
+      <g font-size="16">
+        <rect x="0" y="0" width="630" height="44" rx="6" fill="#1c2a4d" stroke="#7be0b8"/><text x="12" y="28">invoke_agent  (one turn / run)</text>
+        <rect x="30" y="56" width="600" height="40" rx="6" fill="#161d2e" stroke="#2a3550"/><text x="42" y="82">context assembly  (memory recall, compaction)</text>
+        <rect x="30" y="106" width="600" height="40" rx="6" fill="#161d2e" stroke="#6ea8ff"/><text x="42" y="132">chat {model}  → tokens, finish_reason = tool_calls</text>
+        <rect x="60" y="156" width="570" height="40" rx="6" fill="#161d2e" stroke="#ffb86b"/><text x="72" y="182">execute_tool web_search  → args, result, outcome</text>
+        <rect x="60" y="206" width="570" height="40" rx="6" fill="#161d2e" stroke="#ffb86b"/><text x="72" y="232">execute_tool memory_search</text>
+        <rect x="30" y="256" width="600" height="40" rx="6" fill="#161d2e" stroke="#6ea8ff"/><text x="42" y="282">chat {model}  → finish_reason = tool_calls</text>
+        <rect x="60" y="306" width="570" height="40" rx="6" fill="#161d2e" stroke="#ff7a85"/><text x="72" y="332">approval wait  (user confirms a risky tool)</text>
+        <rect x="60" y="356" width="570" height="40" rx="6" fill="#1c2a4d" stroke="#7be0b8"/><text x="72" y="382">sub-agent: invoke_agent researcher  (own subtree)</text>
+        <rect x="30" y="406" width="600" height="40" rx="6" fill="#161d2e" stroke="#6ea8ff"/><text x="42" y="432">chat {model}  → finish_reason = stop</text>
+      </g>
+    </svg>
+    <div>
+      <ul style="font-size:18px">
+        <li>A run is a <b>tree of spans</b>: agent → model calls → tool calls → sub-agents.</li>
+        <li>Each span carries timing, tokens, cost and status; content (prompts, tool args) is optional.</li>
+        <li>Group runs by <b>session</b> (conversation) and by <b>task</b> (eval case).</li>
+        <li>The tree is the debugging unit: you read it to find the step that went wrong.</li>
+      </ul>
+      <div class="card" style="margin-top:12px">
+        <h3>Hermes hermes-otel span names</h3>
+        <p style="font-size:16px;margin:0"><code>agent</code>, <code>skill.{name}</code>, <code>llm.{model}</code>, <code>api.{model}</code>, <code>tool.{name}</code>, <code>approval.{pattern}</code>, <code>subagent.{role}</code></p>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Span names: hermes-otel plugin docs (hermes-agent.nousresearch.com/docs/plugins/hermes_otel); operation names: OpenTelemetry GenAI semantic conventions.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Standard</small>OpenTelemetry semantic conventions for GenAI</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><th>Item</th><th>Convention</th></tr>
+        <tr><td>Operations</td><td><code>chat</code>, <code>text_completion</code>, <code>generate_content</code>, <code>embeddings</code>, <code>create_agent</code>, <code>invoke_agent</code>, <code>invoke_workflow</code>, <code>execute_tool</code></td></tr>
+        <tr><td>Span name</td><td><code>{operation} {target}</code>, e.g. <code>chat gpt-4o-mini</code>, <code>execute_tool {gen_ai.tool.name}</code></td></tr>
+        <tr><td>Attributes</td><td><code>gen_ai.provider.name</code>, <code>gen_ai.request.model</code>, <code>gen_ai.response.model</code>, <code>gen_ai.usage.input_tokens</code> / <code>output_tokens</code>, <code>gen_ai.response.finish_reasons</code>, <code>gen_ai.agent.name</code>, <code>gen_ai.tool.name</code></td></tr>
+        <tr><td>Metrics</td><td><code>gen_ai.client.operation.duration</code>, <code>gen_ai.client.token.usage</code></td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Two things to know</h3>
+      <ul>
+        <li><b>Status: Development.</b> Names can still change; opt in to the newest with <code>OTEL_SEMCONV_STABILITY_OPT_IN=gen_ai_latest_experimental</code>.</li>
+        <li><b>Content is off by default.</b> Many instrumentations turn it on with <code>OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true</code>.</li>
+        <li>OpenInference (Arize) is a parallel convention used by Phoenix; the Hermes OTel plugin emits both.</li>
+        <li>The conventions moved to their own repo: <code>open-telemetry/semantic-conventions-genai</code>.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">opentelemetry.io/docs/specs/semconv/gen-ai (moved notice); Greptime, "OpenTelemetry GenAI semantic conventions" (May 2026); OpenInference: github.com/Arize-ai/openinference.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>Harness · OpenClaw</small><code style="font-size:30px">diagnostics-otel</code>: traces, metrics, logs over OTLP</h2>
+  <div class="cols">
+    <div>
+<pre>{
+  "diagnostics": {
+    "enabled": true,
+    "otel": {
+      "enabled": true,
+      "endpoint": "http://localhost:4318",
+      "protocol": "http/protobuf",
+      "serviceName": "openclaw",
+      "logs": true,
+      "sampleRate": 0.2,
+      "captureContent": false
+    }
+  }
+}</pre>
+      <p class="muted" style="font-size:16px;margin-top:10px">Traces and metrics default on when enabled, logs default off, <code>sampleRate</code> applies to root spans; only <code>http/protobuf</code> is supported.</p>
+    </div>
+    <div>
+      <table class="dense">
+        <tr><th>Kind</th><th>Selected names</th></tr>
+        <tr><td>Spans</td><td><code>openclaw.run</code>, <code>openclaw.model.call</code>, <code>openclaw.tool.execution</code>, <code>openclaw.context.assembled</code>, <code>openclaw.tool.loop</code>, <code>openclaw.session.stuck</code></td></tr>
+        <tr><td>Cost</td><td><code>openclaw.tokens</code>, <code>openclaw.cost.usd</code>, <code>openclaw.context.tokens</code></td></tr>
+        <tr><td>Latency</td><td><code>openclaw.run.duration_ms</code>, <code>openclaw.model_call.time_to_first_byte_ms</code>, <code>openclaw.tool.execution.duration_ms</code></td></tr>
+        <tr><td>Health</td><td><code>openclaw.queue.depth</code>, <code>openclaw.queue.wait_ms</code>, <code>openclaw.model.failover</code>, <code>openclaw.memory.pressure</code></td></tr>
+        <tr><td>Privacy</td><td>No raw content by default; <code>captureContent</code> subkeys opt in per class; system prompt needs its own flag</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/gateway/opentelemetry and its configuration, metrics, spans and privacy sub-pages (openclaw 2026.7 docs).</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>Harness · Hermes Agent</small>Two observability plugins, two privacy defaults</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Bundled: <code>observability/langfuse</code></h3>
+      <ul>
+        <li>Opt-in: <code>hermes plugins enable observability/langfuse</code>.</li>
+        <li>Root span per turn ("Hermes turn"), one generation per LLM call (model, usage, cost, latency), one observation per tool call.</li>
+        <li>Sessions grouped by Hermes session ID (task ID for sub-agents).</li>
+        <li>Fail-open: missing keys or SDK becomes a silent no-op.</li>
+        <li><code>HERMES_LANGFUSE_SAMPLE_RATE</code>, <code>HERMES_LANGFUSE_MAX_CHARS</code> (12000).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Community: <code>hermes-otel</code></h3>
+      <ul>
+        <li>Turns hooks (<code>pre_llm_call</code>, <code>post_tool_call</code>, <code>subagent_start</code>, …) into a span tree.</li>
+        <li>Emits OpenInference and <code>gen_ai.*</code> attributes; tested with Phoenix, Langfuse, LangSmith, Jaeger, Tempo, SigNoz, Honeycomb and more.</li>
+        <li>Config in <code>~/.hermes/hermes_otel.yaml</code>.</li>
+        <li><span class="warn">Default <code>content_capture: full</code></span>: prompts, responses and tool data go to every backend unless set to <code>preview</code> or <code>off</code>.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:16px">Compare with OpenClaw, where content is off by default. Check the capture default of every exporter before pointing it at a shared backend.</p>
+  <div class="cite">langfuse.com/integrations/other/hermes; hermes-agent.nousresearch.com/docs/plugins/hermes_otel (requires Hermes 0.21+).</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>Engine</small>vLLM metrics: the system memory plane, measured</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><th>Metric (Prometheus, <code>/metrics</code>)</th><th>Meaning</th></tr>
+        <tr><td>vllm:time_to_first_token_seconds</td><td>TTFT histogram</td></tr>
+        <tr><td>vllm:inter_token_latency_seconds</td><td>Gap between streamed tokens</td></tr>
+        <tr><td>vllm:e2e_request_latency_seconds</td><td>End-to-end request latency</td></tr>
+        <tr><td>vllm:request_queue_time_seconds</td><td>Time waiting to be scheduled</td></tr>
+        <tr><td>vllm:num_requests_running</td><td>Running requests (also waiting)</td></tr>
+        <tr><td>vllm:kv_cache_usage_perc</td><td>Fraction of KV blocks in use</td></tr>
+        <tr><td>vllm:prefix_cache_queries / _hits</td><td>Prefix-cache hit rate = hits / queries</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Why agent builders care</h3>
+      <ul>
+        <li>Agents resend long, mostly identical prompts. A falling <b>prefix-cache hit rate</b> after a harness change usually means the prompt prefix stopped being stable (for example, memory edited mid-session).</li>
+        <li>Rising <b>queue time</b> with flat model latency means the scheduler, not the model, is the bottleneck.</li>
+        <li>KV usage near 1.0 predicts preemption and latency spikes.</li>
+      </ul>
+      <p class="muted" style="font-size:16px">Lab 2 already runs vLLM; add Prometheus and Grafana to watch these live.</p>
+    </div>
+  </div>
+  <div class="cite">docs.vllm.ai/en/stable/design/metrics. Master deck slides 9 and 12–14 cover the KV-cache plane.</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>Metrics</small>A metric catalog for a harness</h2>
+  <table class="dense">
+    <tr><th>Group</th><th>Metrics</th><th>Typical alert</th></tr>
+    <tr><td>Latency</td><td>TTFT, time per turn, time per task (P50 / P95 / P99), tool duration, queue wait</td><td>P95 turn latency doubles</td></tr>
+    <tr><td>Cost</td><td>Input / output / cached tokens per turn and per task, $ per task, context tokens per call</td><td>$ per successful task up 30%</td></tr>
+    <tr><td>Reliability</td><td>Model errors, provider failovers, tool error rate, retries, timeouts, blocked tool calls</td><td>Tool error rate &gt; 5%</td></tr>
+    <tr><td>Behavior</td><td>Steps per task, tool-loop detections, stuck sessions, compactions per session, sub-agents spawned</td><td>Any stuck session &gt; 10 min</td></tr>
+    <tr><td>Memory</td><td>Recall calls per turn, injected memories, injection precision, memory store size</td><td>Recall precision drops after a change</td></tr>
+    <tr><td>Quality</td><td>Task success (pass@1, pass^k), grader scores on sampled traces, thumbs up / down, escalations</td><td>Regression suite &lt; 95%</td></tr>
+    <tr><td>Fairness</td><td>Per-agent / per-user throughput, Jain's fairness index (master deck slide 20)</td><td>One tenant starves others</td></tr>
+  </table>
+  <div class="cite">Cost and behavior metric examples map to OpenClaw exported metrics (openclaw.tokens, openclaw.cost.usd, openclaw.tool.loop, openclaw.session.stuck).</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>Behavior</small>Detecting agent pathologies from telemetry</h2>
+  <div class="cols3">
+    <div class="card">
+      <h3>Loops</h3>
+      <p>Same tool, same args, again and again. OpenClaw exports <code>openclaw.tool.loop</code> as both a span and a metric.</p>
+      <p class="muted">Fix: loop detection in the harness, step limits, better tool errors.</p>
+    </div>
+    <div class="card">
+      <h3>Stuck sessions</h3>
+      <p>A run that never finishes or waits forever on a tool. OpenClaw: <code>openclaw.session.stuck</code>, <code>stuck_age_ms</code>, recovery counters.</p>
+      <p class="muted">Fix: timeouts, heartbeats, recovery.</p>
+    </div>
+    <div class="card">
+      <h3>Context pressure</h3>
+      <p>Context tokens creep toward the window; compactions fire every few turns. Watch <code>openclaw.context.tokens</code> and compaction counts.</p>
+      <p class="muted">Fix: better context engine (Module 1), memory tiers (memory deck).</p>
+    </div>
+  </div>
+  <div class="cols3" style="margin-top:18px">
+    <div class="card"><h3>Retry storms</h3><p>Errors trigger retries that trigger more errors; tokens spike with no progress.</p></div>
+    <div class="card"><h3>Silent wrong success</h3><p>Final message claims success, environment disagrees. Only an outcome check catches it.</p></div>
+    <div class="card"><h3>Provider drift</h3><p>Same harness, new model version: latency, cost or tool-call style shifts. Track <code>gen_ai.response.model</code>.</p></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>Evals</small>Vocabulary for agent evaluation</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><td>Task</td><td>One test case: inputs + success criteria</td></tr>
+        <tr><td>Trial</td><td>One attempt at a task; run several, outputs vary</td></tr>
+        <tr><td>Grader</td><td>Logic that scores one aspect of a trial</td></tr>
+        <tr><td>Transcript</td><td>Full record of a trial: outputs, tool calls, reasoning (the trace)</td></tr>
+        <tr><td>Outcome</td><td>Final state of the environment after the trial</td></tr>
+      </table>
+      <p style="font-size:18px;margin-top:14px">Grade the <b>outcome</b> where you can (is the reservation in the database?), and the <b>transcript</b> for how the agent got there.</p>
+    </div>
+    <table class="dense">
+      <tr><th>Grader</th><th>Strengths</th><th>Weaknesses</th></tr>
+      <tr><td>Code-based</td><td>Fast, cheap, objective, reproducible</td><td>Brittle; weak on open-ended output</td></tr>
+      <tr><td>Model-based</td><td>Flexible rubrics, pairwise, nuance</td><td>Non-deterministic, costs, needs calibration</td></tr>
+      <tr><td>Human</td><td>Gold standard; calibrates the others</td><td>Slow and expensive</td></tr>
+    </table>
+  </div>
+  <div class="cite">Anthropic Engineering, "Demystifying evals for AI agents" (Jan 9, 2026), anthropic.com/engineering/demystifying-evals-for-ai-agents.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>Evals</small>Reliability: pass@k is not pass^k</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li><b>pass@k</b>: probability that <i>at least one</i> of k trials succeeds. Rises with k. Fine when one success is enough (a coding attempt you can verify).</li>
+        <li><b>pass^k</b>: probability that <i>all</i> k trials succeed. Falls with k. The right metric for customer-facing agents that must be consistent.</li>
+        <li>τ-bench: gpt-4o-class function-calling agents succeed on &lt;50% of tasks, and pass^8 is below 25% in the retail domain.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Capability vs. regression suites</h3>
+      <ul>
+        <li><b>Capability</b>: what can it do? Start with a low pass rate to climb.</li>
+        <li><b>Regression</b>: does it still do what it did? Should sit near 100%; run on every harness change.</li>
+        <li>Capability tasks that saturate "graduate" into the regression suite.</li>
+        <li>Read transcripts from many trials: a failing score can be a bad grader.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Yao, Shinn, Razavi, Narasimhan, τ-bench (arXiv:2406.12045); Anthropic, "Demystifying evals for AI agents".</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>Evals in practice</small>Google ADK's evaluation criteria</h2>
+  <table class="dense">
+    <tr><th>Criterion</th><th>What it checks</th><th>Grader</th></tr>
+    <tr><td>tool_trajectory_avg_score</td><td>Tool-call sequence vs. expected calls (default match type EXACT)</td><td>Code</td></tr>
+    <tr><td>response_match_score</td><td>ROUGE-1 overlap of final response with a reference</td><td>Code</td></tr>
+    <tr><td>final_response_match_v2</td><td>Semantic match of final response with a reference</td><td>LLM judge</td></tr>
+    <tr><td>rubric_based_*_v1</td><td>Custom yes/no rubrics for final response, tool use, or the whole multi-turn trajectory</td><td>LLM judge</td></tr>
+    <tr><td>hallucinations_v1</td><td>Response sentences grounded in available context</td><td>LLM judge</td></tr>
+    <tr><td>multi_turn_task_success_v1</td><td>Did the conversation achieve its goals</td><td>LLM judge (Vertex)</td></tr>
+    <tr><td>tool_call_count_v1, token_usage_v1, invocation_duration_v1</td><td>Informational: always reported, no threshold allowed</td><td>Counter</td></tr>
+  </table>
+  <p class="muted" style="font-size:17px;margin-top:12px">The same split works in any harness: trajectory checks, response checks, rubric judges, plus cost and latency reported next to quality.</p>
+  <div class="cite">adk.dev/evaluate/criteria (17 criteria listed, Oct 2026). Master deck slide 20 introduced ADK evaluation.</div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>Evals</small>LLM-as-judge: useful, biased, calibrate it</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li>Known judge biases: <b>position</b> (prefers the first or second answer), <b>verbosity</b> (prefers longer answers), <b>self-enhancement</b> (prefers its own model family's outputs).</li>
+        <li>Mitigations: swap answer order and average, use rubrics with yes/no checks, use a different model family as judge, sample several judgments.</li>
+        <li>Calibrate against human labels on a few dozen cases before trusting a judge on thousands.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Attach scores to traces</h3>
+      <p>Store judge results as scores on the trace they graded (Langfuse, Phoenix and LangSmith all support this). Then a dashboard can slice quality by model, harness version, tool or user, and you can open the exact transcript behind any low score.</p>
+    </div>
+  </div>
+  <div class="cite">Zheng et al., "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena" (arXiv:2306.05685); Anthropic, "Demystifying evals for AI agents".</div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>Process</small>The quality loop: offline and online</h2>
+  <svg viewBox="0 0 1136 300" width="1136" height="300">
+    <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9aa6bd"/></marker></defs>
+    <g font-size="18" text-anchor="middle">
+      <rect x="0" y="20" width="200" height="80" rx="10" fill="#14213a" stroke="#6ea8ff"/><text x="100" y="56">Harness change</text><text x="100" y="80" font-size="15" fill="#9aa6bd">prompt, tool, model</text>
+      <rect x="234" y="20" width="200" height="80" rx="10" fill="#14213a" stroke="#7be0b8"/><text x="334" y="56">Offline evals</text><text x="334" y="80" font-size="15" fill="#9aa6bd">regression + capability</text>
+      <rect x="468" y="20" width="200" height="80" rx="10" fill="#14213a" stroke="#7be0b8"/><text x="568" y="56">Canary / A-B</text><text x="568" y="80" font-size="15" fill="#9aa6bd">small share of traffic</text>
+      <rect x="702" y="20" width="200" height="80" rx="10" fill="#14213a" stroke="#ffb86b"/><text x="802" y="56">Production</text><text x="802" y="80" font-size="15" fill="#9aa6bd">traces + metrics</text>
+      <rect x="936" y="20" width="200" height="80" rx="10" fill="#14213a" stroke="#ff7a85"/><text x="1036" y="56">Sample + grade</text><text x="1036" y="80" font-size="15" fill="#9aa6bd">judges, humans, feedback</text>
+      <rect x="468" y="190" width="200" height="80" rx="10" fill="#14213a" stroke="#ff7a85"/><text x="568" y="226">New eval tasks</text><text x="568" y="250" font-size="15" fill="#9aa6bd">from real failures</text>
+    </g>
+    <g stroke="#9aa6bd" stroke-width="2" marker-end="url(#ar)" fill="none">
+      <line x1="200" y1="60" x2="232" y2="60"/><line x1="434" y1="60" x2="466" y2="60"/><line x1="668" y1="60" x2="700" y2="60"/><line x1="902" y1="60" x2="934" y2="60"/>
+      <path d="M1036,100 L1036,230 L670,230"/><path d="M468,230 L334,230 L334,102"/>
+    </g>
+  </svg>
+  <ul style="font-size:19px">
+    <li>Every production failure that a human confirms becomes a regression task, so the suite tracks reality.</li>
+    <li>Harness² (Module 7) automates part of this loop: it proposes harness edits, probes them on the task, and keeps evidence-backed lessons.</li>
+  </ul>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <h2><small>Toolkit</small>Tracing and evaluation platforms</h2>
+  <table class="dense">
+    <tr><th>Tool</th><th>What it is</th><th>License / hosting</th><th>Harness hooks</th></tr>
+    <tr><td>Langfuse</td><td>Tracing, sessions, scores, datasets, experiments, LLM-as-judge</td><td>MIT SDK; self-host or cloud</td><td>Bundled Hermes plugin; OTLP</td></tr>
+    <tr><td>Arize Phoenix</td><td>Tracing + evals on OpenInference / OpenTelemetry</td><td>Elastic License 2.0; self-host</td><td>hermes-otel; OTLP</td></tr>
+    <tr><td>OpenLLMetry</td><td>OpenTelemetry instrumentations for LLM SDKs (Traceloop)</td><td>Apache-2.0</td><td>Any Python / TS app</td></tr>
+    <tr><td>MLflow Tracing</td><td>Tracing + evaluation inside MLflow</td><td>Apache-2.0</td><td>OTLP / SDK</td></tr>
+    <tr><td>LangSmith</td><td>Tracing, datasets, evals (LangChain)</td><td>Hosted (commercial)</td><td>hermes-otel; SDK</td></tr>
+    <tr><td>Jaeger, Grafana Tempo, SigNoz, Honeycomb</td><td>General OpenTelemetry trace backends</td><td>Mixed</td><td>OpenClaw diagnostics-otel; hermes-otel</td></tr>
+    <tr><td>Prometheus + Grafana</td><td>Metrics storage and dashboards</td><td>Apache-2.0 / AGPL-3.0</td><td>vLLM <code>/metrics</code>; OTel collector</td></tr>
+  </table>
+  <p class="muted" style="font-size:17px;margin-top:12px">Rule of thumb: emit OpenTelemetry from the harness, then choose backends. Switching backends should be a config change.</p>
+  <div class="cite">Licenses from each project's PyPI metadata (arize-phoenix Elastic-2.0, langfuse MIT, traceloop-sdk Apache-2.0, mlflow Apache-2.0), checked Oct 2026.</div>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+  <h2><small>Dashboards</small>What a harness dashboard should show</h2>
+  <svg viewBox="0 0 1136 440" width="1136" height="440">
+    <g font-size="17">
+      <rect x="0" y="0" width="1136" height="40" rx="6" fill="#1c2a4d"/><text x="16" y="27" font-weight="700">Filters: harness version · model · agent · tenant · time range</text>
+      <g fill="#161d2e" stroke="#2a3550">
+        <rect x="0" y="54" width="272" height="110" rx="8"/><rect x="288" y="54" width="272" height="110" rx="8"/><rect x="576" y="54" width="272" height="110" rx="8"/><rect x="864" y="54" width="272" height="110" rx="8"/>
+        <rect x="0" y="178" width="560" height="120" rx="8"/><rect x="576" y="178" width="560" height="120" rx="8"/>
+        <rect x="0" y="312" width="560" height="120" rx="8"/><rect x="576" y="312" width="560" height="120" rx="8"/>
+      </g>
+      <text x="16" y="86" fill="#7be0b8" font-weight="700">Task success</text><text x="16" y="114">pass@1, pass^k, by version</text><text x="16" y="140" fill="#9aa6bd">from evals + scores</text>
+      <text x="304" y="86" fill="#7be0b8" font-weight="700">Cost per task</text><text x="304" y="114">$ and tokens, cached share</text><text x="304" y="140" fill="#9aa6bd">openclaw.cost.usd</text>
+      <text x="592" y="86" fill="#7be0b8" font-weight="700">Latency</text><text x="592" y="114">TTFT, turn, task P95</text><text x="592" y="140" fill="#9aa6bd">vLLM + harness spans</text>
+      <text x="880" y="86" fill="#7be0b8" font-weight="700">Errors</text><text x="880" y="114">model, tool, failover</text><text x="880" y="140" fill="#9aa6bd">per provider / tool</text>
+      <text x="16" y="210" fill="#6ea8ff" font-weight="700">Top failing tools</text><text x="16" y="240">error rate, retries, duration, blocked calls</text><text x="16" y="268" fill="#9aa6bd">click through to example traces</text>
+      <text x="592" y="210" fill="#6ea8ff" font-weight="700">Behavior</text><text x="592" y="240">steps per task, loops, stuck sessions, compactions</text><text x="592" y="268" fill="#9aa6bd">openclaw.tool.loop, session.stuck</text>
+      <text x="16" y="344" fill="#ffb86b" font-weight="700">Engine</text><text x="16" y="374">queue time, KV use, prefix-cache hit rate</text><text x="16" y="402" fill="#9aa6bd">vllm:* metrics</text>
+      <text x="592" y="344" fill="#ff7a85" font-weight="700">Version compare</text><text x="592" y="374">before / after a harness change, same suite</text><text x="592" y="402" fill="#9aa6bd">annotate deploys on every chart</text>
+    </g>
+  </svg>
+</section>
+
+<!-- 18 -->
+<section class="slide">
+  <h2><small>Operations</small>Privacy, sampling and cost of telemetry</h2>
+  <table class="dense">
+    <tr><th>Concern</th><th>Practice</th><th>Example knob</th></tr>
+    <tr><td>Sensitive content</td><td>Capture metadata by default; opt in to content per class; redact secrets and PII before export</td><td>OpenClaw <code>captureContent.*</code>; hermes-otel <code>content_capture: preview | off</code></td></tr>
+    <tr><td>System prompt</td><td>Treat as sensitive; export only when needed</td><td>OpenClaw requires <code>captureContent.systemPrompt: true</code> explicitly</td></tr>
+    <tr><td>Volume</td><td>Sample root spans; keep 100% of errors and eval runs</td><td>OpenClaw <code>sampleRate</code>; <code>HERMES_LANGFUSE_SAMPLE_RATE</code></td></tr>
+    <tr><td>Payload size</td><td>Truncate long prompts and tool outputs</td><td><code>HERMES_LANGFUSE_MAX_CHARS</code> (12000)</td></tr>
+    <tr><td>Cardinality</td><td>Never use session IDs or prompts as metric labels</td><td>OpenClaw maps session-key-like values to <code>unknown</code></td></tr>
+    <tr><td>Retention</td><td>Short retention for content, longer for aggregates; honor delete requests</td><td>Backend setting</td></tr>
+    <tr><td>Failure isolation</td><td>Telemetry must never break the agent</td><td>Langfuse plugin is fail-open</td></tr>
+  </table>
+  <div class="cite">OpenClaw OpenTelemetry privacy docs; hermes-otel docs; Langfuse Hermes integration docs.</div>
+</section>
+
+<!-- 19 -->
+<section class="slide">
+  <h2><small>Lab idea</small>Instrument a harness and compare two configurations</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>Run a local trace backend (Phoenix or Jaeger) and Prometheus + Grafana.</li>
+        <li>Enable tracing in the harness: OpenClaw <code>diagnostics-otel</code>, or Hermes with <code>hermes-otel</code> (<code>content_capture: preview</code>).</li>
+        <li>Point Prometheus at the Lab 2 vLLM server's <code>/metrics</code>.</li>
+        <li>Write 10 tasks with outcome checks; run each 4 times (k = 4).</li>
+        <li>Run with config A and config B (for example, two context engines from Lab 1).</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Report</h3>
+      <ul>
+        <li>pass@1 and pass^4 per config</li>
+        <li>Tokens, $ and P95 latency per task</li>
+        <li>Prefix-cache hit rate per config</li>
+        <li>One trace of a failure, with the step that went wrong</li>
+        <li>Which config you would ship, and why</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 20 -->
+<section class="slide">
+  <h2><small>References</small>Read next</h2>
+  <div class="cols">
+    <ul style="font-size:17px">
+      <li>OpenTelemetry GenAI semantic conventions (github.com/open-telemetry/semantic-conventions-genai)</li>
+      <li>OpenInference (github.com/Arize-ai/openinference)</li>
+      <li>OpenClaw: OpenTelemetry export (docs.openclaw.ai/gateway/opentelemetry)</li>
+      <li>Hermes: hermes-otel plugin; Langfuse integration</li>
+      <li>vLLM: metrics design (docs.vllm.ai/en/stable/design/metrics)</li>
+      <li>Google ADK: evaluation criteria (adk.dev/evaluate/criteria)</li>
+    </ul>
+    <ul style="font-size:17px">
+      <li>Anthropic, Demystifying evals for AI agents (2026)</li>
+      <li>Yao et al., τ-bench, arXiv:2406.12045</li>
+      <li>Zheng et al., Judging LLM-as-a-Judge, arXiv:2306.05685</li>
+      <li>Langfuse, Arize Phoenix, OpenLLMetry, MLflow Tracing docs</li>
+      <li>Full URLs: <code>references/bibliography_and_links.md</code> §6</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → to navigate · F for full screen</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

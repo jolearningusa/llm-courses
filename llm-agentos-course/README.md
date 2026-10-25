@@ -21,7 +21,7 @@ Hermes Agent, OpenClaw, Letta, vLLM + LMCache + NIXL, and Google Research's Harn
 | 3 | **Plane 2: system / KV-cache memory** | PagedAttention, RadixAttention prefix sharing, chunked (non-prefix) KV reuse, multi-tier offload (HBM → DRAM → NVMe → RDMA), cache engineering for agents | vLLM, SGLang, AsymCache / Multi-Segment Attention (2606.02964), Predictive Multi-Tier KV (2604.26968), AKV / Cache Engineering for Agents (2610.28577) |
 | 4 | **Tool arbitration & memory security** | Memory lifecycle threat model (write → store → retrieve → execute → share → forget), memory poisoning, consensus-based defenses | Long-term memory security survey (2604.16548), A-MemGuard (2510.02373, ICML 2026) |
 | 5 | **How open harnesses implement AgentOS** | Component-by-component map of Hermes Agent, OpenClaw, Letta and AIOS, one deep-dive per harness, Rust runtimes (Goose, OpenFang, ZeroClaw) and the Python / TypeScript / Rust trade-off, and their plugin APIs: Hermes `MemoryProvider` / `ContextEngine`, OpenClaw `registerContextEngine` + `plugins.slots`, Letta shared blocks and sleep-time agents | Hermes Agent docs, OpenClaw docs, Letta docs, AIOS / Cerebrum |
-| 6 | **OS-level & trajectory evaluation** | Throughput, P99 latency, Jain's fairness index across agents, prefix-cache hit rate; trajectory and response evaluation for agents | Google ADK evaluation (adk.dev/evaluate) |
+| 6 | **OS-level & trajectory evaluation** | Throughput, P99 latency, Jain's fairness index across agents, prefix-cache hit rate; trajectory and response evaluation for agents. Separate lecture deck on observability: agent traces and OpenTelemetry GenAI conventions, OpenClaw / Hermes / vLLM exporters, a harness metric catalog, graders, pass@k vs. pass^k, LLM-as-judge, dashboards, telemetry privacy | Google ADK evaluation (adk.dev/evaluate), OpenTelemetry GenAI semconv, τ-bench (2406.12045), Anthropic agent-evals guide |
 | 7 | **Self-improving harnesses (Harness²)** | Task-level recursion (propose harness edits → probe them on the same task → compose a refined harness) and harnessing-level recursion (keep adopted harnesses + evidence-backed lessons) over 8 editable components | Harness² (arXiv:2610.14224, github.com/google-research/harness2) |
 
 Suggested pacing: one module per week, with Lab 1 after Module 5, Lab 2 after Module 3, and Lab 3 after Module 7.
@@ -39,7 +39,8 @@ llm-agentos-course/
 ├── slides/
 │   ├── 00_master_agentos_deck.html            # Master deck, slides 1–21: AgentOS architecture & component map
 │   ├── 02_long_term_memory_deck.html          # Module 2 lecture, 20 slides: how long-term memory is built
-│   └── 05_opensource_plugin_apis_slides.html  # Slides 22–31: harness deep-dives (incl. Rust), plugin APIs, vLLM KV, Harness²
+│   ├── 05_opensource_plugin_apis_slides.html  # Slides 22–31: harness deep-dives (incl. Rust), plugin APIs, vLLM KV, Harness²
+│   └── 06_observability_evaluation_deck.html  # Module 6 lecture, 20 slides: tracing, telemetry, evals, dashboards
 ├── labs/
 │   ├── lab1_memory_plugins/
 │   │   ├── hermes_custom_memory.py            # Hermes Agent MemoryProvider + ContextEngine plugin template

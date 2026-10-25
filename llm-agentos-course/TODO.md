@@ -50,33 +50,33 @@ OpenClaw, Letta (and a Rust runtime where relevant) implement it, failure modes,
 ## B. Observability and evaluation deep-dive (logging, telemetry, analytics, dashboards)
 
 Goal: how to tell whether an AgentOS / harness is healthy and whether its quality is going up or down.
-Likely one deck plus one lab.
+Done as deck **`slides/06_observability_evaluation_deck.html`** (the lab is outlined on its slide 19; lab files still to do).
 
-- [ ] **Logging and tracing.**
+- [x] **Logging and tracing.**
   - What to record per run: turns, model calls, tool calls, memory reads and writes, compaction, sub-agents,
     and the hook events that wrap them.
   - Trace structure: a run as a tree of spans (agent → turn → LLM call / tool call / retrieval).
   - Standards to check: OpenTelemetry semantic conventions for generative AI.
   - Where each harness exposes events today (Hermes hooks, OpenClaw gateway and plugin hooks, Letta run and step records).
   - Privacy: redacting prompts, user data and secrets in logs.
-- [ ] **Telemetry and metrics.**
+- [x] **Telemetry and metrics.**
   - System: throughput, latency (TTFT, P50/P99 per turn and per task), token usage and cost, prefix-cache hit
     rate, queueing time, fairness across agents (Jain's index). vLLM serves Prometheus metrics, which
     can link this to Lab 2.
   - Agent behavior: steps per task, tool-call error and retry rates, loop and stall detection, context size
     over time, compaction frequency, memory recall hit rate and injection precision (see memory deck slide 17).
-- [ ] **Evaluating quality.**
+- [x] **Evaluating quality.**
   - Offline: task success on benchmark suites, trajectory evaluation (expected tool sequence), response
     evaluation, LLM-as-judge and its biases, regression sets built from production failures.
   - Online: user feedback signals, sampled human review, A/B tests of harness changes.
   - Link to Module 6 (ADK evaluation) and Module 7 (Harness² probes and judge).
-- [ ] **Analytics and dashboards.**
+- [x] **Analytics and dashboards.**
   - What a harness dashboard should show: success rate, cost per task, latency, top failing tools,
     regressions after a harness or model change.
   - Tooling to survey and verify before teaching: open-source LLM tracing and evaluation platforms (for
     example Langfuse, Arize Phoenix, OpenLLMetry, MLflow tracing), hosted options (for example LangSmith),
     and a plain Prometheus + Grafana setup for system metrics.
-- [ ] **Lab idea.** Instrument one harness (for example a Hermes plugin that turns hook events into
+- [x] **Lab idea.** Instrument one harness (for example a Hermes plugin that turns hook events into
   OpenTelemetry spans). Send the spans to a local tracing backend, run a small task suite, and build a
   dashboard that compares two harness configurations.
 

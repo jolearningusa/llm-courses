@@ -175,6 +175,31 @@ appear on arXiv. Venues are listed only where a primary source states them.
 - Jain, Chiu & Hawe, *A Quantitative Measure of Fairness and Discrimination for Resource Allocation in Shared Computer Systems*,
   DEC-TR-301, 1984 (Jain's fairness index).
 
+### Observability and evaluation deep-dive (deck `06_observability_evaluation_deck.html`)
+
+- **OpenTelemetry semantic conventions for generative AI** (operations `chat`, `invoke_agent`, `execute_tool`, …; `gen_ai.*` attributes;
+  status: Development). Moved to https://github.com/open-telemetry/semantic-conventions-genai
+  (old page with the move notice: https://opentelemetry.io/docs/specs/semconv/gen-ai/). Explainer: https://greptime.com/blogs/2026-05-09-opentelemetry-genai-semantic-conventions
+- **OpenInference** semantic conventions (Arize, Apache-2.0): https://github.com/Arize-ai/openinference
+- **OpenClaw OpenTelemetry export** (`diagnostics-otel` plugin, `diagnostics.otel` config, exported spans and metrics, content-capture privacy):
+  https://docs.openclaw.ai/gateway/opentelemetry
+- **Hermes Agent `hermes-otel` plugin** (community; hook-to-span tree, OpenInference + `gen_ai.*`, `content_capture`):
+  https://hermes-agent.nousresearch.com/docs/plugins/hermes_otel
+- **Langfuse integration with Hermes Agent** (bundled `observability/langfuse` plugin): https://langfuse.com/integrations/other/hermes
+- **vLLM metrics** (`/metrics`, `vllm:time_to_first_token_seconds`, `vllm:kv_cache_usage_perc`, `vllm:prefix_cache_hits`, …):
+  https://docs.vllm.ai/en/stable/design/metrics/
+- **ADK evaluation criteria** (`tool_trajectory_avg_score`, `response_match_score`, rubric-based and multi-turn criteria): https://adk.dev/evaluate/criteria/
+- **Demystifying evals for AI agents**, Anthropic Engineering, Jan 2026 (tasks, trials, graders, transcript vs. outcome, pass@k vs. pass^k):
+  https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents
+- **τ-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains**, Yao, Shinn, Razavi, Narasimhan, arXiv:2406.12045.
+  https://arxiv.org/abs/2406.12045
+- **Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena**, Zheng et al., NeurIPS 2023 Datasets & Benchmarks, arXiv:2306.05685
+  (position, verbosity and self-enhancement biases). https://arxiv.org/abs/2306.05685
+- Tracing and evaluation platforms: Langfuse https://langfuse.com (SDK MIT) · Arize Phoenix https://arize.com/phoenix/ (Elastic License 2.0)
+  · OpenLLMetry https://github.com/traceloop/openllmetry (Apache-2.0) · MLflow Tracing https://mlflow.org/docs/latest/genai/tracing/ (Apache-2.0)
+  · LangSmith https://www.langchain.com/langsmith (hosted).
+- Metrics and dashboards: Prometheus https://prometheus.io · Grafana https://grafana.com/oss/grafana/
+
 ## 7. Self-improving harnesses (Module 7, Lab 3)
 
 - **Harness²: Recursive Agent Harnessing for an Open World**, Xu, Chen, CuiZhu, Dalvi Mishra, Ming, Yu, Han, Lee, Pfister
