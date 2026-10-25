@@ -118,7 +118,8 @@
      "description": "...",
      "inputSchema": {...},
      "outputSchema": {...},      // optional
-     "annotations": {...}}]}     // untrusted!
+     "annotations": {...}}],     // untrusted!
+   "ttlMs": 300000}              // cacheable list
 
 // invocation
 {"method": "tools/call",
@@ -128,7 +129,7 @@
    "structuredContent": {...},
    "isError": false}
 
-// server → client
+// on a subscriptions/listen stream
 {"method": "notifications/tools/list_changed"}</pre>
     </div>
     <div class="card">
@@ -141,7 +142,7 @@
       </ul>
     </div>
   </div>
-  <div class="cite">Model Context Protocol specification 2025-06-18, Server → Tools (modelcontextprotocol.io/specification/2025-06-18/server/tools).</div>
+  <div class="cite">Model Context Protocol specification 2026-07-28, Server → Tools (modelcontextprotocol.io/specification/2026-07-28/server/tools). Since this version every request is self-contained: no <code>initialize</code> handshake and no session.</div>
 </section>
 
 <!-- 5 -->
@@ -347,7 +348,7 @@
       <li>Anthropic, Writing effective tools for agents (Sep 2025): anthropic.com/engineering/writing-tools-for-agents</li>
       <li>Anthropic, Code execution with MCP (Nov 2025): anthropic.com/engineering/code-execution-with-mcp</li>
       <li>Anthropic, Claude Code sandboxing (Oct 2025): anthropic.com/engineering/claude-code-sandboxing</li>
-      <li>MCP 2025-06-18, Tools: modelcontextprotocol.io/specification/2025-06-18/server/tools</li>
+      <li>MCP 2026-07-28, Tools: modelcontextprotocol.io/specification/2026-07-28/server/tools</li>
     </ul>
     <ul style="font-size:15px">
       <li>Hermes Agent tools and toolsets: hermes-agent.nousresearch.com/docs/user-guide/features/tools</li>

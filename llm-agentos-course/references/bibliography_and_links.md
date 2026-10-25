@@ -205,7 +205,7 @@ Papers (AIOS, Autellix, Continuum, KVFlow, ThunderAgent) are in §1. Harness and
 - Anthropic, *Writing effective tools for agents* (consolidation, namespacing, concise vs. detailed responses, 25,000-token default cap in Claude Code), Sep 11 2025: https://www.anthropic.com/engineering/writing-tools-for-agents
 - Anthropic, *Code execution with MCP* (150k → 2k tokens), Nov 4 2025: https://www.anthropic.com/engineering/code-execution-with-mcp
 - Anthropic, *Claude Code sandboxing* (bubblewrap / Seatbelt, network proxy, 84% fewer prompts), Oct 20 2025: https://www.anthropic.com/engineering/claude-code-sandboxing
-- Model Context Protocol specification 2025-06-18, Tools (`tools/list`, `tools/call`, `isError`, `list_changed`, security requirements): https://modelcontextprotocol.io/specification/2025-06-18/server/tools
+- Model Context Protocol specification 2026-07-28, Tools (`tools/list` with `ttlMs`, `tools/call`, `isError`, `list_changed` over `subscriptions/listen`, security requirements): https://modelcontextprotocol.io/specification/2026-07-28/server/tools
 - Hermes Agent, tools and toolsets (`terminal.backend`: local, docker, ssh, modal, daytona, …): https://hermes-agent.nousresearch.com/docs/user-guide/features/tools
 - OpenClaw, sandboxing (`mode`, `scope`, `workspaceAccess`, backends, `tools.elevated`): https://docs.openclaw.ai/gateway/sandboxing
 - OpenAI Codex, sandboxing and approvals (`read-only`, `workspace-write`, `danger-full-access`; `on-request`, `never`): https://developers.openai.com/codex/concepts/sandboxing
