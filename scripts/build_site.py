@@ -139,12 +139,24 @@ def is_skipped(rel: Path) -> bool:
     return any(part in SKIP_DIRS for part in rel.parts) or rel.name in SKIP_FILES
 
 
-def viewer_href(target: str) -> str:
-    """Map a relative link in Markdown to the page the site generates for it."""
+def viewer_href(target: str, source: str) -> str:
+    """Map a relative link in Markdown to the page the site generates for it.
+
+    source is the repo-relative path of the Markdown file. Links that leave the
+    course (to AGENTS.md, docs/ and other repo-wide files the site does not
+    publish) go to the file on GitHub instead.
+    """
     if re.match(r"^[a-z][a-z0-9+.-]*:|^#|^/", target, re.I):
         return target
     path, sep, frag = target.partition("#")
-    if not path or path.endswith("/"):
+    if not path:
+        return target
+    resolved = posixpath.normpath(posixpath.join(posixpath.dirname(source), path))
+    top = resolved.split("/", 1)[0]
+    if resolved == "." or top == ".." or "/" not in resolved or top in SKIP_DIRS:
+        kind = "tree" if path.endswith("/") or (ROOT / resolved).is_dir() else "blob"
+        return f"{REPO_URL}/{kind}/main/{'' if resolved == '.' else resolved}" + sep + frag
+    if path.endswith("/"):
         return target
     lower = path.lower()
     if lower.endswith(".md"):
@@ -154,14 +166,14 @@ def viewer_href(target: str) -> str:
     return path + sep + frag
 
 
-def render_markdown(md_text: str) -> str:
+def render_markdown(md_text: str, source: str) -> str:
     body = markdown.markdown(
         md_text,
         extensions=["tables", "fenced_code", "codehilite", "toc", "sane_lists"],
         extension_configs={"codehilite": {"guess_lang": False}},
         output_format="html5",
     )
-    return re.sub(r'href="([^"]+)"', lambda m: f'href="{html.escape(viewer_href(html.unescape(m.group(1))))}"', body)
+    return re.sub(r'href="([^"]+)"', lambda m: f'href="{html.escape(viewer_href(html.unescape(m.group(1)), source))}"', body)
 
 
 def render_code(path: Path) -> str:
@@ -211,7 +223,7 @@ def build_course(course: Path, out: Path) -> dict:
                 refs.append((first_heading(text, rel.stem), target.relative_to(out / name).as_posix()))
             if rel == Path("README.md"):
                 continue  # rendered below, once the materials panel is known
-            target.write_text(page(first_heading(text, rel.stem), render_markdown(text), depth, crumbs, repo_rel), encoding="utf-8")
+            target.write_text(page(first_heading(text, rel.stem), render_markdown(text, repo_rel), depth, crumbs, repo_rel), encoding="utf-8")
             continue
         if is_text(src):
             body = (
@@ -249,7 +261,7 @@ def build_course(course: Path, out: Path) -> dict:
     info = {"name": name, "title": title, "summary": first_paragraph(readme), "decks": decks, "labs": labs, "refs": refs}
     panel = materials(info, "")
     (out / name / "index.html").write_text(
-        page(title, f'<div class="card materials">{panel}</div>' + render_markdown(readme), 1, [], f"{name}/README.md"),
+        page(title, f'<div class="card materials">{panel}</div>' + render_markdown(readme, f"{name}/README.md"), 1, [], f"{name}/README.md"),
         encoding="utf-8",
     )
     return info

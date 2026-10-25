@@ -13,6 +13,9 @@ is published as a course, with no list to maintain: READMEs and other Markdown a
 `slides/*.html` decks are served unchanged, and lab files get a highlighted view plus the raw file.
 Preview locally with `pip install markdown pygments && python scripts/build_site.py`, then open
 `_site/index.html`. Add new repo-wide directories that are not courses to `SKIP_DIRS` in the script.
+The root `README.md` describes the repository and is not published as a course (only directories are);
+when a course is added, also add a row to its course table. Links from a course to repo-wide files
+(`AGENTS.md`, `docs/`) are rewritten to point at GitHub, since those files are not on the site.
 
 ## Git workflow: trunk-based, one task one PR
 
@@ -27,7 +30,9 @@ Preview locally with `pip install markdown pygments && python scripts/build_site
    `fix/*`, `docs/*` or `chore/*`. Agent sessions that are assigned a branch name (such as
    `claude/*`) use that name.
 3. Make the change, keeping it to one intent. Run the checks in "Before pushing" below.
-4. **Before pushing**, fetch `origin/main` and rebase the branch onto it.
+4. **Before pushing**, check the state of the branch's PR (the user often merges within minutes):
+   if it is already merged, restart the branch from the latest `origin/main` instead of pushing
+   onto merged history. Then fetch `origin/main` and rebase the branch onto it.
 5. Push the branch and open a PR against `main`, filled in from `.github/pull_request_template.md`.
 6. When the user has authorized the merge, **squash-merge** the PR into `main`.
 7. **Delete the branch after the merge**: GitHub deletes the remote head branch automatically
@@ -43,13 +48,26 @@ Preview locally with `pip install markdown pygments && python scripts/build_site
 - Never reuse a merged branch for new work; restart from the latest `main`.
 - A branch should live one or two days at most. Split a large course into several PRs
   (outline, then modules, then labs) rather than one long-running branch.
+- When several sessions work on the repo at once, each owns its own files (for example one session
+  the slide decks, another the root README and tooling). Do not edit files another open PR changes;
+  if that cannot be avoided, wait for that PR to merge and rebase.
 
 ## Before pushing
 
-The Pages workflow builds the site on each PR; there is no other CI, so also check locally:
+`.github/workflows/checks.yml` runs two checks on every PR, and `pages.yml` builds the site. Run the
+same checks locally before pushing:
 
-- Slides (`*.html`) open in a browser without console errors and slide numbering is continuous.
-- Relative links in Markdown and HTML resolve; external references have been checked.
+```bash
+python scripts/build_site.py && python scripts/check_site.py   # relative links resolve
+node scripts/check_slides.mjs                                  # decks: console errors, numbering
+python scripts/check_site.py --external                        # optional: request every external link
+```
+
+- Slides (`*.html`) open in a browser without console errors and slide numbering is continuous
+  (`check_slides.mjs`; a deck that continues another, such as a split master deck, must start on the
+  slide after the one it continues).
+- Relative links in Markdown and HTML resolve (`check_site.py`); external references have been checked
+  (`--external`, or by hand when a site blocks scripted requests).
 - Lab code that was changed still runs (or the PR says which prerequisite, such as a GPU, was
   missing so it could not run).
 - The course README (syllabus, repository layout) matches the files actually in the course.
