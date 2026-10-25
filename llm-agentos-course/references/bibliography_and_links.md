@@ -182,6 +182,14 @@ One subsection per component deck. Every link was checked against its source whe
 - Hermes Agent, delegation guide (`delegation.max_iterations`): https://hermes-agent.nousresearch.com/docs/user-guide/features/delegation
 - OpenClaw, agent loop (per-session lanes, timeouts, plugin hooks): https://docs.openclaw.ai/concepts/agent-loop
 - OpenClaw, queue steering (`steer`, `followup`, `collect`, interrupts): https://docs.openclaw.ai/concepts/queue-steering
+### Scheduler (deck `01_scheduler_deck.html`)
+
+Papers (AIOS, Autellix, Continuum, KVFlow, ThunderAgent) are in §1. Harness and engine docs:
+
+- OpenClaw, command queue (lanes `main` / `subagent`, `maxConcurrent`, queue `mode`, `debounceMs`, `cap`, `drop`): https://docs.openclaw.ai/concepts/queue
+- Hermes Agent, delegation limits (`max_concurrent_children`, `max_spawn_depth`, `max_iterations`, stall monitor): https://hermes-agent.nousresearch.com/docs/user-guide/features/delegation
+- vLLM, `SchedulerConfig` (`policy` fcfs / priority, `max_num_seqs`, `max_num_batched_tokens`, chunked prefill): https://docs.vllm.ai/en/stable/api/vllm/config/scheduler/
+- AIOS source (FIFO and round-robin schedulers): https://github.com/agiresearch/AIOS
 
 ## 6. Evaluation (Module 6)
 

@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — The Scheduler</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · Module 1 lecture · Component 2</div>
+  <h1 style="margin-top:22px">The scheduler</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">Who runs next: from per-session message queues in OpenClaw and Hermes, to request batching in vLLM,
+    to research schedulers that see whole agent programs (Autellix, Continuum, KVFlow, ThunderAgent).</p>
+  <p style="margin-top:28px"><span class="pill">Lanes &amp; queues</span><span class="pill">Batching</span><span class="pill">Program-aware scheduling</span><span class="pill">Fairness</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>Big picture</small>Scheduling happens at three levels</h2>
+  <svg viewBox="0 0 1136 400" width="1136" height="400">
+    <g font-size="18">
+      <rect x="0" y="0" width="1136" height="120" rx="12" fill="#14213a" stroke="#7be0b8"/>
+      <text x="24" y="38" font-size="22" font-weight="700" fill="#7be0b8">1 · Harness: messages, sessions, sub-agents, cron</text>
+      <text x="24" y="70">Which session's run starts next? What happens to a message that arrives mid-run? How many sub-agents at once?</text>
+      <text x="24" y="98" fill="#9aa6bd">OpenClaw lanes and queue modes; Hermes delegation limits; AIOS syscall queues</text>
+      <rect x="0" y="140" width="1136" height="120" rx="12" fill="#14213a" stroke="#ffb86b"/>
+      <text x="24" y="178" font-size="22" font-weight="700" fill="#ffb86b">2 · Program: the agent as a whole job</text>
+      <text x="24" y="210">Which agent program's next LLM call goes first? Keep its KV cache while it waits on a tool?</text>
+      <text x="24" y="238" fill="#9aa6bd">Research: Autellix, Continuum, KVFlow, ThunderAgent</text>
+      <rect x="0" y="280" width="1136" height="120" rx="12" fill="#14213a" stroke="#6ea8ff"/>
+      <text x="24" y="318" font-size="22" font-weight="700" fill="#6ea8ff">3 · Engine: requests and tokens in a batch</text>
+      <text x="24" y="350">Which requests join this GPU iteration? How many prefill tokens? Who gets preempted when KV runs out?</text>
+      <text x="24" y="378" fill="#9aa6bd">vLLM / SGLang continuous batching, chunked prefill, fcfs or priority policy</text>
+    </g>
+  </svg>
+  <p class="muted" style="font-size:18px;margin-top:8px">Most production stacks schedule only at levels 1 and 3. Level 2 is where the research gains are.</p>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>OS analogy</small>What is different about scheduling agents</h2>
+  <table class="dense">
+    <tr><th>Classic OS</th><th>AgentOS</th><th>Consequence</th></tr>
+    <tr><td>Process</td><td>Agent program: many LLM calls + tool calls</td><td>Per-call scheduling ignores how much of the job is done</td></tr>
+    <tr><td>Blocking I/O</td><td>Tool call (seconds to minutes)</td><td>Should the GPU keep the program's KV cache while it waits?</td></tr>
+    <tr><td>Working set in RAM</td><td>KV cache on GPU</td><td>Evicting it forces an expensive re-prefill on resume</td></tr>
+    <tr><td>Time slice</td><td>One decode iteration in a continuous batch</td><td>Preemption is cheap per token, costly per evicted prefix</td></tr>
+    <tr><td>Process DAG / pipeline</td><td>Multi-agent workflow (step graph)</td><td>Next steps are partly predictable, so caches can be prefetched</td></tr>
+    <tr><td>Turnaround time</td><td>Job completion time (JCT) of a whole task</td><td>The metric users feel, not per-call latency</td></tr>
+  </table>
+  <div class="cite">Framing from AIOS (arXiv:2403.16971), Autellix (arXiv:2502.13965) and Continuum (arXiv:2511.02230).</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>Harness · OpenClaw</small>Lanes: per-session serialization, global caps</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><th>Lane</th><th>Role</th><th>Default cap</th></tr>
+        <tr><td>session:&lt;key&gt;</td><td>One run per session at a time</td><td>1</td></tr>
+        <tr><td>main</td><td>Every session run also enters it; inbound messages, heartbeats</td><td>4</td></tr>
+        <tr><td>subagent</td><td>Background sub-agent work</td><td>8</td></tr>
+        <tr><td>cron / cron-nested</td><td>Isolated cron turns</td><td><code>cron.maxConcurrentRuns</code></td></tr>
+        <tr><td>other lanes</td><td>Unconfigured</td><td>1</td></tr>
+      </table>
+      <p style="font-size:17px;margin-top:10px"><code>agents.defaults.maxConcurrent</code> controls parallelism across sessions.</p>
+    </div>
+    <div class="card">
+      <h3>Per-session message queue</h3>
+<pre style="font-size:14px">messages: { queue: {
+  mode: "steer",       // followup | collect | interrupt
+  debounceMs: 500,
+  cap: 20,             // queued messages per session
+  drop: "summarize",   // or "old" | "new"
+  byChannel: { discord: "collect" } } }</pre>
+      <p style="font-size:16px;margin-top:10px">When the queue is full, <code>summarize</code> drops the oldest entries but injects their summaries as a synthetic follow-up: a scheduler that degrades gracefully.</p>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/concepts/queue (openclaw 2026.7; config shown in its JSON5 form). Steering semantics: agent loop deck, slide 9.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Harness · Hermes Agent</small>Scheduling sub-agents</h2>
+  <div class="cols">
+    <table class="dense">
+      <tr><th>Knob</th><th>Default</th></tr>
+      <tr><td>delegation.max_concurrent_children</td><td>10 per batch (oversized batches return a tool error)</td></tr>
+      <tr><td>delegation.max_spawn_depth</td><td>1 (flat); 2 lets orchestrator children spawn leaf workers</td></tr>
+      <tr><td>delegation.max_iterations</td><td>250 turns per child</td></tr>
+      <tr><td>delegation.child_timeout_seconds</td><td>0 = no inactivity cap (minimum 30 s when set)</td></tr>
+      <tr><td>Stall monitor</td><td>Always on: 450 s idle between turns, 1200 s inside a tool</td></tr>
+      <tr><td>Budget warning</td><td>At about 80% of the idle window</td></tr>
+    </table>
+    <div class="card">
+      <h3>Scheduling lessons</h3>
+      <ul>
+        <li><b>Bound fan-out</b>: a fixed batch size caps cost and rate-limit pressure.</li>
+        <li><b>Bound depth</b>: recursion depth is the agent version of a fork bomb guard.</li>
+        <li><b>Detect stalls, not just slowness</b>: different thresholds for "thinking" and "inside a tool".</li>
+        <li>A child that runs out returns <code>exit_reason: max_iterations</code> and <code>truncated: true</code>, so the parent can decide what to do.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">hermes-agent.nousresearch.com/docs/user-guide/features/delegation. Multi-agent patterns get their own deck.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>Research kernel · AIOS</small>Agent requests as system calls</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li>Agents (via the Cerebrum SDK) issue LLM, memory, storage and tool requests as <b>syscalls</b> into central queues.</li>
+        <li>The AIOS scheduler dispatches them with <b>FIFO</b> or <b>round-robin</b> (default).</li>
+        <li>Round-robin needs preemption mid-generation: the <b>context manager</b> snapshots and restores generation state (text-based, or logits-based to keep search-tree state).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Why this matters</h3>
+      <p>AIOS shows the OS pattern cleanly: one queue per resource type, a pluggable policy, and a context switch for LLM generation. Its policies are classic (FIFO, RR); the program-aware papers on the next slides replace the policy and keep the structure.</p>
+    </div>
+  </div>
+  <div class="cite">Mei et al., AIOS: LLM Agent Operating System (arXiv:2403.16971); github.com/agiresearch/AIOS. Master deck slide 6.</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>Engine · vLLM</small>Continuous batching and its knobs</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><th>SchedulerConfig field</th><th>Default / meaning</th></tr>
+        <tr><td>policy</td><td><code>"fcfs"</code>; or <code>"priority"</code>: lower value served first, ties by arrival</td></tr>
+        <tr><td>max_num_seqs</td><td>Max sequences per iteration (code default 128; real value set by engine args)</td></tr>
+        <tr><td>max_num_batched_tokens</td><td>Max tokens per iteration (code default 2048)</td></tr>
+        <tr><td>enable_chunked_prefill</td><td>True: long prefills are split to share iterations with decodes</td></tr>
+        <tr><td>long_prefill_token_threshold</td><td>0 = no cap on long prefills per step</td></tr>
+        <tr><td>async_scheduling</td><td>Overlap scheduling with GPU work to avoid gaps</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>What the engine cannot see</h3>
+      <ul>
+        <li>Each request looks independent: the engine does not know that call 12 of a long agent job is waiting behind call 1 of a new one.</li>
+        <li>When a request finishes before a tool call, its KV blocks become evictable, even though the same program will return in seconds.</li>
+        <li><code>priority</code> is a hook: a harness can pass program-level priority down, which is exactly what program-aware schedulers do.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">docs.vllm.ai/en/stable/api/vllm/config/scheduler. Engine metrics (queue time, running / waiting): observability deck slide 8.</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>Problem</small>Per-call scheduling hurts whole jobs</h2>
+  <svg viewBox="0 0 1136 300" width="1136" height="300">
+    <g font-size="16">
+      <text x="0" y="24" fill="#9aa6bd">Program A (long agent job, 6 calls)</text>
+      <g fill="#6ea8ff"><rect x="0" y="36" width="80" height="30" rx="4"/><rect x="200" y="36" width="80" height="30" rx="4"/><rect x="420" y="36" width="80" height="30" rx="4"/><rect x="640" y="36" width="80" height="30" rx="4"/><rect x="860" y="36" width="80" height="30" rx="4"/><rect x="1050" y="36" width="80" height="30" rx="4"/></g>
+      <g fill="#ffb86b" opacity="0.5"><rect x="80" y="36" width="60" height="30" rx="4"/><rect x="280" y="36" width="60" height="30" rx="4"/><rect x="500" y="36" width="60" height="30" rx="4"/><rect x="720" y="36" width="60" height="30" rx="4"/><rect x="940" y="36" width="60" height="30" rx="4"/></g>
+      <g fill="#ff7a85" opacity="0.6"><rect x="140" y="36" width="60" height="30" rx="4"/><rect x="340" y="36" width="80" height="30" rx="4"/><rect x="560" y="36" width="80" height="30" rx="4"/><rect x="780" y="36" width="80" height="30" rx="4"/><rect x="1000" y="36" width="50" height="30" rx="4"/></g>
+      <text x="0" y="110" fill="#9aa6bd">Programs B, C, D … (short jobs keep arriving)</text>
+      <g fill="#7be0b8"><rect x="140" y="122" width="60" height="30" rx="4"/><rect x="340" y="122" width="80" height="30" rx="4"/><rect x="560" y="122" width="80" height="30" rx="4"/><rect x="780" y="122" width="80" height="30" rx="4"/><rect x="1000" y="122" width="50" height="30" rx="4"/></g>
+      <rect x="0" y="190" width="24" height="18" fill="#6ea8ff"/><text x="32" y="204">A's LLM call</text>
+      <rect x="170" y="190" width="24" height="18" fill="#ffb86b" opacity="0.5"/><text x="202" y="204">A's tool call</text>
+      <rect x="340" y="190" width="24" height="18" fill="#ff7a85" opacity="0.6"/><text x="372" y="204">A waits in queue (and may lose its KV cache)</text>
+      <rect x="760" y="190" width="24" height="18" fill="#7be0b8"/><text x="792" y="204">other programs' calls</text>
+      <text x="0" y="260" font-size="18">Every time A returns from a tool, it queues behind newer work. Its total job time grows with the number of steps,</text>
+      <text x="0" y="286" font-size="18">and an evicted prefix must be prefilled again. Program-aware schedulers fix one or both of these.</text>
+    </g>
+  </svg>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>Program-aware · 1</small>Autellix: schedule by program progress</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li>Treats agents as <b>general programs</b>: it intercepts the LLM calls a program submits and gives the scheduler program-level context.</li>
+        <li>Preempts and prioritizes calls <b>based on the program's previously completed calls</b> (how much service the program has already received), with algorithms for single-threaded and distributed programs.</li>
+        <li>Result: <b>4–15× higher program throughput at the same latency</b> than state-of-the-art systems such as vLLM.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Intuition</h3>
+      <p>Like least-attained-service scheduling in networks and OSes: short jobs finish quickly without knowing job sizes in advance, and long jobs are not starved by a stream of new arrivals at the call level, because priority is computed per program, not per call.</p>
+    </div>
+  </div>
+  <div class="cite">Luo et al., Autellix: An Efficient Serving Engine for LLM Agents as General Programs (arXiv:2502.13965, Feb 2025).</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>Program-aware · 2</small>Continuum: keep the KV cache across tool calls</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li>Engines evict a finished request's KV cache when others are waiting. For agents that pause for a tool call, that means re-prefilling on every resume.</li>
+        <li>Continuum <b>pins the KV cache</b> of a request that made a tool call, with a <b>time-to-live</b> set from the reload cost and the expected queueing delay.</li>
+        <li>The TTL expires automatically, so unpredictable tool durations cannot hog memory forever.</li>
+        <li>Combined with <b>program-level first-come-first-serve</b>, it keeps multi-turn continuity.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Result</h3>
+      <p>Average job completion time improves by <b>over 8×</b>, with higher throughput, on SWE-Bench, BFCL and OpenHands agents with Llama-3.1 8B / 70B, Gemma-3 12B and GLM-4.5 355B.</p>
+      <p class="muted">The scheduling decision and the memory decision are the same decision: whose KV stays resident.</p>
+    </div>
+  </div>
+  <div class="cite">Li et al., Continuum: Efficient and Robust Multi-Turn LLM Agent Scheduling with KV Cache Time-to-Live (arXiv:2511.02230).</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>Program-aware · 3</small>KVFlow: use the workflow graph</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li>Multi-agent workflows have a known shape. KVFlow models it as an <b>Agent Step Graph</b> and estimates, for each agent, the <b>steps until it runs next</b>.</li>
+        <li>Eviction uses that value at the KV-node level of a radix (prefix-tree) cache, instead of LRU, which tends to evict a prefix just before it is reused.</li>
+        <li><b>Overlapped prefetching</b> loads the next step's KV tensors from CPU to GPU in background threads.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Result (vs. SGLang with hierarchical radix cache)</h3>
+      <ul>
+        <li>Up to <b>1.83×</b> speedup for single workflows with large prompts</li>
+        <li>Up to <b>2.19×</b> for many concurrent workflows</li>
+      </ul>
+      <p class="muted">Scheduling information (what runs next) drives cache policy (what stays).</p>
+    </div>
+  </div>
+  <div class="cite">Pan et al., KVFlow: Efficient Prefix Caching for Accelerating LLM-Based Multi-Agent Workflows (arXiv:2507.07400).</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>Program-aware · 4</small>ThunderAgent: schedule the program, including its tools</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li>Today an inference engine and a separate tool orchestrator each schedule requests independently, without seeing the whole workflow.</li>
+        <li>ThunderAgent models workflows as <b>LLM Programs</b>: one view of KV caches, system state and tool resources (disk, network ports).</li>
+        <li>A <b>program-aware scheduler</b> raises KV hit rates and balances memory; a <b>tool resource manager</b> prepares execution environments asynchronously.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Result</h3>
+      <ul>
+        <li><b>1.5–3.6×</b> serving throughput</li>
+        <li><b>1.8–3.9×</b> in RL rollout</li>
+        <li>Up to <b>4.2×</b> disk memory savings</li>
+      </ul>
+      <p class="muted">Across coding, routing and scientific-discovery agents.</p>
+    </div>
+  </div>
+  <div class="cite">Kang et al., ThunderAgent: A Simple, Fast and Program-Aware Agentic Inference System (arXiv:2602.13692).</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>Comparison</small>What each scheduler knows and uses</h2>
+  <table class="dense">
+    <tr><th>System</th><th>Extra signal</th><th>Mechanism</th><th>Headline</th></tr>
+    <tr><td>AIOS</td><td>Request type (LLM, memory, tool)</td><td>Central queues, FIFO / round-robin, generation snapshots</td><td>Reference kernel design</td></tr>
+    <tr><td>vLLM priority</td><td>Per-request priority value</td><td>Lower value first, ties by arrival</td><td>Hook for harnesses</td></tr>
+    <tr><td>Autellix</td><td>Program's completed calls</td><td>Program-level preemption and priority</td><td>4–15× throughput, same latency</td></tr>
+    <tr><td>Continuum</td><td>Tool-call pauses</td><td>KV TTL pinning + program-level FCFS</td><td>&gt;8× average JCT</td></tr>
+    <tr><td>KVFlow</td><td>Workflow step graph</td><td>Steps-to-execution eviction + prefetch</td><td>Up to 2.19×</td></tr>
+    <tr><td>ThunderAgent</td><td>Whole program incl. tools</td><td>Program-aware scheduler + tool resource manager</td><td>1.5–3.6× serving</td></tr>
+    <tr><td>OpenClaw</td><td>Session, channel, lane</td><td>Per-session serialization, lane caps, queue modes</td><td>Production harness</td></tr>
+  </table>
+  <p class="muted" style="font-size:17px;margin-top:12px">Paper numbers come from different baselines and workloads; compare mechanisms, not speedups.</p>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>Policy</small>Fairness, priorities and quotas</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li><b>Interactive vs. background</b>: user-facing turns should beat cron jobs and sub-agents. OpenClaw gives sub-agents and cron their own lanes and caps.</li>
+        <li><b>Per-tenant fairness</b>: measure per-agent or per-user throughput with Jain's index (master deck slide 20); cap concurrent runs per tenant.</li>
+        <li><b>Provider rate limits</b> are an external scheduler: 429s should back off or fail over (Hermes fails over on 429), not retry in a tight loop.</li>
+        <li><b>Starvation</b>: any priority scheme needs aging, or long jobs never finish.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Signals to watch</h3>
+      <ul>
+        <li>Harness queue: <code>openclaw.queue.depth</code>, <code>openclaw.queue.wait_ms</code></li>
+        <li>Engine queue: <code>vllm:request_queue_time_seconds</code>, running / waiting requests</li>
+        <li>Job completion time per task, not just per call</li>
+        <li>Fairness index across tenants</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">OpenClaw queue and OpenTelemetry docs; vLLM metrics; Hermes agent-loop docs (fallback on 429). Jain, Chiu &amp; Hawe, DEC-TR-301 (1984).</div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>Exercise</small>Simulate program-aware scheduling</h2>
+  <div class="cols">
+<pre style="font-size:14px"># Each program: list of (llm_ms, tool_ms) steps
+programs = make_programs(n=50, long_frac=0.2)
+
+for policy in [fcfs_per_call,       # vLLM default
+               program_fcfs,        # Continuum-style
+               least_attained]:     # Autellix-style
+    sim = Simulator(gpu_slots=8, kv_slots=32,
+                    reprefill_ms=lambda p: p.ctx/4,
+                    kv_ttl_ms=None)  # try 2000
+    jct = sim.run(programs, policy)
+    print(policy.__name__,
+          mean(jct), p99(jct), jain(jct))</pre>
+    <div class="card">
+      <h3>Questions</h3>
+      <ul>
+        <li>How do mean and P99 job completion time change per policy?</li>
+        <li>What does a KV TTL buy when tool calls are short vs. long?</li>
+        <li>Which policy is fairest by Jain's index?</li>
+        <li>Then: pass a program priority through vLLM's <code>priority</code> policy and measure on the Lab 2 server.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <h2><small>References</small>Read next</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>Mei et al., AIOS: arxiv.org/abs/2403.16971 · github.com/agiresearch/AIOS</li>
+      <li>Luo et al., Autellix: arxiv.org/abs/2502.13965</li>
+      <li>Li et al., Continuum: arxiv.org/abs/2511.02230</li>
+      <li>Pan et al., KVFlow: arxiv.org/abs/2507.07400</li>
+      <li>Kang et al., ThunderAgent: arxiv.org/abs/2602.13692</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>OpenClaw command queue: docs.openclaw.ai/concepts/queue</li>
+      <li>Hermes delegation: hermes-agent.nousresearch.com/docs/user-guide/features/delegation</li>
+      <li>vLLM SchedulerConfig: docs.vllm.ai/en/stable/api/vllm/config/scheduler</li>
+      <li>Kwon et al., PagedAttention: arxiv.org/abs/2309.06180</li>
+      <li>All links: <code>references/bibliography_and_links.md</code> §1 and §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → to navigate · F for full screen</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>
