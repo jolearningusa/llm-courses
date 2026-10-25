@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — Access Control & Safety</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · Module 4 lecture · Component 8</div>
+  <h1 style="margin-top:22px">Access control and safety</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">Users, permissions and the security monitor of an AgentOS: who may talk to the agent, what the agent may touch,
+    why prompt injection makes this different from classic access control, and the defenses Hermes Agent, OpenClaw and Codex ship.</p>
+  <p style="margin-top:28px"><span class="pill">Threat model</span><span class="pill">Lethal trifecta</span><span class="pill">Rule of Two</span><span class="pill">Tool policy</span><span class="pill">Approvals</span><span class="pill">CaMeL</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>OS analogy</small>Three questions an AgentOS must answer</h2>
+  <table class="dense">
+    <tr><th>Question</th><th>Classic OS</th><th>AgentOS</th><th>Examples</th></tr>
+    <tr><td><b>Who</b> is asking?</td><td>Login, UID</td><td>Sender identity on each channel</td><td>DM pairing, allowlists, per-peer sessions</td></tr>
+    <tr><td><b>What</b> may run?</td><td>File modes, capabilities</td><td>Tool allow / deny, profiles, skill allowlists</td><td>OpenClaw <code>tools.profile</code>, Hermes toolsets</td></tr>
+    <tr><td><b>Where</b> does it run?</td><td>User vs. kernel mode, containers</td><td>Sandbox, workspace access, network egress</td><td>Docker, Seatbelt, bubblewrap</td></tr>
+    <tr><td>Escalation</td><td><code>sudo</code> with a password</td><td>Human approval, elevated mode</td><td>Hermes <code>approvals.mode</code>, Codex <code>on-request</code></td></tr>
+    <tr><td>Audit</td><td>auditd, logs</td><td>Traces, transcripts, security audit command</td><td><code>openclaw security audit</code></td></tr>
+  </table>
+  <p style="font-size:19px;margin-top:16px">The new part: the process (the model) can be <b>talked into</b> misusing its permissions by data it reads. Classic access control assumes the program does what its code says; an agent does what its context says.</p>
+  <div class="cite">OpenClaw security docs; Hermes Agent security docs; tools and sandbox deck (05).</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>Threat model</small>Prompt injection is not solved</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li><b>Direct</b>: the user tries to override instructions. <b>Indirect</b>: instructions hidden in a web page, email, file, tool result, memory or skill.</li>
+        <li><b>The Attacker Moves Second</b> (Oct 2025; authors from OpenAI, Anthropic and Google DeepMind): adaptive attacks broke 12 published defenses, most with &gt;90% success, though most had reported near-zero; human red-teamers (500 people) beat all of them.</li>
+        <li>Simon Willison: a guardrail that stops 95% of attacks is a failing grade in security.</li>
+      </ul>
+      <p class="muted" style="font-size:17px">So design as if injection <i>will</i> succeed sometimes, and limit what a hijacked agent can do.</p>
+    </div>
+    <div class="card">
+      <h3>OWASP Top 10 for Agentic Applications (Dec 2025)</h3>
+      <ol style="font-size:16px;padding-left:22px">
+        <li>Agent goal hijack</li>
+        <li>Tool misuse and exploitation</li>
+        <li>Identity and privilege abuse</li>
+        <li>Agentic supply chain vulnerabilities</li>
+        <li>Unexpected code execution (RCE)</li>
+        <li>Memory &amp; context poisoning</li>
+        <li>Insecure inter-agent communication</li>
+        <li>Cascading failures</li>
+        <li>Human-agent trust exploitation</li>
+        <li>Rogue agents</li>
+      </ol>
+    </div>
+  </div>
+  <div class="cite">Nasr et al., arXiv:2510.09023; simonwillison.net/2025/Jun/16/the-lethal-trifecta; genai.owasp.org (Top 10 for Agentic Applications for 2026).</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>Principle</small>The lethal trifecta and the Agents Rule of Two</h2>
+  <div class="cols">
+    <svg viewBox="0 0 520 420" width="520" height="420">
+      <g font-size="16">
+        <circle cx="180" cy="150" r="120" fill="#6ea8ff" fill-opacity="0.18" stroke="#6ea8ff"/>
+        <circle cx="340" cy="150" r="120" fill="#7be0b8" fill-opacity="0.18" stroke="#7be0b8"/>
+        <circle cx="260" cy="280" r="120" fill="#ff7a85" fill-opacity="0.18" stroke="#ff7a85"/>
+        <text x="70" y="110" fill="#6ea8ff" font-weight="700">[A] untrusted</text>
+        <text x="70" y="132" fill="#6ea8ff" font-weight="700">input</text>
+        <text x="350" y="110" fill="#7be0b8" font-weight="700">[B] private data /</text>
+        <text x="350" y="132" fill="#7be0b8" font-weight="700">sensitive systems</text>
+        <text x="190" y="370" fill="#ff7a85" font-weight="700">[C] change state /</text>
+        <text x="190" y="392" fill="#ff7a85" font-weight="700">communicate out</text>
+        <text x="226" y="200" font-weight="700">all three:</text>
+        <text x="210" y="222" font-weight="700">needs a human</text>
+      </g>
+    </svg>
+    <div>
+      <ul style="font-size:18px">
+        <li><b>Lethal trifecta</b> (Willison, Jun 16, 2025): private data + untrusted content + external communication lets an attacker steal data. Users mixing tools should avoid the combination.</li>
+        <li><b>Agents Rule of Two</b> (Meta, Oct 31, 2025): within a session an agent should have at most two of [A] untrusted inputs, [B] sensitive data or systems, [C] state change or external communication. All three: no autonomy, require approval or other validation.</li>
+        <li>Starting a new session with a fresh context is one way to separate the properties.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">simonwillison.net/2025/Jun/16/the-lethal-trifecta; ai.meta.com/blog/practical-ai-agent-security.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Applying it</small>Rule of Two, worked examples</h2>
+  <table class="dense">
+    <tr><th>Agent</th><th>Keeps</th><th>Drops</th><th>How</th></tr>
+    <tr><td>Email bot, spam asks it to forward the inbox</td><td>[B][C]</td><td>[A]</td><td>Only process mail from trusted senders</td></tr>
+    <tr><td>Same bot, another way</td><td>[A][C]</td><td>[B]</td><td>Run without access to sensitive data</td></tr>
+    <tr><td>Same bot, a third way</td><td>[A][B]</td><td>[C]</td><td>Send only to trusted recipients or after a human approves the draft</td></tr>
+    <tr><td>Travel assistant</td><td>[A][B]</td><td>[C]</td><td>Human confirms bookings and payments; web requests to trusted sources</td></tr>
+    <tr><td>Web research assistant</td><td>[A][C]</td><td>[B]</td><td>Restrictive sandbox, no preloaded session data</td></tr>
+    <tr><td>Internal coding agent</td><td>[B][C]</td><td>[A]</td><td>Filter inputs by author lineage; humans review false positives</td></tr>
+  </table>
+  <p style="font-size:18px;margin-top:14px">Exercise for your own harness: list every tool and mark it A, B or C. Any session that can reach all three letters needs an approval step.</p>
+  <div class="cite">Examples from Meta, "Agents Rule of Two: A Practical Approach to AI Agent Security" (Oct 31, 2025).</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>Who</small>Inbound access: pairing and allowlists</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>OpenClaw <code>dmPolicy</code></h3>
+      <ul>
+        <li><code>pairing</code> (default): unknown senders get a code and are ignored until approved; codes expire after 1 hour; at most 3 pending per channel.</li>
+        <li><code>allowlist</code>, <code>open</code> (needs <code>"*"</code>), <code>disabled</code>.</li>
+        <li>Groups: <code>requireMention</code>, <code>groupPolicy</code> + <code>groupAllowFrom</code>.</li>
+        <li>Default <code>session.dmScope: main</code> shares one session across DMs; use <code>per-channel-peer</code> when several people talk to the bot.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Hermes gateway</h3>
+      <ul>
+        <li>Order: per-platform allow-all → pairing list → platform allowlist → global allowlist → global allow-all → <b>deny</b>.</li>
+        <li><code>unauthorized_dm_behavior: pair</code>: 8-character code, 1-hour expiry, <code>hermes pairing approve &lt;platform&gt; &lt;code&gt;</code>.</li>
+        <li>Rate limit 1 request per user per 10 min, 3 pending per platform, 1-hour lockout after 5 failed approvals.</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:17px;margin-top:12px" class="muted">OpenClaw's model: one trusted operator per gateway, not a hostile multi-tenant boundary. Mixed-trust users get separate gateways, ideally separate OS users or hosts.</p>
+  <div class="cite">docs.openclaw.ai/gateway/security; hermes-agent.nousresearch.com/docs/user-guide/security.</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>What</small>Tool policy: deny by default where it matters</h2>
+  <div class="cols">
+<pre style="font-size:14px">// OpenClaw hardened baseline (from the security docs)
+{
+  tools: {
+    profile: "messaging",
+    deny: ["group:automation",
+           "group:runtime",
+           "group:fs"],
+    fs:   { workspaceOnly: true },
+    exec: { security: "deny", ask: "always" },
+    elevated: { enabled: false }
+  }
+}
+// trusted personal default:
+//   exec security="full", ask="off"  (by design)</pre>
+    <div>
+      <ul style="font-size:18px">
+        <li>Non-owner senders cannot use <code>cron</code> or <code>gateway</code> tools by default.</li>
+        <li>With an allowlisted interpreter, set <code>tools.exec.strictInlineEval</code> (<code>python -c</code> is arbitrary code).</li>
+        <li><code>tools.elevated</code> runs outside the sandbox: keep <code>allowFrom</code> tight.</li>
+        <li>Sub-agents and skills have their own allowlists (multi-agent and skills decks).</li>
+        <li>Hermes: toolsets per platform; MCP stdio servers get only <code>PATH</code>, <code>HOME</code>, <code>USER</code>, <code>LANG</code>, <code>LC_ALL</code>, <code>TERM</code>, <code>SHELL</code>, <code>TMPDIR</code>, <code>XDG_*</code>.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/gateway/security ("hardened baseline", "exec approvals"); Hermes security docs (MCP credential filtering).</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>Escalation</small>Approvals: manual, smart, or off</h2>
+  <div class="cols">
+    <div>
+      <table class="dense" style="font-size:16px">
+        <tr><th>Hermes <code>approvals.mode</code></th><th>Behavior</th></tr>
+        <tr><td><code>smart</code> (default)</td><td>An auxiliary LLM rates risk: low → approve that command once, dangerous → deny, unsure → ask</td></tr>
+        <tr><td><code>manual</code></td><td>Always ask on dangerous commands</td></tr>
+        <tr><td><code>off</code> / <code>--yolo</code></td><td>No prompts; hardline blocklist still applies</td></tr>
+      </table>
+      <ul style="font-size:16px;margin-top:10px">
+        <li>Timeout 300 s, then <b>deny</b> (fail closed).</li>
+        <li>"Always" writes the pattern to <code>command_allowlist</code>.</li>
+        <li>Hardline blocklist (<code>rm -rf /</code>, fork bombs) has no override.</li>
+        <li>In container backends the container is the boundary, so dangerous-command checks are skipped.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Elsewhere</h3>
+      <ul>
+        <li>Codex: approvals <code>on-request</code> (ask to leave the sandbox) or <code>never</code>; sandbox <code>read-only</code> / <code>workspace-write</code> / <code>danger-full-access</code>.</li>
+        <li>OpenClaw: <code>exec.ask</code> (<code>always</code> … <code>off</code>) plus <code>before_tool_call</code> hooks that can block.</li>
+        <li>Claude Code: sandbox + proxy, 84% fewer prompts.</li>
+      </ul>
+      <p class="muted">An LLM approving another LLM's command is a classifier, not a boundary: it is subject to the same injection.</p>
+    </div>
+  </div>
+  <div class="cite">Hermes security docs; Codex and Claude Code sandboxing (tools deck); OpenClaw security docs.</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>Context</small>Injection scanning of instructions, memory and skills</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>Hermes scans <code>AGENTS.md</code>, <code>.cursorrules</code> and <code>SOUL.md</code> before they enter the system prompt; a flagged project file is not loaded ("[BLOCKED: AGENTS.md contained potential prompt injection …]").</li>
+        <li>Skills: scan on install, trust levels, staged agent writes (skills deck).</li>
+        <li>Memory: a poisoned memory is a persistent injection; the memory-security material in this module (A-MemGuard, the memory lifecycle threat model) applies.</li>
+        <li>OpenClaw advice: treat web pages, email, attachments and pasted content as hostile even if only you can message the bot; consider a read-only reader agent that summarizes untrusted content.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Isolation inside one turn</h3>
+      <p>Separate who <b>reads</b> untrusted content from who <b>acts</b>:</p>
+      <ul>
+        <li>Reader sub-agent with no tools returns a summary.</li>
+        <li>Actor never sees the raw content.</li>
+        <li>Fresh session per untrusted source (Rule of Two).</li>
+      </ul>
+      <p class="muted">Summaries can still carry instructions; this reduces risk, it does not remove it.</p>
+    </div>
+  </div>
+  <div class="cite">Hermes security docs ("context file scanning"); OpenClaw security docs ("prompt injection"); Module 4 memory-security sources.</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>Research</small>Defenses by design</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Design patterns (Beurer-Kellner et al., 2025)</h3>
+      <ul style="font-size:17px">
+        <li><b>Action-selector</b>: the model only picks from fixed actions.</li>
+        <li><b>Plan-then-execute</b>: fix the plan before reading untrusted data.</li>
+        <li><b>LLM map-reduce</b>: isolated workers per untrusted item.</li>
+        <li><b>Dual LLM</b>: a privileged model never sees untrusted text; a quarantined one does, with no tools.</li>
+        <li><b>Code-then-execute</b>: the model writes a program; untrusted data flows only as values.</li>
+        <li><b>Context minimization</b>: drop the user prompt before acting on results.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>CaMeL (Debenedetti et al., 2025)</h3>
+      <ul style="font-size:17px">
+        <li>Extracts control flow and data flow from the trusted user query, so retrieved data cannot change the program.</li>
+        <li>Capabilities on values block private data from flowing to unauthorized tool calls; policies are checked at each call.</li>
+        <li>AgentDojo: <b>77%</b> of tasks solved with provable security vs. 84% undefended.</li>
+      </ul>
+      <p class="muted">The cost of security is utility: some tasks can no longer be done autonomously.</p>
+    </div>
+  </div>
+  <div class="cite">arXiv:2506.08837; arXiv:2503.18813; AgentDojo arXiv:2406.13352.</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>Secrets</small>Credentials, transcripts and the host</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>OpenClaw keeps config (<code>openclaw.json</code>), channel credentials, API keys (<code>auth-profiles.json</code>) and <b>session transcripts</b> under <code>~/.openclaw</code>: keep it <code>700</code>, files <code>600</code>, full-disk encryption, a dedicated OS user on shared hosts.</li>
+        <li>Gateway binds to loopback by default; token auth fails closed; never expose it unauthenticated.</li>
+        <li>Skill <code>env</code> / <code>apiKey</code> are injected on the host for the run only, not into the sandbox.</li>
+        <li>Hermes redacts GitHub PATs, <code>sk-</code> keys, bearer tokens and <code>token=</code>/<code>key=</code>/<code>password=</code>/<code>secret=</code> in MCP errors.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Principle</h3>
+      <p>Secrets the model never sees cannot be exfiltrated by the model.</p>
+      <ul>
+        <li>Inject at the tool boundary, not in the prompt.</li>
+        <li>No secrets inside the sandbox.</li>
+        <li>Transcripts are sensitive data: telemetry content capture is off by default for a reason (observability deck).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/gateway/security ("secrets on disk", "network"); OpenClaw skills docs; Hermes security docs.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>Side by side</small>Access control in three harnesses</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th><th>Codex</th></tr>
+    <tr><td>Who</td><td>Allowlists, DM pairing, default deny</td><td><code>dmPolicy</code> pairing, group allowlists</td><td>Local user</td></tr>
+    <tr><td>What</td><td>Toolsets; hardline blocklist</td><td>Tool profiles, allow / deny groups</td><td>Sandbox mode</td></tr>
+    <tr><td>Where</td><td>Local or container / remote backends</td><td>Host, or Docker / SSH sandbox</td><td>Seatbelt, bubblewrap, Windows sandbox</td></tr>
+    <tr><td>Escalation</td><td><code>smart</code> / <code>manual</code> / <code>off</code>, fail closed</td><td><code>exec.ask</code>, <code>tools.elevated</code>, hooks</td><td><code>on-request</code> / <code>never</code></td></tr>
+    <tr><td>Injection-specific</td><td>Context-file scanning</td><td>Guidance: reader agent, strongest model</td><td>—</td></tr>
+    <tr><td>Audit</td><td>Traces, approval spans</td><td><code>openclaw security audit [--deep] [--fix]</code></td><td>—</td></tr>
+  </table>
+  <div class="cite">Sources on slides 6–11 and the tools deck. "—" = not covered by the sources used here.</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>Operations</small>Audit and incident response</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li><code>openclaw security audit</code> checks inbound access, tool blast radius, exec approvals, network exposure, permissions, plugins and policy drift; <code>--deep</code> probes the live gateway; <code>--fix</code> applies safe fixes (open groups → allowlists, file modes); <code>--json</code> for CI.</li>
+        <li>Run it after every config change and on a schedule; alert on drift.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>When something goes wrong</h3>
+      <ol style="font-size:17px;padding-left:22px">
+        <li><b>Contain</b>: stop the gateway, bind to loopback, disable risky DMs and groups.</li>
+        <li><b>Rotate</b>: gateway token, remote client secrets, provider and API keys.</li>
+        <li><b>Audit</b>: logs, transcripts, recent config changes; rerun the deep audit.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/gateway/security ("security audit", "incident response").</div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>Exercise</small>Red-team your own agent</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>Give an agent email read, a web fetch tool, and file access to a folder with a fake secret.</li>
+        <li>Plant an indirect injection in a web page and in an email asking it to send the secret out.</li>
+        <li>Run it with no defenses, then with each: Rule of Two split, approvals (<code>manual</code>), sandbox with no egress, reader sub-agent.</li>
+        <li>Run <code>openclaw security audit --deep</code> before and after.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Measure</h3>
+      <ul>
+        <li>Attack success rate per defense (≥ 20 trials)</li>
+        <li>Benign task success rate (utility cost)</li>
+        <li>Approval prompts per task</li>
+        <li>Which OWASP agentic category each successful attack falls in</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>References</small>Read next</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>Willison, The lethal trifecta (Jun 2025): simonwillison.net/2025/Jun/16/the-lethal-trifecta</li>
+      <li>Meta, Agents Rule of Two (Oct 2025): ai.meta.com/blog/practical-ai-agent-security</li>
+      <li>OWASP Top 10 for Agentic Applications: genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026</li>
+      <li>The Attacker Moves Second: arxiv.org/abs/2510.09023</li>
+      <li>CaMeL: arxiv.org/abs/2503.18813 · Design patterns: arxiv.org/abs/2506.08837</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>AgentDojo: arxiv.org/abs/2406.13352</li>
+      <li>OpenClaw security: docs.openclaw.ai/gateway/security</li>
+      <li>Hermes Agent security: hermes-agent.nousresearch.com/docs/user-guide/security</li>
+      <li>Codex sandboxing and approvals: see the tools deck</li>
+      <li>All links: <code>references/bibliography_and_links.md</code> §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → to navigate · F for full screen</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>
