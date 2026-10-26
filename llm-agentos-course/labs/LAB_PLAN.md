@@ -5,7 +5,7 @@ together, and records what similar courses and tutorials do, so the design choic
 The three labs that exist today (`lab1_memory_plugins/`, `lab2_aios_kv_cache/`, `lab3_google_harness2/`) are
 kept and slotted into the plan; the rest is new work, listed as PRs at the end.
 
-Status: **plan**, written 2026-10-26. Built so far: the lab kit and Labs 0–3 ([`kit/`](kit/)), plus today's
+Status: **plan**, written 2026-10-26. Built so far: the lab kit and Labs 0–4 ([`kit/`](kit/)), plus today's
 Labs 1–3. The rest is not written yet.
 
 ---
@@ -441,6 +441,7 @@ Following the repo's one-task-one-PR workflow, in this order:
    Done: [`lab01`](kit/handouts/lab01_agent_loop.md), [`lab02`](kit/handouts/lab02_scheduler.md),
    [`lab03`](kit/handouts/lab03_context_engines.md).
 3. **Lab 4** (memory) and the existing TODO item "a lab for the memory deck exercise".
+   Done: [`lab04`](kit/handouts/lab04_long_term_memory.md).
 4. **Lab 5**: move today's `lab2_aios_kv_cache/` under the new numbering (or keep the folder name and link it),
    add `prompt.py` and the exercise README.
 5. **Labs 6–8** (policy, tools and sandbox, skills), including the red-team fixtures and their safety notes.
