@@ -73,6 +73,7 @@ llm-agentos-course/
 │   ├── 05_opensource_plugin_apis_slides.html  # Slides 22–31: harness deep-dives (incl. Rust), plugin APIs, vLLM KV, Harness²
 │   └── 06_observability_evaluation_deck.html  # Module 6 lecture, 20 slides: tracing, telemetry, evals, dashboards
 ├── labs/
+│   ├── LAB_PLAN.md                            # Plan: one practice lab per lecture deck, survey of similar courses
 │   ├── lab1_memory_plugins/
 │   │   ├── hermes_custom_memory.py            # Hermes Agent MemoryProvider + ContextEngine plugin template
 │   │   ├── openclaw_context_engine.ts         # OpenClaw registerContextEngine + plugins.slots config
@@ -96,6 +97,10 @@ between slides, **F** for full screen. Slides are laid out at 16:9 (1280×720) a
 ---
 
 ## Labs
+
+The plan for a practice lab per lecture deck (a shared lab kit, fifteen labs and a capstone, informed by a survey
+of similar university courses and tutorials) is in [`labs/LAB_PLAN.md`](labs/LAB_PLAN.md). The three labs below
+exist today; the plan slots them in as Labs 12, 5 and 14.
 
 ### Lab 1: memory and context plugins (Module 5)
 

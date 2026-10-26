@@ -87,4 +87,5 @@ Done as deck **`slides/06_observability_evaluation_deck.html`** (the lab is outl
   The weekly Freshness workflow reports upstream changes and stale checks for the sources in
   [`references/tracked_sources.json`](references/tracked_sources.json); see the repo's `docs/updating-courses.md`.
 - [ ] Add a lab for the memory deck exercise (same store, automatic injection vs. search tool).
+- [ ] Build the lab track in [`labs/LAB_PLAN.md`](labs/LAB_PLAN.md), one PR per step in its section 5 (lab kit first).
 - [x] Add a link checker as the repo's first CI job (`checks.yml`; external links are checked weekly by `freshness.yml`).
