@@ -19,7 +19,7 @@ The master deck (slide 5) defines a nine-component reference architecture. Curre
 | 6 | Skills | Master deck 17–18, Hermes deep-dive 22, **`05_skills_deck.html`** | Yes |
 | 7 | Multi-agent | Master deck 17–18, Lab 1C (Letta shared blocks), **`05_multi_agent_deck.html`** | Yes |
 | 8 | Access control | Master deck 15–16, **`04_access_control_deck.html`** | Yes |
-| 9 | Extension layer (plugins) | Companion deck 28 (plugin APIs side by side) | Not yet |
+| 9 | Extension layer (plugins) | Companion deck 28 (plugin APIs side by side), **`05_extension_layer_deck.html`** | Yes |
 
 ## A. Component deep-dives
 
@@ -43,7 +43,7 @@ OpenClaw, Letta (and a Rust runtime where relevant) implement it, failure modes,
   shared memory (Letta blocks), message passing vs. shared state, cost and failure amplification.
 - [x] **Access control and safety.** Done as deck **`slides/04_access_control_deck.html`**. Permission models, user confirmation, credential handling, prompt-injection
   defenses for tools and memory, audit logs. Start from: AIOS access manager, memory security survey, A-MemGuard.
-- [ ] **Extension layer.** Plugin manifests, slots and lifecycles, versioning and compatibility, plugin
+- [x] **Extension layer.** Done as deck **`slides/05_extension_layer_deck.html`**. Plugin manifests, slots and lifecycles, versioning and compatibility, plugin
   security. Start from: companion deck 28 and Lab 1.
 - [ ] **KV-cache plane, second pass.** A standalone deck for Module 3 beyond the master-deck slides and Lab 2.
 
