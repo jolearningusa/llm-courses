@@ -266,3 +266,23 @@ class TestSkillFixtures(unittest.TestCase):
                                 p = ws / c["arguments"]["path"]
                                 p.write_text(c["arguments"]["content"])
                         self.assertEqual(task.check(ws, demo[-1]["content"]), ok)
+
+
+class TestResearchFixtures(unittest.TestCase):
+    def test_answer_keys_and_worker_scripts(self):
+        from tasks.research import TASKS
+        for task in TASKS:
+            with self.subTest(task=task.id):
+                self.assertFalse(task.check("I don't know"))
+                self.assertTrue(task.check(task.demo_single[-1]["content"]))
+                self.assertTrue(task.check(task.demo_parent[-1]["content"]))
+                briefs = []
+                for step in task.demo_parent:
+                    for c in step.get("tool_calls", []):
+                        briefs += c["arguments"].get("briefs", []) + [c["arguments"].get("brief")]
+                self.assertEqual({b for b in briefs if b}, set(task.demo_workers))
+                for script in task.demo_workers.values():
+                    for step in script[:-1]:
+                        path = step["tool_calls"][0]["arguments"].get("path")
+                        self.assertTrue(path in task.files or any(f.startswith(path + "/") for f in task.files))
+                        self.assertNotIn("..", path)
