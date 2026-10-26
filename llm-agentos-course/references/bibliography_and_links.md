@@ -256,6 +256,24 @@ Papers (AIOS, Autellix, Continuum, KVFlow, ThunderAgent) are in §1. Harness and
 - Model Context Protocol 2026-07-28 release (stateless core, deprecations): https://blog.modelcontextprotocol.io/posts/2026-07-28/
 - Anthropic, Claude Code plugins, Oct 2025: https://claude.com/resources/articles/claude-code-plugins
 
+### MCP, plugins and connectors (deck `05_mcp_connectors_deck.html`)
+
+- MCP 2026-07-28 changelog (no `initialize`, no sessions, `server/discover`, multi round-trip requests, `subscriptions/listen`, deprecations): https://modelcontextprotocol.io/specification/2026-07-28/changelog
+- MCP 2026-07-28 release post: https://blog.modelcontextprotocol.io/posts/2026-07-28/
+- MCP authorization (OAuth 2.1, RFC 9728, RFC 8707, Client ID Metadata Documents, RFC 9207 `iss`): https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization
+- MCP Tools (`resultType`, `input_required`, `x-mcp-header`, security considerations): https://modelcontextprotocol.io/specification/2026-07-28/server/tools
+- MCP Security Best Practices (confused deputy, token passthrough, SSRF, local server compromise, scope minimization): https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices
+- MCP Registry (preview; `server.json`, namespace verification): https://modelcontextprotocol.io/registry/about
+- MCP Apps (SEP-1865, `ui://` templates in sandboxed iframes), Nov 21 2025: https://blog.modelcontextprotocol.io/posts/2025-11-21-mcp-apps/
+- Claude Connectors Directory: https://claude.com/docs/connectors/directory
+- MCP Bundles (`.mcpb`): https://claude.com/docs/connectors/building/mcpb
+- Hermes Agent, MCP (`mcp_servers`, tool filters, OAuth): https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp
+- OpenClaw, MCP (`mcp.servers`, `toolFilter`, `openclaw mcp serve`): https://docs.openclaw.ai/tools/mcp
+- OpenAI Codex, MCP (`[mcp_servers]`, `enabled_tools`, `codex mcp login`): https://learn.chatgpt.com/docs/extend/mcp
+- Invariant Labs, *MCP Security Notification: Tool Poisoning Attacks*, Apr 1 2025: https://invariantlabs.ai/blog/mcp-security-notification
+- Invariant Labs, *GitHub MCP exploited: accessing private repositories via MCP*, May 26 2025: https://invariantlabs.ai/blog/mcp-github-vulnerability
+- MCPTox: a benchmark for tool poisoning on real-world MCP servers (AAAI 2026): https://arxiv.org/abs/2508.14925
+
 ## 6. Evaluation (Module 6)
 
 - **Google Agent Development Kit (ADK) evaluation**: https://adk.dev/evaluate/ · https://github.com/google/adk-python
