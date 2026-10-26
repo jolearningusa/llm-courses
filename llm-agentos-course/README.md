@@ -76,6 +76,32 @@ llm-agentos-course/
 │   └── 06_observability_evaluation_deck.html  # Module 6 lecture, 20 slides: tracing, telemetry, evals, dashboards
 ├── labs/
 │   ├── LAB_PLAN.md                            # Plan: one practice lab per lecture deck, survey of similar courses
+│   ├── kit/                                   # Shared lab kit: the nanoos harness, tasks, runner, autograder
+│   │   ├── README.md                          # What is in the kit, how grading and metrics work
+│   │   ├── Makefile                           # make grade LAB=n, make test-kit, make demo, make suite
+│   │   ├── run_suite.py                       # Run a task tier k times; metrics.csv, summary.json, traces
+│   │   ├── export_task.py                     # Write one task's files to a folder to run it in another harness
+│   │   ├── grade.py                           # Autograder: tests/test_labNN.py against the scripted model
+│   │   ├── report_template.md                 # The one-page report every lab hands in
+│   │   ├── nanoos/
+│   │   │   ├── __init__.py
+│   │   │   ├── types.py                       # Messages, ToolCall, ModelResponse, Usage, RunResult
+│   │   │   ├── tools_basic.py                 # Starter file tools confined to a workspace
+│   │   │   ├── baseline.py                    # The provided minimal loop
+│   │   │   └── trace.py                       # Lab 0: JSONL tracer, summarize_trace, token_breakdown (stubs)
+│   │   ├── models/
+│   │   │   ├── __init__.py
+│   │   │   ├── scripted.py                    # Scripted model for free, deterministic tests
+│   │   │   └── openai_compat.py               # Client for OpenAI-compatible endpoints (hosted API or vLLM)
+│   │   ├── tasks/
+│   │   │   ├── __init__.py                    # Task type and tiers
+│   │   │   └── basic.py                       # Ten basic tasks with checkers and scripted solutions
+│   │   ├── tests/
+│   │   │   ├── __init__.py
+│   │   │   ├── test_kit.py                    # The kit's own tests
+│   │   │   └── test_lab00.py                  # Lab 0 autograder tests
+│   │   └── handouts/
+│   │       └── lab00_watch_a_harness.md       # Lab 0: set up the kit, write the tracer, watch two harnesses
 │   ├── lab1_memory_plugins/
 │   │   ├── hermes_custom_memory.py            # Hermes Agent MemoryProvider + ContextEngine plugin template
 │   │   ├── openclaw_context_engine.ts         # OpenClaw registerContextEngine + plugins.slots config
@@ -103,6 +129,10 @@ between slides, **F** for full screen. Slides are laid out at 16:9 (1280×720) a
 The plan for a practice lab per lecture deck (a shared lab kit, fifteen labs and a capstone, informed by a survey
 of similar university courses and tutorials) is in [`labs/LAB_PLAN.md`](labs/LAB_PLAN.md). The three labs below
 exist today; the plan slots them in as Labs 12, 5 and 14.
+
+The new labs are built on a shared [lab kit](labs/kit/): a small student harness (`nanoos`), a task suite,
+a runner that writes the same metrics table in every lab, and an autograder that tests against a scripted model.
+Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md). The existing labs keep their names for now.
 
 ### Lab 1: memory and context plugins (Module 5)
 
