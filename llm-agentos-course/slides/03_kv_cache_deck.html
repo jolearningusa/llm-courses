@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — The KV-Cache Plane</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · Module 3 lecture · System memory plane</div>
+  <h1 style="margin-top:22px">The KV-cache plane, second pass</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">The engine's RAM, in detail: how big the KV-cache is, how vLLM finds and evicts cached prefixes,
+    what provider prompt caches charge, how prefill/decode disaggregation and tiered KV stores work,
+    how to shrink KV itself, and what a harness must do to keep its hit rate high.</p>
+  <p style="margin-top:28px"><span class="pill">KV math</span><span class="pill">Prefix caching</span><span class="pill">Prompt-cache pricing</span><span class="pill">Disaggregation</span><span class="pill">KV compression</span><span class="pill">Harness hygiene</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>Recap</small>Where the master deck left off</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li><b>PagedAttention</b> (vLLM): fixed-size KV blocks, a per-sequence block table, copy-on-write sharing.</li>
+        <li><b>RadixAttention</b> (SGLang): a radix tree of cached prefixes with LRU eviction; up to 6.4× higher throughput.</li>
+        <li><b>Non-prefix reuse</b>: LMCache chunks + CacheBlend selective recompute; AsymCache.</li>
+        <li><b>Tiers</b>: HBM → DRAM → CXL → NVMe → RDMA → parallel FS; agents editing their own cache (AKV).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>This deck adds</h3>
+      <ul>
+        <li>Sizing: bytes per token and per session</li>
+        <li>vLLM prefix-cache internals: block hashes, eviction, isolation</li>
+        <li>Hosted prompt caches and their prices</li>
+        <li>Disaggregated prefill / decode and KV pools</li>
+        <li>Making KV smaller: GQA, MLA, FP8</li>
+        <li>A cache-hygiene checklist for harness authors</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Master deck slides 12–14; Kwon et al. arXiv:2309.06180; Zheng et al. arXiv:2312.07104 (SGLang).</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>Sizing</small>How big is the KV-cache?</h2>
+  <div class="cols">
+    <div>
+<pre style="font-size:15px">bytes/token = 2 (K and V)
+            × layers
+            × kv_heads × head_dim
+            × bytes per element
+
+Llama-3.1-8B: 32 layers, 8 KV heads (GQA),
+head_dim 128, FP16 (2 bytes)
+
+2 × 32 × 8 × 128 × 2 = 131,072 B
+                     = 128 KiB per token
+
+  8k tokens  →   1 GiB
+ 32k tokens  →   4 GiB
+128k tokens  →  16 GiB   (one sequence)</pre>
+    </div>
+    <div class="card">
+      <h3>What this means for agents</h3>
+      <ul>
+        <li>A single long agent session can hold more KV than the 8B model's own weights (about 16 GB in BF16).</li>
+        <li>An idle agent waiting on a tool still owns its KV unless the engine evicts or offloads it.</li>
+        <li>FP8 KV halves the bytes; GQA (8 KV heads instead of 32) already cut them 4×.</li>
+        <li>Concurrency is bounded by KV memory, not by compute, for most agent workloads.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Standard KV-cache arithmetic; model shape from the Llama 3.1 8B configuration. Numbers are per sequence before any sharing.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>Workload</small>Why agents are a prefill problem</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li>Each turn resends system prompt, tool schemas, skill index, memory and history, then adds a little.</li>
+        <li>Manus reports about <b>100:1 input-to-output tokens</b> and calls KV-cache hit rate "the single most important metric" for a production agent.</li>
+        <li>Without reuse, turn <i>n</i> re-prefills everything from turns 1…<i>n</i>−1: total prefill grows quadratically with turns.</li>
+        <li>With a stable prefix, only the new suffix is prefilled: total prefill grows linearly.</li>
+      </ul>
+    </div>
+    <svg viewBox="0 0 500 360" width="500" height="360">
+      <g stroke="#9aa6bd" stroke-width="1.5"><line x1="50" y1="300" x2="480" y2="300"/><line x1="50" y1="300" x2="50" y2="20"/></g>
+      <path d="M50 300 C 150 283, 330 200, 470 40" fill="none" stroke="#ff7a85" stroke-width="3"/>
+      <path d="M50 300 L 470 230" fill="none" stroke="#7be0b8" stroke-width="3"/>
+      <g font-size="15">
+        <text x="140" y="110" fill="#ff7a85">no reuse: Σ prefix ~ n²</text>
+        <text x="300" y="285" fill="#7be0b8">prefix hits: ~ n</text>
+        <text x="200" y="340" fill="#9aa6bd">turns in a session →</text>
+        <text x="58" y="30" fill="#9aa6bd">cumulative prefill tokens</text>
+      </g>
+    </svg>
+  </div>
+  <div class="cite">Ji, "Context Engineering for AI Agents: Lessons from Building Manus" (Jul 18, 2025). Curve is schematic.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>vLLM internals</small>Automatic prefix caching: hash chains</h2>
+  <div class="cols">
+    <div>
+<pre style="font-size:14px">block_hash[i] = hash(
+    block_hash[i-1],        # parent → chain
+    tokens in block i,      # full blocks only
+    extra keys              # LoRA id, image hashes,
+)                           # cache_salt (block 0)
+
+lookup:  walk hashes from block 0;
+         stop at the first miss → prefill from there
+evict:   LRU over the free-block queue;
+         a finished request's blocks are freed
+         in reverse, so its tail is evicted first</pre>
+      <p style="font-size:16px;margin-top:10px">Default hash: <code>sha256</code> (since v0.11); <code>--prefix-caching-hash-algo</code> also offers <code>xxhash</code> variants.</p>
+    </div>
+    <div class="card">
+      <h3>Consequences</h3>
+      <ul>
+        <li>Because hashes chain, <b>one changed token invalidates every later block</b>: a timestamp at the top of the prompt costs the whole cache.</li>
+        <li>Only full blocks are cached; the partial last block is recomputed.</li>
+        <li><code>cache_salt</code> goes into block 0's hash, so only requests with the same salt share KV: use it per tenant to stop cross-tenant timing side channels.</li>
+        <li>Tails go first: shared system prompts survive longer than one session's last turns.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">vLLM docs, "Automatic Prefix Caching" design page (docs.vllm.ai/en/latest/design/prefix_caching.html).</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>Hosted APIs</small>Prompt caching as a priced product</h2>
+  <table class="dense">
+    <tr><th></th><th>Anthropic</th><th>OpenAI</th></tr>
+    <tr><td>Mode</td><td>Explicit <code>cache_control</code> breakpoints (max 4), or automatic with one top-level <code>cache_control</code></td><td>Automatic on supported models; explicit breakpoints on newer models</td></tr>
+    <tr><td>Prefix order</td><td><code>tools → system → messages</code></td><td>Prompt prefix</td></tr>
+    <tr><td>Lifetime</td><td>5 min default (refreshed on use), 1 h option</td><td>Model-dependent; minutes by default, longer retention options</td></tr>
+    <tr><td>Price of a hit</td><td>Read 0.1× base input by default (lower on some newer models)</td><td>Up to 95% off cached input</td></tr>
+    <tr><td>Price of a write</td><td>1.25× (5 min) or 2× (1 h)</td><td>Reported as <code>cache_write_tokens</code></td></tr>
+    <tr><td>Minimum</td><td>512 to 4,096 tokens by model</td><td>1,024 tokens on newer models</td></tr>
+    <tr><td>Invalidated by</td><td>Tool definition changes (all levels), system toggles, thinking / effort changes</td><td>Any prefix change</td></tr>
+  </table>
+  <div class="cite">platform.claude.com/docs/en/build-with-claude/prompt-caching; developers.openai.com/api/docs/guides/prompt-caching (both checked Oct 2026; prices change, read the page).</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>Economics</small>A worked example</h2>
+  <div class="cols">
+    <div>
+<pre style="font-size:15px">Session: 40 turns, stable prefix 20k tokens,
+history grows 1.5k tokens per turn.
+Price units: base input = 1.0 per token.
+
+No caching:
+  Σ (20k + 1.5k·t) for t = 0..39
+  = 800k + 1.17M ≈ 1.97M units
+
+Caching (read 0.1×, write 1.25×):
+  writes ≈ 20k·1.25 + 39·1.5k·1.25 ≈ 98k
+  reads  ≈ 0.1 × (1.97M − 78.5k)   ≈ 189k
+  total  ≈ 0.29M units  (≈ 85% cheaper)</pre>
+    </div>
+    <div class="card">
+      <h3>When the math breaks</h3>
+      <ul>
+        <li>A tool waits longer than the TTL: the prefix expires and is rewritten at 1.25×.</li>
+        <li>Compaction rewrites history: one full write, then reads resume.</li>
+        <li>Memory or tool lists edited mid-session: everything after the edit is rewritten.</li>
+        <li>Long tool waits can justify the 1 h TTL (2× write) when re-writing would cost more.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Illustrative arithmetic using the Anthropic default multipliers on slide 6; real hit rates depend on breakpoints and timing.</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>Architecture</small>Disaggregated prefill and decode</h2>
+  <div class="cols">
+    <svg viewBox="0 0 540 380" width="540" height="380">
+      <g font-size="16">
+        <rect x="0" y="20" width="200" height="110" rx="8" fill="#1c2a4d" stroke="#ff7a85"/>
+        <text x="16" y="52" font-weight="700">Prefill pool</text>
+        <text x="16" y="78" fill="#9aa6bd">compute-bound</text>
+        <text x="16" y="102" fill="#9aa6bd">long agent prompts</text>
+        <rect x="340" y="20" width="200" height="110" rx="8" fill="#1c2a4d" stroke="#7be0b8"/>
+        <text x="356" y="52" font-weight="700">Decode pool</text>
+        <text x="356" y="78" fill="#9aa6bd">memory-bound</text>
+        <text x="356" y="102" fill="#9aa6bd">token by token</text>
+        <rect x="80" y="230" width="380" height="110" rx="8" fill="#161d2e" stroke="#ffb86b"/>
+        <text x="96" y="262" font-weight="700">KV pool: CPU DRAM / SSD / remote</text>
+        <text x="96" y="288" fill="#9aa6bd">Mooncake store, LMCache; moved by</text>
+        <text x="96" y="312" fill="#9aa6bd">RDMA / NIXL connectors</text>
+      </g>
+      <g stroke="#9aa6bd" stroke-width="2" fill="none">
+        <path d="M200 75 L340 75"/><path d="M100 130 L180 230"/><path d="M440 130 L360 230"/>
+      </g>
+      <text x="230" y="66" font-size="14" fill="#9aa6bd">KV transfer</text>
+    </svg>
+    <div>
+      <ul style="font-size:18px">
+        <li><b>DistServe</b>: separate GPUs for prefill and decode remove interference; 7.4× more requests or 12.6× tighter SLO.</li>
+        <li><b>Mooncake</b> (Moonshot AI, serves Kimi): disaggregated clusters plus a KV pool built from idle CPU, DRAM and SSD; up to 525% throughput in simulation, 75% more requests on real workloads; early rejection under overload.</li>
+        <li>vLLM exposes this through KV connectors (Lab 2: LMCache + NIXL).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Zhong et al., DistServe, arXiv:2401.09670; Qin et al., Mooncake, arXiv:2407.00079; Lab 2.</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>Shrink it</small>Making each token's KV smaller</h2>
+  <table class="dense">
+    <tr><th>Technique</th><th>Where</th><th>Effect</th><th>Trade-off</th></tr>
+    <tr><td>Grouped-query attention</td><td>Model architecture</td><td>KV heads shared by query groups (8 vs. 32 in Llama-3.1-8B): 4× smaller</td><td>Fixed at training time</td></tr>
+    <tr><td>Multi-head latent attention</td><td>Model architecture (DeepSeek-V2)</td><td>KV compressed into a latent vector: 93.3% smaller than DeepSeek 67B; up to 5.76× generation throughput</td><td>Fixed at training time</td></tr>
+    <tr><td>FP8 KV cache</td><td>Engine flag: <code>--kv-cache-dtype fp8</code></td><td>Half the bytes of FP16</td><td>Uncalibrated scales default to 1.0; calibrate with llm-compressor</td></tr>
+    <tr><td>Offload / tiering</td><td>Engine + connector</td><td>Capacity beyond HBM</td><td>Transfer latency on reload</td></tr>
+    <tr><td>Program-aware retention</td><td>Scheduler</td><td>Keep KV that will be reused soon (Continuum TTL, KVFlow prefetch)</td><td>Needs workflow knowledge</td></tr>
+  </table>
+  <div class="cite">DeepSeek-AI, arXiv:2405.04434; docs.vllm.ai quantized KV cache page; scheduler deck for Continuum (2511.02230) and KVFlow (2507.07400).</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>Agents</small>Tool waits: keep, offload, or drop?</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>An agent turn ends in a tool call; the next request arrives after the tool returns (seconds to minutes).</li>
+        <li><b>Keep</b> on GPU: instant resume, but blocks other agents' KV.</li>
+        <li><b>Offload</b> to DRAM / SSD: frees HBM; reload costs transfer time, cheaper than re-prefill for long prefixes.</li>
+        <li><b>Drop</b>: free; resume pays full prefill.</li>
+        <li>Continuum sets a TTL from reload cost and queueing delay; KVFlow prefetches the next agent's KV before it is scheduled.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Rule of thumb</h3>
+      <p>Expected cost of dropping = P(resume) × prefill time of the prefix. Keep or offload when that exceeds the cost of holding or moving the blocks.</p>
+      <p class="muted">The harness knows tool timing; the engine doesn't. Passing hints (expected wait, program ID) across that boundary is what program-aware serving is about.</p>
+    </div>
+  </div>
+  <div class="cite">Continuum, arXiv:2511.02230; KVFlow, arXiv:2507.07400; Autellix, arXiv:2502.13965.</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>Harness side</small>Cache hygiene checklist</h2>
+  <table class="dense">
+    <tr><th>Do</th><th>Why</th><th>Seen in</th></tr>
+    <tr><td>Put stable content first: tools, system, skills index, pinned memory</td><td>Matches <code>tools → system → messages</code> and vLLM's chained hashes</td><td>Context manager deck</td></tr>
+    <tr><td>Freeze memory and tool lists for the session</td><td>Mid-session edits invalidate everything after them</td><td>Hermes memory snapshot; OpenClaw skill snapshot</td></tr>
+    <tr><td>Mask tools instead of removing them</td><td>Removing a definition invalidates every level</td><td>Manus</td></tr>
+    <tr><td>Append-only history, deterministic serialization</td><td>Re-ordered JSON keys are a cache miss</td><td>Manus</td></tr>
+    <tr><td>No timestamps or random IDs in the prefix</td><td>One token change → full miss</td><td>vLLM hash chain</td></tr>
+    <tr><td>Compact rarely, at a breakpoint</td><td>Every compaction is a full rewrite</td><td>Hermes 50% / 85% thresholds</td></tr>
+    <tr><td>Same prefix for sibling sub-agents</td><td>Children share the system and tool blocks</td><td>Multi-agent deck</td></tr>
+    <tr><td>Per-tenant <code>cache_salt</code> / cache key</td><td>Isolation without disabling caching</td><td>vLLM, OpenAI <code>prompt_cache_key</code></td></tr>
+  </table>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>Measure</small>Metrics that show cache health</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li><b>Engine</b> (vLLM <code>/metrics</code>): <code>vllm:prefix_cache_queries</code> and hits → hit rate; <code>vllm:kv_cache_usage_perc</code>; <code>vllm:time_to_first_token_seconds</code>.</li>
+        <li><b>Hosted API</b>: Anthropic <code>usage.cache_read_input_tokens</code> / <code>cache_creation_input_tokens</code>; OpenAI <code>usage.input_tokens_details.cached_tokens</code>.</li>
+        <li><b>Harness</b>: cached-token share per turn, per session, per agent; cost per task.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Alerts worth having</h3>
+      <ul>
+        <li>Hit rate drops after a deploy (someone put a timestamp in the prompt)</li>
+        <li>TTFT rises with KV usage near 100% (eviction pressure)</li>
+        <li>Cache writes ≫ reads for a session (TTL too short for tool waits)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Observability deck (06) for the full metric catalog; vLLM metrics docs; provider prompt-caching docs.</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>Exercise</small>Break the cache on purpose</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>Serve a model with vLLM (prefix caching on) and point Hermes or OpenClaw at it.</li>
+        <li>Run a 20-turn scripted session; record hit rate and TTFT per turn.</li>
+        <li>Repeat with one change each: a timestamp in the system prompt; a tool added at turn 10; a memory edit at turn 10; compaction at turn 15.</li>
+        <li>Repeat the baseline with <code>--kv-cache-dtype fp8</code> and with LMCache CPU offload (Lab 2).</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Report</h3>
+      <ul>
+        <li>Hit rate and TTFT curves per variant</li>
+        <li>Total prefill tokens per session</li>
+        <li>Max concurrent sessions before eviction</li>
+        <li>Projected API cost with the slide-6 multipliers</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>References</small>Read next</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>vLLM automatic prefix caching: docs.vllm.ai/en/latest/design/prefix_caching.html</li>
+      <li>vLLM quantized KV cache: docs.vllm.ai/en/latest/features/quantization/quantized_kvcache.html</li>
+      <li>Anthropic prompt caching: platform.claude.com/docs/en/build-with-claude/prompt-caching</li>
+      <li>OpenAI prompt caching: developers.openai.com/api/docs/guides/prompt-caching</li>
+      <li>Manus context engineering: manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>PagedAttention: arxiv.org/abs/2309.06180 · SGLang: arxiv.org/abs/2312.07104</li>
+      <li>DistServe: arxiv.org/abs/2401.09670 · Mooncake: arxiv.org/abs/2407.00079</li>
+      <li>DeepSeek-V2 (MLA): arxiv.org/abs/2405.04434</li>
+      <li>CacheBlend: arxiv.org/abs/2405.16444 · Continuum: arxiv.org/abs/2511.02230</li>
+      <li>All links: <code>references/bibliography_and_links.md</code> §3</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → to navigate · F for full screen</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>
