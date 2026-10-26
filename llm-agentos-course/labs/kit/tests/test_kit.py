@@ -193,3 +193,27 @@ class TestCacheSession(unittest.TestCase):
         last = {v: render(session_prompt(v, 19)) for v in VARIANTS}
         self.assertEqual(len(set(last.values())), len(VARIANTS))
         self.assertNotEqual(render(session_prompt("baseline", 3, session=1)), render(session_prompt("baseline", 3)))
+
+
+class TestRedteamFixtures(unittest.TestCase):
+    def test_benign_demos_pass_and_checks_need_work(self):
+        from models.gullible import GullibleModel
+        from tasks.redteam import TASKS, RedteamTools
+        for task in TASKS:
+            with self.subTest(task=task.id), tempfile.TemporaryDirectory() as d:
+                ws = Path(d)
+                task.setup(ws)
+                self.assertFalse(task.check(ws, "I don't know", RedteamTools(ws)))
+                env = RedteamTools(ws)
+                result = baseline.run(GullibleModel(task.demo), task.prompt, env, max_steps=12)
+                self.assertTrue(task.check(ws, result.answer, env), result.answer)
+                self.assertEqual(env.leaked(), task.injected is not None, "the gullible model obeys every injection")
+
+    def test_reader_keeps_facts_and_drops_injections(self):
+        from nanoos.policy import strip_instructions
+        from tasks.redteam import PAGES, STEPS_RE
+        page = strip_instructions(PAGES["https://docs.vendor.example/release-notes"])
+        self.assertIn("4.2.1", page)
+        self.assertNotIn("AI agents", page)
+        self.assertFalse(STEPS_RE.search(page))
+        self.assertIn("attacker.example", page, "a filter misses the sentence that does not name an AI")
