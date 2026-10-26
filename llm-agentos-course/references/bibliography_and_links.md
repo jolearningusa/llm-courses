@@ -122,6 +122,18 @@ appear on arXiv. Venues are listed only where a primary source states them.
 - **NVIDIA NIXL** (Inference Xfer Library) https://github.com/ai-dynamo/nixl · vLLM guide: https://docs.vllm.ai/en/latest/features/nixl_connector_usage/
 - **vLLM MultiConnector** API: https://docs.vllm.ai/api/vllm/distributed/kv_transfer/kv_connector/v1/multi_connector.html
 
+### KV-cache plane lecture (deck `03_kv_cache_deck.html`)
+
+- vLLM, automatic prefix caching design (hash-chained blocks, `cache_salt`): https://docs.vllm.ai/en/latest/design/prefix_caching.html
+- vLLM, quantized KV cache (FP8): https://docs.vllm.ai/en/latest/features/quantization/quantized_kvcache.html
+- Anthropic, prompt caching: https://platform.claude.com/docs/en/build-with-claude/prompt-caching
+- OpenAI, prompt caching: https://developers.openai.com/api/docs/guides/prompt-caching
+- Manus, *Context Engineering for AI Agents* (KV-cache hit rate as the key metric): https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus
+- PagedAttention / vLLM: https://arxiv.org/abs/2309.06180 · SGLang (RadixAttention): https://arxiv.org/abs/2312.07104
+- DistServe (prefill/decode disaggregation): https://arxiv.org/abs/2401.09670 · Mooncake (KV-centric disaggregated serving): https://arxiv.org/abs/2407.00079
+- DeepSeek-V2 (multi-head latent attention, 93.3% smaller KV cache): https://arxiv.org/abs/2405.04434
+- CacheBlend (non-prefix KV reuse): https://arxiv.org/abs/2405.16444
+
 ## 4. Memory security (Module 4)
 
 - **A Survey on Long-Term Memory Security in LLM Agents: Attacks, Defenses, and Governance Across the Memory Lifecycle**,
