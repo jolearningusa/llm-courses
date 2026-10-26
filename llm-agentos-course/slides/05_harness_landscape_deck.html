@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — The Open Harness Landscape</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  a { color: inherit; text-decoration: underline dotted; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · Module 5 lecture · How open harnesses implement AgentOS</div>
+  <h1 style="margin-top:22px">The open harness landscape, October 2026</h1>
+  <p class="muted" style="font-size:26px;max-width:1040px">Eleven open-source harnesses compared on popularity and on the AgentOS components
+    they actually ship: personal agent runtimes, composable substrates, coding agents and a research kernel.
+    Every star count was read from the project's GitHub page on 2026-10-26.</p>
+  <p style="margin-top:28px"><span class="pill">Popularity</span><span class="pill">Feature matrix</span><span class="pill">Architectural bets</span><span class="pill">Checking claims</span><span class="pill">How to choose</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>Taxonomy</small>Four kinds of harness, four different bets</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Personal agent runtimes</h3>
+      <p style="font-size:18px">A long-running process you talk to from chat apps, with memory, skills and a scheduler.</p>
+      <p style="font-size:18px"><b>OpenClaw</b> (reach: one gateway, many channels), <b>Hermes Agent</b> (self-improvement: skills and memory it writes itself), <b>Goose</b> (a desktop and CLI agent built on MCP extensions).</p>
+    </div>
+    <div class="card">
+      <h3>Composable substrates and agent servers</h3>
+      <p style="font-size:18px">A kernel you build an agent product on.</p>
+      <p style="font-size:18px"><b>DeepSeek Harness</b> ("everything is a plugin" on the Cordis runtime), <b>Letta</b> (stateful agents served over an API, with editable memory blocks).</p>
+    </div>
+  </div>
+  <div class="cols" style="margin-top:18px">
+    <div class="card">
+      <h3>Coding agents</h3>
+      <p style="font-size:18px">The loop, tools and sandbox tuned for a repository.</p>
+      <p style="font-size:18px"><b>OpenCode</b>, <b>Codex CLI</b>, <b>Cline</b>, <b>Aider</b> (terminal and IDE) and <b>OpenHands</b> (agents in Docker sandboxes, local or cloud).</p>
+    </div>
+    <div class="card">
+      <h3>Research kernels</h3>
+      <p style="font-size:18px">An OS layer under other agent frameworks.</p>
+      <p style="font-size:18px"><b>AIOS</b>: a kernel that turns agent requests into syscalls and schedules the LLM, memory, storage and tools shared by many concurrent agents.</p>
+    </div>
+  </div>
+  <div class="cite">Project READMEs on github.com (links on the next slides); AIOS paper, arXiv 2403.16971.</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>Popularity</small>GitHub stars, 2026-10-26</h2>
+  <div style="display:grid;grid-template-columns:190px 1fr 90px;gap:7px 16px;align-items:center;font-size:19px">
+    <div>OpenClaw</div><div style="height:24px;width:100%;background:var(--accent);border-radius:4px"></div><div>393.0k</div>
+    <div>Hermes Agent</div><div style="height:24px;width:64.5%;background:var(--accent);border-radius:4px"></div><div>253.6k</div>
+    <div>DeepSeek Harness</div><div style="height:24px;width:64.1%;background:var(--accent);border-radius:4px"></div><div>252.0k</div>
+    <div>OpenCode</div><div style="height:24px;width:56.4%;background:var(--accent2);border-radius:4px"></div><div>221.5k</div>
+    <div>Codex CLI</div><div style="height:24px;width:32.6%;background:var(--accent2);border-radius:4px"></div><div>128.1k</div>
+    <div>OpenHands</div><div style="height:24px;width:23.4%;background:var(--accent2);border-radius:4px"></div><div>91.8k</div>
+    <div>Cline</div><div style="height:24px;width:17.2%;background:var(--accent2);border-radius:4px"></div><div>67.6k</div>
+    <div>Goose</div><div style="height:24px;width:14.2%;background:var(--accent);border-radius:4px"></div><div>55.7k</div>
+    <div>Aider</div><div style="height:24px;width:12.6%;background:var(--accent2);border-radius:4px"></div><div>49.7k</div>
+    <div>Letta</div><div style="height:24px;width:6.4%;background:var(--accent);border-radius:4px"></div><div>25.2k</div>
+    <div>AIOS</div><div style="height:24px;width:1.6%;background:var(--warn);border-radius:4px"></div><div>6.4k</div>
+  </div>
+  <p style="font-size:17px;margin-top:14px"><span style="color:var(--accent)">■</span> personal runtimes and substrates <span style="color:var(--accent2);margin-left:14px">■</span> coding agents <span style="color:var(--warn);margin-left:14px">■</span> research kernel. Stars measure attention, not use: in May 2026 OpenClaw had about 5.3M weekly npm downloads and Hermes about 53k weekly PyPI downloads, a far larger gap than their stars suggest.</p>
+  <div class="cite">Star counts as rounded on each repository page, read 2026-10-26. Downloads: glukhov.org, "OpenClaw, Hermes and alternatives: popularity" (GitHub, npm and PyPI APIs, May 21 2026).</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>Popularity</small>Where each project lives, and under what license</h2>
+  <table class="dense" style="font-size:16px">
+    <tr><th>Harness</th><th>Repository</th><th>Stars</th><th>Forks</th><th>License</th><th>Kind</th></tr>
+    <tr><td>OpenClaw</td><td><a href="https://github.com/openclaw/openclaw">openclaw/openclaw</a></td><td>393.0k</td><td>82.6k</td><td>MIT</td><td>Personal runtime (TypeScript)</td></tr>
+    <tr><td>Hermes Agent</td><td><a href="https://github.com/NousResearch/hermes-agent">NousResearch/hermes-agent</a></td><td>253.6k</td><td>55.0k</td><td>MIT</td><td>Personal runtime (Python)</td></tr>
+    <tr><td>DeepSeek Harness</td><td><a href="https://github.com/deepseek-ai/deepseek-harness">deepseek-ai/deepseek-harness</a></td><td>252.0k</td><td>30.3k</td><td>MIT</td><td>Substrate, developer preview</td></tr>
+    <tr><td>OpenCode</td><td><a href="https://github.com/anomalyco/opencode">anomalyco/opencode</a></td><td>221.5k</td><td>29.6k</td><td>MIT</td><td>Coding agent (formerly sst/opencode)</td></tr>
+    <tr><td>Codex CLI</td><td><a href="https://github.com/openai/codex">openai/codex</a></td><td>128.1k</td><td>20.1k</td><td>Apache-2.0</td><td>Coding agent (Rust)</td></tr>
+    <tr><td>OpenHands</td><td><a href="https://github.com/OpenHands/OpenHands">OpenHands/OpenHands</a></td><td>91.8k</td><td>12.2k</td><td>MIT</td><td>Coding agent platform (Python)</td></tr>
+    <tr><td>Cline</td><td><a href="https://github.com/cline/cline">cline/cline</a></td><td>67.6k</td><td>7.3k</td><td>Apache-2.0</td><td>Coding agent, IDE + CLI</td></tr>
+    <tr><td>Goose</td><td><a href="https://github.com/aaif-goose/goose">aaif-goose/goose</a></td><td>55.7k</td><td>6.4k</td><td>Apache-2.0</td><td>Personal runtime (Rust; was block/goose)</td></tr>
+    <tr><td>Aider</td><td><a href="https://github.com/Aider-AI/aider">Aider-AI/aider</a></td><td>49.7k</td><td>5.1k</td><td>Apache-2.0</td><td>Coding agent (Python)</td></tr>
+    <tr><td>Letta</td><td><a href="https://github.com/letta-ai/letta">letta-ai/letta</a></td><td>25.2k</td><td>2.7k</td><td>Apache-2.0</td><td>Agent server (Python)</td></tr>
+    <tr><td>AIOS</td><td><a href="https://github.com/agiresearch/AIOS">agiresearch/AIOS</a></td><td>6.4k</td><td>908</td><td>see repo LICENSE</td><td>Research kernel (Python)</td></tr>
+  </table>
+  <div class="cite">Each repository page on github.com, read 2026-10-26 (GitHub rounds to one decimal in thousands). A longer curated list: github.com/RyanAlberts/best-of-Agent-Harnesses.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Feature matrix</small>Personal runtimes, substrates and the research kernel</h2>
+  <table class="dense" style="font-size:13.5px">
+    <tr><th></th><th>OpenClaw</th><th>Hermes Agent</th><th>DeepSeek Harness</th><th>Goose</th><th>Letta</th><th>AIOS</th></tr>
+    <tr><td>Core bet</td><td>Reach: one gateway, every chat app</td><td>Self-improvement: writes its own skills</td><td>Everything is a plugin (Cordis)</td><td>MCP extensions on a Rust agent</td><td>Stateful agent server</td><td>OS kernel for many agents</td></tr>
+    <tr><td>Entry point</td><td>Gateway, WebSocket + HTTP on port 18789</td><td>CLI + messaging gateway</td><td>Web UI and npm CLI</td><td>Desktop app + CLI</td><td>REST API, ADE, SDKs</td><td>Kernel + Cerebrum SDK</td></tr>
+    <tr><td>Channels</td><td>Slack, WhatsApp, Signal, iMessage… "20+ more"</td><td>25+ platforms via the gateway</td><td>—</td><td>—</td><td>Via your app</td><td>Terminal UI</td></tr>
+    <tr><td>Execution</td><td>Host by default; sandbox if configured</td><td>7 backends: local, Docker, SSH, Singularity, Modal, Daytona, Vercel Sandbox</td><td><code>ctx.sandbox</code> backends (no isolation guarantee)</td><td>Local</td><td>—</td><td>VM + MCP server (LiteCUA)</td></tr>
+    <tr><td>Memory</td><td>Workspace files, memory search</td><td>MEMORY.md 2,200 + USER.md 1,375 chars; FTS5 search; Honcho</td><td>Append-only session log</td><td>Compaction at 80% of window</td><td>Memory blocks, archival</td><td>Kernel memory, storage</td></tr>
+    <tr><td>Extensions</td><td>Plugins + skills, ClawHub registry</td><td>Skills (agentskills.io), plugins, MCP</td><td>Plugins for tools, models, loop; MCP via a community plugin</td><td>MCP extensions</td><td>Tools, MCP servers</td><td>Runs AutoGen, ReAct… agents</td></tr>
+    <tr><td>Scheduler</td><td>Cron jobs</td><td>Built-in cron</td><td>—</td><td>Scheduled tasks</td><td>Sleep-time agents</td><td>Syscall queues</td></tr>
+  </table>
+  <div class="cite">READMEs (2026-10-26) · docs.openclaw.ai/gateway · Hermes memory docs · blog.sandbase.ai · bobleer/deepseek-harness-plugin-mcp · docs.letta.com · "—" = not documented</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>Feature matrix</small>Coding agents</h2>
+  <table class="dense" style="font-size:15.5px">
+    <tr><th></th><th>OpenCode</th><th>Codex CLI</th><th>OpenHands</th><th>Cline</th><th>Aider</th></tr>
+    <tr><td>Surfaces</td><td>Terminal UI, desktop app (beta)</td><td>Terminal (Rust), IDE, cloud</td><td>Local GUI, CLI, cloud; SDK</td><td>VS Code / JetBrains, CLI with headless CI mode</td><td>Terminal</td></tr>
+    <tr><td>Where code runs</td><td>Local</td><td>OS sandbox: Seatbelt, Landlock, bubblewrap; <code>read-only</code> / <code>workspace-write</code></td><td>Docker sandbox per conversation</td><td>Local, approval per action (auto-approve optional)</td><td>Local</td></tr>
+    <tr><td>Human in the loop</td><td>Plan and build agents</td><td>Approvals <code>on-request</code> / <code>never</code></td><td>Confirmation mode</td><td>Plan / Act modes, checkpoints</td><td>You review each commit</td></tr>
+    <tr><td>MCP</td><td>Local and remote (<code>mcp</code> config)</td><td><code>[mcp_servers]</code>, <code>codex mcp login</code></td><td>Yes (settings and CLI)</td><td>Yes (<code>cline mcp</code>)</td><td>—</td></tr>
+    <tr><td>Parallel work</td><td><code>@general</code> sub-agent</td><td>—</td><td>Many sandboxed conversations</td><td>Kanban board: one worktree per card</td><td><code>architect</code> mode (two models)</td></tr>
+    <tr><td>Git</td><td>—</td><td>—</td><td>Opens PRs</td><td>Worktrees, auto-commit (Kanban)</td><td>Auto-commit every edit, repo map</td></tr>
+  </table>
+  <p style="font-size:17px;margin-top:12px">The coding agents differ less in the loop than in <b>where code runs</b> (host, OS sandbox, container) and <b>who approves</b>: the Module 4 and tools-and-sandbox decks go deeper.</p>
+  <div class="cite">READMEs of each repo (2026-10-26) · opencode.ai/docs/mcp-servers · Codex sandboxing and MCP docs (developers.openai.com/codex) · docs.openhands.dev/overview/model-context-protocol · aider.chat/docs · "—" = not documented in the sources checked</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>Method</small>Checking the numbers: what the summaries got wrong</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>A search summary from 2026-10-26, checked</h3>
+      <ul style="font-size:17px">
+        <li>DeepSeek Harness "~260k": the repo shows <b>252.0k</b>. "Fastest to 200k in 15 days": no source; SandBase reports about 18.5k stars at the August launch and 242,936 on Oct 4.</li>
+        <li>Aider "MIT": the repo is <b>Apache-2.0</b>.</li>
+        <li>OpenHands "69k–93k": <b>91.8k</b>. Cline "61k+": <b>67.6k</b>. AIOS "6.5k, 925 forks": <b>6.4k, 908</b>.</li>
+        <li>"Global #N" ranks, "8M+ installs", "OpenClaw 2.0 Skill Workshop": not found in any primary source.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Rules we used in this deck</h3>
+      <ul style="font-size:17px">
+        <li>Read stars from the repo page, write the date next to them, and expect them to drift in weeks.</li>
+        <li>Prefer the README and the docs over blogs; quote a blog only for what it measured.</li>
+        <li>Follow redirects: <code>sst/opencode</code> → <code>anomalyco/opencode</code>, <code>block/goose</code> → <code>aaif-goose/goose</code>.</li>
+        <li>Mark what you could not confirm ("—") instead of filling the cell.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Repository pages on github.com, 2026-10-26 · blog.sandbase.ai/deepseek-harness-vs-openclaw-vs-hermes-2026 (Aug 13, updated Oct 4 2026).</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>Wrap-up</small>How to choose, and where to go deeper</h2>
+  <table class="dense" style="font-size:17px">
+    <tr><th>If you need…</th><th>Start from</th><th>Go deeper</th></tr>
+    <tr><td>An assistant reachable from your phone and chat apps</td><td>OpenClaw</td><td>Slide 23 (companion deck), Lab 1</td></tr>
+    <tr><td>Recurring jobs and an agent that learns skills</td><td>Hermes Agent</td><td>Slide 22, skills and memory decks, Lab 1</td></tr>
+    <tr><td>Your own agent product with swappable loop, models and sandbox</td><td>DeepSeek Harness (preview), Letta</td><td>Extension layer deck, slide 24</td></tr>
+    <tr><td>Repository work with a strong sandbox</td><td>Codex CLI, OpenHands</td><td>Tools and sandbox, access control decks</td></tr>
+    <tr><td>Repository work in your editor or terminal</td><td>OpenCode, Cline, Aider</td><td>Agent loop deck</td></tr>
+    <tr><td>Many concurrent agents sharing one LLM and memory</td><td>AIOS</td><td>Slide 25, scheduler deck, Lab 2</td></tr>
+  </table>
+  <p style="font-size:18px;margin-top:14px">Popularity tells you where the plugins, skills and answers on forums will be. The AgentOS components tell you whether the harness fits the job.</p>
+  <div class="cite">Companion deck <a href="05_opensource_plugin_apis_slides.html">05_opensource_plugin_apis_slides.html</a> · <a href="05_extension_layer_deck.html">extension layer</a> · <a href="05_tools_sandbox_deck.html">tools and sandbox</a> · <a href="04_access_control_deck.html">access control</a> · <a href="01_scheduler_deck.html">scheduler</a></div>
+</section>
+</div>
+<div id="hint">← / → to navigate · F for full screen</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

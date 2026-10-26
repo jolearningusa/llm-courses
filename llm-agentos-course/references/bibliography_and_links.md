@@ -286,6 +286,25 @@ Papers (AIOS, Autellix, Continuum, KVFlow, ThunderAgent) are in §1. Harness and
 - Invariant Labs, *GitHub MCP exploited: accessing private repositories via MCP*, May 26 2025: https://invariantlabs.ai/blog/mcp-github-vulnerability
 - MCPTox: a benchmark for tool poisoning on real-world MCP servers (AAAI 2026): https://arxiv.org/abs/2508.14925
 
+### The open harness landscape (deck `05_harness_landscape_deck.html`)
+
+Star and fork counts were read from each repository page on 2026-10-26.
+
+- OpenClaw (MIT): https://github.com/openclaw/openclaw · gateway docs: https://docs.openclaw.ai/gateway
+- Hermes Agent (MIT): https://github.com/NousResearch/hermes-agent · memory docs: https://hermes-agent.nousresearch.com/docs/user-guide/features/memory
+- DeepSeek Harness (MIT, developer preview): https://github.com/deepseek-ai/deepseek-harness · https://www.deepseek.com/en/harness/ · community MCP plugin: https://github.com/bobleer/deepseek-harness-plugin-mcp
+- OpenCode (MIT, formerly sst/opencode): https://github.com/anomalyco/opencode · MCP servers: https://opencode.ai/docs/mcp-servers/
+- Codex CLI (Apache-2.0): https://github.com/openai/codex
+- OpenHands (MIT): https://github.com/OpenHands/OpenHands · MCP: https://docs.openhands.dev/overview/model-context-protocol
+- Cline (Apache-2.0): https://github.com/cline/cline
+- Goose (Apache-2.0, formerly block/goose): https://github.com/aaif-goose/goose
+- Aider (Apache-2.0): https://github.com/Aider-AI/aider · https://aider.chat/docs/
+- Letta (Apache-2.0): https://github.com/letta-ai/letta · MCP: https://docs.letta.com/guides/mcp/overview
+- AIOS: https://github.com/agiresearch/AIOS · paper: https://arxiv.org/abs/2403.16971
+- SandBase, *DeepSeek Harness vs OpenClaw vs Hermes* (Aug 13, updated Oct 4 2026): https://blog.sandbase.ai/deepseek-harness-vs-openclaw-vs-hermes-2026/
+- glukhov.org, OpenClaw vs Hermes stars and downloads (May 21 2026): https://www.glukhov.org/ai-systems/comparisons/openclaw-hermes-alternatives-popularity/
+- Best-of Agent Harnesses list: https://github.com/RyanAlberts/best-of-Agent-Harnesses
+
 ## 6. Evaluation (Module 6)
 
 - **Google Agent Development Kit (ADK) evaluation**: https://adk.dev/evaluate/ · https://github.com/google/adk-python
