@@ -84,5 +84,7 @@ Done as deck **`slides/06_observability_evaluation_deck.html`** (the lab is outl
 ## C. Course-wide housekeeping
 
 - [ ] Re-verify fast-moving APIs (Hermes, OpenClaw, Letta, vLLM / LMCache, Harness²) before each run of the course.
+  The weekly Freshness workflow reports upstream changes and stale checks for the sources in
+  [`references/tracked_sources.json`](references/tracked_sources.json); see the repo's `docs/updating-courses.md`.
 - [ ] Add a lab for the memory deck exercise (same store, automatic injection vs. search tool).
-- [ ] Add a link checker as the repo's first CI job (see `docs/git-workflow.md`).
+- [x] Add a link checker as the repo's first CI job (`checks.yml`; external links are checked weekly by `freshness.yml`).

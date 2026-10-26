@@ -19,20 +19,25 @@ slides and F for full screen.
 llm-courses/
 ├── README.md                    # This file
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
-├── docs/git-workflow.md         # Trunk-based git workflow and GitHub settings
+├── docs/
+│   ├── git-workflow.md          # Trunk-based git workflow and GitHub settings
+│   └── updating-courses.md      # Consistency and freshness checks; how to update a course with new findings
 ├── scripts/
 │   ├── build_site.py            # Builds the website from every course into _site/
+│   ├── check_course.py          # Fails when a course disagrees with itself (bibliography, versions, layout)
+│   ├── check_freshness.py       # Reports upstream changes to tracked sources and broken external links
 │   ├── check_site.py            # Fails on broken relative links in the built site
 │   └── check_slides.mjs         # Opens every deck in Chromium: console errors, slide numbering
 ├── .github/
 │   ├── workflows/pages.yml      # Builds and deploys the website on every push to main
-│   ├── workflows/checks.yml     # Link and slide checks on every pull request
+│   ├── workflows/checks.yml     # Consistency, link and slide checks on every pull request
+│   ├── workflows/freshness.yml  # Weekly freshness report, kept in one "freshness" issue
 │   └── pull_request_template.md
 └── <course>/                    # One directory per course, for example llm-agentos-course/
     ├── README.md                # Overview, syllabus, repository layout (required)
     ├── slides/*.html            # Self-contained HTML slide decks
     ├── labs/<lab>/              # Lab code and scripts
-    └── references/*.md          # Reading lists and links
+    └── references/              # Reading lists (*.md) and tracked_sources.json (optional)
 ```
 
 ## Adding a course
@@ -49,9 +54,13 @@ llm-courses/
 
    ```bash
    pip install markdown pygments
+   python scripts/check_course.py                                 # bibliography, versions, layout
    python scripts/build_site.py && python scripts/check_site.py   # then open _site/index.html
    node scripts/check_slides.mjs                                  # needs: npm install playwright
    ```
+
+To keep a course current after it lands, list the sources it depends on in
+`references/tracked_sources.json`; see [docs/updating-courses.md](docs/updating-courses.md).
 
 Large courses go in several pull requests (outline, then modules, then labs), one at a time.
 

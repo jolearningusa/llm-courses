@@ -1,0 +1,69 @@
+{
+  "about": "Fast-moving sources this course depends on. 'version' is what the course was last checked against ('compare': how many leading version parts count as a change) and 'verified' is the date of that check. scripts/check_course.py fails when a file cites a tracked fact with another value (cite_patterns); scripts/check_freshness.py (weekly workflow) reports when upstream moves past 'version' or 'verified' is older than max_age_days. Update both fields when you re-check, see docs/updating-courses.md.",
+  "max_age_days": 120,
+  "items": [
+    {
+      "name": "MCP specification",
+      "version": "2026-07-28",
+      "verified": "2026-10-26",
+      "upstream": {"type": "github_dir", "repo": "modelcontextprotocol/modelcontextprotocol", "path": "schema", "match": "^\\d{4}-\\d{2}-\\d{2}$"},
+      "cite_patterns": ["\\bMCP(?: specification)? (\\d{4}-\\d{2}-\\d{2})\\b", "MCP-Protocol-Version: (\\d{4}-\\d{2}-\\d{2})"],
+      "used_in": ["slides/05_mcp_connectors_deck.html", "slides/05_tools_sandbox_deck.html", "slides/05_extension_layer_deck.html", "README.md"],
+      "notes": "A new spec revision appears as a new dated folder under schema/. Re-read the changelog before changing any MCP slide."
+    },
+    {
+      "name": "vLLM",
+      "version": "0.32.0",
+      "verified": "2026-10-26",
+      "upstream": {"type": "pypi", "package": "vllm"},
+      "compare": 2,
+      "used_in": ["labs/lab2_aios_kv_cache/", "slides/03_kv_cache_deck.html", "slides/05_opensource_plugin_apis_slides.html"],
+      "notes": "Check KVTransferConfig, MultiConnector and --kv-offloading-backend in the release notes."
+    },
+    {
+      "name": "LMCache",
+      "version": "0.5.6",
+      "verified": "2026-10-26",
+      "upstream": {"type": "pypi", "package": "lmcache"},
+      "compare": 2,
+      "used_in": ["labs/lab2_aios_kv_cache/", "slides/03_kv_cache_deck.html"],
+      "notes": "README caveat: in-process mode is deprecated in favor of LMCache MP mode."
+    },
+    {
+      "name": "NIXL",
+      "version": "1.5.0",
+      "verified": "2026-10-26",
+      "upstream": {"type": "pypi", "package": "nixl"},
+      "compare": 2,
+      "used_in": ["labs/lab2_aios_kv_cache/vllm_lmcache_nixl_config.py", "slides/03_kv_cache_deck.html"],
+      "notes": "README caveat: kv_role=\"kv_both\" is deprecated for NixlConnector."
+    },
+    {
+      "name": "Letta Python client (letta-client)",
+      "version": "1.12.1",
+      "verified": "2026-10-26",
+      "upstream": {"type": "pypi", "package": "letta-client"},
+      "compare": 2,
+      "used_in": ["labs/lab1_memory_plugins/letta_shared_blocks.py", "README.md"],
+      "notes": "README caveat: the V1 Python SDK is being deprecated in favor of the TypeScript Letta Agent SDK."
+    },
+    {
+      "name": "OpenClaw",
+      "version": "2026.10.7",
+      "verified": "2026-10-26",
+      "upstream": {"type": "npm", "package": "openclaw"},
+      "compare": 2,
+      "used_in": ["labs/lab1_memory_plugins/openclaw_context_engine.ts", "slides/05_opensource_plugin_apis_slides.html", "slides/05_extension_layer_deck.html"],
+      "notes": "Check registerContextEngine and plugins.slots in the plugin docs."
+    },
+    {
+      "name": "Hermes Agent",
+      "version": null,
+      "verified": "2026-10-26",
+      "upstream": {"type": "github_release", "repo": "NousResearch/hermes-agent"},
+      "compare": 2,
+      "used_in": ["labs/lab1_memory_plugins/hermes_custom_memory.py", "slides/05_opensource_plugin_apis_slides.html", "slides/05_skills_deck.html"],
+      "notes": "Docs were checked in October 2026; record the release tag the first freshness report shows. Check MemoryProvider and ContextEngine in the plugin docs."
+    }
+  ]
+}
