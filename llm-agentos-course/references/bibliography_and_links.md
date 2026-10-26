@@ -180,7 +180,7 @@ appear on arXiv. Venues are listed only where a primary source states them.
     https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
   - Addy Osmani, *Agent Harness Engineering*, Apr 2026: https://addyosmani.com/blog/agent-harness-engineering/
 
-## 5b. Component lecture decks (Modules 1 and 5)
+## 5b. Component lecture decks (Modules 1, 4 and 5)
 
 One subsection per component deck. Every link was checked against its source when the deck was written.
 
