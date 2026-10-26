@@ -46,6 +46,7 @@ OpenClaw, Letta (and a Rust runtime where relevant) implement it, failure modes,
 - [x] **Extension layer.** Done as deck **`slides/05_extension_layer_deck.html`**. Plugin manifests, slots and lifecycles, versioning and compatibility, plugin
   security. Start from: companion deck 28 and Lab 1.
 - [x] **KV-cache plane, second pass.** Done as deck **`slides/03_kv_cache_deck.html`**. A standalone deck for Module 3 beyond the master-deck slides and Lab 2.
+- [x] **MCP, plugins and connectors** (added on request, 2026-10-25). Done as deck **`slides/05_mcp_connectors_deck.html`**: MCP 2026-07-28, OAuth for remote servers, registries and connector directories, tool poisoning.
 
 ## B. Observability and evaluation deep-dive (logging, telemetry, analytics, dashboards)
 
