@@ -10,6 +10,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from models.flaky import Flaky
 from models.openai_compat import parse_response
 from models.scripted import ModelError, ScriptedModel
 from nanoos import baseline
@@ -91,6 +92,22 @@ class TestModels(unittest.TestCase):
         self.assertEqual(r.tool_calls[0].arguments, {"path": "a"})
         self.assertIn("_unparsed", r.tool_calls[1].arguments)
         self.assertEqual((r.usage.input_tokens, r.usage.cached_input_tokens, r.usage.output_tokens), (100, 64, 7))
+
+
+class TestFlaky(unittest.TestCase):
+    def test_fail_rate_bounds(self):
+        with self.assertRaises(ModelError):
+            Flaky(ScriptedModel([{"content": "x"}]), 1.0).complete([], [])
+        self.assertEqual(Flaky(ScriptedModel([{"content": "x"}]), 0.0).complete([], []).content, "x")
+
+    def test_suite_records_model_errors(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = Path(d) / "run"
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                run_suite(["--model", "demo", "--tasks", "b01", "--fail-rate", "1", "--out", str(out)])
+            with (out / "metrics.csv").open() as f:
+                row = next(csv.DictReader(f))
+            self.assertEqual((row["success"], row["stopped_by"]), ("0", "error"))
 
 
 class TestSuite(unittest.TestCase):
