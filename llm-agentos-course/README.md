@@ -88,10 +88,12 @@ llm-agentos-course/
 │   │   │   ├── types.py                       # Messages, ToolCall, ModelResponse, Usage, RunResult
 │   │   │   ├── tools_basic.py                 # Starter file tools confined to a workspace
 │   │   │   ├── baseline.py                    # The provided minimal loop
+│   │   │   ├── loop.py                        # Lab 1: budgets, parallel tools, retries, interrupts, hooks (stubs)
 │   │   │   └── trace.py                       # Lab 0: JSONL tracer, summarize_trace, token_breakdown (stubs)
 │   │   ├── models/
 │   │   │   ├── __init__.py
 │   │   │   ├── scripted.py                    # Scripted model for free, deterministic tests
+│   │   │   ├── flaky.py                       # Wraps a model so a share of calls fail (--fail-rate)
 │   │   │   └── openai_compat.py               # Client for OpenAI-compatible endpoints (hosted API or vLLM)
 │   │   ├── tasks/
 │   │   │   ├── __init__.py                    # Task type and tiers
@@ -99,9 +101,11 @@ llm-agentos-course/
 │   │   ├── tests/
 │   │   │   ├── __init__.py
 │   │   │   ├── test_kit.py                    # The kit's own tests
-│   │   │   └── test_lab00.py                  # Lab 0 autograder tests
+│   │   │   ├── test_lab00.py                  # Lab 0 autograder tests
+│   │   │   └── test_lab01.py                  # Lab 1 autograder tests
 │   │   └── handouts/
-│   │       └── lab00_watch_a_harness.md       # Lab 0: set up the kit, write the tracer, watch two harnesses
+│   │       ├── lab00_watch_a_harness.md       # Lab 0: set up the kit, write the tracer, watch two harnesses
+│   │       └── lab01_agent_loop.md            # Lab 1: a loop that survives errors, stalls and repetition
 │   ├── lab1_memory_plugins/
 │   │   ├── hermes_custom_memory.py            # Hermes Agent MemoryProvider + ContextEngine plugin template
 │   │   ├── openclaw_context_engine.ts         # OpenClaw registerContextEngine + plugins.slots config
@@ -132,7 +136,7 @@ exist today; the plan slots them in as Labs 12, 5 and 14.
 
 The new labs are built on a shared [lab kit](labs/kit/): a small student harness (`nanoos`), a task suite,
 a runner that writes the same metrics table in every lab, and an autograder that tests against a scripted model.
-Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md). The existing labs keep their names for now.
+Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md), then [Lab 1](labs/kit/handouts/lab01_agent_loop.md). The existing labs keep their names for now.
 
 ### Lab 1: memory and context plugins (Module 5)
 

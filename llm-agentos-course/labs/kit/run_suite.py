@@ -28,11 +28,13 @@ import json
 import shutil
 import sys
 import time
+import zlib
 from math import comb
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from models.flaky import Flaky  # noqa: E402
 from models.scripted import ModelError, ScriptedModel  # noqa: E402
 from nanoos.tools_basic import WorkspaceTools  # noqa: E402
 from nanoos.trace import JsonlTracer, NullTracer  # noqa: E402
@@ -77,6 +79,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--loop", default="baseline",
                     help="baseline (provided), nanoos (your Lab 1 loop) or any module with a run() function")
     ap.add_argument("--max-steps", type=int, default=20)
+    ap.add_argument("--fail-rate", type=float, default=0.0,
+                    help="make this share of model calls fail with ModelError (Lab 1; see models/flaky.py)")
     ap.add_argument("--out", default="runs/latest")
     ap.add_argument("--price-in", type=float, default=0.0)
     ap.add_argument("--price-cached", type=float, default=0.0)
@@ -108,6 +112,8 @@ def main(argv: list[str] | None = None) -> int:
             ws.mkdir(parents=True)
             task.setup(ws)
             model = api_model or ScriptedModel(task.demo, name=f"demo:{task.id}")
+            if args.fail_rate:
+                model = Flaky(model, args.fail_rate, seed=zlib.crc32(f"{task.id}:{trial}".encode()))
             run_id = f"{task.id}__{trial}"
             tracer = make_tracer(out / "traces" / f"{run_id}.jsonl", run_id, warned)
             tracer.event("run_start", task=task.id, trial=trial, model=model.name, loop=args.loop)
