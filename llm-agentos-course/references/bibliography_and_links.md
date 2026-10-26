@@ -60,7 +60,7 @@ appear on arXiv. Venues are listed only where a primary source states them.
 - Hermes Agent, memory providers (built-in MEMORY.md / USER.md, one external provider, per-provider recall modes and tools):
   https://hermes-agent.nousresearch.com/docs/user-guide/features/memory-providers
 - OpenClaw, memory architecture (MEMORY.md, USER.md, daily notes, dreaming, trigger injection, standing intents):
-  https://docs2.openclaw.ai/concepts/memory-architecture
+  https://docs.openclaw.ai/concepts/memory-architecture
 - OpenClaw, memory search (hybrid vector + BM25, temporal decay, embedding providers):
   https://docs.openclaw.ai/concepts/memory-search
 - OpenClaw, Active Memory (escalation recall sub-agent, default mode `escalate`): https://docs.openclaw.ai/concepts/active-memory

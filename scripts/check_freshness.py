@@ -9,7 +9,8 @@ the report until everything is current again. It checks:
   GitHub repo) against the version the course was checked against, and whether
   the last check ("verified") is older than max_age_days;
 - every external http(s) link in the course sources (Markdown, decks, labs):
-  404s, dead hosts and other errors. Sites that refuse scripted requests
+  404s, dead hosts and other errors. Requests to one host go one at a time with
+  a pause between them, and a 429 is retried once after its Retry-After. Sites that refuse scripted requests
   (401, 403, 429) are listed separately to check by hand.
 
 Writes a Markdown report to stdout (or --report FILE) and exits 1 when
@@ -27,10 +28,12 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from urllib.parse import urlsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from check_course import ROOT, TEXT_SUFFIXES, course_files, courses, read  # noqa: E402
@@ -38,6 +41,8 @@ from check_course import ROOT, TEXT_SUFFIXES, course_files, courses, read  # noq
 URL_RE = re.compile(r"""https?://[^\s<>"'`)\]|]+""")
 SKIP_URL_RE = re.compile(r"localhost|127\.0\.0\.1|0\.0\.0\.0|example\.(?:com|org)|\$\{|\{\{|<", re.I)
 SOFT_CODES = {401, 403, 429}
+HOST_DELAY = 1.0  # seconds between requests to the same host
+MAX_RETRY_AFTER = 30  # longest Retry-After wait honored on a 429
 UA = "llm-courses-freshness-check (+https://github.com/jolearningusa/llm-courses)"
 DOCS = "docs/updating-courses.md"
 REPO = os.environ.get("GITHUB_SERVER_URL", "https://github.com") + "/" + os.environ.get("GITHUB_REPOSITORY", "jolearningusa/llm-courses")
@@ -124,7 +129,7 @@ def external_links() -> dict[str, set[str]]:
     return found
 
 
-def probe(url: str) -> tuple[str, str | None, bool]:
+def probe(url: str, retry: bool = True) -> tuple[str, str | None, bool]:
     """(url, problem or None, soft): soft problems are sites refusing scripts."""
     try:
         fetch(url, method="HEAD")
@@ -135,6 +140,10 @@ def probe(url: str) -> tuple[str, str | None, bool]:
                 fetch(url)
                 return url, None, False
             except urllib.error.HTTPError as e2:
+                if e2.code == 429 and retry:  # rate-limited: wait as asked, then try once more
+                    wait = e2.headers.get("Retry-After", "")
+                    time.sleep(min(int(wait) if wait.isdigit() else 10, MAX_RETRY_AFTER))
+                    return probe(url, retry=False)
                 return url, f"HTTP {e2.code}", e2.code in SOFT_CODES
             except Exception as e2:  # noqa: BLE001
                 return url, str(e2), False
@@ -143,11 +152,25 @@ def probe(url: str) -> tuple[str, str | None, bool]:
         return url, str(getattr(e, "reason", e)), False
 
 
+def probe_host(urls: list[str]) -> list[tuple[str, str | None, bool]]:
+    """Probe one host's URLs one at a time, pausing between them so docs sites do not rate-limit us."""
+    results = []
+    for i, url in enumerate(urls):
+        if i:
+            time.sleep(HOST_DELAY)
+        results.append(probe(url))
+    return results
+
+
 def check_links() -> tuple[list[str], list[str], int]:
     links = external_links()
+    by_host: dict[str, list[str]] = {}
+    for url in sorted(links):
+        by_host.setdefault(urlsplit(url).netloc.lower(), []).append(url)
     broken, refused = [], []
-    with ThreadPoolExecutor(max_workers=8) as pool:
-        for url, problem, soft in pool.map(probe, sorted(links)):
+    with ThreadPoolExecutor(max_workers=8) as pool:  # hosts in parallel, each host sequential
+        results = sorted(r for host_results in pool.map(probe_host, by_host.values()) for r in host_results)
+        for url, problem, soft in results:
             if problem:
                 row = f"| {url} | {problem} | {', '.join(f'`{p}`' for p in sorted(links[url]))} |"
                 (refused if soft else broken).append(row)
