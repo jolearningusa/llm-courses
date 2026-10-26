@@ -58,12 +58,12 @@
     },
     {
       "name": "Hermes Agent",
-      "version": null,
+      "version": "v0.22.5",
       "verified": "2026-10-26",
       "upstream": {"type": "github_release", "repo": "NousResearch/hermes-agent"},
       "compare": 2,
       "used_in": ["labs/lab1_memory_plugins/hermes_custom_memory.py", "slides/05_opensource_plugin_apis_slides.html", "slides/05_skills_deck.html"],
-      "notes": "Docs were checked in October 2026; record the release tag the first freshness report shows. Check MemoryProvider and ContextEngine in the plugin docs."
+      "notes": "Lab 1A matches the memory-provider and context-engine plugin docs as of v0.22.5. Check MemoryProvider and ContextEngine in the plugin docs."
     }
   ]
 }
