@@ -42,6 +42,21 @@ class TestTasks(unittest.TestCase):
                 self.assertFalse(task.check(Path(d), "I don't know"))
 
 
+class TestLongTier(unittest.TestCase):
+    def test_long_demos_solve_with_file_tools_only(self):
+        for task in load_tier("long"):
+            with self.subTest(task=task.id), tempfile.TemporaryDirectory() as d:
+                ws = Path(d)
+                task.setup(ws)
+                self.assertFalse(task.check(ws, "I don't know"))
+                tools = WorkspaceTools(ws, task.tools)
+                self.assertNotIn("search", {s["function"]["name"] for s in tools.schemas()})
+                self.assertTrue(tools.call("search", {"pattern": "x"})[1], "a disallowed tool must fail")
+                result = baseline.run(ScriptedModel(task.demo), task.prompt, tools, max_steps=60)
+                self.assertGreaterEqual(result.steps, 40)
+                self.assertTrue(task.check(ws, result.answer), task.id)
+
+
 class TestTools(unittest.TestCase):
     def setUp(self):
         self.dir = tempfile.TemporaryDirectory()

@@ -40,6 +40,8 @@ def main(argv: list[str] | None = None) -> int:
     ws.mkdir(parents=True, exist_ok=True)
     task.setup(ws)
     print(task.prompt)
+    if task.tools:
+        print(f"\n(allowed tools: {', '.join(task.tools)})", file=sys.stderr)
     return 0
 
 
