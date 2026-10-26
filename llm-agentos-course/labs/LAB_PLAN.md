@@ -5,7 +5,8 @@ together, and records what similar courses and tutorials do, so the design choic
 The three labs that exist today (`lab1_memory_plugins/`, `lab2_aios_kv_cache/`, `lab3_google_harness2/`) are
 kept and slotted into the plan; the rest is new work, listed as PRs at the end.
 
-Status: **plan**, written 2026-10-26. Nothing below except Labs 1–3 exists yet.
+Status: **plan**, written 2026-10-26. Built so far: the lab kit and Lab 0 ([`kit/`](kit/)), plus today's
+Labs 1–3. The rest is not written yet.
 
 ---
 
@@ -210,8 +211,8 @@ after its lecture unless noted.
 
 - **Goal:** see the nine AgentOS components in a real system before building any of them. Same idea as Harvard
   CS2680's *Mads-Lens*.
-- **Build:** install the kit; finish `run_suite.py` and the JSONL trace logger in `trace.py` (one record per model
-  call, tool call and context change).
+- **Build:** install the kit; finish the JSONL trace logger in `trace.py` (one record per model call and tool
+  call), plus `summarize_trace` and `token_breakdown`. Handout: [`kit/handouts/lab00_watch_a_harness.md`](kit/handouts/lab00_watch_a_harness.md).
 - **Measure:** run five suite tasks in two production harnesses (Hermes Agent and one of Codex CLI, OpenClaw or
   Claude Code) with their logging turned on. Label every event in one trace with the component that produced it
   (loop, scheduler, context, memory, tools, skills, multi-agent, access control, extension).
@@ -434,8 +435,8 @@ after its lecture unless noted.
 
 Following the repo's one-task-one-PR workflow, in this order:
 
-1. **Lab kit skeleton:** `labs/kit/` with the scripted model, the OpenAI-compatible client, `run_suite.py`,
-   `grade.py`, the report template and the first ten tasks. Lab 0 README.
+1. **Lab kit skeleton** (done): `labs/kit/` with the scripted model, the OpenAI-compatible client, `run_suite.py`,
+   `grade.py`, the report template and the first ten tasks. Lab 0 handout.
 2. **Labs 1–3** (loop, scheduler simulator, context engines), one PR each, with stubs and autograder tests.
 3. **Lab 4** (memory) and the existing TODO item "a lab for the memory deck exercise".
 4. **Lab 5**: move today's `lab2_aios_kv_cache/` under the new numbering (or keep the folder name and link it),
