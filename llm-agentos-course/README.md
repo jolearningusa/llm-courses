@@ -88,6 +88,7 @@ llm-agentos-course/
 │   │   ├── redteam_eval.py                    # Lab 6: red-team the agent with and without each defense
 │   │   ├── tools_eval.py                      # Lab 7: a vague tool against a designed one, shell in a sandbox
 │   │   ├── skills_eval.py                     # Lab 8: does a skill help, with 0, 1 or 50 skills installed
+│   │   ├── multiagent_eval.py                 # Lab 9: one agent against an orchestrator with workers
 │   │   ├── grade.py                           # Autograder: tests/test_labNN.py against the scripted model
 │   │   ├── report_template.md                 # The one-page report every lab hands in
 │   │   ├── nanoos/
@@ -104,6 +105,7 @@ llm-agentos-course/
 │   │   │   ├── tools.py                       # Lab 7: tool schemas from type hints, argument checks, truncation (stubs)
 │   │   │   ├── sandbox.py                     # Lab 7: host, namespace and Docker sandboxes, a run_shell tool (stubs)
 │   │   │   ├── skills.py                      # Lab 8: skill discovery, a budgeted index, skill_view (stubs)
+│   │   │   ├── delegate.py                    # Lab 9: delegate tools, child isolation and limits (stubs)
 │   │   │   └── trace.py                       # Lab 0: JSONL tracer, summarize_trace, token_breakdown (stubs)
 │   │   ├── models/
 │   │   │   ├── __init__.py
@@ -118,6 +120,7 @@ llm-agentos-course/
 │   │   │   ├── cache_session.py               # Lab 5: a scripted 20-turn session and its cache-breaking variants
 │   │   │   ├── memory.py                      # Lab 4: four users' past sessions and 40 memory questions
 │   │   │   ├── tickets.py                     # Lab 7: a 60-ticket tracker, two search tool designs, five questions
+│   │   │   ├── research.py                    # Lab 9: a parallel survey and a dependency chain, with answer keys
 │   │   │   ├── redteam/
 │   │   │   │   ├── __init__.py                # Lab 6: an office with planted injections and a fake secret
 │   │   │   │   └── README.md                  # Safety notes for the attack fixtures
@@ -140,7 +143,8 @@ llm-agentos-course/
 │   │   │   ├── test_lab05.py                  # Lab 5 autograder tests
 │   │   │   ├── test_lab06.py                  # Lab 6 autograder tests
 │   │   │   ├── test_lab07.py                  # Lab 7 autograder tests
-│   │   │   └── test_lab08.py                  # Lab 8 autograder tests
+│   │   │   ├── test_lab08.py                  # Lab 8 autograder tests
+│   │   │   └── test_lab09.py                  # Lab 9 autograder tests
 │   │   └── handouts/
 │   │       ├── lab00_watch_a_harness.md       # Lab 0: set up the kit, write the tracer, watch two harnesses
 │   │       ├── lab01_agent_loop.md            # Lab 1: a loop that survives errors, stalls and repetition
@@ -150,7 +154,8 @@ llm-agentos-course/
 │   │       ├── lab05_kv_cache_plane.md        # Lab 5: break the cache on purpose, offline and on vLLM
 │   │       ├── lab06_access_control.md        # Lab 6: a Rule of Two policy engine, then red-team the agent
 │   │       ├── lab07_tools_sandbox.md         # Lab 7: a tool registry and a sandbox, then measure tool design
-│   │       └── lab08_skills.md                # Lab 8: load skills on demand, then measure whether one helps
+│   │       ├── lab08_skills.md                # Lab 8: load skills on demand, then measure whether one helps
+│   │       └── lab09_multi_agent.md           # Lab 9: a delegate tool, then measure when workers pay
 │   ├── lab1_memory_plugins/
 │   │   ├── hermes_custom_memory.py            # Hermes Agent MemoryProvider + ContextEngine plugin template
 │   │   ├── openclaw_context_engine.ts         # OpenClaw registerContextEngine + plugins.slots config
@@ -181,7 +186,7 @@ exist today; the plan slots them in as Labs 12, 5 and 14.
 
 The new labs are built on a shared [lab kit](labs/kit/): a small student harness (`nanoos`), a task suite,
 a runner that writes the same metrics table in every lab, and an autograder that tests against a scripted model.
-Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md), then [Lab 1](labs/kit/handouts/lab01_agent_loop.md), [Lab 2](labs/kit/handouts/lab02_scheduler.md), [Lab 3](labs/kit/handouts/lab03_context_engines.md), [Lab 4](labs/kit/handouts/lab04_long_term_memory.md), [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md), [Lab 6](labs/kit/handouts/lab06_access_control.md), [Lab 7](labs/kit/handouts/lab07_tools_sandbox.md) and [Lab 8](labs/kit/handouts/lab08_skills.md). The existing labs keep their names for now.
+Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md), then [Lab 1](labs/kit/handouts/lab01_agent_loop.md), [Lab 2](labs/kit/handouts/lab02_scheduler.md), [Lab 3](labs/kit/handouts/lab03_context_engines.md), [Lab 4](labs/kit/handouts/lab04_long_term_memory.md), [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md), [Lab 6](labs/kit/handouts/lab06_access_control.md), [Lab 7](labs/kit/handouts/lab07_tools_sandbox.md), [Lab 8](labs/kit/handouts/lab08_skills.md) and [Lab 9](labs/kit/handouts/lab09_multi_agent.md). The existing labs keep their names for now.
 
 ### Lab 1: memory and context plugins (Module 5)
 
