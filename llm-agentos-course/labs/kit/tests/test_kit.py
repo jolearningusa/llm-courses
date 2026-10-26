@@ -247,3 +247,22 @@ class TestTicketFixtures(unittest.TestCase):
                             fns[step["tool_calls"][0]["name"]](**step["tool_calls"][0]["arguments"])
             self.assertGreater(len(v1.fns["search"](q="login")), 8000, "v1 returns everything")
             self.assertLess(len(v2.fns["search_tickets"](query="login")), 1000)
+
+
+class TestSkillFixtures(unittest.TestCase):
+    def test_install_and_demo_reports(self):
+        from tasks.skills import TASKS, install
+        with tempfile.TemporaryDirectory() as d:
+            ws = Path(d)
+            root = install(ws, "all")
+            self.assertEqual(len(list(root.rglob("SKILL.md"))), 50)
+            for task in TASKS:
+                with self.subTest(task=task.id):
+                    self.assertFalse(task.check(ws, "I don't know"))
+                    for demo, ok in ((task.demo_without, not task.needs_skill), (task.demo_with, True)):
+                        for step in demo[:-1]:
+                            c = step["tool_calls"][0]
+                            if c["name"] == "write_file":
+                                p = ws / c["arguments"]["path"]
+                                p.write_text(c["arguments"]["content"])
+                        self.assertEqual(task.check(ws, demo[-1]["content"]), ok)
