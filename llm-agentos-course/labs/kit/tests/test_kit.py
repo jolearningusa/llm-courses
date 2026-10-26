@@ -178,3 +178,18 @@ class TestMemoryFixtures(unittest.TestCase):
         ex = ModelExtractor(ScriptedModel([{"content": '[{"op": "NOOP"}]'}]))
         self.assertEqual(ex("alice", "hi", []), [{"op": "NOOP"}])
         self.assertGreater(ex.usage.input_tokens, 0)
+
+
+class TestCacheSession(unittest.TestCase):
+    def test_baseline_is_append_only_and_variants_differ(self):
+        from nanoos.prompt import render
+        from tasks.cache_session import VARIANTS, session_prompt
+        prev = None
+        for t in range(20):
+            cur = render(session_prompt("baseline", t))
+            if prev is not None:
+                self.assertTrue(cur.startswith(prev), f"turn {t}")
+            prev = cur
+        last = {v: render(session_prompt(v, 19)) for v in VARIANTS}
+        self.assertEqual(len(set(last.values())), len(VARIANTS))
+        self.assertNotEqual(render(session_prompt("baseline", 3, session=1)), render(session_prompt("baseline", 3)))

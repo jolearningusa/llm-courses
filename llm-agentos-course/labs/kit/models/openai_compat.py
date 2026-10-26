@@ -25,7 +25,7 @@ from nanoos.types import ModelResponse, ToolCall, Usage
 
 class OpenAICompatModel:
     def __init__(self, base_url: str | None = None, api_key: str | None = None, model: str | None = None,
-                 timeout_s: float = 120.0, temperature: float | None = None):
+                 timeout_s: float = 120.0, temperature: float | None = None, max_tokens: int | None = None):
         self.base_url = (base_url or os.environ.get("NANOOS_BASE_URL", "")).rstrip("/")
         self.api_key = api_key or os.environ.get("NANOOS_API_KEY", "")
         self.name = model or os.environ.get("NANOOS_MODEL", "")
@@ -33,6 +33,7 @@ class OpenAICompatModel:
             raise ValueError("set NANOOS_BASE_URL and NANOOS_MODEL (and NANOOS_API_KEY for a hosted API)")
         self.timeout_s = timeout_s
         self.temperature = temperature
+        self.max_tokens = max_tokens  # Lab 5 sets 1 to time the prefill (time to first token)
 
     def complete(self, messages: list[dict[str, Any]], tools: list[dict[str, Any]]) -> ModelResponse:
         body: dict[str, Any] = {"model": self.name, "messages": messages}
@@ -40,6 +41,8 @@ class OpenAICompatModel:
             body["tools"] = tools
         if self.temperature is not None:
             body["temperature"] = self.temperature
+        if self.max_tokens is not None:
+            body["max_tokens"] = self.max_tokens
         req = urllib.request.Request(
             f"{self.base_url}/chat/completions", data=json.dumps(body).encode(), method="POST",
             headers={"Content-Type": "application/json", "Authorization": f"Bearer {self.api_key}"})
