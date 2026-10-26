@@ -1,0 +1,14 @@
+{
+  "id": "threshold-compaction",
+  "version": "1.0.0",
+  "description": "Lab 3's threshold compaction as the context-engine slot.",
+  "kind": "context-engine",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "budget_tokens": {"type": "integer", "default": 6000},
+      "keep_last": {"type": "integer", "default": 6}
+    }
+  }
+}

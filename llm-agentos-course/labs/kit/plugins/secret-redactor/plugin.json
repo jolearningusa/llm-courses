@@ -1,0 +1,15 @@
+{
+  "id": "secret-redactor",
+  "version": "1.0.0",
+  "description": "Replace strings that look like API keys in tool results before the model sees them.",
+  "kind": null,
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "pattern": {"type": "string", "default": "\\bsk-[A-Za-z0-9_-]{16,}"},
+      "replacement": {"type": "string", "default": "[REDACTED]"},
+      "priority": {"type": "integer", "default": 50}
+    }
+  }
+}
