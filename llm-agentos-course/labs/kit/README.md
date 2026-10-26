@@ -4,7 +4,7 @@ The shared code for the course's practice labs, as planned in [`../LAB_PLAN.md`]
 one small harness, **`nanoos`**, across the term; each lab adds one module, is graded by tests against a
 scripted model, and then measures the same idea in a production harness or engine.
 
-Python 3.10 or newer, no dependencies. Handouts: [Lab 0](handouts/lab00_watch_a_harness.md), [Lab 1](handouts/lab01_agent_loop.md), [Lab 2](handouts/lab02_scheduler.md), [Lab 3](handouts/lab03_context_engines.md), [Lab 4](handouts/lab04_long_term_memory.md), [Lab 5](handouts/lab05_kv_cache_plane.md), [Lab 6](handouts/lab06_access_control.md).
+Python 3.10 or newer, no dependencies. Handouts: [Lab 0](handouts/lab00_watch_a_harness.md), [Lab 1](handouts/lab01_agent_loop.md), [Lab 2](handouts/lab02_scheduler.md), [Lab 3](handouts/lab03_context_engines.md), [Lab 4](handouts/lab04_long_term_memory.md), [Lab 5](handouts/lab05_kv_cache_plane.md), [Lab 6](handouts/lab06_access_control.md), [Lab 7](handouts/lab07_tools_sandbox.md).
 
 ```bash
 make test-kit      # the kit's own tests
@@ -26,23 +26,26 @@ make suite TRIALS=3 NAME=baseline   # the basic tier on your model (set NANOOS_B
 | `nanoos/memory.py` | Long-term memory: consolidation, a trust-gated write path, hybrid BM25 + vector search, auto-recall and a `search_memory` tool | **Lab 4** |
 | `nanoos/prompt.py` | Prompt prefix stability: vLLM-style block hashes, a simulated prefix cache, cache-break diagnosis, `CacheAuditModel` | **Lab 5** |
 | `nanoos/policy.py` | Access control: hash-chained audit log, sender pairing, a Rule of Two policy engine, `GuardedTools`, readers | **Lab 6** |
+| `nanoos/tools.py` | A tool registry: schemas from type hints and docstrings, argument checks with actionable errors, truncation with a pointer to the full output | **Lab 7** |
+| `nanoos/sandbox.py` | Run shell commands in a boundary: host, Linux namespaces or Docker, with timeouts, limits and a clean environment; a `run_shell` tool | **Lab 7** |
 | `nanoos/sched_sim.py` | Discrete-event simulator: per-call vs. program-aware policies, KV kept across tool calls | **Lab 2** |
 | `models/scripted.py` | Replays canned assistant turns (tool calls, errors, delays) and records what it was sent | Provided |
 | `models/gullible.py` | A scripted model that obeys every injection it reads, to test defenses offline | Provided |
 | `models/flaky.py` | Wraps a model so a share of its calls fail (`run_suite.py --fail-rate`) | Provided |
 | `models/openai_compat.py` | Client for any OpenAI-compatible endpoint (hosted API or vLLM), standard library only | Provided |
-| `tasks/` | The task suite: prompt, fixture files, checker and a scripted solution per task (tiers `basic`, `long`), plus the Lab 4 memory fixtures, the Lab 5 session and the Lab 6 red-team office | Provided |
+| `tasks/` | The task suite: prompt, fixture files, checker and a scripted solution per task (tiers `basic`, `long`), plus the Lab 4 memory fixtures, the Lab 5 session, the Lab 6 red-team office and the Lab 7 ticket tracker | Provided |
 | `run_suite.py` | Runs a tier k times per task; writes `metrics.csv`, `summary.json`, traces and messages | Provided |
 | `sched_experiment.py`, `sched_replay.py` | Lab 2's policy comparison on simulated workloads, and a replay against vLLM | Provided |
 | `memory_eval.py` | Lab 4's exercise: one store, read paths none / auto / tool / both, on the fixtures in `tasks/memory.py` | Provided |
 | `cache_experiment.py` | Lab 5's exercise: the cache-breaking variants of a 20-turn session, simulated or on a vLLM server | Provided |
 | `redteam_eval.py` | Lab 6's exercise: the red-team tasks in `tasks/redteam/` under each defense | Provided |
+| `tools_eval.py` | Lab 7's exercise: five ticket questions with a vague search tool (v1) or a designed one (v2), shell in a sandbox | Provided |
 | `export_task.py` | Writes one task's files to a folder (and scores an answer) to run it in another harness | Provided |
 | `grade.py`, `tests/` | The autograder: `tests/test_labNN.py` per lab, `tests/test_kit.py` for the kit | Provided |
 | `report_template.md` | The one-page report every lab hands in | Provided |
 | `handouts/` | One handout per lab | Provided |
 
-Later labs add `tools.py` and `sandbox.py` (7), `skills.py` (8), `delegate.py` (9), `plugins.py` (10) and
+Later labs add `skills.py` (8), `delegate.py` (9), `plugins.py` (10) and
 `mcp_client.py` (11), each with its tests and handout.
 
 ## How grading works

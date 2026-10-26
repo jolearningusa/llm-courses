@@ -5,7 +5,7 @@ together, and records what similar courses and tutorials do, so the design choic
 The three labs that exist today (`lab1_memory_plugins/`, `lab2_aios_kv_cache/`, `lab3_google_harness2/`) are
 kept and slotted into the plan; the rest is new work, listed as PRs at the end.
 
-Status: **plan**, written 2026-10-26. Built so far: the lab kit and Labs 0–6 ([`kit/`](kit/)), plus today's
+Status: **plan**, written 2026-10-26. Built so far: the lab kit and Labs 0–7 ([`kit/`](kit/)), plus today's
 Labs 1–3. The rest is not written yet.
 
 ---
@@ -447,7 +447,8 @@ Following the repo's one-task-one-PR workflow, in this order:
    the folder name and links it.
 5. **Labs 6–8** (policy, tools and sandbox, skills), including the red-team fixtures and their safety notes.
    Done: [`lab06`](kit/handouts/lab06_access_control.md), with the fixtures in
-   [`kit/tasks/redteam/`](kit/tasks/redteam/).
+   [`kit/tasks/redteam/`](kit/tasks/redteam/); [`lab07`](kit/handouts/lab07_tools_sandbox.md), without the planted
+   ticket injection (a direct network probe replaces it, and Lab 6's fixtures cover attacks).
 6. **Labs 9–11** (delegation, plugins, MCP client).
 7. **Lab 12**: rework today's `lab1_memory_plugins/` to wrap the students' engines.
 8. **Lab 13**: OpenTelemetry, graders, judge calibration set, dashboard.
