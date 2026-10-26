@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — 总览课件</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  a { color: inherit; text-decoration: underline dotted; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- 1 -->
+<section class="slide title-slide">
+  <span class="pill">LLM AgentOS · 入门课程</span>
+  <h1 style="margin-top:24px">Agent 操作系统如何运作，<br>以及当今开源 Harness<br>如何构建它</h1>
+  <p class="muted" style="max-width:920px">把 LLM 智能体视为操作系统问题：调度、上下文与记忆管理、作为系统资源的 KV-cache、工具与隔离，以及能够自我改写的 Harness。每个组件都对应到 Hermes Agent、OpenClaw、Letta 和 AIOS 的实际实现方式。</p>
+  <p style="margin-top:28px"><span class="pill">7 个模块</span><span class="pill">3 个实验</span><span class="pill">Hermes Agent · OpenClaw · Letta · AIOS · vLLM · Harness²</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>动机</small>为什么要谈“AgentOS”？</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>智能体是一个<b>长时间运行的程序</b>：包含大量 LLM 调用、工具调用和等待，而不是一次请求。</li>
+        <li>许多智能体共享<b>稀缺资源</b>：GPU 时间、上下文窗口、KV-cache 内存、工具、凭据。</li>
+        <li>没有操作系统层，每个智能体都要重新解决调度、记忆和隔离问题，而且通常解决得很糟。</li>
+        <li>当今的开源“Harness”（Hermes Agent、OpenClaw、Letta）正在趋向同样的类操作系统组件。本课程为这些组件命名并比较各自的实现。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>操作系统要回答的问题</h3>
+      <ul>
+        <li>谁下一个运行？ <span class="muted">→ 调度</span></li>
+        <li>什么常驻内存？ <span class="muted">→ 上下文与记忆管理</span></li>
+        <li>程序能接触什么？ <span class="muted">→ 沙箱与访问控制</span></li>
+        <li>如何扩展？ <span class="muted">→ 插件 API（“驱动”）</span></li>
+        <li>系统是否健康？ <span class="muted">→ 指标与评估</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">框架来源：Packer et al. (MemGPT, arXiv:2310.08560)；Ge et al. (LLM as OS, Agents as Apps, arXiv:2312.03815)；Mei et al. (AIOS, arXiv:2403.16971)。</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>课程地图</small>七个模块，三个实验</h2>
+  <table class="dense">
+    <tr><th>#</th><th>模块</th><th>幻灯片</th><th>实验</th></tr>
+    <tr><td>1</td><td>AgentOS 架构、AIOS 内核与程序感知调度</td><td>4–8，loop、scheduler 和 context 课件</td><td></td></tr>
+    <tr><td>2</td><td>平面 1：用户 / 认知记忆</td><td>9–11，memory 课件</td><td></td></tr>
+    <tr><td>3</td><td>平面 2：系统 / KV-cache 内存</td><td>12–14、29，KV-cache 课件</td><td class="accent2">实验 2：vLLM + LMCache + NIXL</td></tr>
+    <tr><td>4</td><td>工具仲裁与记忆安全</td><td>15–16，access control 课件</td><td></td></tr>
+    <tr><td>5</td><td>开源 Harness 如何实现 AgentOS</td><td>17–19、22–28，tools、skills、multi-agent、extension、MCP、landscape 课件</td><td class="accent2">实验 1：Hermes、OpenClaw、Letta 插件</td></tr>
+    <tr><td>6</td><td>操作系统级与轨迹评估</td><td>20，observability 课件</td><td></td></tr>
+    <tr><td>7</td><td>自我改进的 Harness（Harness²）</td><td>21、30</td><td class="accent2">实验 3：google-research/harness2</td></tr>
+  </table>
+  <p class="muted" style="font-size:16px;margin-top:12px">幻灯片 22–31 位于配套课件 <a href="05_opensource_plugin_apis_slides.html"><code>05_opensource_plugin_apis_slides.html</code></a>；各模块讲义：<a href="01_agent_loop_deck.html"><code>01_agent_loop_deck.html</code></a>（智能体循环）、<a href="01_scheduler_deck.html"><code>01_scheduler_deck.html</code></a>（调度器）、<a href="01_context_manager_deck.html"><code>01_context_manager_deck.html</code></a>（上下文）、<a href="02_long_term_memory_deck.html"><code>02_long_term_memory_deck.html</code></a>（记忆）、<a href="03_kv_cache_deck.html"><code>03_kv_cache_deck.html</code></a>（KV cache）、<a href="04_access_control_deck.html"><code>04_access_control_deck.html</code></a>（访问控制）、<a href="05_tools_sandbox_deck.html"><code>05_tools_sandbox_deck.html</code></a>（工具）、<a href="05_skills_deck.html"><code>05_skills_deck.html</code></a>（技能）、<a href="05_multi_agent_deck.html"><code>05_multi_agent_deck.html</code></a>（多智能体）、<a href="05_extension_layer_deck.html"><code>05_extension_layer_deck.html</code></a>（扩展）、<a href="05_mcp_connectors_deck.html"><code>05_mcp_connectors_deck.html</code></a>（MCP 与连接器）、<a href="05_harness_landscape_deck.html"><code>05_harness_landscape_deck.html</code></a>（Harness 全景）、<a href="06_observability_evaluation_deck.html"><code>06_observability_evaluation_deck.html</code></a>（可观测性与评测）。</p>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>模块 1</small>把操作系统类比具体化</h2>
+  <table>
+    <tr><th>经典操作系统</th><th>AgentOS</th><th>示例</th></tr>
+    <tr><td>进程</td><td>智能体（由 LLM + 工具调用构成的程序）</td><td>处理一个工单的编码智能体</td></tr>
+    <tr><td>CPU</td><td>LLM 推理引擎</td><td>vLLM / SGLang worker；AIOS 的 “LLM core”</td></tr>
+    <tr><td>系统调用</td><td>LLM 调用、工具调用、记忆读/写</td><td>AIOS SDK 调用内核</td></tr>
+    <tr><td>内存（RAM）</td><td>上下文窗口（+ GPU 上的 KV-cache）</td><td>Letta 记忆块、Hermes MEMORY.md</td></tr>
+    <tr><td>磁盘 / 交换区</td><td>归档存储、会话数据库、CPU/NVMe KV 层</td><td>Letta 归档记忆、Hermes SQLite、LMCache</td></tr>
+    <tr><td>缺页</td><td>因内容不在上下文中而进行检索</td><td><code>memory_search</code>、<code>archival_memory_search</code></td></tr>
+    <tr><td>设备驱动</td><td>稳定接口背后的插件</td><td>Hermes <code>MemoryProvider</code>、OpenClaw <code>plugins.slots</code></td></tr>
+    <tr><td>上下文切换</td><td>生成状态的快照 / 恢复</td><td>AIOS 上下文管理器</td></tr>
+  </table>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>模块 1</small>AgentOS 的参考架构</h2>
+  <svg viewBox="0 0 1136 500" width="1136" height="500">
+    <g font-size="17">
+      <rect x="0" y="0" width="1136" height="64" rx="10" fill="#1a2440" stroke="#2a3550"/>
+      <text x="20" y="28" font-weight="700">接口层</text><text x="20" y="52" fill="#9aa6bd" font-size="15">CLI · 聊天网关（Telegram、Slack、WhatsApp…）· API / SDK · cron 触发器</text>
+      <rect x="0" y="80" width="1136" height="250" rx="12" fill="#14213a" stroke="#6ea8ff"/>
+      <text x="20" y="108" font-weight="700" fill="#6ea8ff">智能体运行时（“内核”）</text>
+      <rect x="20" y="122" width="262" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="34" y="148">① 智能体循环</text><text x="34" y="172" font-size="14" fill="#9aa6bd">思考 → 调用工具 → 观察</text><text x="34" y="194" font-size="14" fill="#9aa6bd">重试、流式输出、持久化</text>
+      <rect x="296" y="122" width="262" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="310" y="148">② 调度器</text><text x="310" y="172" font-size="14" fill="#9aa6bd">谁下一个运行；按会话</text><text x="310" y="194" font-size="14" fill="#9aa6bd">串行化；cron；优先级</text>
+      <rect x="572" y="122" width="262" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="586" y="148">③ 上下文管理器</text><text x="586" y="172" font-size="14" fill="#9aa6bd">选择 · 压缩 · 隔离；</text><text x="586" y="194" font-size="14" fill="#9aa6bd">保持前缀对缓存稳定</text>
+      <rect x="848" y="122" width="268" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="862" y="148">④ 记忆管理器</text><text x="862" y="172" font-size="14" fill="#9aa6bd">上下文内记忆块；长期</text><text x="862" y="194" font-size="14" fill="#9aa6bd">存储；整合</text>
+      <rect x="20" y="226" width="262" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="34" y="252">⑤ 工具与执行</text><text x="34" y="276" font-size="14" fill="#9aa6bd">注册表、MCP；沙箱</text><text x="34" y="298" font-size="14" fill="#9aa6bd">（Docker、SSH、云）</text>
+      <rect x="296" y="226" width="262" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="310" y="252">⑥ 技能</text><text x="310" y="276" font-size="14" fill="#9aa6bd">程序性记忆（SKILL.md），</text><text x="310" y="298" font-size="14" fill="#9aa6bd">按需加载</text>
+      <rect x="572" y="226" width="262" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="586" y="252">⑦ 多智能体</text><text x="586" y="276" font-size="14" fill="#9aa6bd">上下文隔离的子智能体；</text><text x="586" y="298" font-size="14" fill="#9aa6bd">共享记忆块</text>
+      <rect x="848" y="226" width="268" height="92" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="862" y="252">⑧ 访问控制</text><text x="862" y="276" font-size="14" fill="#9aa6bd">审批、权限、</text><text x="862" y="298" font-size="14" fill="#9aa6bd">配对、工具策略</text>
+      <rect x="0" y="346" width="1136" height="64" rx="10" fill="#1a2440" stroke="#7be0b8"/>
+      <text x="20" y="374" font-weight="700" fill="#7be0b8">⑨ 扩展层</text><text x="20" y="398" fill="#9aa6bd" font-size="15">插件与钩子：记忆提供者、上下文引擎、工具、终端后端、生命周期钩子</text>
+      <rect x="0" y="426" width="1136" height="64" rx="10" fill="#1a2440" stroke="#2a3550"/>
+      <text x="20" y="454" font-weight="700">推理引擎与存储</text><text x="20" y="478" fill="#9aa6bd" font-size="15">vLLM / SGLang / 托管 API（KV-cache 平面）· SQLite、文件、向量数据库</text>
+    </g>
+  </svg>
+  <div class="cite">综合自 AIOS (arXiv:2403.16971) 以及 Hermes Agent、OpenClaw 和 Letta 的文档；幻灯片 17–18 将每个方框对应到各个 Harness。</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>模块 1</small>AIOS：研究用参考内核</h2>
+  <div class="cols">
+    <table>
+      <tr><th>模块</th><th>功能（据论文）</th></tr>
+      <tr><td>LLM core</td><td>每个模型实例被封装为可调度单元，“类似 CPU 核心”</td></tr>
+      <tr><td>调度器</td><td>所有系统调用的中央队列；FIFO 或轮转（默认）</td></tr>
+      <tr><td>上下文管理器</td><td>对被中断的生成做快照 / 恢复</td></tr>
+      <tr><td>记忆管理器</td><td>智能体交互历史存于 RAM；超过块上限后以 LRU-K 逐出到磁盘</td></tr>
+      <tr><td>存储管理器</td><td>文件 + 向量数据库；承接记忆管理器的交换</td></tr>
+      <tr><td>工具管理器</td><td>加载并调用 SDK 的 API 工具</td></tr>
+      <tr><td>访问管理器</td><td>用于跨智能体访问的权限组；不可逆操作前需用户确认</td></tr>
+    </table>
+    <div class="card">
+      <h3>对 LLM 做上下文切换</h3>
+      <p>轮转调度可以在生成中途暂停某个智能体。上下文管理器保存状态以便另一个智能体运行，之后再恢复：</p>
+      <ul>
+        <li><b>基于文本</b>：保存到目前为止解码出的输出（适用于闭源 API 模型）。</li>
+        <li><b>基于 logits</b>：保存中间搜索树状态，以实现更细粒度的恢复（开源模型）。</li>
+      </ul>
+      <p class="muted">智能体基于 AIOS SDK (Cerebrum) 编写，SDK 把它们的调用转换为内核系统调用。</p>
+    </div>
+  </div>
+  <div class="cite">Mei et al., arXiv:2403.16971 · github.com/agiresearch/AIOS · github.com/agiresearch/Cerebrum</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>模块 1</small>调度整个智能体程序</h2>
+  <div class="cols">
+    <div class="card"><h3>Autellix (2025)</h3><p>借助<b>程序级上下文</b>拦截 LLM 调用；依据所属程序此前已完成的调用，对每个调用进行抢占与优先级排序，从而减少队头阻塞。报告称在相同延迟下，程序吞吐量比 vLLM 高 4–15×。</p></div>
+    <div class="card"><h3>Continuum (2025)</h3><p>当请求将要发起工具调用时，<b>把其 KV-cache 在 GPU 上固定一段存活时间 (TTL)</b>，该时间依据重新加载成本和排队延迟设定；并配合程序级 FCFS。平均作业完成时间提升超过 8×。</p></div>
+    <div class="card"><h3>KVFlow (NeurIPS 2025)</h3><p>构建<b>智能体步骤图 (Agent Step Graph)</b>；每个智能体“距离执行的步数”得分驱动 KV 逐出，后续智能体的 KV 则在后台从 CPU→GPU <b>预取</b>。</p></div>
+    <div class="card"><h3>ThunderAgent (2026)</h3><p>把工作流建模为涵盖 KV-cache、系统状态和工具资产（磁盘、端口）的<b>“LLM Program”</b>；程序感知调度器提高 KV 命中率，工具资源管理器则异步准备环境。</p></div>
+  </div>
+  <div class="cite">Autellix arXiv:2502.13965 · Continuum arXiv:2511.02230 · KVFlow arXiv:2507.07400 · ThunderAgent arXiv:2602.13692</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>模块 1</small>上下文管理器：选择、压缩、隔离</h2>
+  <div class="cols">
+    <div>
+      <p style="margin-top:0">智能体循环会追加每一次动作和观察，因此输入不断增长，而过长的输入会降低质量（lost-in-the-middle、“context rot”）。上下文管理器的职责是<b>放入所需内容，清除不需要的内容</b>。</p>
+      <ul>
+        <li><b>选择</b>：对文档做 RAG、对<i>工具</i>做 RAG、对记忆做 RAG；通过引用即时加载。</li>
+        <li><b>压缩</b>：总结旧的轮次；保留结果，丢弃逐次点击的细节；转存到文件。</li>
+        <li><b>隔离</b>：把子任务交给上下文干净的子智能体，只返回摘要。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>生产环境的经验</h3>
+      <ul>
+        <li>“KV-cache 命中率是最重要的单一指标”（Manus）：保持前缀稳定，让上下文只追加，序列化要确定。</li>
+        <li>任务进行中用掩码屏蔽工具，而不是移除工具。</li>
+        <li>把文件系统用作外部记忆；让压缩可逆（保留 URL，丢弃页面）。</li>
+        <li>长周期任务用压缩 (compaction) + 结构化笔记 + 子智能体（Anthropic）。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Hung-yi Lee, GenAI-ML 2025 Fall, "From LMs to AI Agents" (Agent.pdf) · Manus blog, Jul 2025 · Anthropic Engineering, Sep 2025</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>模块 2–3</small>两个记忆平面</h2>
+  <svg viewBox="0 0 1136 420" width="1136" height="420">
+    <rect x="0" y="0" width="540" height="420" rx="14" fill="#14213a" stroke="#7be0b8"/>
+    <text x="28" y="44" font-size="24" font-weight="700" fill="#7be0b8">平面 1 · 认知记忆</text>
+    <text x="28" y="76" font-size="17" fill="#9aa6bd">智能体所知道的。单位：文本、事实、图的边。</text>
+    <g font-size="18">
+      <rect x="28" y="100" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="46" y="138">上下文内记忆块（始终常驻）</text>
+      <rect x="28" y="176" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="46" y="214">对话历史 / 会话搜索</text>
+      <rect x="28" y="252" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="46" y="290">归档：向量 / 知识图谱存储</text>
+    </g>
+    <text x="28" y="360" font-size="17">管理者：智能体 + Harness</text>
+    <text x="28" y="388" font-size="17" fill="#9aa6bd">Letta, Hermes, OpenClaw, Zep, A-MEM, Mem0</text>
+
+    <rect x="596" y="0" width="540" height="420" rx="14" fill="#14213a" stroke="#6ea8ff"/>
+    <text x="624" y="44" font-size="24" font-weight="700" fill="#6ea8ff">平面 2 · 系统内存</text>
+    <text x="624" y="76" font-size="17" fill="#9aa6bd">引擎已经算出的内容。单位：KV 块。</text>
+    <g font-size="18">
+      <rect x="624" y="100" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="642" y="138">GPU HBM：分页的 KV 块</text>
+      <rect x="624" y="176" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="642" y="214">CPU DRAM / CXL：卸载的 KV</text>
+      <rect x="624" y="252" width="484" height="62" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="642" y="290">NVMe / 通过 RDMA 的远端</text>
+    </g>
+    <text x="624" y="360" font-size="17">管理者：推理服务引擎</text>
+    <text x="624" y="388" font-size="17" fill="#9aa6bd">vLLM PagedAttention, SGLang, LMCache, NIXL</text>
+  </svg>
+  <div class="cite">两个平面相互影响：平面 1 对提示词前缀的修改会使平面 2 的缓存失效。Hermes 正因如此在整个会话期间冻结其记忆快照。</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>模块 2</small>MemGPT / Letta：虚拟上下文</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>上下文窗口是“RAM”；智能体通过工具调用自行把数据<b>换入、换出</b>。</li>
+        <li><b>记忆块 (Memory blocks)</b>：label、description、value、字符上限；固定在上下文中。可设为 <code>read_only</code>。</li>
+        <li><b>归档记忆</b>：段落的向量存储，用 <code>archival_memory_search</code> 查询。</li>
+        <li><b>对话搜索</b>可找回已滑出窗口的消息。</li>
+        <li>一个块可被多个智能体<b>共享</b>（实验 1C），而<b>睡眠时智能体 (sleep-time agents)</b> 每 N 步（默认 5）在后台改写共享块。</li>
+      </ul>
+    </div>
+    <pre>shared = client.blocks.create(
+    label="sprint_state",
+    value="Phase: scheduler benchmark",
+    limit=2000)
+
+for name in ["supervisor", "worker"]:
+    client.agents.create(
+        name=name, model=MODEL,
+        memory_blocks=[{"label": "persona",
+            "value": f"I am the {name}"}],
+        block_ids=[shared.id])  # same block
+
+# background memory consolidation
+client.agents.create(..., enable_sleeptime=True)</pre>
+  </div>
+  <div class="cite">Packer et al., arXiv:2310.08560 · Lin et al., Sleep-time Compute, arXiv:2504.13171 · docs.letta.com (memory blocks, archival memory, sleep-time agents)</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>模块 2</small>构建长期记忆的结构</h2>
+  <div class="cols">
+    <div class="card"><h3>Zep / Graphiti</h3><p><b>双时态知识图谱</b>：时间线 T（事实成立的时间）与 T′（事实被摄入的时间）。新出现的矛盾边会设置旧边的 <code>t_invalid</code>，而不是删除它。</p></div>
+    <div class="card"><h3>A-MEM</h3><p><b>Zettelkasten 笔记</b>：每条记忆带有上下文、关键词和标签，并链接到相关笔记；新记忆可以更新旧笔记的描述。</p></div>
+    <div class="card"><h3>Mem0</h3><p>提取显著事实，然后由 LLM 通过工具调用，针对相似记忆选择 <b>ADD / UPDATE / DELETE / NOOP</b>。Mem0<sup>g</sup> 存储有向带标签图。</p></div>
+    <div class="card"><h3>MemSkill</h3><p>把记忆操作视为<b>可演化的技能</b>：控制器选择技能，LLM 执行器应用技能，设计器根据困难案例改进或新增技能。</p></div>
+  </div>
+  <div class="cite">Zep arXiv:2501.13956 · A-MEM arXiv:2502.12110 · Mem0 arXiv:2504.19413 · MemSkill arXiv:2602.02474 · 综述：Du, arXiv:2603.07670</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>模块 3</small>作为分页内存的 KV-cache</h2>
+  <div class="cols">
+    <div>
+      <h3 class="accent2" style="font-size:24px;margin:0 0 8px">PagedAttention (vLLM)</h3>
+      <ul>
+        <li>KV-cache 被切分为固定大小的<b>块</b>，通过每个序列的<b>块表 (block table)</b> 映射，类似虚拟内存页。</li>
+        <li>碎片近乎为零；块可在序列之间以写时复制 (copy-on-write) 方式共享。</li>
+      </ul>
+      <h3 class="accent2" style="font-size:24px;margin:20px 0 8px">RadixAttention (SGLang)</h3>
+      <ul>
+        <li>把过去的 KV 保存在以 token 为键的<b>基数树 (radix tree)</b> 中；任何共享前缀的请求都能复用；采用 LRU 逐出。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>为什么智能体关心这些</h3>
+      <p>智能体每一轮都会重发相同的系统提示词、工具 schema 和历史。如果前缀逐字节相同，就只需对新增的后缀做 prefill。</p>
+      <p class="warn">任何改写提示词开头的操作（时间戳、重排工具、过早压缩、会话中途编辑记忆）都会使缓存作废。</p>
+      <p class="muted">Harness 一侧的应对：Hermes 在会话开始时冻结记忆并应用 prompt-cache 断点；Manus 保持上下文只追加。</p>
+    </div>
+  </div>
+  <div class="cite">Kwon et al., arXiv:2309.06180 · Zheng et al., arXiv:2312.07104 · Hermes developer guide: architecture</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>模块 3</small>超越精确前缀复用</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>智能体提示词由多个片段<b>拼装</b>而成（技能、检索到的文档、工具输出）；同一片段常常出现在不同的偏移位置。</li>
+        <li><b>LMCache</b> 以块为单位存储 KV（其示例中为 256 个 token），分布于 GPU、CPU DRAM 和磁盘，并在引擎实例之间共享。</li>
+        <li>在<b>非前缀</b>位置复用某个块需要 <b>CacheBlend</b>：复用该块的 KV，并重新计算一小部分 token 以修正交叉注意力 (<code>LMCACHE_ENABLE_BLENDING</code>)。</li>
+        <li><b>AsymCache</b>：多段注意力 (Multi-Segment Attention) + 匹配的逐出策略 + 自适应分块，实现无损的分段 KV 管理。</li>
+      </ul>
+    </div>
+    <pre># lmcache_config.yaml
+chunk_size: 256
+local_cpu: true
+max_local_cpu_size: 64   # GiB
+
+# vllm serve (Lab 2)
+vllm serve Qwen/Qwen3-8B \
+  --kv-offloading-backend lmcache \
+  --kv-offloading-size 64</pre>
+  </div>
+  <div class="cite">docs.lmcache.ai (CPU offload; blending) · Yao et al., CacheBlend, arXiv:2405.16444 · Shi et al., AsymCache, arXiv:2606.02964</div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>模块 3</small>更深的 KV 层级，以及编辑自身缓存的智能体</h2>
+  <div class="cols">
+    <div>
+      <table>
+        <tr><th>层级</th><th>作用</th></tr>
+        <tr><td>1 GPU HBM</td><td>活跃的 KV 块</td></tr>
+        <tr><td>2 CPU DRAM</td><td>热数据卸载</td></tr>
+        <tr><td>3 CXL 内存</td><td>扩展的主机内存</td></tr>
+        <tr><td>4 NVMe (GPUDirect Storage)</td><td>温数据，容量大</td></tr>
+        <tr><td>5 RDMA 网络</td><td>对等 / 池化内存</td></tr>
+        <tr><td>6 并行文件系统</td><td>冷数据，共享</td></tr>
+      </table>
+      <p class="muted" style="font-size:17px">预测式放置把单节点的 KV 容量从约 40 GB 扩展到超过 38 TB。</p>
+    </div>
+    <div class="card">
+      <h3>缓存工程 (AKV)</h3>
+      <p>不同于<i>上下文</i>工程（裁剪或总结历史，再重新 prefill），这里是<b>智能体直接控制自己的活跃 KV-cache</b>：</p>
+      <ul>
+        <li><b>Drop</b>：把选中的条目排除在后续注意力之外。</li>
+        <li><b>Repos</b>：调整保留的 key 的位置。</li>
+      </ul>
+      <p>AKV 引擎保持无状态、与 API 兼容的接口，并在内部处理有状态的复用，因为相同的 token 现在可能对应不同的缓存。</p>
+    </div>
+  </div>
+  <div class="cite">Ganjihal, arXiv:2604.26968 · Fu et al., Cache Engineering for Agents, arXiv:2610.28577</div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>模块 4</small>记忆是一个攻击面</h2>
+  <p>威胁沿着<b>记忆生命周期</b>展开。每个阶段都有各自的攻击与防御：</p>
+  <div class="cols3" style="margin-top:12px">
+    <div class="card"><h3>1 · 写入</h3><p>被投毒的内容进入记忆（通过网页、邮件或工具输出）。</p></div>
+    <div class="card"><h3>2 · 存储</h3><p>静态数据被篡改或泄露。</p></div>
+    <div class="card"><h3>3 · 检索</h3><p>条目被精心构造，以便在目标查询时被召回。</p></div>
+    <div class="card"><h3>4 · 执行</h3><p>被召回的记忆操纵工具调用和行动。</p></div>
+    <div class="card"><h3>5 · 共享与传播</h3><p>共享块把被投毒的事实扩散给其他智能体。</p></div>
+    <div class="card"><h3>6 · 遗忘与回滚</h3><p>能否移除一条坏记忆并撤销其影响？</p></div>
+  </div>
+  <div class="cite">Lin et al., A Survey on Long-Term Memory Security in LLM Agents, arXiv:2604.16548</div>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <h2><small>模块 4</small>防御与访问控制</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>A-MemGuard</h3>
+      <ul>
+        <li><b>共识验证</b>：比较由多条相关记忆得出的推理路径；被投毒的条目会出现偏离。</li>
+        <li><b>双重记忆</b>：检测到的失败被转化为“教训”，单独存储并在行动前查阅。</li>
+        <li>无需改动智能体的核心架构。</li>
+      </ul>
+      <h3 style="margin-top:14px">Agent libOS</h3>
+      <p>把操作准入（身份、能力、审批、预算）与信息流准入分离，使自我演化的智能体新增的工具和技能不会悄悄获得权限。</p>
+    </div>
+    <div class="card">
+      <h3>当今 Harness 已提供的能力</h3>
+      <ul>
+        <li><b>AIOS</b>：权限组 + 不可逆操作的确认。</li>
+        <li><b>Hermes</b>：危险命令检测与审批提示；DM 配对；向沙箱受控传递环境变量/凭据。</li>
+        <li><b>OpenClaw</b>：设备配对；可选沙箱（默认 Docker），其文档称其“并非完美的安全边界”。</li>
+        <li><b>Letta</b>：用于共享策略的 <code>read_only</code> 块。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Wei et al., arXiv:2510.02373 (ICML 2026 per authors' repo) · Zhang, Agent libOS, arXiv:2606.03895 · harness docs (slides 22–25)</div>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+  <h2><small>模块 5</small>开源 Harness 如何实现 AgentOS (1/2)</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent (Python)</th><th>OpenClaw (TypeScript)</th><th>Letta</th><th>AIOS</th></tr>
+    <tr><td>① 循环 / 运行时</td><td><code>AIAgent</code> 循环；CLI + 消息网关</td><td>每台主机一个 Gateway；嵌入式智能体运行器</td><td>服务器上的有状态智能体（云端或自托管）</td><td>提供 SDK 系统调用的内核</td></tr>
+    <tr><td>② 调度</td><td>Cron 作业作为一等智能体任务</td><td>按会话串行运行；cron 事件</td><td>每 N 步运行睡眠时智能体</td><td>FIFO / 轮转系统调用调度器</td></tr>
+    <tr><td>③ 上下文</td><td><code>ContextEngine</code> 插件；默认压缩器总结中间轮次</td><td>上下文引擎插槽：ingest / assemble / compact / afterTurn</td><td>固定的记忆块 + 消息历史；对话搜索</td><td>上下文管理器快照 / 恢复</td></tr>
+    <tr><td>④a 上下文内记忆</td><td><code>MEMORY.md</code>（2,200 字符）+ <code>USER.md</code>，会话开始时冻结</td><td>会话开始时加载 <code>MEMORY.md</code> + <code>USER.md</code></td><td>记忆块（label、description、value、limit）</td><td>记忆管理器（RAM，LRU-K）</td></tr>
+    <tr><td>④b 长期记忆</td><td>SQLite + FTS5 会话搜索；外部提供者（Honcho、Mem0…）</td><td>通过 <code>memory_search</code> 查询每日笔记；“dreaming”将其提炼进 MEMORY.md</td><td>归档记忆（向量段落）</td><td>存储管理器（文件 + 向量数据库）</td></tr>
+  </table>
+  <div class="cite">Hermes developer guide (architecture, memory) · docs.openclaw.ai (architecture, agent loop, context engine, memory) · docs.letta.com · arXiv:2403.16971</div>
+</section>
+
+<!-- 18 -->
+<section class="slide">
+  <h2><small>模块 5</small>开源 Harness 如何实现 AgentOS (2/2)</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th><th>Letta</th><th>AIOS</th></tr>
+    <tr><td>⑤ 工具与执行</td><td>工具注册表（约 28 个工具集）；终端后端：local、Docker、SSH、Daytona、Modal…</td><td>沙箱默认关闭；默认 Docker，也支持 Podman、SSH</td><td>服务器工具（网页搜索、<code>run_code</code> 沙箱）、自定义工具</td><td>工具管理器</td></tr>
+    <tr><td>⑥ 技能</td><td><code>SKILL.md</code> (agentskills.io)；渐进式披露；智能体通过 <code>skill_manage</code> 编写技能</td><td>带优先级的 <code>SKILL.md</code> 目录；ClawHub 注册中心</td><td>—</td><td>—</td></tr>
+    <tr><td>⑦ 多智能体</td><td><code>delegate_task</code>：隔离的子智能体，默认并行 10 个，深度为 1</td><td>子智能体在独立会话中；<code>context</code>：隔离（默认）或 fork；完成后回报</td><td>智能体间共享记忆块</td><td>智能体共享内核服务</td></tr>
+    <tr><td>⑧ 访问控制</td><td>危险命令的审批提示；DM 配对</td><td>设备配对；沙箱 + 工具策略</td><td><code>read_only</code> 块</td><td>访问管理器</td></tr>
+    <tr><td>⑨ 扩展</td><td>插件：工具、约 37 个生命周期钩子、记忆提供者、上下文引擎</td><td>通过 <code>plugins.slots</code> 提供独占类型的插件</td><td>Python / TS SDK</td><td>AIOS SDK (Cerebrum)</td></tr>
+  </table>
+  <div class="cite">“—” = 在所查阅的资料（2026 年 10 月）中未记录为一等功能。各 Harness 详情：配套幻灯片 22–25；Rust 运行时（Goose、OpenFang、ZeroClaw）：幻灯片 26。</div>
+</section>
+
+<!-- 19 -->
+<section class="slide">
+  <h2><small>模块 5</small>一轮对话，所有钩子</h2>
+  <svg viewBox="0 0 1136 420" width="1136" height="420">
+    <line x1="20" y1="170" x2="1116" y2="170" stroke="#2a3550" stroke-width="3"/>
+    <g font-size="16">
+      <circle cx="70" cy="170" r="12" fill="#ffb86b"/><text x="20" y="130">用户消息</text>
+      <circle cx="230" cy="170" r="12" fill="#7be0b8"/><text x="180" y="130">召回</text>
+      <circle cx="400" cy="170" r="12" fill="#6ea8ff"/><text x="350" y="130">组装</text>
+      <circle cx="570" cy="170" r="12" fill="#ffb86b"/><text x="520" y="130">LLM 调用</text>
+      <circle cx="740" cy="170" r="12" fill="#ffb86b"/><text x="690" y="130">工具调用</text>
+      <circle cx="910" cy="170" r="12" fill="#7be0b8"/><text x="860" y="130">持久化</text>
+      <circle cx="1070" cy="170" r="12" fill="#ff7a85"/><text x="1010" y="130">压缩</text>
+    </g>
+    <g font-size="14">
+      <text x="0" y="206" fill="#7be0b8" font-weight="700">Hermes</text>
+      <text x="180" y="220">prefetch()</text><text x="520" y="220">pre_llm_call</text><text x="690" y="220">pre/post_tool_call</text><text x="860" y="220">sync_turn()</text><text x="980" y="220">on_pre_compress →</text><text x="980" y="238">compress()</text>
+      <text x="0" y="262" fill="#6ea8ff" font-weight="700">OpenClaw</text>
+      <text x="40" y="284">ingest()</text><text x="350" y="284">assemble()</text><text x="860" y="284">afterTurn()</text><text x="1010" y="284">compact()</text>
+      <text x="0" y="318" fill="#ffb86b" font-weight="700">Letta</text>
+      <text x="180" y="340">记忆块始终在上下文中</text><text x="690" y="340">记忆工具编辑记忆块</text><text x="910" y="340">每 N 步运行睡眠时智能体</text>
+    </g>
+    <text x="0" y="386" font-size="17">练习：标出哪些钩子可能改变提示词前缀，从而影响 KV-cache 命中率（幻灯片 12）。</text>
+  </svg>
+  <div class="cite">Hermes plugin hook catalog and memory/context-engine guides · docs.openclaw.ai/concepts/context-engine · docs.letta.com sleep-time agents</div>
+</section>
+
+<!-- 20 -->
+<section class="slide">
+  <h2><small>模块 6</small>度量操作系统与评估轨迹</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li><b>吞吐量</b>：每秒完成的智能体任务数或 token 数。</li>
+        <li><b>延迟</b>：每次 LLM / 工具系统调用的 TTFT 和 <b>P99</b>。</li>
+        <li><b>KV-cache 命中率</b>与节省的 prefill token 数。</li>
+        <li>n 个并发智能体之间的<b>公平性</b>：</li>
+      </ul>
+      <p style="font-size:28px;text-align:center;margin:12px 0">J(x) = (Σ x<sub>i</sub>)² / (n · Σ x<sub>i</sub>²)</p>
+      <p class="muted" style="font-size:16px">所有智能体获得相同服务时 J = 1；一个智能体独占全部时 J = 1/n。</p>
+    </div>
+    <div>
+      <p style="margin:0 0 8px;font-size:19px">使用 Google ADK 进行<b>轨迹</b>（工具调用序列）+ <b>响应</b>评估：</p>
+      <pre style="font-size:15px">adk eval &lt;AGENT_MODULE_FILE_PATH&gt; \
+  &lt;EVAL_SET_FILE_PATH_OR_ID&gt; \
+  [--config_file_path=test_config.json]
+
+# defaults when no criteria are given
+{ "criteria": {
+    "tool_trajectory_avg_score": 1.0,
+    "response_match_score": 0.8 } }</pre>
+    </div>
+  </div>
+  <div class="cite">Jain, Chiu &amp; Hawe, DEC-TR-301 (1984) · adk.dev/evaluate · Yehudai et al., Survey on Evaluation of LLM-based Agents, arXiv:2503.16416</div>
+</section>
+
+<!-- 21 -->
+<section class="slide">
+  <h2><small>模块 7</small>Harness²：能自我改进的 Harness</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>模型权重保持<b>固定</b>；变化的是 <b>Harness</b>。</li>
+        <li><b>任务级递归</b>：<span class="accent2">提出 (propose)</span> Harness 修改，在同一任务上<span class="accent2">探测 (probe)</span>它们，依据行为对比<span class="accent2">组合 (compose)</span>出改进后的 Harness。无需真实标注反馈。</li>
+        <li><b>Harness 级递归</b>：为后续任务保留已采纳的 Harness 以及<b>有证据支持的教训</b>。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>它的 8 个可编辑组件 = 我们的 AgentOS 方框</h3>
+      <p>系统提示词 · 护栏 (⑧) · 记忆 (④) · 工具指引 (⑤) · 子智能体 (⑦) · 技能 (⑥) · 脚本 (⑤) · 插件 (⑨)</p>
+      <h3 style="margin-top:16px">基准测试</h3>
+      <p>LAB、WorkBuddy-Bench、JobBench (<code>harness2-setup lab|wb|jb</code>)</p>
+    </div>
+  </div>
+  <div class="cite">Xu et al., Harness²: Recursive Agent Harnessing for an Open World, arXiv:2610.14224 · github.com/google-research/harness2 · 接续幻灯片 22–31</div>
+</section>
+
+</div>
+<div id="hint">← / → 翻页 · F 全屏</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  const total = 31; // slides 1–21 here, 22–31 in 05_opensource_plugin_apis_slides.html
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + total;
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — 调度器</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · 模块 1 讲义 · 组件 2</div>
+  <h1 style="margin-top:22px">调度器</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">谁下一个运行：从 OpenClaw 和 Hermes 中按会话划分的消息队列，到 vLLM 中的请求批处理，
+    再到能看到整个智能体程序的研究型调度器（Autellix、Continuum、KVFlow、ThunderAgent）。</p>
+  <p style="margin-top:28px"><span class="pill">通道与队列</span><span class="pill">批处理</span><span class="pill">程序感知调度</span><span class="pill">公平性</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>全局视角</small>调度发生在三个层次</h2>
+  <svg viewBox="0 0 1136 400" width="1136" height="400">
+    <g font-size="18">
+      <rect x="0" y="0" width="1136" height="120" rx="12" fill="#14213a" stroke="#7be0b8"/>
+      <text x="24" y="38" font-size="22" font-weight="700" fill="#7be0b8">1 · Harness：消息、会话、子智能体、cron</text>
+      <text x="24" y="70">下一个启动的是哪个会话的运行？运行中途到达的消息怎么处理？同时可有多少个子智能体？</text>
+      <text x="24" y="98" fill="#9aa6bd">OpenClaw 的通道与队列模式；Hermes 的委派限制；AIOS 的系统调用队列</text>
+      <rect x="0" y="140" width="1136" height="120" rx="12" fill="#14213a" stroke="#ffb86b"/>
+      <text x="24" y="178" font-size="22" font-weight="700" fill="#ffb86b">2 · 程序：作为整体作业的智能体</text>
+      <text x="24" y="210">哪个智能体程序的下一次 LLM 调用先执行？它在等待工具时是否保留其 KV cache？</text>
+      <text x="24" y="238" fill="#9aa6bd">研究：Autellix、Continuum、KVFlow、ThunderAgent</text>
+      <rect x="0" y="280" width="1136" height="120" rx="12" fill="#14213a" stroke="#6ea8ff"/>
+      <text x="24" y="318" font-size="22" font-weight="700" fill="#6ea8ff">3 · 引擎：一个批次中的请求与 token</text>
+      <text x="24" y="350">哪些请求加入本次 GPU 迭代？多少 prefill token？KV 耗尽时谁被抢占？</text>
+      <text x="24" y="378" fill="#9aa6bd">vLLM / SGLang 的连续批处理、分块 prefill、fcfs 或 priority 策略</text>
+    </g>
+  </svg>
+  <p class="muted" style="font-size:18px;margin-top:8px">大多数生产栈只在第 1 层和第 3 层做调度。第 2 层才是研究收益所在。</p>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>操作系统类比</small>调度智能体有什么不同</h2>
+  <table class="dense">
+    <tr><th>经典操作系统</th><th>AgentOS</th><th>后果</th></tr>
+    <tr><td>进程</td><td>智能体程序：多次 LLM 调用 + 工具调用</td><td>按调用调度会忽略整个作业已完成多少</td></tr>
+    <tr><td>阻塞 I/O</td><td>工具调用（数秒到数分钟）</td><td>GPU 在程序等待期间是否应保留其 KV cache？</td></tr>
+    <tr><td>RAM 中的工作集</td><td>GPU 上的 KV cache</td><td>逐出它会在恢复时强制进行昂贵的重新 prefill</td></tr>
+    <tr><td>时间片</td><td>连续批处理中的一次 decode 迭代</td><td>每个 token 的抢占开销低，但每个被逐出的前缀代价高</td></tr>
+    <tr><td>进程 DAG / 流水线</td><td>多智能体工作流（步骤图）</td><td>后续步骤部分可预测，因此缓存可以预取</td></tr>
+    <tr><td>周转时间</td><td>整个任务的作业完成时间 (JCT)</td><td>用户感受到的是这个指标，而不是单次调用延迟</td></tr>
+  </table>
+  <div class="cite">框架来自 AIOS (arXiv:2403.16971)、Autellix (arXiv:2502.13965) 和 Continuum (arXiv:2511.02230)。</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>Harness · OpenClaw</small>通道 (Lanes)：按会话串行化，全局设上限</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><th>通道</th><th>作用</th><th>默认上限</th></tr>
+        <tr><td>session:&lt;key&gt;</td><td>每个会话同一时间只运行一次</td><td>1</td></tr>
+        <tr><td>main</td><td>每个会话运行也会进入它；入站消息、心跳</td><td>4</td></tr>
+        <tr><td>subagent</td><td>后台子智能体工作</td><td>8</td></tr>
+        <tr><td>cron / cron-nested</td><td>隔离的 cron 轮次</td><td><code>cron.maxConcurrentRuns</code></td></tr>
+        <tr><td>其他通道</td><td>未配置</td><td>1</td></tr>
+      </table>
+      <p style="font-size:17px;margin-top:10px"><code>agents.defaults.maxConcurrent</code> 控制跨会话的并行度。</p>
+    </div>
+    <div class="card">
+      <h3>按会话的消息队列</h3>
+<pre style="font-size:14px">messages: { queue: {
+  mode: "steer",       // followup | collect | interrupt
+  debounceMs: 500,
+  cap: 20,             // queued messages per session
+  drop: "summarize",   // or "old" | "new"
+  byChannel: { discord: "collect" } } }</pre>
+      <p style="font-size:16px;margin-top:10px">队列满时，<code>summarize</code> 会丢弃最旧的条目，但把它们的摘要作为合成的后续消息注入：这是一个能优雅降级的调度器。</p>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/concepts/queue (openclaw 2026.7; 配置以其 JSON5 形式展示). 转向语义：智能体循环课件，第 9 张幻灯片。</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Harness · Hermes Agent</small>调度子智能体</h2>
+  <div class="cols">
+    <table class="dense">
+      <tr><th>参数</th><th>默认值</th></tr>
+      <tr><td>delegation.max_concurrent_children</td><td>每批 10 个（超出批量的请求会返回工具错误）</td></tr>
+      <tr><td>delegation.max_spawn_depth</td><td>1（扁平）；2 允许编排者子智能体再生成叶子工作者</td></tr>
+      <tr><td>delegation.max_iterations</td><td>每个子智能体 250 轮</td></tr>
+      <tr><td>delegation.child_timeout_seconds</td><td>0 = 无不活动上限（设置时最小为 30 s）</td></tr>
+      <tr><td>停滞监视器</td><td>始终开启：轮次之间空闲 450 s，工具内部 1200 s</td></tr>
+      <tr><td>预算警告</td><td>在空闲窗口约 80% 时</td></tr>
+    </table>
+    <div class="card">
+      <h3>调度经验</h3>
+      <ul>
+        <li><b>限制扇出</b>：固定的批量大小可限制成本和速率限制压力。</li>
+        <li><b>限制深度</b>：递归深度是智能体版本的 fork 炸弹防护。</li>
+        <li><b>检测停滞，而不只是缓慢</b>：对“思考中”和“工具内部”使用不同阈值。</li>
+        <li>耗尽额度的子智能体返回 <code>exit_reason: max_iterations</code> 和 <code>truncated: true</code>，以便父智能体决定如何处理。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">hermes-agent.nousresearch.com/docs/user-guide/features/delegation. 多智能体模式另有专门课件。</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>研究内核 · AIOS</small>把智能体请求当作系统调用</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li>智能体（通过 Cerebrum SDK）把 LLM、记忆、存储和工具请求作为<b>系统调用</b>发入中央队列。</li>
+        <li>AIOS 调度器以 <b>FIFO</b> 或<b>轮转</b>（默认）方式分派它们。</li>
+        <li>轮转需要在生成中途抢占：<b>上下文管理器</b>对生成状态做快照与恢复（基于文本，或基于 logits 以保留搜索树状态）。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>为什么重要</h3>
+      <p>AIOS 清晰地展示了操作系统模式：每种资源类型一个队列、可插拔的策略，以及针对 LLM 生成的上下文切换。它的策略是经典的（FIFO、RR）；后续幻灯片中的程序感知论文替换了策略，但保留了这一结构。</p>
+    </div>
+  </div>
+  <div class="cite">Mei et al., AIOS: LLM Agent Operating System (arXiv:2403.16971); github.com/agiresearch/AIOS. 总览课件第 6 张幻灯片。</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>引擎 · vLLM</small>连续批处理及其参数</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><th>SchedulerConfig 字段</th><th>默认值 / 含义</th></tr>
+        <tr><td>policy</td><td><code>"fcfs"</code>；或 <code>"priority"</code>：值越小越先服务，相同时按到达顺序</td></tr>
+        <tr><td>max_num_seqs</td><td>每次迭代的最大序列数（代码默认 128；实际值由引擎参数设定）</td></tr>
+        <tr><td>max_num_batched_tokens</td><td>每次迭代的最大 token 数（代码默认 2048）</td></tr>
+        <tr><td>enable_chunked_prefill</td><td>True：长 prefill 被拆分，与 decode 共享迭代</td></tr>
+        <tr><td>long_prefill_token_threshold</td><td>0 = 每步对长 prefill 不设上限</td></tr>
+        <tr><td>async_scheduling</td><td>让调度与 GPU 工作重叠，避免空隙</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>引擎看不到什么</h3>
+      <ul>
+        <li>每个请求看起来都是独立的：引擎不知道一个长智能体作业的第 12 次调用正排在新作业的第 1 次调用后面等待。</li>
+        <li>当一个请求在工具调用前结束时，它的 KV 块变为可逐出，即使同一个程序几秒后就会回来。</li>
+        <li><code>priority</code> 是一个钩子：Harness 可以把程序级优先级向下传递，这正是程序感知调度器所做的事。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">docs.vllm.ai/en/stable/api/vllm/config/scheduler. 引擎指标（排队时间、运行中 / 等待中）：可观测性课件第 8 张幻灯片。</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>问题</small>按调用调度会损害整个作业</h2>
+  <svg viewBox="0 0 1136 300" width="1136" height="300">
+    <g font-size="16">
+      <text x="0" y="24" fill="#9aa6bd">程序 A（长智能体作业，6 次调用）</text>
+      <g fill="#6ea8ff"><rect x="0" y="36" width="80" height="30" rx="4"/><rect x="200" y="36" width="80" height="30" rx="4"/><rect x="420" y="36" width="80" height="30" rx="4"/><rect x="640" y="36" width="80" height="30" rx="4"/><rect x="860" y="36" width="80" height="30" rx="4"/><rect x="1050" y="36" width="80" height="30" rx="4"/></g>
+      <g fill="#ffb86b" opacity="0.5"><rect x="80" y="36" width="60" height="30" rx="4"/><rect x="280" y="36" width="60" height="30" rx="4"/><rect x="500" y="36" width="60" height="30" rx="4"/><rect x="720" y="36" width="60" height="30" rx="4"/><rect x="940" y="36" width="60" height="30" rx="4"/></g>
+      <g fill="#ff7a85" opacity="0.6"><rect x="140" y="36" width="60" height="30" rx="4"/><rect x="340" y="36" width="80" height="30" rx="4"/><rect x="560" y="36" width="80" height="30" rx="4"/><rect x="780" y="36" width="80" height="30" rx="4"/><rect x="1000" y="36" width="50" height="30" rx="4"/></g>
+      <text x="0" y="110" fill="#9aa6bd">程序 B、C、D …（短作业不断到达）</text>
+      <g fill="#7be0b8"><rect x="140" y="122" width="60" height="30" rx="4"/><rect x="340" y="122" width="80" height="30" rx="4"/><rect x="560" y="122" width="80" height="30" rx="4"/><rect x="780" y="122" width="80" height="30" rx="4"/><rect x="1000" y="122" width="50" height="30" rx="4"/></g>
+      <rect x="0" y="190" width="24" height="18" fill="#6ea8ff"/><text x="32" y="204">A 的 LLM 调用</text>
+      <rect x="170" y="190" width="24" height="18" fill="#ffb86b" opacity="0.5"/><text x="202" y="204">A 的工具调用</text>
+      <rect x="340" y="190" width="24" height="18" fill="#ff7a85" opacity="0.6"/><text x="372" y="204">A 在队列中等待（并可能丢失其 KV cache）</text>
+      <rect x="760" y="190" width="24" height="18" fill="#7be0b8"/><text x="792" y="204">其他程序的调用</text>
+      <text x="0" y="260" font-size="18">每当 A 从工具返回，它都要排在更新的工作之后。它的总作业时间随步数增长，</text>
+      <text x="0" y="286" font-size="18">而被逐出的前缀必须重新 prefill。程序感知调度器可解决其中之一或两者。</text>
+    </g>
+  </svg>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>程序感知 · 1</small>Autellix：按程序进度调度</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li>把智能体视为<b>通用程序</b>：它拦截程序提交的 LLM 调用，并为调度器提供程序级上下文。</li>
+        <li>依据<b>程序此前已完成的调用</b>（该程序已获得多少服务）对调用进行抢占和优先级排序，并为单线程和分布式程序提供了相应算法。</li>
+        <li>结果：与 vLLM 等最先进系统相比，在相同延迟下<b>程序吞吐量提高 4–15×</b>。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>直观理解</h3>
+      <p>类似网络和操作系统中的最少已获服务 (least-attained-service) 调度：无需事先知道作业大小，短作业就能快速完成；而长作业不会被调用层面源源不断的新到达所饿死，因为优先级是按程序而不是按调用计算的。</p>
+    </div>
+  </div>
+  <div class="cite">Luo et al., Autellix: An Efficient Serving Engine for LLM Agents as General Programs (arXiv:2502.13965, Feb 2025).</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>程序感知 · 2</small>Continuum：跨工具调用保留 KV cache</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li>当有其他请求在等待时，引擎会逐出已完成请求的 KV cache。对于因工具调用而暂停的智能体，这意味着每次恢复都要重新 prefill。</li>
+        <li>Continuum <b>固定</b>发起了工具调用的请求的 <b>KV cache</b>，并依据重新加载成本和预期排队延迟设定<b>存活时间 (TTL)</b>。</li>
+        <li>TTL 会自动过期，因此不可预测的工具耗时不会永远占着内存。</li>
+        <li>结合<b>程序级先来先服务</b>，可保持多轮对话的连续性。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>结果</h3>
+      <p>在使用 Llama-3.1 8B / 70B、Gemma-3 12B 和 GLM-4.5 355B 的 SWE-Bench、BFCL 和 OpenHands 智能体上，平均作业完成时间改善<b>超过 8×</b>，同时吞吐量更高。</p>
+      <p class="muted">调度决策与内存决策是同一个决策：谁的 KV 保持常驻。</p>
+    </div>
+  </div>
+  <div class="cite">Li et al., Continuum: Efficient and Robust Multi-Turn LLM Agent Scheduling with KV Cache Time-to-Live (arXiv:2511.02230).</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>程序感知 · 3</small>KVFlow：利用工作流图</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li>多智能体工作流具有已知的形状。KVFlow 把它建模为<b>智能体步骤图 (Agent Step Graph)</b>，并为每个智能体估计<b>距离下次运行还有多少步</b>。</li>
+        <li>逐出在基数（前缀树）缓存的 KV 节点层面使用该值，而不是 LRU——LRU 往往会在前缀即将被复用之前把它逐出。</li>
+        <li><b>重叠式预取</b>在后台线程中把下一步的 KV 张量从 CPU 加载到 GPU。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>结果（对比带分层基数缓存的 SGLang）</h3>
+      <ul>
+        <li>提示词很大的单个工作流最高加速 <b>1.83×</b></li>
+        <li>大量并发工作流最高加速 <b>2.19×</b></li>
+      </ul>
+      <p class="muted">调度信息（接下来运行什么）驱动缓存策略（保留什么）。</p>
+    </div>
+  </div>
+  <div class="cite">Pan et al., KVFlow: Efficient Prefix Caching for Accelerating LLM-Based Multi-Agent Workflows (arXiv:2507.07400).</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>程序感知 · 4</small>ThunderAgent：调度程序，包括其工具</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li>如今推理引擎和独立的工具编排器各自独立调度请求，看不到整个工作流。</li>
+        <li>ThunderAgent 把工作流建模为 <b>LLM Programs</b>：对 KV cache、系统状态和工具资源（磁盘、网络端口）提供统一视图。</li>
+        <li><b>程序感知调度器</b>提高 KV 命中率并均衡内存；<b>工具资源管理器</b>异步准备执行环境。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>结果</h3>
+      <ul>
+        <li>服务吞吐量 <b>1.5–3.6×</b></li>
+        <li>RL rollout 中 <b>1.8–3.9×</b></li>
+        <li>磁盘内存最高节省 <b>4.2×</b></li>
+      </ul>
+      <p class="muted">涵盖编码、路由和科学发现类智能体。</p>
+    </div>
+  </div>
+  <div class="cite">Kang et al., ThunderAgent: A Simple, Fast and Program-Aware Agentic Inference System (arXiv:2602.13692).</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>对比</small>各调度器知道什么、使用什么</h2>
+  <table class="dense">
+    <tr><th>系统</th><th>额外信号</th><th>机制</th><th>亮点</th></tr>
+    <tr><td>AIOS</td><td>请求类型（LLM、记忆、工具）</td><td>中央队列、FIFO / 轮转、生成快照</td><td>参考内核设计</td></tr>
+    <tr><td>vLLM priority</td><td>每个请求的优先级值</td><td>值小者优先，相同时按到达顺序</td><td>供 Harness 使用的钩子</td></tr>
+    <tr><td>Autellix</td><td>程序已完成的调用</td><td>程序级抢占与优先级</td><td>4–15× 吞吐量，延迟相同</td></tr>
+    <tr><td>Continuum</td><td>工具调用暂停</td><td>KV TTL 固定 + 程序级 FCFS</td><td>&gt;8× 平均 JCT</td></tr>
+    <tr><td>KVFlow</td><td>工作流步骤图</td><td>按距离执行步数逐出 + 预取</td><td>最高 2.19×</td></tr>
+    <tr><td>ThunderAgent</td><td>包含工具的整个程序</td><td>程序感知调度器 + 工具资源管理器</td><td>1.5–3.6× 服务吞吐量</td></tr>
+    <tr><td>OpenClaw</td><td>会话、渠道、通道</td><td>按会话串行化、通道上限、队列模式</td><td>生产级 Harness</td></tr>
+  </table>
+  <p class="muted" style="font-size:17px;margin-top:12px">论文中的数字来自不同的基线和工作负载；请比较机制，而不是加速比。</p>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>策略</small>公平性、优先级与配额</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li><b>交互式与后台</b>：面向用户的轮次应优先于 cron 作业和子智能体。OpenClaw 为子智能体和 cron 提供了各自的通道和上限。</li>
+        <li><b>按租户公平</b>：用 Jain 指数衡量每个智能体或每个用户的吞吐量（总览课件第 20 张幻灯片）；限制每个租户的并发运行数。</li>
+        <li><b>提供者速率限制</b>是外部调度器：429 应当退避或故障转移（Hermes 在 429 时故障转移），而不是在紧密循环中重试。</li>
+        <li><b>饥饿</b>：任何优先级方案都需要老化 (aging) 机制，否则长作业永远无法完成。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>需要关注的信号</h3>
+      <ul>
+        <li>Harness 队列：<code>openclaw.queue.depth</code>、<code>openclaw.queue.wait_ms</code></li>
+        <li>引擎队列：<code>vllm:request_queue_time_seconds</code>、运行中 / 等待中的请求</li>
+        <li>每个任务的作业完成时间，而不只是每次调用</li>
+        <li>跨租户的公平性指数</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">OpenClaw queue and OpenTelemetry docs; vLLM metrics; Hermes agent-loop docs (fallback on 429). Jain, Chiu &amp; Hawe, DEC-TR-301 (1984).</div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>练习</small>模拟程序感知调度</h2>
+  <div class="cols">
+<pre style="font-size:14px"># Each program: list of (llm_ms, tool_ms) steps
+programs = make_programs(n=50, long_frac=0.2)
+
+for policy in [fcfs_per_call,       # vLLM default
+               program_fcfs,        # Continuum-style
+               least_attained]:     # Autellix-style
+    sim = Simulator(gpu_slots=8, kv_slots=32,
+                    reprefill_ms=lambda p: p.ctx/4,
+                    kv_ttl_ms=None)  # try 2000
+    jct = sim.run(programs, policy)
+    print(policy.__name__,
+          mean(jct), p99(jct), jain(jct))</pre>
+    <div class="card">
+      <h3>思考题</h3>
+      <ul>
+        <li>每种策略下，平均和 P99 作业完成时间如何变化？</li>
+        <li>工具调用较短与较长时，KV TTL 分别带来什么？</li>
+        <li>按 Jain 指数，哪种策略最公平？</li>
+        <li>然后：通过 vLLM 的 <code>priority</code> 策略传入程序优先级，并在实验 2 的服务器上度量。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <h2><small>参考文献</small>延伸阅读</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>Mei et al., AIOS: arxiv.org/abs/2403.16971 · github.com/agiresearch/AIOS</li>
+      <li>Luo et al., Autellix: arxiv.org/abs/2502.13965</li>
+      <li>Li et al., Continuum: arxiv.org/abs/2511.02230</li>
+      <li>Pan et al., KVFlow: arxiv.org/abs/2507.07400</li>
+      <li>Kang et al., ThunderAgent: arxiv.org/abs/2602.13692</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>OpenClaw command queue: docs.openclaw.ai/concepts/queue</li>
+      <li>Hermes delegation: hermes-agent.nousresearch.com/docs/user-guide/features/delegation</li>
+      <li>vLLM SchedulerConfig: docs.vllm.ai/en/stable/api/vllm/config/scheduler</li>
+      <li>Kwon et al., PagedAttention: arxiv.org/abs/2309.06180</li>
+      <li>所有链接：<code>references/bibliography_and_links.md</code> §1 和 §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → 翻页 · F 全屏</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

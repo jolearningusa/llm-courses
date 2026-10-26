@@ -33,6 +33,21 @@ Open a deck in the browser; use **← / →** to move between slides and **F** f
 | [MCP, plugins and connectors](slides/05_mcp_connectors_deck.html) | Module 5 lecture: MCP 2026-07-28 (stateless core, transports, multi round-trip requests), OAuth for remote servers, registries and connector directories, how harnesses mount MCP, tool poisoning and defenses |
 | [The open harness landscape](slides/05_harness_landscape_deck.html) | Module 5 lecture: popularity (GitHub stars, forks, licenses as of 2026-10-26) and feature matrices for OpenClaw, Hermes Agent, DeepSeek Harness, OpenCode, Codex CLI, OpenHands, Cline, Goose, Aider, Letta and AIOS, how popularity claims were checked, how to choose |
 | [Observability and evaluation](slides/06_observability_evaluation_deck.html) | Module 6 lecture: traces, OpenTelemetry, metrics, evals, dashboards |
+| [Master deck (简体中文)](slides/zh/00_master_agentos_deck.html) (slides 1–21) | The AgentOS architecture, the nine components, and the map of all seven modules |
+| [Harness deep-dives (简体中文)](slides/zh/05_opensource_plugin_apis_slides.html) (slides 22–31) | Hermes Agent, OpenClaw, Letta, AIOS, Rust runtimes, plugin APIs, vLLM KV connectors, Harness² |
+| [The agent loop (简体中文)](slides/zh/01_agent_loop_deck.html) | Module 1 lecture: turns, budgets, retries, interrupts, compaction, hooks |
+| [The scheduler (简体中文)](slides/zh/01_scheduler_deck.html) | Module 1 lecture: lanes and queues, delegation limits, engine and program-aware scheduling |
+| [The context manager (简体中文)](slides/zh/01_context_manager_deck.html) | Module 1 lecture: context rot, prompt assembly, cache-stable prefixes, compaction, isolation, Hermes and OpenClaw context engines |
+| [Long-term memory (简体中文)](slides/zh/02_long_term_memory_deck.html) | Module 2 lecture: write path, indexes, retrieval, how harnesses build memory, RAG tooling |
+| [The KV-cache plane (简体中文)](slides/zh/03_kv_cache_deck.html) | Module 3 lecture: KV-cache sizing, prefix caching in vLLM, provider prompt caching for agents, disaggregation and tiered offload, MLA and FP8 KV, a cache hygiene checklist |
+| [Access control and safety (简体中文)](slides/zh/04_access_control_deck.html) | Module 4 lecture: the lethal trifecta and Rule of Two, OWASP agentic top 10, permission models in OpenClaw / Hermes / Codex, prompt-injection design patterns (CaMeL), audit |
+| [Tools and sandbox (简体中文)](slides/zh/05_tools_sandbox_deck.html) | Module 5 lecture: writing tools for models, MCP, code execution, Hermes / OpenClaw / Codex / Claude Code sandboxes, approvals |
+| [Skills (简体中文)](slides/zh/05_skills_deck.html) | Module 5 lecture: the Agent Skills format, progressive disclosure, how Hermes / OpenClaw / Codex load skills, self-written skills, skill supply-chain risks |
+| [Multi-agent systems (简体中文)](slides/zh/05_multi_agent_deck.html) | Module 5 lecture: when multi-agent helps, orchestrator-worker delegation, Hermes / OpenClaw / Letta mechanisms, A2A, failure modes (MAST) |
+| [The extension layer (简体中文)](slides/zh/05_extension_layer_deck.html) | Module 5 lecture: plugin manifests, discovery, slots, hooks, plugins vs. MCP servers, versioning and plugin security in Hermes / OpenClaw / Claude Code |
+| [MCP, plugins and connectors (简体中文)](slides/zh/05_mcp_connectors_deck.html) | Module 5 lecture: MCP 2026-07-28 (stateless core, transports, multi round-trip requests), OAuth for remote servers, registries and connector directories, how harnesses mount MCP, tool poisoning and defenses |
+| [The open harness landscape (简体中文)](slides/zh/05_harness_landscape_deck.html) | Module 5 lecture: popularity (GitHub stars, forks, licenses as of 2026-10-26) and feature matrices for OpenClaw, Hermes Agent, DeepSeek Harness, OpenCode, Codex CLI, OpenHands, Cline, Goose, Aider, Letta and AIOS, how popularity claims were checked, how to choose |
+| [Observability and evaluation (简体中文)](slides/zh/06_observability_evaluation_deck.html) | Module 6 lecture: traces, OpenTelemetry, metrics, evals, dashboards |
 
 ## Syllabus (7 modules)
 
@@ -73,7 +88,23 @@ llm-agentos-course/
 │   ├── 05_mcp_connectors_deck.html            # Module 5 lecture, 16 slides: MCP, plugins and connectors (protocol, auth, distribution, attacks)
 │   ├── 05_harness_landscape_deck.html         # Module 5 lecture, 8 slides: the open harness landscape (popularity, feature matrices)
 │   ├── 05_opensource_plugin_apis_slides.html  # Slides 22–31: harness deep-dives (incl. Rust), plugin APIs, vLLM KV, Harness²
-│   └── 06_observability_evaluation_deck.html  # Module 6 lecture, 20 slides: tracing, telemetry, evals, dashboards
+│   ├── 06_observability_evaluation_deck.html  # Module 6 lecture, 20 slides: tracing, telemetry, evals, dashboards
+│   └── zh/                                    # Simplified Chinese (zh-CN) translations of the 15 decks above
+│       ├── 00_master_agentos_deck.html            # zh-CN: Master deck, slides 1–21: AgentOS architecture & component map
+│       ├── 01_agent_loop_deck.html                # zh-CN: Module 1 lecture, 17 slides: the agent loop (turns, budgets, retries, interrupts, hooks)
+│       ├── 01_scheduler_deck.html                 # zh-CN: Module 1 lecture, 16 slides: scheduling agents (lanes, delegation limits, vLLM, program-aware)
+│       ├── 01_context_manager_deck.html           # zh-CN: Module 1 lecture, 14 slides: context engineering (assembly, caching, compaction, isolation)
+│       ├── 02_long_term_memory_deck.html          # zh-CN: Module 2 lecture, 20 slides: how long-term memory is built
+│       ├── 03_kv_cache_deck.html                  # zh-CN: Module 3 lecture, 14 slides: the KV-cache plane (prefix caching, prompt caching, offload)
+│       ├── 04_access_control_deck.html            # zh-CN: Module 4 lecture, 15 slides: access control and safety (trifecta, permissions, injection defenses)
+│       ├── 05_tools_sandbox_deck.html             # zh-CN: Module 5 lecture, 14 slides: tool design, MCP, code execution, sandboxes, approvals
+│       ├── 05_skills_deck.html                    # zh-CN: Module 5 lecture, 14 slides: skills (format, loading, self-improvement, security)
+│       ├── 05_multi_agent_deck.html               # zh-CN: Module 5 lecture, 15 slides: multi-agent (delegation, routing, shared memory, A2A, failures)
+│       ├── 05_extension_layer_deck.html           # zh-CN: Module 5 lecture, 14 slides: the extension layer (manifests, slots, hooks, plugin security)
+│       ├── 05_mcp_connectors_deck.html            # zh-CN: Module 5 lecture, 16 slides: MCP, plugins and connectors (protocol, auth, distribution, attacks)
+│       ├── 05_harness_landscape_deck.html         # zh-CN: Module 5 lecture, 8 slides: the open harness landscape (popularity, feature matrices)
+│       ├── 05_opensource_plugin_apis_slides.html  # zh-CN: Slides 22–31: harness deep-dives (incl. Rust), plugin APIs, vLLM KV, Harness²
+│       └── 06_observability_evaluation_deck.html  # zh-CN: Module 6 lecture, 20 slides: tracing, telemetry, evals, dashboards
 ├── labs/
 │   ├── LAB_PLAN.md                            # Plan: one practice lab per lecture deck, survey of similar courses
 │   ├── kit/                                   # Shared lab kit: the nanoos harness, tasks, runner, autograder

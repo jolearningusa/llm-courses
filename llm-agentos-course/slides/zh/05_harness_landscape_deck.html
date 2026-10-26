@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — 开源 Harness 全景</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  a { color: inherit; text-decoration: underline dotted; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · 第 5 模块讲座 · 开源 harness 如何实现 AgentOS</div>
+  <h1 style="margin-top:22px">开源 harness 全景，2026 年 10 月</h1>
+  <p class="muted" style="font-size:26px;max-width:1040px">比较十一个开源 harness 的热度，以及它们实际提供的 AgentOS 组件：个人智能体运行时、可组合底座、编码智能体和一个研究型内核。
+    所有 star 数均于 2026-10-26 从项目的 GitHub 页面读取。</p>
+  <p style="margin-top:28px"><span class="pill">热度</span><span class="pill">功能矩阵</span><span class="pill">架构取舍</span><span class="pill">核查说法</span><span class="pill">如何选择</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>分类</small>四类 harness，四种不同的押注</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>个人智能体运行时</h3>
+      <p style="font-size:18px">一个长期运行的进程，通过聊天应用与之对话，带有记忆、技能和调度器。</p>
+      <p style="font-size:18px"><b>OpenClaw</b>（覆盖面：一个网关，多个渠道）、<b>Hermes Agent</b>（自我改进：自己编写技能和记忆）、<b>Goose</b>（基于 MCP 扩展构建的桌面与 CLI 智能体）。</p>
+    </div>
+    <div class="card">
+      <h3>可组合底座与智能体服务器</h3>
+      <p style="font-size:18px">用来构建智能体产品的内核。</p>
+      <p style="font-size:18px"><b>DeepSeek Harness</b>（基于 Cordis 运行时的“一切皆插件”）、<b>Letta</b>（通过 API 提供有状态智能体，带可编辑的记忆块）。</p>
+    </div>
+  </div>
+  <div class="cols" style="margin-top:18px">
+    <div class="card">
+      <h3>编码智能体</h3>
+      <p style="font-size:18px">针对代码仓库调优的循环、工具和沙箱。</p>
+      <p style="font-size:18px"><b>OpenCode</b>、<b>Codex CLI</b>、<b>Cline</b>、<b>Aider</b>（终端和 IDE）以及 <b>OpenHands</b>（Docker 沙箱中的智能体，本地或云端）。</p>
+    </div>
+    <div class="card">
+      <h3>研究型内核</h3>
+      <p style="font-size:18px">位于其他智能体框架之下的操作系统层。</p>
+      <p style="font-size:18px"><b>AIOS</b>：一个把智能体请求转换为系统调用的内核，并调度众多并发智能体共享的 LLM、内存、存储和工具。</p>
+    </div>
+  </div>
+  <div class="cite">github.com 上各项目的 README（链接见后续幻灯片）；AIOS 论文，arXiv 2403.16971。</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>热度</small>GitHub star 数，2026-10-26</h2>
+  <div style="display:grid;grid-template-columns:190px 1fr 90px;gap:7px 16px;align-items:center;font-size:19px">
+    <div>OpenClaw</div><div style="height:24px;width:100%;background:var(--accent);border-radius:4px"></div><div>393.0k</div>
+    <div>Hermes Agent</div><div style="height:24px;width:64.5%;background:var(--accent);border-radius:4px"></div><div>253.6k</div>
+    <div>DeepSeek Harness</div><div style="height:24px;width:64.1%;background:var(--accent);border-radius:4px"></div><div>252.0k</div>
+    <div>OpenCode</div><div style="height:24px;width:56.4%;background:var(--accent2);border-radius:4px"></div><div>221.5k</div>
+    <div>Codex CLI</div><div style="height:24px;width:32.6%;background:var(--accent2);border-radius:4px"></div><div>128.1k</div>
+    <div>OpenHands</div><div style="height:24px;width:23.4%;background:var(--accent2);border-radius:4px"></div><div>91.8k</div>
+    <div>Cline</div><div style="height:24px;width:17.2%;background:var(--accent2);border-radius:4px"></div><div>67.6k</div>
+    <div>Goose</div><div style="height:24px;width:14.2%;background:var(--accent);border-radius:4px"></div><div>55.7k</div>
+    <div>Aider</div><div style="height:24px;width:12.6%;background:var(--accent2);border-radius:4px"></div><div>49.7k</div>
+    <div>Letta</div><div style="height:24px;width:6.4%;background:var(--accent);border-radius:4px"></div><div>25.2k</div>
+    <div>AIOS</div><div style="height:24px;width:1.6%;background:var(--warn);border-radius:4px"></div><div>6.4k</div>
+  </div>
+  <p style="font-size:17px;margin-top:14px"><span style="color:var(--accent)">■</span> 个人运行时与底座 <span style="color:var(--accent2);margin-left:14px">■</span> 编码智能体 <span style="color:var(--warn);margin-left:14px">■</span> 研究型内核。star 衡量的是关注度，而非实际使用：2026 年 5 月，OpenClaw 的 npm 周下载量约为 5.3M，Hermes 的 PyPI 周下载量约为 53k，差距远大于 star 数所显示的。</p>
+  <div class="cite">star 数取自各仓库页面的四舍五入值，读取于 2026-10-26。下载量：glukhov.org，“OpenClaw, Hermes and alternatives: popularity”（GitHub、npm 和 PyPI API，2026 年 5 月 21 日）。</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>热度</small>各项目的仓库位置与许可证</h2>
+  <table class="dense" style="font-size:16px">
+    <tr><th>Harness</th><th>仓库</th><th>Stars</th><th>Forks</th><th>许可证</th><th>类型</th></tr>
+    <tr><td>OpenClaw</td><td><a href="https://github.com/openclaw/openclaw">openclaw/openclaw</a></td><td>393.0k</td><td>82.6k</td><td>MIT</td><td>个人运行时（TypeScript）</td></tr>
+    <tr><td>Hermes Agent</td><td><a href="https://github.com/NousResearch/hermes-agent">NousResearch/hermes-agent</a></td><td>253.6k</td><td>55.0k</td><td>MIT</td><td>个人运行时（Python）</td></tr>
+    <tr><td>DeepSeek Harness</td><td><a href="https://github.com/deepseek-ai/deepseek-harness">deepseek-ai/deepseek-harness</a></td><td>252.0k</td><td>30.3k</td><td>MIT</td><td>底座，开发者预览版</td></tr>
+    <tr><td>OpenCode</td><td><a href="https://github.com/anomalyco/opencode">anomalyco/opencode</a></td><td>221.5k</td><td>29.6k</td><td>MIT</td><td>编码智能体（原 sst/opencode）</td></tr>
+    <tr><td>Codex CLI</td><td><a href="https://github.com/openai/codex">openai/codex</a></td><td>128.1k</td><td>20.1k</td><td>Apache-2.0</td><td>编码智能体（Rust）</td></tr>
+    <tr><td>OpenHands</td><td><a href="https://github.com/OpenHands/OpenHands">OpenHands/OpenHands</a></td><td>91.8k</td><td>12.2k</td><td>MIT</td><td>编码智能体平台（Python）</td></tr>
+    <tr><td>Cline</td><td><a href="https://github.com/cline/cline">cline/cline</a></td><td>67.6k</td><td>7.3k</td><td>Apache-2.0</td><td>编码智能体，IDE + CLI</td></tr>
+    <tr><td>Goose</td><td><a href="https://github.com/aaif-goose/goose">aaif-goose/goose</a></td><td>55.7k</td><td>6.4k</td><td>Apache-2.0</td><td>个人运行时（Rust；原 block/goose）</td></tr>
+    <tr><td>Aider</td><td><a href="https://github.com/Aider-AI/aider">Aider-AI/aider</a></td><td>49.7k</td><td>5.1k</td><td>Apache-2.0</td><td>编码智能体（Python）</td></tr>
+    <tr><td>Letta</td><td><a href="https://github.com/letta-ai/letta">letta-ai/letta</a></td><td>25.2k</td><td>2.7k</td><td>Apache-2.0</td><td>智能体服务器（Python）</td></tr>
+    <tr><td>AIOS</td><td><a href="https://github.com/agiresearch/AIOS">agiresearch/AIOS</a></td><td>6.4k</td><td>908</td><td>见仓库 LICENSE</td><td>研究型内核（Python）</td></tr>
+  </table>
+  <div class="cite">github.com 上各仓库页面，读取于 2026-10-26（GitHub 以千为单位保留一位小数）。更长的精选列表：github.com/RyanAlberts/best-of-Agent-Harnesses。</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>功能矩阵</small>个人运行时、底座与研究型内核</h2>
+  <table class="dense" style="font-size:13.5px">
+    <tr><th></th><th>OpenClaw</th><th>Hermes Agent</th><th>DeepSeek Harness</th><th>Goose</th><th>Letta</th><th>AIOS</th></tr>
+    <tr><td>核心取舍</td><td>覆盖面：一个网关，接入所有聊天应用</td><td>自我改进：自己编写技能</td><td>一切皆插件（Cordis）</td><td>Rust 智能体上的 MCP 扩展</td><td>有状态智能体服务器</td><td>面向众多智能体的操作系统内核</td></tr>
+    <tr><td>入口</td><td>网关，WebSocket + HTTP，端口 18789</td><td>CLI + 消息网关</td><td>Web UI 和 npm CLI</td><td>桌面应用 + CLI</td><td>REST API、ADE、SDK</td><td>内核 + Cerebrum SDK</td></tr>
+    <tr><td>渠道</td><td>Slack、WhatsApp、Signal、iMessage…… “另有 20+ 个”</td><td>通过网关支持 25+ 个平台</td><td>—</td><td>—</td><td>通过你的应用</td><td>终端 UI</td></tr>
+    <tr><td>执行</td><td>默认在主机上；配置后可用沙箱</td><td>7 种后端：local、Docker、SSH、Singularity、Modal、Daytona、Vercel Sandbox</td><td><code>ctx.sandbox</code> 后端（不保证隔离）</td><td>本地</td><td>—</td><td>VM + MCP 服务器（LiteCUA）</td></tr>
+    <tr><td>记忆</td><td>工作区文件，记忆搜索</td><td>MEMORY.md 2,200 + USER.md 1,375 字符；FTS5 搜索；Honcho</td><td>仅追加的会话日志</td><td>在窗口 80% 时压缩</td><td>记忆块，归档存储</td><td>内核记忆，存储</td></tr>
+    <tr><td>扩展</td><td>插件 + 技能，ClawHub 注册表</td><td>技能（agentskills.io）、插件、MCP</td><td>用于工具、模型、循环的插件；MCP 通过社区插件提供</td><td>MCP 扩展</td><td>工具，MCP 服务器</td><td>运行 AutoGen、ReAct…… 智能体</td></tr>
+    <tr><td>调度器</td><td>Cron 任务</td><td>内置 cron</td><td>—</td><td>定时任务</td><td>睡眠时智能体</td><td>系统调用队列</td></tr>
+  </table>
+  <div class="cite">READMEs (2026-10-26) · docs.openclaw.ai/gateway · Hermes memory docs · blog.sandbase.ai · bobleer/deepseek-harness-plugin-mcp · docs.letta.com · “—”= 无文档记载</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>功能矩阵</small>编码智能体</h2>
+  <table class="dense" style="font-size:15.5px">
+    <tr><th></th><th>OpenCode</th><th>Codex CLI</th><th>OpenHands</th><th>Cline</th><th>Aider</th></tr>
+    <tr><td>使用界面</td><td>终端 UI，桌面应用（beta）</td><td>终端（Rust）、IDE、云端</td><td>本地 GUI、CLI、云端；SDK</td><td>VS Code / JetBrains，带无头 CI 模式的 CLI</td><td>终端</td></tr>
+    <tr><td>代码运行位置</td><td>本地</td><td>操作系统沙箱：Seatbelt、Landlock、bubblewrap；<code>read-only</code> / <code>workspace-write</code></td><td>每个对话一个 Docker 沙箱</td><td>本地，每个操作需批准（可选自动批准）</td><td>本地</td></tr>
+    <tr><td>人在回路</td><td>Plan 和 build 智能体</td><td>批准策略 <code>on-request</code> / <code>never</code></td><td>确认模式</td><td>Plan / Act 模式，检查点</td><td>由你审查每次提交</td></tr>
+    <tr><td>MCP</td><td>本地和远程（<code>mcp</code> 配置）</td><td><code>[mcp_servers]</code>、<code>codex mcp login</code></td><td>支持（设置和 CLI）</td><td>支持（<code>cline mcp</code>）</td><td>—</td></tr>
+    <tr><td>并行工作</td><td><code>@general</code> 子智能体</td><td>—</td><td>多个沙箱化对话</td><td>看板：每张卡片一个 worktree</td><td><code>architect</code> 模式（两个模型）</td></tr>
+    <tr><td>Git</td><td>—</td><td>—</td><td>打开 PR</td><td>Worktree，自动提交（看板）</td><td>每次编辑自动提交，仓库地图</td></tr>
+  </table>
+  <p style="font-size:17px;margin-top:12px">编码智能体之间的差异，更多在于<b>代码在哪里运行</b>（主机、操作系统沙箱、容器）和<b>由谁批准</b>，而不在循环本身：第 4 模块和工具与沙箱课件对此有更深入的讲解。</p>
+  <div class="cite">各仓库 README (2026-10-26) · opencode.ai/docs/mcp-servers · Codex sandboxing and MCP docs (developers.openai.com/codex) · docs.openhands.dev/overview/model-context-protocol · aider.chat/docs · “—”= 在所查来源中无文档记载</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>方法</small>核查数字：摘要错在哪里</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>2026-10-26 的一份搜索摘要，经核查</h3>
+      <ul style="font-size:17px">
+        <li>DeepSeek Harness “~260k”：仓库显示 <b>252.0k</b>。“15 天内最快达到 200k”：无来源；SandBase 报告 8 月发布时约 18.5k star，10 月 4 日为 242,936。</li>
+        <li>Aider “MIT”：该仓库是 <b>Apache-2.0</b>。</li>
+        <li>OpenHands “69k–93k”：<b>91.8k</b>。Cline “61k+”：<b>67.6k</b>。AIOS “6.5k，925 forks”：<b>6.4k，908</b>。</li>
+        <li>“全球第 N” 排名、“8M+ 安装量”、“OpenClaw 2.0 Skill Workshop”：在任何一手来源中均未找到。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>本课件采用的规则</h3>
+      <ul style="font-size:17px">
+        <li>从仓库页面读取 star 数，在旁边写明日期，并预期它在几周内就会变化。</li>
+        <li>优先采用 README 和文档而非博客；仅在博客有实际测量时才引用。</li>
+        <li>跟随重定向：<code>sst/opencode</code> → <code>anomalyco/opencode</code>，<code>block/goose</code> → <code>aaif-goose/goose</code>。</li>
+        <li>对无法确认的内容标记“—”，而不是随意填写单元格。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">github.com 上的仓库页面，2026-10-26 · blog.sandbase.ai/deepseek-harness-vs-openclaw-vs-hermes-2026（8 月 13 日，2026 年 10 月 4 日更新）。</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>总结</small>如何选择，以及从哪里深入</h2>
+  <table class="dense" style="font-size:17px">
+    <tr><th>如果你需要……</th><th>从这里开始</th><th>深入学习</th></tr>
+    <tr><td>可从手机和聊天应用访问的助手</td><td>OpenClaw</td><td>第 23 页（配套课件），实验 1</td></tr>
+    <tr><td>周期性任务和会学习技能的智能体</td><td>Hermes Agent</td><td>第 22 页，技能与记忆课件，实验 1</td></tr>
+    <tr><td>循环、模型和沙箱均可替换的自有智能体产品</td><td>DeepSeek Harness（预览版）、Letta</td><td>扩展层课件，第 24 页</td></tr>
+    <tr><td>具备强沙箱的代码仓库工作</td><td>Codex CLI、OpenHands</td><td>工具与沙箱、访问控制课件</td></tr>
+    <tr><td>在编辑器或终端中进行代码仓库工作</td><td>OpenCode、Cline、Aider</td><td>智能体循环课件</td></tr>
+    <tr><td>许多并发智能体共享同一个 LLM 和记忆</td><td>AIOS</td><td>第 25 页，调度器课件，实验 2</td></tr>
+  </table>
+  <p style="font-size:18px;margin-top:14px">热度告诉你插件、技能和论坛答案会集中在哪里；AgentOS 组件则告诉你这个 harness 是否适合手头的任务。</p>
+  <div class="cite">配套课件 <a href="05_opensource_plugin_apis_slides.html">05_opensource_plugin_apis_slides.html</a> · <a href="05_extension_layer_deck.html">扩展层</a> · <a href="05_tools_sandbox_deck.html">工具与沙箱</a> · <a href="04_access_control_deck.html">访问控制</a> · <a href="01_scheduler_deck.html">调度器</a></div>
+</section>
+</div>
+<div id="hint">← / → 翻页 · F 全屏</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

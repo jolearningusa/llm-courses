@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — KV-Cache 平面</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · 模块 3 讲座 · 系统内存平面</div>
+  <h1 style="margin-top:22px">KV-cache 平面，第二遍</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">推理引擎的 RAM，详解：KV-cache 有多大，vLLM 如何查找并驱逐已缓存的前缀，
+    各提供商的提示缓存如何收费，prefill/decode 解耦与分层 KV 存储如何工作，
+    如何缩小 KV 本身，以及框架必须做什么才能保持高命中率。</p>
+  <p style="margin-top:28px"><span class="pill">KV 计算</span><span class="pill">前缀缓存</span><span class="pill">提示缓存定价</span><span class="pill">解耦</span><span class="pill">KV 压缩</span><span class="pill">框架缓存卫生</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>回顾</small>总览课件讲到哪里</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li><b>PagedAttention</b> (vLLM)：固定大小的 KV 块、每个序列一张块表、写时复制（copy-on-write）共享。</li>
+        <li><b>RadixAttention</b> (SGLang)：已缓存前缀的基数树，采用 LRU 驱逐；吞吐量最高提升 6.4 倍。</li>
+        <li><b>非前缀复用</b>：LMCache 分块 + CacheBlend 选择性重算；AsymCache。</li>
+        <li><b>层级</b>：HBM → DRAM → CXL → NVMe → RDMA → 并行文件系统；智能体编辑自己的缓存 (AKV)。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>本课件新增</h3>
+      <ul>
+        <li>容量估算：每个 token 和每个会话的字节数</li>
+        <li>vLLM 前缀缓存内部机制：块哈希、驱逐、隔离</li>
+        <li>托管的提示缓存及其价格</li>
+        <li>解耦的 prefill / decode 与 KV 池</li>
+        <li>让 KV 更小：GQA、MLA、FP8</li>
+        <li>面向框架作者的缓存卫生清单</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">总览课件第 12–14 页; Kwon et al. arXiv:2309.06180; Zheng et al. arXiv:2312.07104 (SGLang)。</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>容量估算</small>KV-cache 有多大？</h2>
+  <div class="cols">
+    <div>
+<pre style="font-size:15px">bytes/token = 2 (K and V)
+            × layers
+            × kv_heads × head_dim
+            × bytes per element
+
+Llama-3.1-8B: 32 layers, 8 KV heads (GQA),
+head_dim 128, FP16 (2 bytes)
+
+2 × 32 × 8 × 128 × 2 = 131,072 B
+                     = 128 KiB per token
+
+  8k tokens  →   1 GiB
+ 32k tokens  →   4 GiB
+128k tokens  →  16 GiB   (one sequence)</pre>
+    </div>
+    <div class="card">
+      <h3>这对智能体意味着什么</h3>
+      <ul>
+        <li>单个长智能体会话所持有的 KV，可能比这个 8B 模型自身的权重（BF16 下约 16 GB）还多。</li>
+        <li>除非引擎驱逐或卸载，否则一个正在等待工具的空闲智能体仍然占有它的 KV。</li>
+        <li>FP8 KV 使字节数减半；GQA（8 个 KV 头而不是 32 个）已经把它减少到四分之一。</li>
+        <li>对大多数智能体工作负载而言，并发度受 KV 内存而不是计算的限制。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">标准的 KV-cache 算术；模型形状来自 Llama 3.1 8B 配置。数字是任何共享之前每个序列的量。</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>工作负载</small>为什么智能体是 prefill 问题</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li>每一轮都会重新发送系统提示、工具模式、技能索引、记忆和历史，然后只增加一点点。</li>
+        <li>Manus 报告<b>输入与输出 token 比约为 100:1</b>，并称 KV-cache 命中率是生产智能体的“最重要的单一指标”。</li>
+        <li>没有复用时，第 <i>n</i> 轮要把第 1…<i>n</i>−1 轮的全部内容重新 prefill：总 prefill 量随轮数呈二次增长。</li>
+        <li>有稳定前缀时，只需 prefill 新增的后缀：总 prefill 量呈线性增长。</li>
+      </ul>
+    </div>
+    <svg viewBox="0 0 500 360" width="500" height="360">
+      <g stroke="#9aa6bd" stroke-width="1.5"><line x1="50" y1="300" x2="480" y2="300"/><line x1="50" y1="300" x2="50" y2="20"/></g>
+      <path d="M50 300 C 150 283, 330 200, 470 40" fill="none" stroke="#ff7a85" stroke-width="3"/>
+      <path d="M50 300 L 470 230" fill="none" stroke="#7be0b8" stroke-width="3"/>
+      <g font-size="15">
+        <text x="140" y="110" fill="#ff7a85">无复用：Σ 前缀 ~ n²</text>
+        <text x="300" y="285" fill="#7be0b8">前缀命中：~ n</text>
+        <text x="200" y="340" fill="#9aa6bd">会话中的轮数 →</text>
+        <text x="58" y="30" fill="#9aa6bd">累计 prefill token 数</text>
+      </g>
+    </svg>
+  </div>
+  <div class="cite">Ji, "Context Engineering for AI Agents: Lessons from Building Manus" (2025 年 7 月 18 日)。曲线仅为示意。</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>vLLM 内部机制</small>自动前缀缓存：哈希链</h2>
+  <div class="cols">
+    <div>
+<pre style="font-size:14px">block_hash[i] = hash(
+    block_hash[i-1],        # parent → chain
+    tokens in block i,      # full blocks only
+    extra keys              # LoRA id, image hashes,
+)                           # cache_salt (block 0)
+
+lookup:  walk hashes from block 0;
+         stop at the first miss → prefill from there
+evict:   LRU over the free-block queue;
+         a finished request's blocks are freed
+         in reverse, so its tail is evicted first</pre>
+      <p style="font-size:16px;margin-top:10px">默认哈希：<code>sha256</code>（自 v0.11 起）；<code>--prefix-caching-hash-algo</code> 还提供 <code>xxhash</code> 变体。</p>
+    </div>
+    <div class="card">
+      <h3>后果</h3>
+      <ul>
+        <li>由于哈希是链式的，<b>一个 token 的改变会使其后每个块失效</b>：提示顶部的一个时间戳就会让整个缓存白费。</li>
+        <li>只有完整的块才会被缓存；最后一个不完整的块会被重新计算。</li>
+        <li><code>cache_salt</code> 会进入第 0 块的哈希，因此只有 salt 相同的请求才共享 KV：按租户使用它，以阻止跨租户的时序侧信道。</li>
+        <li>尾部先被驱逐：共享的系统提示比某个会话的最后几轮存活得更久。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">vLLM 文档，“Automatic Prefix Caching”设计页面 (docs.vllm.ai/en/latest/design/prefix_caching.html)。</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>托管 API</small>作为有定价产品的提示缓存</h2>
+  <table class="dense">
+    <tr><th></th><th>Anthropic</th><th>OpenAI</th></tr>
+    <tr><td>模式</td><td>显式的 <code>cache_control</code> 断点（最多 4 个），或用一个顶层 <code>cache_control</code> 自动缓存</td><td>在受支持的模型上自动；较新的模型上有显式断点</td></tr>
+    <tr><td>前缀顺序</td><td><code>tools → system → messages</code></td><td>提示前缀</td></tr>
+    <tr><td>生命周期</td><td>默认 5 分钟（使用时刷新），可选 1 小时</td><td>取决于模型；默认数分钟，另有更长保留期选项</td></tr>
+    <tr><td>命中的价格</td><td>默认读取为基础输入的 0.1 倍（部分较新的模型更低）</td><td>缓存输入最高可便宜 95%</td></tr>
+    <tr><td>写入的价格</td><td>1.25 倍（5 分钟）或 2 倍（1 小时）</td><td>以 <code>cache_write_tokens</code> 报告</td></tr>
+    <tr><td>最小长度</td><td>按模型为 512 到 4,096 个 token</td><td>较新的模型为 1,024 个 token</td></tr>
+    <tr><td>失效条件</td><td>工具定义更改（所有层级）、系统开关、thinking / effort 更改</td><td>任何前缀更改</td></tr>
+  </table>
+  <div class="cite">platform.claude.com/docs/en/build-with-claude/prompt-caching; developers.openai.com/api/docs/guides/prompt-caching（均于 2026 年 10 月核对；价格会变动，请以页面为准）。</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>经济性</small>一个演算示例</h2>
+  <div class="cols">
+    <div>
+<pre style="font-size:15px">Session: 40 turns, stable prefix 20k tokens,
+history grows 1.5k tokens per turn.
+Price units: base input = 1.0 per token.
+
+No caching:
+  Σ (20k + 1.5k·t) for t = 0..39
+  = 800k + 1.17M ≈ 1.97M units
+
+Caching (read 0.1×, write 1.25×):
+  writes ≈ 20k·1.25 + 39·1.5k·1.25 ≈ 98k
+  reads  ≈ 0.1 × (1.97M − 78.5k)   ≈ 189k
+  total  ≈ 0.29M units  (≈ 85% cheaper)</pre>
+    </div>
+    <div class="card">
+      <h3>算术失效的时候</h3>
+      <ul>
+        <li>某个工具等待超过 TTL：前缀过期，并以 1.25 倍重新写入。</li>
+        <li>压缩会重写历史：一次完整写入，然后恢复读取。</li>
+        <li>会话中途编辑记忆或工具列表：编辑点之后的所有内容都要重写。</li>
+        <li>当重新写入的成本更高时，较长的工具等待可能值得采用 1 小时 TTL（2 倍写入）。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">使用第 6 页 Anthropic 默认倍率的示意性计算；实际命中率取决于断点和时间。</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>架构</small>解耦的 prefill 与 decode</h2>
+  <div class="cols">
+    <svg viewBox="0 0 540 380" width="540" height="380">
+      <g font-size="16">
+        <rect x="0" y="20" width="200" height="110" rx="8" fill="#1c2a4d" stroke="#ff7a85"/>
+        <text x="16" y="52" font-weight="700">Prefill 池</text>
+        <text x="16" y="78" fill="#9aa6bd">计算受限</text>
+        <text x="16" y="102" fill="#9aa6bd">长智能体提示</text>
+        <rect x="340" y="20" width="200" height="110" rx="8" fill="#1c2a4d" stroke="#7be0b8"/>
+        <text x="356" y="52" font-weight="700">Decode 池</text>
+        <text x="356" y="78" fill="#9aa6bd">内存受限</text>
+        <text x="356" y="102" fill="#9aa6bd">逐个 token 生成</text>
+        <rect x="80" y="230" width="380" height="110" rx="8" fill="#161d2e" stroke="#ffb86b"/>
+        <text x="96" y="262" font-weight="700">KV 池：CPU DRAM / SSD / 远程</text>
+        <text x="96" y="288" fill="#9aa6bd">Mooncake store、LMCache；通过</text>
+        <text x="96" y="312" fill="#9aa6bd">RDMA / NIXL 连接器传输</text>
+      </g>
+      <g stroke="#9aa6bd" stroke-width="2" fill="none">
+        <path d="M200 75 L340 75"/><path d="M100 130 L180 230"/><path d="M440 130 L360 230"/>
+      </g>
+      <text x="230" y="66" font-size="14" fill="#9aa6bd">KV 传输</text>
+    </svg>
+    <div>
+      <ul style="font-size:18px">
+        <li><b>DistServe</b>：为 prefill 和 decode 分配不同的 GPU 以消除相互干扰；可多服务 7.4 倍的请求，或使 SLO 收紧 12.6 倍。</li>
+        <li><b>Mooncake</b>（Moonshot AI，为 Kimi 提供服务）：解耦的集群，加上由闲置 CPU、DRAM 和 SSD 构建的 KV 池；在模拟中吞吐量最高提升 525%，在真实工作负载上多处理 75% 的请求；过载时提前拒绝请求。</li>
+        <li>vLLM 通过 KV 连接器暴露这一能力（实验 2：LMCache + NIXL）。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Zhong et al., DistServe, arXiv:2401.09670; Qin et al., Mooncake, arXiv:2407.00079; 实验 2。</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>缩小它</small>让每个 token 的 KV 更小</h2>
+  <table class="dense">
+    <tr><th>技术</th><th>位置</th><th>效果</th><th>权衡</th></tr>
+    <tr><td>分组查询注意力</td><td>模型架构</td><td>KV 头由查询组共享（Llama-3.1-8B 中为 8 对 32）：缩小 4 倍</td><td>在训练时就已固定</td></tr>
+    <tr><td>多头潜在注意力</td><td>模型架构 (DeepSeek-V2)</td><td>KV 被压缩为潜向量：比 DeepSeek 67B 小 93.3%；生成吞吐量最高提升 5.76 倍</td><td>在训练时就已固定</td></tr>
+    <tr><td>FP8 KV cache</td><td>引擎标志：<code>--kv-cache-dtype fp8</code></td><td>字节数为 FP16 的一半</td><td>未校准的缩放因子默认为 1.0；用 llm-compressor 校准</td></tr>
+    <tr><td>卸载 / 分层</td><td>引擎 + 连接器</td><td>容量超出 HBM</td><td>重新加载时有传输延迟</td></tr>
+    <tr><td>程序感知的保留</td><td>调度器</td><td>保留即将被复用的 KV（Continuum TTL、KVFlow 预取）</td><td>需要了解工作流</td></tr>
+  </table>
+  <div class="cite">DeepSeek-AI, arXiv:2405.04434; docs.vllm.ai 量化 KV cache 页面; 关于 Continuum (2511.02230) 和 KVFlow (2507.07400) 见调度器课件。</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>智能体</small>工具等待：保留、卸载还是丢弃？</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>智能体的一轮以一次工具调用结束；下一个请求在工具返回后到达（几秒到几分钟）。</li>
+        <li>在 GPU 上<b>保留</b>：立即恢复，但会占用其他智能体的 KV 块。</li>
+        <li><b>卸载</b>到 DRAM / SSD：释放 HBM；重新加载要付出传输时间，对长前缀来说比重新 prefill 便宜。</li>
+        <li><b>丢弃</b>：免费；恢复时要付出完整的 prefill。</li>
+        <li>Continuum 根据重新加载成本和排队延迟设定 TTL；KVFlow 在下一个智能体被调度之前预取其 KV。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>经验法则</h3>
+      <p>丢弃的预期成本 = P(恢复) × 该前缀的 prefill 时间。当它超过持有或移动这些块的成本时，就保留或卸载。</p>
+      <p class="muted">框架知道工具的耗时；引擎不知道。让提示信息（预期等待时间、程序 ID）跨过这道边界，正是程序感知服务的意义所在。</p>
+    </div>
+  </div>
+  <div class="cite">Continuum, arXiv:2511.02230; KVFlow, arXiv:2507.07400; Autellix, arXiv:2502.13965。</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>框架侧</small>缓存卫生清单</h2>
+  <table class="dense">
+    <tr><th>应做</th><th>原因</th><th>出现于</th></tr>
+    <tr><td>稳定内容放前面：工具、系统、技能索引、固定记忆</td><td>与 <code>tools → system → messages</code> 以及 vLLM 的链式哈希相匹配</td><td>上下文管理器课件</td></tr>
+    <tr><td>在会话期间冻结记忆和工具列表</td><td>会话中途的编辑会使其后的一切失效</td><td>Hermes 记忆快照；OpenClaw 技能快照</td></tr>
+    <tr><td>屏蔽工具而不是移除它们</td><td>移除定义会使每个层级失效</td><td>Manus</td></tr>
+    <tr><td>只追加的历史，确定性序列化</td><td>JSON 键顺序被打乱就是一次缓存未命中</td><td>Manus</td></tr>
+    <tr><td>前缀中不要有时间戳或随机 ID</td><td>一个 token 改变 → 全部未命中</td><td>vLLM 哈希链</td></tr>
+    <tr><td>少压缩，并在断点处压缩</td><td>每次压缩都是一次完整重写</td><td>Hermes 50% / 85% 阈值</td></tr>
+    <tr><td>兄弟子智能体使用相同前缀</td><td>子智能体共享系统和工具块</td><td>多智能体课件</td></tr>
+    <tr><td>按租户设置 <code>cache_salt</code> / 缓存键</td><td>在不禁用缓存的情况下实现隔离</td><td>vLLM、OpenAI <code>prompt_cache_key</code></td></tr>
+  </table>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>度量</small>反映缓存健康状况的指标</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li><b>引擎</b>（vLLM <code>/metrics</code>）：<code>vllm:prefix_cache_queries</code> 与命中数 → 命中率；<code>vllm:kv_cache_usage_perc</code>；<code>vllm:time_to_first_token_seconds</code>。</li>
+        <li><b>托管 API</b>：Anthropic <code>usage.cache_read_input_tokens</code> / <code>cache_creation_input_tokens</code>；OpenAI <code>usage.input_tokens_details.cached_tokens</code>。</li>
+        <li><b>框架</b>：每轮、每会话、每智能体的缓存 token 占比；每个任务的成本。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>值得设置的告警</h3>
+      <ul>
+        <li>部署之后命中率下降（有人在提示里放了时间戳）</li>
+        <li>KV 使用率接近 100% 时 TTFT 上升（驱逐压力）</li>
+        <li>某个会话的缓存写入 ≫ 读取（TTL 对工具等待而言太短）</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">完整指标目录见可观测性课件 (06); vLLM 指标文档; 提供商提示缓存文档。</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>练习</small>故意打破缓存</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>用 vLLM 部署一个模型（开启前缀缓存），并让 Hermes 或 OpenClaw 指向它。</li>
+        <li>运行一个 20 轮的脚本化会话；记录每一轮的命中率和 TTFT。</li>
+        <li>每次只做一处改动重复实验：在系统提示中加入时间戳；在第 10 轮添加一个工具；在第 10 轮编辑记忆；在第 15 轮进行压缩。</li>
+        <li>用 <code>--kv-cache-dtype fp8</code> 和 LMCache CPU 卸载重复基线实验（实验 2）。</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>报告</h3>
+      <ul>
+        <li>每个变体的命中率和 TTFT 曲线</li>
+        <li>每个会话的总 prefill token 数</li>
+        <li>发生驱逐之前的最大并发会话数</li>
+        <li>使用第 6 页倍率估算的 API 成本</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>参考文献</small>延伸阅读</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>vLLM 自动前缀缓存: docs.vllm.ai/en/latest/design/prefix_caching.html</li>
+      <li>vLLM 量化 KV cache: docs.vllm.ai/en/latest/features/quantization/quantized_kvcache.html</li>
+      <li>Anthropic 提示缓存: platform.claude.com/docs/en/build-with-claude/prompt-caching</li>
+      <li>OpenAI 提示缓存: developers.openai.com/api/docs/guides/prompt-caching</li>
+      <li>Manus 上下文工程: manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>PagedAttention: arxiv.org/abs/2309.06180 · SGLang: arxiv.org/abs/2312.07104</li>
+      <li>DistServe: arxiv.org/abs/2401.09670 · Mooncake: arxiv.org/abs/2407.00079</li>
+      <li>DeepSeek-V2 (MLA): arxiv.org/abs/2405.04434</li>
+      <li>CacheBlend: arxiv.org/abs/2405.16444 · Continuum: arxiv.org/abs/2511.02230</li>
+      <li>所有链接：<code>references/bibliography_and_links.md</code> §3</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → 翻页 · 按 F 全屏</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

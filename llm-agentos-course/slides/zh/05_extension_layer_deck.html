@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — 扩展层</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · 第 5 模块讲座 · 组件 9</div>
+  <h1 style="margin-top:22px">扩展层</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">面向智能体的可加载内核模块：插件如何被发现、描述、启用和占用槽位，
+    它们能获得哪些钩子点，进程内插件与进程外 MCP 服务器有何不同，
+    以及 Hermes Agent、OpenClaw 和 Claude Code 如何处理版本管理与信任。</p>
+  <p style="margin-top:28px"><span class="pill">清单（Manifest）</span><span class="pill">发现</span><span class="pill">槽位</span><span class="pill">钩子</span><span class="pill">版本管理</span><span class="pill">插件安全</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>操作系统类比</small>插件是内核模块；MCP 服务器是用户态守护进程</h2>
+  <table class="dense">
+    <tr><th>经典操作系统</th><th>AgentOS</th><th>示例</th></tr>
+    <tr><td>可加载内核模块</td><td>拥有完全访问权限的进程内插件</td><td>Hermes Python 插件，OpenClaw 原生插件</td></tr>
+    <tr><td><code>modinfo</code> 元数据</td><td>代码运行前读取的清单</td><td><code>plugin.yaml</code>，<code>openclaw.plugin.json</code></td></tr>
+    <tr><td>某一类设备的驱动</td><td>独占槽位（每个角色一个提供者）</td><td>记忆提供者，上下文引擎</td></tr>
+    <tr><td>Netfilter / LSM 钩子</td><td>可观察、修改或拦截的生命周期钩子</td><td><code>pre_tool_call</code>，<code>before_tool_call</code></td></tr>
+    <tr><td>通过套接字通信的用户态守护进程</td><td>通过协议通信的进程外服务器</td><td>MCP 服务器（stdio、HTTP）</td></tr>
+    <tr><td>包管理器 + 签名</td><td>中心库、市场、安装扫描</td><td>ClawHub，Hermes 插件扫描，Claude Code 市场</td></tr>
+  </table>
+  <p style="font-size:19px;margin-top:16px">扩展层让其余八个组件变得可替换：记忆、上下文、工具、技能、渠道和模型提供者都以插件的形式接入。</p>
+  <div class="cite">Hermes Agent 插件文档；OpenClaw 插件与清单文档；MCP 规范 2026-07-28。</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>可扩展的内容</small>两种框架中的扩展点</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Hermes Agent 插件类型</h3>
+      <ul>
+        <li><b>通用</b>（可多选）：工具、钩子、斜杠命令、CLI 命令、技能。</li>
+        <li><b>记忆提供者</b>（单选）。</li>
+        <li><b>上下文引擎</b>（单选）。</li>
+        <li><b>模型提供者</b>（可加载多个；每次运行选用一个）。</li>
+        <li>另有平台和审批传输（<code>register_platform</code>、<code>register_approval_transport</code>）。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>OpenClaw 原生插件</h3>
+      <ul>
+        <li>工具、钩子、渠道、提供者、CLI 后端、技能。</li>
+        <li>独占类型 <code>"memory"</code> 和 <code>"context-engine"</code>，通过 <code>plugins.slots.memory</code> 和 <code>plugins.slots.contextEngine</code> 选择。</li>
+        <li>兼容的捆绑包：Codex、Claude 和 Cursor 的插件布局会被映射到 OpenClaw 的清单库存中。</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:18px;margin-top:12px">记忆槽位和上下文槽位的代码见配套讲义第 28 张幻灯片和实验 1；本讲义讲解它们周边的机制。</p>
+  <div class="cite">hermes-agent.nousresearch.com/docs/user-guide/features/plugins; docs.openclaw.ai/tools/plugin; docs.openclaw.ai/plugins/manifest.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>描述</small>清单：先于代码的元数据</h2>
+  <div class="cols">
+    <div>
+<pre style="font-size:14px"># Hermes: ~/.hermes/plugins/my-plugin/plugin.yaml
+name: my-plugin
+version: 0.3.0
+description: Ticket tools and an audit hook
+requires_env: [TICKETS_TOKEN]
+capabilities: [tools, hooks]
+manifest_version: 2
+api_version: ...
+requires_plugins: [...]</pre>
+<pre style="font-size:14px;margin-top:10px">// OpenClaw: openclaw.plugin.json (plugin root)
+{
+  "id": "voice-call",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}</pre>
+    </div>
+    <div class="card">
+      <h3>为什么需要清单</h3>
+      <ul>
+        <li>OpenClaw 读取清单来<b>在不执行插件代码的情况下</b>校验配置；清单缺失或无效即为插件错误。</li>
+        <li>只有 <code>id</code> 和 <code>configSchema</code> 是必需的；可选字段包括 <code>kind</code>、<code>channels</code>、<code>providers</code>、<code>skills</code>、<code>uiHints</code>、<code>requiresPlugins</code>、<code>enabledByDefault</code>；<code>version</code> 仅供参考。</li>
+        <li>运行时钩子和入口点保留在代码和 <code>package.json</code> 中。</li>
+        <li>Hermes v2 清单新增 <code>api_version</code> 和 <code>requires_plugins</code>；更改 <code>update_url</code> 需要批准。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Hermes 插件文档（“plugin.yaml”）；OpenClaw 清单文档（字段参考）。标有 “...” 的 Hermes 取值在文档中未给出。</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>发现与启用</small>插件从哪里来，由谁开启</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th></tr>
+    <tr><td>来源</td><td>内置 <code>plugins/</code>、<code>~/.hermes/plugins/</code>、项目 <code>.hermes/plugins/</code>、pip 入口点 <code>hermes_agent.plugins</code>、Nix</td><td><code>clawhub:</code>、<code>npm:</code>、<code>git:</code>、本地路径（<code>--link</code>）、兼容 Claude 的市场、<code>plugins.load.paths</code></td></tr>
+    <tr><td>名称冲突</td><td>后面的来源覆盖前面的</td><td>使用显式的来源前缀以确定性地选择</td></tr>
+    <tr><td>默认状态</td><td>通用插件和用户插件在启用前<b>处于禁用状态</b>；网关从不加载项目插件</td><td>工作区来源的插件被禁用；若 <code>plugins.allow</code> 为空，非内置插件可能自动加载</td></tr>
+    <tr><td>允许 / 拒绝</td><td><code>plugins.enabled</code> / <code>plugins.disabled</code>（拒绝优先）</td><td><code>plugins.allow</code> / <code>plugins.deny</code>（拒绝优先）、<code>plugins.entries.&lt;id&gt;.enabled</code></td></tr>
+    <tr><td>命令</td><td><code>hermes plugins enable | disable | list</code></td><td><code>openclaw plugins install | enable | inspect --runtime</code></td></tr>
+    <tr><td>激活</td><td>—</td><td>安装 / 更新后重启网关</td></tr>
+  </table>
+  <div class="cite">Hermes 插件文档；docs.openclaw.ai/tools/plugin。“—” = 本处所用来源未涉及。</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>注册</small>注册 API</h2>
+  <div class="cols">
+<pre style="font-size:14px"># Hermes: __init__.py
+def register(ctx):
+    ctx.register_tool(name="search_tickets",
+        toolset="tickets", schema=SCHEMA,
+        handler=search_tickets)
+    ctx.register_hook("post_tool_call", audit)
+    ctx.register_command("tickets", show,
+        "Show open tickets")
+    ctx.register_skill("triage", "skills/triage")
+    # also: dispatch_tool, inject_message,
+    #       call_mcp(server, tool, args, timeout=30)</pre>
+<pre style="font-size:14px">// OpenClaw: runtime module
+export default function register(api) {
+  api.on("before_tool_call", async (ev) => {
+    if (isDangerous(ev)) return { block: true };
+  }, { priority: 100, timeoutMs: 2000 });
+
+  api.on("before_prompt_build", async () => ({
+    appendSystemPrompt: "..."   // illustrative
+  }));
+  // slots: api.registerContextEngine(...)
+  // policy: api.registerTrustedToolPolicy(...)
+}</pre>
+  </div>
+  <p style="font-size:18px;margin-top:12px">一个入口点，多项注册：每一部分何时运行由框架而非插件决定。这正是插件可组合的原因。</p>
+  <div class="cite">Hermes 插件文档（“register(ctx)”）；OpenClaw 插件钩子文档（<code>api.on(name, handler, opts)</code>）。标为示意的返回结构经过简化。</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>钩子</small>观察、转换或决策</h2>
+  <div class="cols">
+    <div>
+      <table class="dense" style="font-size:15px">
+        <tr><th>权力</th><th>Hermes</th><th>OpenClaw</th></tr>
+        <tr><td>决策（拦截 / 批准）</td><td><code>pre_tool_call</code>, <code>pre_llm_call</code>, <code>pre_gateway_dispatch</code></td><td><code>before_tool_call</code>, <code>before_agent_run</code>, <code>message_sending</code>, <code>before_install</code></td></tr>
+        <tr><td>转换</td><td><code>transform_tool_result</code>, <code>transform_llm_output</code></td><td><code>before_prompt_build</code>, <code>tool_result_persist</code>, <code>reply_payload_sending</code></td></tr>
+        <tr><td>观察</td><td><code>post_tool_call</code>, <code>on_session_start</code>, <code>subagent_stop</code>, <code>post_compaction</code></td><td><code>llm_output</code>, <code>session_end</code>, <code>subagent_ended</code>, <code>after_compaction</code></td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>OpenClaw 排序规则</h3>
+      <ul>
+        <li>处理器按 <code>priority</code> 降序运行；同级按注册顺序。</li>
+        <li>受信任的工具策略先于普通的 <code>before_tool_call</code> 钩子运行。</li>
+        <li>终止性拦截会跳过较低优先级的处理器。</li>
+        <li><code>before_agent_run</code> 和 <code>before_install</code> 在输出有误或出错时以失败关闭（fail closed）。</li>
+        <li>观察者的失败会被记录并忽略。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Hermes 插件文档（“Available hooks”）；docs.openclaw.ai/plugins/hooks.</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>独占角色</small>槽位：每个角色恰好一个提供者</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>有些组件在每个会话中必须恰好有一个所有者：谁存储记忆，谁组装并压缩上下文。</li>
+        <li>OpenClaw：插件声明 <code>kind: "memory"</code> 或 <code>"context-engine"</code>；配置通过 <code>plugins.slots.*</code> 选择其一。为槽位选中某个插件会强制启用它，但 <code>plugins.deny</code> 和 <code>enabled: false</code> 仍然优先。</li>
+        <li>Hermes：记忆提供者和上下文引擎是单选的（<code>memory.provider</code>、<code>context.engine</code>）；默认引擎为 <code>compressor</code>。</li>
+        <li>OpenClaw 的 <code>legacy</code> 上下文引擎是默认的槽位所有者（上下文管理器讲义）。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>为什么不让两个同时运行？</h3>
+      <p>两个上下文引擎都会改写对话记录；两个记忆提供者都会注入召回内容，使 token 翻倍。槽位把这种冲突变成配置错误，而不是运行时的意外。</p>
+      <p class="muted">与“同一时刻只有一个显示驱动”或“只有一个 init 系统”的思路相同。</p>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/tools/plugin（“slots”）；Hermes 插件文档（“plugin types”）；配套讲义第 28 张幻灯片。</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>进程内还是进程外</small>插件 vs. MCP 服务器</h2>
+  <table class="dense">
+    <tr><th></th><th>进程内插件</th><th>MCP 服务器</th></tr>
+    <tr><td>运行方式</td><td>框架内部的代码（Python / Node）</td><td>独立进程或远程服务</td></tr>
+    <tr><td>能力</td><td>任何事：钩子、槽位、提示编辑、工具</td><td>提供工具、资源、提示；向用户请求输入（elicitation）</td></tr>
+    <tr><td>可移植性</td><td>仅限一个框架</td><td>任何 MCP 客户端</td></tr>
+    <tr><td>故障 / 信任</td><td>崩溃或被攻陷 = 框架本身</td><td>进程边界；环境变量被过滤（Hermes 仅传递一份简短的允许列表）</td></tr>
+    <tr><td>契约</td><td>框架 API 版本</td><td>协议版本 + 每个请求 <code>_meta</code> 中的客户端能力</td></tr>
+  </table>
+  <p style="font-size:18px;margin-top:14px">自 MCP 2026-07-28 起，不再有 <code>initialize</code> 握手，也不再有会话：每个请求都携带自己的协议版本、客户端信息和能力，客户端可先调用可选的 <code>server/discover</code>。Sampling、roots 和 logging 已被弃用。</p>
+  <div class="cite">MCP 2026-07-28 发布说明（blog.modelcontextprotocol.io/posts/2026-07-28）；Hermes 安全文档（MCP 环境变量过滤）。Hermes <code>plugins.isolation: host</code> 将用户插件运行在单独的宿主进程中。</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>捆绑包</small>插件作为分发单元</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li><b>Claude Code 插件</b>（2025 年 10 月 9 日，公开测试版）：斜杠命令、子智能体、MCP 服务器和钩子的任意组合；<code>/plugin marketplace add owner/repo</code>，然后 <code>/plugin install</code>。</li>
+        <li><b>OpenClaw</b> 可安装兼容 Claude 的市场插件（<code>--marketplace</code>），并映射 Codex、Claude 和 Cursor 的捆绑包。</li>
+        <li><b>Codex</b> 推荐用插件来分发你自己的技能（技能讲义）。</li>
+        <li><b>Hermes</b> 插件可以注册技能（<code>register_skill</code>）。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>趋势</h3>
+      <p>插件正在成为<b>软件包</b>：技能 + MCP 服务器 + 钩子 + 命令一起交付，可在共享布局的各框架间安装。</p>
+      <p class="muted">兼容层（OpenClaw 读取其他厂商的捆绑包）正是事实标准先于正式标准形成的方式。</p>
+    </div>
+  </div>
+  <div class="cite">claude.com/resources/articles/claude-code-plugins; docs.openclaw.ai/tools/plugin; Codex “Build skills” 文档。</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>版本管理</small>保持插件兼容</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li><b>声明所针对的 API</b>：Hermes 清单 v2 的 <code>api_version</code>；MCP 的 <code>protocolVersion</code>。</li>
+        <li><b>声明依赖</b>：Hermes <code>requires_plugins</code>，OpenClaw <code>requiresPlugins</code>。</li>
+        <li><b>用别名实现弃用</b>：OpenClaw 为兼容而保留 <code>deactivate</code> 作为 <code>gateway_stop</code> 的已弃用别名，保留 <code>before_agent_start</code>，并用 <code>legacyPluginIds</code> 处理重命名。</li>
+        <li><b>不运行代码即可校验配置</b>：清单中的 JSON Schema。</li>
+        <li><b>生产环境中锁定版本</b>：OpenClaw 推荐固定版本；Hermes 技能中心在更新时会跳过本地编辑过的技能，除非使用 <code>--force</code>。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>插件作者检查清单</h3>
+      <ul>
+        <li>语义化版本 + 目标 API 版本</li>
+        <li>配置模式带 <code>additionalProperties: false</code></li>
+        <li>对钩子做特性检测；不要假定新钩子一定存在</li>
+        <li>决策类钩子失败关闭，观察类钩子失败开放</li>
+        <li>每个钩子都设置超时</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Hermes 插件文档；OpenClaw 清单、插件和钩子文档；MCP 生命周期规范。</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>安全</small>插件是以智能体权限运行的代码</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>Hermes：capabilities 是“a consent and audit layer, not isolation”（同意与审计层，而非隔离）；插件是进程内的 Python。安装时扫描，给出 safe / caution / dangerous 结论。</li>
+        <li>OpenClaw：“Treat plugin installs like running code”（把安装插件视同运行代码）；原生插件在进程内加载；<code>security.installPolicy</code> 在安装前运行运维方策略命令；<code>before_install</code> 钩子可以拦截并失败关闭。</li>
+        <li>技能供应链攻击（ClawHavoc，技能讲义）同样适用于插件，而且插件的权力更大。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>有效的控制措施</h3>
+      <ul>
+        <li>默认关闭；显式允许列表（<code>plugins.allow</code>、<code>plugins.enabled</code>）</li>
+        <li>绝不自动加载克隆仓库中的插件</li>
+        <li>锁定版本；更新时审查差异</li>
+        <li>尽可能放在进程外（MCP、Hermes <code>plugins.isolation: host</code>）</li>
+        <li>审计：<code>openclaw security audit</code> 覆盖插件</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Hermes 插件文档（“security”）；docs.openclaw.ai/tools/plugin（“security”）；OpenClaw 安全文档；访问控制讲义。</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>练习</small>一个功能，三种扩展机制</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>功能：“记录智能体运行的每条 shell 命令，并拦截 <code>curl | sh</code>”。</li>
+        <li>分别实现为 (a) 带 <code>pre_tool_call</code> 钩子的 Hermes 插件，(b) 带 <code>before_tool_call</code> 的 OpenClaw 插件，(c) 封装 shell 执行的 MCP 服务器。</li>
+        <li>为每个插件添加带配置模式的清单；给它一个错误的配置，看看哪里会失败。</li>
+        <li>再安装一个同样钩住工具调用的插件；检查排序。</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>对比</h3>
+      <ul>
+        <li>代码行数和设置步骤</li>
+        <li>模型能绕过它吗？（钩子：不能。MCP 封装：如果同时存在原生 shell 工具则可以。）</li>
+        <li>每次工具调用增加的延迟</li>
+        <li>插件崩溃时会发生什么</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>参考资料</small>延伸阅读</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>Hermes Agent 插件：hermes-agent.nousresearch.com/docs/user-guide/features/plugins</li>
+      <li>OpenClaw 插件：docs.openclaw.ai/tools/plugin</li>
+      <li>OpenClaw 清单：docs.openclaw.ai/plugins/manifest</li>
+      <li>OpenClaw 插件钩子：docs.openclaw.ai/plugins/hooks</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>MCP 2026-07-28 发布（无状态核心、弃用项）：blog.modelcontextprotocol.io/posts/2026-07-28</li>
+      <li>Claude Code 插件（2025 年 10 月）：claude.com/resources/articles/claude-code-plugins</li>
+      <li>配套讲义第 28 张幻灯片和实验 1（记忆与上下文插件）</li>
+      <li>所有链接：<code>references/bibliography_and_links.md</code> §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → 翻页 · F 全屏</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

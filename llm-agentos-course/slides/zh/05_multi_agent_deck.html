@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — 多智能体系统</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · 第 5 模块讲座 · 组件 7</div>
+  <h1 style="margin-top:22px">多智能体系统</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">智能体的进程、fork 与 IPC：何时把工作拆分给多个智能体有收益、何时适得其反，
+    编排者-工作者（orchestrator-worker）模式，Hermes Agent、OpenClaw 与 Letta 如何创建、隔离和连接智能体，A2A 协议，
+    以及多智能体系统为何会失败。</p>
+  <p style="margin-top:28px"><span class="pill">编排者-工作者</span><span class="pill">上下文隔离</span><span class="pill">子智能体</span><span class="pill">A2A</span><span class="pill">失败分类</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>操作系统类比</small>智能体即进程</h2>
+  <table class="dense">
+    <tr><th>经典操作系统</th><th>AgentOS</th><th>示例</th></tr>
+    <tr><td><code>fork()</code> / <code>spawn()</code></td><td>启动拥有独立上下文的子智能体</td><td>Hermes <code>delegate_task</code>，OpenClaw <code>sessions_spawn</code></td></tr>
+    <tr><td>写时复制 vs. 全新映像</td><td>分叉的对话记录 vs. 隔离的上下文</td><td>OpenClaw <code>context: "fork"</code> / <code>"isolated"</code></td></tr>
+    <tr><td>退出状态 + stdout</td><td>返回给父智能体的最终摘要</td><td>Hermes："only its final summary enters the parent's context"</td></tr>
+    <tr><td>进程限制（<code>ulimit</code>）</td><td>深度、扇出和并发上限</td><td><code>max_spawn_depth</code>，<code>maxChildrenPerAgent</code></td></tr>
+    <tr><td>信号</td><td>停止 / 中断的传播</td><td>Hermes <code>/stop</code> 终止后台子智能体</td></tr>
+    <tr><td>共享内存 / IPC</td><td>共享记忆块、代码仓库、智能体间消息</td><td>Letta 共享记忆，OpenClaw <code>tools.agentToAgent</code></td></tr>
+    <tr><td>主机之间的网络协议</td><td>跨厂商的智能体间协议</td><td>A2A（Agent Card、Task、Message、Artifact）</td></tr>
+  </table>
+  <div class="cite">Hermes Agent 委派文档；OpenClaw 子智能体与多智能体文档；Letta 共享记忆文档；a2a-protocol.org 规范。</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>争论</small>两份生产报告，两种结论</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Anthropic：多智能体研究系统（2025 年 6 月 13 日）</h3>
+      <ul>
+        <li>在内部研究评测中，Opus 4 主导 + Sonnet 4 子智能体的组合比单个 Opus 4 智能体高出 <b>90.2%</b>。</li>
+        <li>在 BrowseComp 上，仅 token 用量就解释了 <b>80%</b> 的性能方差（加上工具调用和模型选择为 95%）。</li>
+        <li>成本：智能体消耗的 token 约为聊天的 <b>4 倍</b>；多智能体系统约为 <b>15 倍</b>。</li>
+        <li>并行子智能体（3–5 个）和并行工具调用最多可将研究时间缩短 90%。</li>
+        <li>不适合的场景：所有智能体需要相同上下文或依赖关系很多的任务，包括大多数编码任务。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Cognition：“Don't build multi-agents”（2025 年 6 月 12 日）</h3>
+      <ul>
+        <li>原则 1：共享上下文，并共享完整的智能体轨迹，而不只是单条消息。</li>
+        <li>原则 2：行动蕴含隐含的决策，相互冲突的决策会带来糟糕的结果。</li>
+        <li>Flappy Bird 示例：一个子智能体构建了马里奥风格的背景，另一个构建的小鸟与之不匹配；合并失败。</li>
+        <li>默认做法：单线程的线性智能体；对于长任务，增加一个压缩历史的模型。</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:18px;margin-top:12px">两者都认同：子任务<b>以读为主且可并行</b>（搜索、研究、评审）时拆分；子任务<b>要写入共享状态</b>（代码、文档）时保持单线程。</p>
+  <div class="cite">anthropic.com/engineering/multi-agent-research-system; cognition.com/blog/dont-build-multi-agents.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>模式</small>编排者-工作者</h2>
+  <div class="cols">
+    <svg viewBox="0 0 540 420" width="540" height="420">
+      <g font-size="16">
+        <rect x="150" y="0" width="240" height="70" rx="8" fill="#1c2a4d" stroke="#7be0b8"/>
+        <text x="170" y="30" font-weight="700">主导 / 编排者</text>
+        <text x="170" y="54" fill="#9aa6bd">规划 → 派生 → 合并</text>
+        <rect x="0" y="160" width="160" height="80" rx="8" fill="#161d2e" stroke="#6ea8ff"/>
+        <text x="14" y="192" font-weight="700">工作者 A</text><text x="14" y="216" fill="#9aa6bd">独立上下文</text>
+        <rect x="190" y="160" width="160" height="80" rx="8" fill="#161d2e" stroke="#6ea8ff"/>
+        <text x="204" y="192" font-weight="700">工作者 B</text><text x="204" y="216" fill="#9aa6bd">独立上下文</text>
+        <rect x="380" y="160" width="160" height="80" rx="8" fill="#161d2e" stroke="#6ea8ff"/>
+        <text x="394" y="192" font-weight="700">工作者 C</text><text x="394" y="216" fill="#9aa6bd">独立上下文</text>
+        <rect x="150" y="320" width="240" height="70" rx="8" fill="#161d2e" stroke="#ffb86b"/>
+        <text x="170" y="350" font-weight="700">检查者 / 引用智能体</text>
+        <text x="170" y="374" fill="#9aa6bd">验证合并后的结果</text>
+      </g>
+      <g stroke="#9aa6bd" stroke-width="2" fill="none">
+        <path d="M230 70 L80 160"/><path d="M270 70 L270 160"/><path d="M310 70 L460 160"/>
+        <path d="M80 240 L230 320"/><path d="M270 240 L270 320"/><path d="M460 240 L310 320"/>
+      </g>
+      <text x="0" y="412" font-size="14" fill="#9aa6bd">向下：目标 + 上下文 · 向上：仅摘要（1–2k token）</text>
+    </svg>
+    <div>
+      <ul style="font-size:18px">
+        <li><b>充分向每个工作者交代任务</b>：目标、输出格式、工具、边界。工作者看不到父智能体的历史。</li>
+        <li><b>按查询难度调整投入</b>：查一个事实用 1 个智能体和 3–10 次工具调用；做比较用 2–4 个子智能体；复杂研究用 10 个以上。</li>
+        <li><b>返回精简结果</b>：父智能体的上下文增长的是摘要，而不是完整记录。</li>
+        <li><b>持久化计划</b>：主导智能体把计划存入记忆，因为超过 200k token 的上下文会被截断。</li>
+        <li><b>最后验证</b>：单独的引用 / 检查环节。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Anthropic 多智能体研究系统；Anthropic “Building effective agents”（2024 年 12 月 19 日），其中将编排者-工作者作为一种工作流模式。</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Hermes Agent</small><code>delegate_task</code>：全新上下文，返回摘要</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>单个任务（<code>goal</code>、<code>context</code>）或批量任务（<code>tasks</code>，每个可带可选的 <code>output_schema</code>）；子智能体继承父智能体的工具集。</li>
+        <li>子智能体启动时<b>无法访问父智能体的历史</b>；它只获得 <code>goal</code>、<code>context</code> 以及工作区的项目上下文文件（不含 <code>SOUL.md</code>）。</li>
+        <li>只有子智能体的最终摘要会进入父智能体的上下文。</li>
+        <li><code>delegation.model</code> / <code>provider</code> 让子智能体运行在更便宜的模型上。</li>
+        <li><code>delegation.worktree_isolation: true</code>：每个子智能体一个 git worktree，并行编码时互不冲突。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>角色与限制</h3>
+      <ul>
+        <li>叶子子智能体会失去 <code>delegate_task</code>、<code>clarify</code>、<code>memory</code>、<code>send_message</code>、<code>cronjob</code>。</li>
+        <li><code>role="orchestrator"</code> 保留 <code>delegate_task</code>，前提是 <code>max_spawn_depth</code> &gt; 1（默认 1）。</li>
+        <li>每批 10 个子智能体，每个子智能体 250 次迭代（见调度器讲义）。</li>
+        <li><code>/stop</code> 终止后台子智能体；它们返回 <code>status="interrupted"</code> 及部分输出。重启不会恢复它们。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">hermes-agent.nousresearch.com/docs/user-guide/features/delegation.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>OpenClaw</small>子智能体：派生、通告、归档</h2>
+  <div class="cols">
+    <div>
+<pre style="font-size:14px">sessions_spawn({
+  task: "Compare the three vendors' SLAs",
+  label: "sla-compare",
+  model: "cheap-model",        // optional
+  context: "isolated",         // or "fork"
+  mode: "run",                 // "session" needs thread
+  cleanup: "keep"              // or "delete"
+})
+→ { status: "accepted", runId, childSessionKey }
+// child session: agent:&lt;agentId&gt;:subagent:&lt;uuid&gt;
+// result arrives later as an announce event;
+// the parent waits with sessions_yield, not polling</pre>
+    </div>
+    <div class="card">
+      <h3>默认值</h3>
+      <ul>
+        <li><code>maxSpawnDepth</code> 为 1（取值 1–5）；设为 2 即启用编排者。</li>
+        <li><code>maxChildrenPerAgent</code> 为 5；<code>subagent</code> 通道的 <code>maxConcurrent</code> 为 8。</li>
+        <li><code>archiveAfterMinutes</code> 为 60；<code>runTimeoutSeconds</code> 为 0（无超时）；<code>announceTimeoutMs</code> 为 120000。</li>
+        <li>子智能体只获得 <code>AGENTS.md</code> 和 <code>TOOLS.md</code>，没有 <code>SOUL.md</code>、<code>USER.md</code> 或 <code>MEMORY.md</code>。</li>
+        <li>始终禁用：<code>gateway</code>、<code>agents_list</code>、<code>session_status</code>、<code>cron</code>、<code>sessions_send</code>；叶子节点还会失去派生和历史类工具。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">OpenClaw 文档：docs.openclaw.ai/tools/subagents（工具参考、嵌套、通告、工具策略、运维）。</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>OpenClaw</small>同一网关中的多个智能体：路由与 IPC</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li><b>智能体</b>是完整的人设作用域：工作区文件、认证配置、模型注册表和会话存储，位于 <code>~/.openclaw/agents/&lt;agentId&gt;/</code> 下。切勿共享 <code>agentDir</code>。</li>
+        <li><b>绑定（Bindings）</b>把入站消息路由到智能体，规则确定且以最具体者优先：精确 peer → 父 peer → peer 通配 → guild+角色 → guild → team → 账号 → 渠道 → 默认智能体。</li>
+        <li><b>智能体间消息</b>默认关闭：<code>tools.agentToAgent: { enabled, allow: ["home", "work"] }</code>。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>两种多智能体</h3>
+      <p><b>纵向</b>：父智能体为单个任务派生短生命周期的子智能体（子智能体）。</p>
+      <p><b>横向</b>：长生命周期的对等智能体，各自拥有独立身份和数据（家庭 vs. 工作），仅在允许的地方互联。</p>
+      <p class="muted">横向分离同时也是访问控制边界：除非你允许，工作智能体无法读取家庭智能体的记忆。</p>
+    </div>
+  </div>
+  <div class="cite">OpenClaw 文档：docs.openclaw.ai/concepts/multi-agent.</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>共享状态</small>Letta：智能体之间的共享记忆</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li><b>共享记忆块</b>（较早的 API，仍受支持）：一个上下文内记忆块挂接到多个智能体。</li>
+        <li><b>共享记忆仓库</b>（当前方式）：每个组织一个 Git 仓库，通过 <code>letta shared-memory attach &lt;name&gt; --agent &lt;agent-id&gt;</code> 按智能体挂接。</li>
+        <li>智能体使用文件和 Git 工具编辑文件、提交并推送；其他智能体拉取。并发冲突按 Git 的方式解决。</li>
+        <li>需要云端托管的智能体。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>消息传递 vs. 共享记忆</h3>
+      <ul>
+        <li><b>消息 / 摘要</b>：显式、体量小、易于追踪；每一跳都会丢失信息。</li>
+        <li><b>共享记忆</b>：所有人看到相同的事实；需要写入纪律、历史记录和冲突处理。</li>
+        <li>Cognition 的原则 1 主张共享<i>更多</i>；Anthropic 的设计共享<i>更少</i>，代价是需要精心撰写任务简报。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">docs.letta.com/concepts/shared-memory。编辑主智能体记忆的睡眠时智能体（sleep-time agents）：记忆讲义（02）。</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>跨厂商</small>A2A：智能体间协议</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>面向独立、可能<b>不透明</b>的智能体的开放标准：它们无需共享内部状态、记忆或工具即可协作。</li>
+        <li><b>Agent Card</b>：描述身份、技能、端点和认证方式的 JSON，通常位于 <code>/.well-known/agent-card.json</code>。</li>
+        <li><b>Task</b>（有状态，带 ID）、<b>Message</b>（<code>role</code> 为 user / agent，由 <b>Part</b> 组成：文本、文件、数据）、<b>Artifact</b>（任务输出）。</li>
+        <li>状态包括 working、input-required、auth-required、completed、failed、canceled、rejected。</li>
+        <li>绑定：JSON-RPC、gRPC、HTTP+JSON；支持流式传输和 webhook 推送通知。最新版本 1.0.0。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>MCP vs. A2A</h3>
+      <table class="dense" style="font-size:15px">
+        <tr><th></th><th>MCP</th><th>A2A</th></tr>
+        <tr><td>对端</td><td>工具 / 资源服务器</td><td>另一个智能体</td></tr>
+        <tr><td>单位</td><td>工具调用</td><td>有生命周期的任务</td></tr>
+        <tr><td>时长</td><td>通常较短</td><td>可能很长，可请求输入</td></tr>
+        <tr><td>对端内部</td><td>透明的模式（schema）</td><td>不透明</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="cite">a2a-protocol.org/latest/specification（Linux Foundation；已加入 Agentic AI Foundation）；Agent Card 路径依据 Redpanda 的 A2A 文档。</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>并排对比</small>三种框架的多智能体支持</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th><th>Letta</th></tr>
+    <tr><td>派生</td><td><code>delegate_task</code>（单个或批量）</td><td><code>sessions_spawn</code>（非阻塞）</td><td>—</td></tr>
+    <tr><td>子智能体上下文</td><td>全新：goal + context + 项目文件</td><td><code>isolated</code> 或 <code>fork</code>；AGENTS.md + TOOLS.md</td><td>—</td></tr>
+    <tr><td>结果路径</td><td>最终摘要进入父智能体上下文</td><td>向请求方发送通告事件</td><td>—</td></tr>
+    <tr><td>默认深度</td><td>1</td><td>1（最多 5）</td><td>—</td></tr>
+    <tr><td>扇出上限</td><td>每批 10 个</td><td>每个智能体 5 个子智能体，并发 8 个</td><td>—</td></tr>
+    <tr><td>对等智能体</td><td>—</td><td>Bindings + <code>tools.agentToAgent</code></td><td>独立的智能体</td></tr>
+    <tr><td>共享状态</td><td>共享 worktree（或隔离）</td><td>需主动开启的消息传递</td><td>共享记忆仓库 / 记忆块</td></tr>
+  </table>
+  <div class="cite">来源见第 5–8 张幻灯片。“—” = 本处所用来源未涉及。</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>研究</small>多智能体系统为何会失败？（MAST）</h2>
+  <div class="cols">
+    <div>
+      <p style="font-size:18px">Cemri 等人标注了来自 7 个框架的 1,600+ 条轨迹（κ = 0.88），发现了分属 3 类的 <b>14 种失败模式</b>：</p>
+      <table class="dense" style="font-size:15px">
+        <tr><th>系统设计</th><th>智能体间失调</th><th>任务验证</th></tr>
+        <tr><td>违背任务规范</td><td>对话重置</td><td>过早终止</td></tr>
+        <tr><td>违背角色规范</td><td>未能请求澄清</td><td>无验证或验证不完整</td></tr>
+        <tr><td>步骤重复</td><td>任务偏离</td><td>验证不正确</td></tr>
+        <tr><td>丢失对话历史</td><td>信息隐瞒</td><td></td></tr>
+        <tr><td>不了解停止条件</td><td>忽略其他智能体的输入</td><td></td></tr>
+        <tr><td></td><td>推理与行动不一致</td><td></td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>要点</h3>
+      <ul>
+        <li>多数失败是<b>组织层面</b>的，而非模型错误：角色不清、上下文丢失、无人检查。</li>
+        <li>修复方法类似管理：角色规范、明确的交接格式、终止规则、验证者。</li>
+        <li>把这套分类法用作轨迹评审的标签（可观测性讲义）。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Cemri et al., "Why Do Multi-Agent LLM Systems Fail?", arXiv:2503.13657.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>系统</small>多智能体工作流的服务成本</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>子智能体会成倍增加 token（约为聊天的 15 倍）和请求数；每个子智能体都有自己的提示前缀。</li>
+        <li>共享前缀（系统提示、工具模式、技能索引）应在各子智能体间保持一致，以便前缀缓存复用。</li>
+        <li><b>KVFlow</b> 利用工作流图预测下一个运行的智能体，并保持其前缀缓存：相对带分层缓存的 SGLang，单工作流为 1.83×，大量并发时为 2.19×。</li>
+        <li>感知程序的调度器（Autellix、Continuum）把整个智能体程序，而不是每次调用，作为调度单位。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>经验法则</h3>
+      <ul>
+        <li>工作者用更便宜的模型，主导者用强模型。</li>
+        <li>限制深度和扇出；递归就是智能体的 fork 炸弹。</li>
+        <li>为每个子智能体设置超时和预算。</li>
+        <li>按<i>任务</i>而非按调用衡量成本。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">KVFlow, arXiv:2507.07400 (NeurIPS 2025); 调度器讲义（Autellix 2502.13965，Continuum 2511.02230）；Anthropic 多智能体研究系统。</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>决策</small>单智能体、子智能体，还是对等智能体？</h2>
+  <table class="dense">
+    <tr><th>场景</th><th>选择</th><th>原因</th></tr>
+    <tr><td>对同一代码库或文档的顺序编辑</td><td>单智能体（+ 压缩）</td><td>决策保持一致（Cognition）</td></tr>
+    <tr><td>广度优先的研究，众多独立来源</td><td>编排者 + 并行工作者</td><td>并行 token 换来质量和时间（Anthropic）</td></tr>
+    <tr><td>会淹没上下文的大规模只读探索</td><td>返回摘要的子智能体</td><td>上下文隔离（上下文管理器讲义）</td></tr>
+    <tr><td>对不同部分并行编码</td><td>子智能体 + worktree 隔离</td><td>合并前不会有写冲突</td></tr>
+    <tr><td>不同用户、数据或信任级别</td><td>独立的对等智能体</td><td>身份与数据边界</td></tr>
+    <tr><td>来自其他厂商或团队的智能体</td><td>A2A</td><td>不透明、基于任务的契约</td></tr>
+  </table>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>练习</small>同一任务，三种架构</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>选择一个包含 4–6 个独立子问题且有可验证标准答案的研究任务。</li>
+        <li>分别以 (a) 单个 Hermes 智能体、(b) Hermes 配合 <code>delegate_task</code> 批量工作者、(c) OpenClaw 配合运行在更便宜模型上的 <code>sessions_spawn</code> 工作者来运行。</li>
+        <li>每种各重复 5 次。</li>
+        <li>用 MAST 失败模式为每条失败轨迹打标签。</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>度量</h3>
+      <ul>
+        <li>答案准确率和 pass^5</li>
+        <li>每个任务的总 token 与成本</li>
+        <li>实际耗时</li>
+        <li>结束时父智能体的上下文大小</li>
+        <li>每种架构下最常见的 MAST 类别</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>参考资料</small>延伸阅读</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>Anthropic, How we built our multi-agent research system (Jun 2025): anthropic.com/engineering/multi-agent-research-system</li>
+      <li>Cognition, Don't build multi-agents (Jun 2025): cognition.com/blog/dont-build-multi-agents</li>
+      <li>Cemri et al., Why Do Multi-Agent LLM Systems Fail?: arxiv.org/abs/2503.13657</li>
+      <li>A2A 规范：a2a-protocol.org/latest/specification</li>
+      <li>KVFlow: arxiv.org/abs/2507.07400</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>Hermes 委派：hermes-agent.nousresearch.com/docs/user-guide/features/delegation</li>
+      <li>OpenClaw 子智能体：docs.openclaw.ai/tools/subagents</li>
+      <li>OpenClaw 多智能体路由：docs.openclaw.ai/concepts/multi-agent</li>
+      <li>Letta 共享记忆：docs.letta.com/concepts/shared-memory</li>
+      <li>所有链接：<code>references/bibliography_and_links.md</code> §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → 翻页 · F 全屏</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

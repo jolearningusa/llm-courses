@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — 上下文管理器</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · 模块 1 讲座 · 组件 3</div>
+  <h1 style="margin-top:22px">上下文管理器</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">决定模型在每次调用时看到什么：组装、选择、压缩与隔离上下文，
+    保持提示缓存（prompt cache）处于热状态，以及 Hermes Agent 和 OpenClaw 中可插拔的上下文引擎。</p>
+  <p style="margin-top:28px"><span class="pill">写入</span><span class="pill">选择</span><span class="pill">压缩</span><span class="pill">隔离</span><span class="pill">上下文引擎</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>为什么</small>上下文是预算，而不是水桶</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li><b>注意力预算</b>：每个 token 都会消耗它；上下文越长，召回越差。目标是使用最小的一组高信号 token。</li>
+        <li><b>上下文腐烂（Context rot）</b>：在 18 个模型上，输入越长，性能越不可靠，即使是简单任务也是如此；干扰项会让情况更糟。</li>
+        <li><b>迷失在中间（Lost in the middle）</b>：当相关信息位于输入的开头或结尾时，准确率最高（呈 U 形）。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>它同时也是成本预算</h3>
+      <ul>
+        <li>Manus 报告其智能体的<b>输入与输出 token 比约为 100:1</b>。</li>
+        <li>Claude Sonnet 上缓存输入的成本约为未缓存输入的<b>十分之一</b>。</li>
+        <li>因此 Manus 称 <b>KV-cache 命中率</b>是“生产阶段 AI 智能体最重要的单一指标”。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Anthropic, "Effective context engineering for AI agents" (2025 年 9 月 29 日); Chroma, "Context Rot" (2025 年 7 月 14 日); Liu et al., Lost in the Middle (arXiv:2307.03172, TACL); Ji, Manus 上下文工程经验 (2025 年 7 月 18 日)。</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>框架</small>四种策略：写入、选择、压缩、隔离</h2>
+  <table class="dense">
+    <tr><th>策略</th><th>含义</th><th>示例</th><th>AgentOS 组件</th></tr>
+    <tr><td>写入</td><td>把上下文保存在窗口之外，留待以后使用</td><td>草稿本、待办文件、长期记忆</td><td>记忆管理器、文件系统</td></tr>
+    <tr><td>选择</td><td>在需要时拉入合适的上下文</td><td>读取草稿本、加载 CLAUDE.md / AGENTS.md、对记忆或工具描述做 RAG</td><td>记忆召回、技能、工具选择</td></tr>
+    <tr><td>压缩</td><td>只保留任务所需的 token</td><td>自动压缩（摘要）、裁剪旧消息、清除旧工具结果</td><td>上下文引擎</td></tr>
+    <tr><td>隔离</td><td>拆分上下文，使每个部分只承担狭窄的职责</td><td>拥有独立窗口的子智能体、存放大体量输出的沙箱、不展示给模型的状态</td><td>多智能体、沙箱</td></tr>
+  </table>
+  <div class="card" style="margin-top:18px">
+    <h3>设计时需要防范的上下文失效模式</h3>
+    <p style="margin:0"><b>中毒（Poisoning）</b>（幻觉进入并持续存在）· <b>分心（Distraction）</b>（上下文压倒了训练所得）· <b>混淆（Confusion）</b>（无关上下文左右了回答）· <b>冲突（Clash）</b>（上下文的各部分相互矛盾）。</p>
+  </div>
+  <div class="cite">LangChain, "Context Engineering" (2025 年 7 月 2 日)，失效模式引自 Drew Breunig。总览幻灯片第 8 页介绍了选择 / 压缩 / 隔离。</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>组装</small>什么进入窗口，按什么顺序</h2>
+  <div class="cols" style="grid-template-columns: 0.9fr 1.1fr">
+    <svg viewBox="0 0 520 450" width="520" height="450">
+      <g font-size="16">
+        <rect x="0" y="0" width="520" height="52" rx="6" fill="#1c2a4d" stroke="#7be0b8"/><text x="14" y="32">系统提示 + 工具定义</text>
+        <rect x="0" y="60" width="520" height="52" rx="6" fill="#1c2a4d" stroke="#7be0b8"/><text x="14" y="92">固定记忆（MEMORY.md、USER.md、blocks）</text>
+        <rect x="0" y="120" width="520" height="52" rx="6" fill="#1c2a4d" stroke="#7be0b8"/><text x="14" y="152">项目 / 技能上下文（AGENTS.md、技能索引）</text>
+        <rect x="0" y="180" width="520" height="52" rx="6" fill="#161d2e" stroke="#ffb86b"/><text x="14" y="212">较早轮次的压缩摘要</text>
+        <rect x="0" y="240" width="520" height="52" rx="6" fill="#161d2e" stroke="#6ea8ff"/><text x="14" y="272">最近轮次：消息、工具调用、结果</text>
+        <rect x="0" y="300" width="520" height="52" rx="6" fill="#161d2e" stroke="#6ea8ff"/><text x="14" y="332">每轮注入（召回的记忆、待办）</text>
+        <rect x="0" y="360" width="520" height="52" rx="6" fill="#161d2e" stroke="#ff7a85"/><text x="14" y="392">新的用户消息</text>
+      </g>
+      <text x="0" y="440" font-size="14" fill="#9aa6bd">稳定前缀（可缓存）在顶部 → 易变内容在底部</text>
+    </svg>
+    <div>
+      <ul style="font-size:19px">
+        <li>把很少变化的内容放在最前面，这样提供商的提示缓存（以及 vLLM 前缀缓存）就能复用它。</li>
+        <li>把最新、与任务最相关的内容放在最后，模型在那里的注意力较好（迷失在中间）。</li>
+        <li>OpenClaw 由基础提示、技能提示、引导上下文（bootstrap context）和每次运行的覆盖项组装系统提示，并受模型限制和压缩预留量约束。</li>
+        <li>Codex：服务器对最初的提示项排序（沙箱、配置、AGENTS.md 式指令、环境）；用户消息最后追加。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">OpenClaw 智能体循环文档（提示组装）; OpenAI, "Unrolling the Codex agent loop"。</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>缓存感知的上下文</small>保持前缀稳定</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>应该做</h3>
+      <ul>
+        <li>保持上下文<b>只追加（append-only）</b>；绝不编辑之前的条目。若要在会话中途更改设置，就追加一条描述该更改的消息（Codex）。</li>
+        <li>确定性地序列化（JSON 中保持稳定的键顺序）。</li>
+        <li>在会话期间冻结注入的记忆（Hermes 在会话开始时冻结其 MEMORY.md / USER.md 快照）。</li>
+        <li>在提供商需要的位置放置缓存断点。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>不应该做</h3>
+      <ul>
+        <li>在系统提示顶部放置时间戳。</li>
+        <li>在任务中途增删工具；Manus 的做法是按状态<b>屏蔽（mask）</b> token logits，并用工具名前缀（<code>browser_</code>、<code>shell_</code>）来允许某一组工具。</li>
+        <li>切换模型、沙箱模式或工作目录，却不预期缓存未命中。</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:16px">测量它：vLLM 中的前缀缓存命中率（<code>vllm:prefix_cache_hits</code> / <code>_queries</code>），或提供商返回的缓存 token 数。</p>
+  <div class="cite">Manus 经验 1–2; Codex 智能体循环文章; Hermes 记忆文档; vLLM 指标。前缀缓存本身在模块 3 中讲解。</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>选择</small>即时（just-in-time）上下文</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li>在上下文中保留<b>轻量标识符</b>（文件路径、已存储的查询、链接），需要时再用工具加载内容。</li>
+        <li>权衡：比预加载慢，但更新鲜、更聚焦。</li>
+        <li>混合方式很常见：Claude Code 预先加载 CLAUDE.md，并即时搜索文件。</li>
+        <li>工具集过大会削弱工具选择。工具也要选择：对工具描述做 RAG，或屏蔽不可用的工具而不是移除它们。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>从记忆中选择</h3>
+      <p>记忆课件详细讲解了读取路径：固定画像、每轮自动召回，以及按需搜索工具（OpenClaw <code>memory_search</code>、Letta <code>archival_memory_search</code>）。</p>
+      <p class="muted">上下文管理器决定预算；记忆管理器决定什么值得花这笔预算。</p>
+    </div>
+  </div>
+  <div class="cite">Anthropic, "Effective context engineering for AI agents"; LangChain, "Context Engineering"; Manus 经验 2; 02_long_term_memory_deck.html。</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>压缩</small>压缩（compaction）及其更轻量的近亲</h2>
+  <table class="dense">
+    <tr><th>技术</th><th>方式</th><th>示例</th></tr>
+    <tr><td>清除工具结果</td><td>丢弃旧工具调用的原始输出；保留调用本身</td><td>Anthropic 称之为“最安全、最轻量的压缩形式之一”</td></tr>
+    <tr><td>可恢复压缩</td><td>丢弃内容，但保留找回的途径（URL、文件路径）</td><td>Manus：丢弃网页，保留 URL</td></tr>
+    <tr><td>裁剪</td><td>移除超出窗口的最旧消息</td><td>简单，但会丢失信息</td></tr>
+    <tr><td>摘要压缩</td><td>在接近上限时总结历史，并以摘要继续</td><td>Claude Code 超过 95% 时自动压缩（LangChain）；Hermes 为 50% 预检 / 85% 网关，保留最近 20 条消息</td></tr>
+    <tr><td>不透明压缩</td><td>提供商侧的压缩状态</td><td>Codex <code>/responses/compact</code> → <code>encrypted_content</code></td></tr>
+    <tr><td>层级摘要</td><td>在 DAG 中对摘要再做摘要；原始消息保留且可展开</td><td>OpenClaw <code>lossless-claw</code> 插件</td></tr>
+  </table>
+  <p style="font-size:18px;margin-top:14px">压缩应<b>先保证召回</b>，再裁掉多余内容。绝不要把工具调用与其结果拆开。每次压缩之后都应预期前缀缓存未命中。</p>
+  <div class="cite">Anthropic 上下文工程文章; Manus 经验 3; LangChain 文章; Hermes 智能体循环文档; Codex 文章; lossless-claw README (clawhub.ai)。</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>写入与隔离</small>窗口之外的笔记，窗口旁边的子智能体</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>写入：结构化笔记与复述</h3>
+      <ul>
+        <li>智能体把笔记保存在窗口之外并重新加载：Anthropic 的 Claude 玩宝可梦（Pokémon）智能体在数千步中跟踪进度和地图。</li>
+        <li>Manus 的任务约需 50 次工具调用；它维护一个 <code>todo.md</code> 并随进展不断重写，使目标保持在近期注意力中。</li>
+        <li><b>把错误的东西留着</b>：把失败的动作和错误留在上下文中，让模型更新自己的信念。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>隔离：干净的窗口</h3>
+      <ul>
+        <li>子智能体在自己的窗口中探索，并返回精炼的摘要，通常为 1,000–2,000 个 token。</li>
+        <li>Hermes 的子智能体只能看到 <code>goal</code> 和 <code>context</code> 字段；只有它们的最终摘要返回给父智能体。</li>
+        <li>沙箱把大体量输出（文件、日志）挡在模型上下文之外，直到需要时。</li>
+        <li><b>不要被 few-shot 化</b>：上下文中重复的过往动作会让智能体重复它们；加入受控的变化。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Anthropic 上下文工程文章; Manus 经验 4–6; Hermes 委派文档。</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>框架 · Hermes Agent</small><code style="font-size:30px">ContextEngine</code> 插件接口</h2>
+  <div class="cols">
+<pre style="font-size:15px">from agent.context_engine import ContextEngine
+
+class MyEngine(ContextEngine):
+    @property
+    def name(self): return "my-engine"
+
+    def update_from_response(self, usage):
+        ...   # track prompt tokens
+
+    def should_compress(self, prompt_tokens=None):
+        ...   # threshold policy
+
+    def compress(self, messages, current_tokens=None):
+        ...   # return the new message list
+
+def register(ctx):
+    ctx.register_context_engine(MyEngine())
+
+# config.yaml:  context: { engine: my-engine }</pre>
+    <div>
+      <ul style="font-size:19px">
+        <li>默认引擎：<code>agent/context_compressor.py</code>，一种有损的摘要算法。</li>
+        <li>内置策略：超过窗口 50% 时预检压缩，在轮次之间超过 85% 时由网关自动压缩，保留最近 20 条消息，先刷新记忆，绝不拆分工具调用对。</li>
+        <li>记忆提供者获得 <code>on_pre_compress</code>，以便在历史被摘要之前提取事实。</li>
+        <li>实验 1A 用这个接口实现一个阈值引擎。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">hermes-agent.nousresearch.com/docs/developer-guide/context-engine-plugin 及 agent-loop；签名与 labs/lab1_memory_plugins/hermes_custom_memory.py 一致。</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>框架 · OpenClaw</small>上下文引擎插槽</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><th>生命周期</th><th>时机</th></tr>
+        <tr><td>ingest</td><td>新消息加入会话：存储或建立索引</td></tr>
+        <tr><td>assemble</td><td>每次模型运行之前：在 token 预算内返回有序消息 + 可选的 <code>systemPromptAddition</code></td></tr>
+        <tr><td>compact</td><td>窗口已满，或用户运行 <code>/compact</code></td></tr>
+        <tr><td>afterTurn</td><td>运行之后：持久化状态、后台压缩、更新索引</td></tr>
+        <tr><td>maintain</td><td>可选的转录维护；可在后台运行</td></tr>
+      </table>
+      <p style="font-size:17px;margin-top:10px">用 <code>plugins.slots.contextEngine</code> 选择；不设置或设为 <code>"legacy"</code> 时使用内置引擎。</p>
+    </div>
+    <div class="card">
+      <h3>示例：<code>lossless-claw</code></h3>
+      <ul>
+        <li>把每条消息存入 SQLite；“不丢失任何内容”。</li>
+        <li>先总结较早的块，再把摘要凝练为更高层的节点：一个链接回源消息的 DAG。</li>
+        <li><code>assemble</code> = 摘要 + 最近的原始消息（<code>freshTailCount</code>，默认 64）。</li>
+        <li>召回工具 <code>lcm_grep</code>、<code>lcm_describe</code>、<code>lcm_expand</code> 让智能体可以向下钻取细节。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/concepts/context-engine; clawhub.ai/martian-engineering/plugins/lossless-claw。实验 1B 实现一个 OpenClaw 上下文引擎。</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>比较</small>选择压缩策略</h2>
+  <table class="dense">
+    <tr><th>策略</th><th>保留的信息</th><th>成本</th><th>缓存影响</th><th>适用于</th></tr>
+    <tr><td>裁剪最旧消息</td><td>低</td><td>无</td><td>每次前缀都会移位</td><td>记忆较短的聊天</td></tr>
+    <tr><td>清除工具结果</td><td>高（保留调用）</td><td>无</td><td>每次清除断一次</td><td>工具密集型智能体</td></tr>
+    <tr><td>滚动摘要</td><td>中等，有损</td><td>一次 LLM 调用</td><td>每次压缩断一次</td><td>通用助手（Hermes 默认）</td></tr>
+    <tr><td>DAG 摘要 + 展开工具</td><td>高（保留原始内容，可展开）</td><td>LLM 调用 + 存储</td><td>每次压缩断一次</td><td>长时间运行的会话（lossless-claw）</td></tr>
+    <tr><td>文件 / 笔记卸载</td><td>高，可恢复</td><td>重新加载所需的工具调用</td><td>对只追加友好</td><td>编码与研究智能体</td></tr>
+    <tr><td>子智能体隔离</td><td>父级中仅保留摘要</td><td>额外的智能体运行</td><td>父级前缀不受影响</td><td>广泛探索</td></tr>
+  </table>
+  <div class="cite">综合自第 5–10 页的资料来源。</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>度量</small>上下文管理器在尽职吗？</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li><b>每次调用的上下文 token 数</b>在整个会话中的变化（OpenClaw 导出 <code>openclaw.context.tokens</code>）。</li>
+        <li><b>缓存命中率</b>：缓存 / 总输入 token；vLLM 中的前缀缓存命中。</li>
+        <li><b>每个会话的压缩次数</b>，以及跨越压缩的任务与未跨越压缩的任务的成功率对比。</li>
+        <li><b>压缩后的召回</b>：询问压缩之前的某个事实（在你自己的转录上做大海捞针测试）。</li>
+        <li><b>每个任务的成本</b>：在 100:1 的比例下，输入 token 占主导。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>危险信号</h3>
+      <ul>
+        <li>框架改动后缓存命中率下降</li>
+        <li>智能体重复已经做过的工作（笔记丢失）</li>
+        <li>回答与先前的决定相矛盾（冲突）</li>
+        <li>上下文线性增长且没有压缩（膨胀）</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">指标：06_observability_evaluation_deck.html; OpenClaw OpenTelemetry 文档。</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>练习</small>比较两种上下文引擎</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>从实验 1 出发：Hermes 阈值引擎或 OpenClaw 窗口引擎。</li>
+        <li>实现第二种引擎：清除工具结果 + 待办复述，或带展开工具的层级摘要。</li>
+        <li>用每种引擎运行一个 40 步以上的任务（例如重构一个小型仓库），各运行三次。</li>
+        <li>使用可观测性课件中的设置进行埋点。</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>报告</h3>
+      <ul>
+        <li>每个任务的 token 和成本</li>
+        <li>缓存命中率</li>
+        <li>压缩次数和压缩后召回得分</li>
+        <li>任务成功率（pass^3）</li>
+        <li>一个引擎丢失所需事实的例子</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>参考文献</small>延伸阅读</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>Anthropic, Effective context engineering for AI agents (2025 年 9 月): anthropic.com/engineering/effective-context-engineering-for-ai-agents</li>
+      <li>Ji, Lessons from Building Manus (2025 年 7 月): manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus</li>
+      <li>LangChain, Context Engineering (2025 年 7 月): langchain.com/blog/context-engineering-for-agents</li>
+      <li>Chroma, Context Rot (2025 年 7 月): research.trychroma.com/context-rot</li>
+      <li>Liu et al., Lost in the Middle: arxiv.org/abs/2307.03172</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>Hermes 上下文引擎插件: hermes-agent.nousresearch.com/docs/developer-guide/context-engine-plugin</li>
+      <li>OpenClaw 上下文引擎: docs.openclaw.ai/concepts/context-engine</li>
+      <li>lossless-claw: clawhub.ai/martian-engineering/plugins/lossless-claw</li>
+      <li>OpenAI, Unrolling the Codex agent loop: openai.com/index/unrolling-the-codex-agent-loop</li>
+      <li>所有链接：<code>references/bibliography_and_links.md</code> §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → 翻页 · 按 F 全屏</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>
