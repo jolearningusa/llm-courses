@@ -22,8 +22,9 @@ class ToolError(Exception):
 
 
 class WorkspaceTools:
-    def __init__(self, workspace: Path):
+    def __init__(self, workspace: Path, allowed: tuple[str, ...] | None = None):
         self.root = Path(workspace).resolve()
+        self.allowed = allowed  # None: all four tools; otherwise only these names
 
     # --- helpers -------------------------------------------------------------------------------------
     def _path(self, rel: str) -> Path:
@@ -80,7 +81,7 @@ class WorkspaceTools:
                 "parameters": {"type": "object", "properties": props, "required": required}}}
 
         s = {"type": "string"}
-        return [
+        schemas = [
             fn("list_files", "List every file under a directory of the workspace (default: the root).",
                {"path": {**s, "description": "Directory relative to the workspace root."}}, []),
             fn("read_file", "Read a text file from the workspace.", {"path": s}, ["path"]),
@@ -89,11 +90,12 @@ class WorkspaceTools:
             fn("search", "Search files for a Python regular expression; returns file:line: text for each match.",
                {"pattern": s, "path": {**s, "description": "File or directory (default: the root)."}}, ["pattern"]),
         ]
+        return [x for x in schemas if self.allowed is None or x["function"]["name"] in self.allowed]
 
     def call(self, name: str, arguments: dict[str, Any]) -> tuple[str, bool]:
         fn = {"list_files": self.list_files, "read_file": self.read_file,
               "write_file": self.write_file, "search": self.search}.get(name)
-        if fn is None:
+        if fn is None or (self.allowed is not None and name not in self.allowed):
             return f"ERROR: unknown tool {name!r}", True
         try:
             return fn(**arguments), False

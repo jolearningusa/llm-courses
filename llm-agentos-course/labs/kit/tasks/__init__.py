@@ -7,7 +7,7 @@ solve the task, so the runner and the graders can be tested offline.
 Tiers:
 
     basic     short tasks over small fixture files (this kit, tasks/basic.py)
-    long      40+ step tasks for Labs 3 and 9 (added with Lab 3)
+    long      40+ step tasks for Labs 3 and 9 (tasks/long.py)
     heldout   kept private for the capstone
 """
 
@@ -26,6 +26,7 @@ class Task:
     files: dict[str, str]                         # relative path -> content, written before the run
     check: Callable[[Path, str], bool]            # (workspace, final answer) -> success
     demo: list[dict[str, Any]] = field(default_factory=list)  # a scripted solution (see models/scripted.py)
+    tools: tuple[str, ...] | None = None          # tool names the task allows (None: all starter tools)
 
     def setup(self, workspace: Path) -> None:
         for rel, content in self.files.items():
@@ -38,4 +39,7 @@ def load_tier(tier: str) -> list[Task]:
     if tier == "basic":
         from tasks.basic import TASKS
         return list(TASKS)
-    raise ValueError(f"unknown tier {tier!r} (available: basic)")
+    if tier == "long":
+        from tasks.long import TASKS
+        return list(TASKS)
+    raise ValueError(f"unknown tier {tier!r} (available: basic, long)")

@@ -41,7 +41,7 @@ from nanoos.trace import JsonlTracer, NullTracer  # noqa: E402
 from tasks import load_tier  # noqa: E402
 
 COLUMNS = ["task", "trial", "success", "steps", "stopped_by", "input_tokens", "cached_input_tokens",
-           "output_tokens", "cost_usd", "wall_s", "tool_errors", "approvals"]
+           "output_tokens", "cost_usd", "wall_s", "tool_errors", "approvals", "compactions", "peak_context_tokens"]
 
 
 def pass_at_k(n: int, c: int, k: int) -> float:
@@ -81,6 +81,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--max-steps", type=int, default=20)
     ap.add_argument("--fail-rate", type=float, default=0.0,
                     help="make this share of model calls fail with ModelError (Lab 1; see models/flaky.py)")
+    ap.add_argument("--context", choices=["none", "threshold", "clearing"], default="none",
+                    help="context engine from nanoos/context.py (Lab 3)")
+    ap.add_argument("--context-budget", type=int, default=6000, help="token budget for --context threshold")
+    ap.add_argument("--keep-last", type=int, default=6, help="messages (threshold) or tool results (clearing) kept")
     ap.add_argument("--out", default="runs/latest")
     ap.add_argument("--price-in", type=float, default=0.0)
     ap.add_argument("--price-cached", type=float, default=0.0)
@@ -114,12 +118,21 @@ def main(argv: list[str] | None = None) -> int:
             model = api_model or ScriptedModel(task.demo, name=f"demo:{task.id}")
             if args.fail_rate:
                 model = Flaky(model, args.fail_rate, seed=zlib.crc32(f"{task.id}:{trial}".encode()))
+            managed, summarizer = None, None
+            if args.context != "none":
+                from nanoos import context as ctx
+                if args.context == "threshold":
+                    summarizer = ctx.ModelSummarizer(api_model) if api_model else ctx.heuristic_summarizer
+                    engine = ctx.ThresholdCompaction(args.context_budget, summarizer, keep_last=args.keep_last)
+                else:
+                    engine = ctx.ToolResultClearing(keep_last_results=args.keep_last)
+                model = managed = ctx.ContextManagedModel(model, engine)
             run_id = f"{task.id}__{trial}"
             tracer = make_tracer(out / "traces" / f"{run_id}.jsonl", run_id, warned)
             tracer.event("run_start", task=task.id, trial=trial, model=model.name, loop=args.loop)
             t0 = time.time()
             try:
-                result = loop.run(model, task.prompt, WorkspaceTools(ws), tracer, max_steps=args.max_steps)
+                result = loop.run(model, task.prompt, WorkspaceTools(ws, task.tools), tracer, max_steps=args.max_steps)
                 answer, stopped_by = result.answer, result.stopped_by
             except ModelError as e:
                 tracer.event("run_end", stopped_by="error", error=str(e))
@@ -133,6 +146,11 @@ def main(argv: list[str] | None = None) -> int:
                 (out / "messages" / f"{run_id}.json").write_text(json.dumps(result.messages, indent=1), encoding="utf-8")
             ok = bool(task.check(ws, answer))
             u = result.usage if result else None
+            extra = getattr(summarizer, "usage", None)  # tokens the summarizer model used
+            if u is not None and extra is not None:
+                u.input_tokens += extra.input_tokens
+                u.cached_input_tokens += extra.cached_input_tokens
+                u.output_tokens += extra.output_tokens
             uncached = (u.input_tokens - u.cached_input_tokens) if u else 0
             cost = (uncached * args.price_in + (u.cached_input_tokens if u else 0) * args.price_cached
                     + (u.output_tokens if u else 0) * args.price_out) / 1e6
@@ -141,7 +159,9 @@ def main(argv: list[str] | None = None) -> int:
                          "cached_input_tokens": u.cached_input_tokens if u else 0,
                          "output_tokens": u.output_tokens if u else 0, "cost_usd": round(cost, 6),
                          "wall_s": round(wall, 3), "tool_errors": result.tool_errors if result else 0,
-                         "approvals": result.approvals if result else 0})
+                         "approvals": result.approvals if result else 0,
+                         "compactions": managed.engine.compactions if managed else 0,
+                         "peak_context_tokens": max(managed.sent_tokens, default=0) if managed else 0})
             print(f"{run_id:28s} {'PASS' if ok else 'fail'}  steps={rows[-1]['steps']:<3d} "
                   f"in={rows[-1]['input_tokens']:<7d} out={rows[-1]['output_tokens']}")
 
@@ -167,6 +187,8 @@ def main(argv: list[str] | None = None) -> int:
         "cached_input_tokens": sum(x["cached_input_tokens"] for x in rows),
         "output_tokens": sum(x["output_tokens"] for x in rows),
         "cost_usd": round(sum(x["cost_usd"] for x in rows), 6),
+        "compactions": sum(x["compactions"] for x in rows),
+        "context": args.context,
         "tasks": per_task,
     }
     (out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
