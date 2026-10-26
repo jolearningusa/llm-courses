@@ -84,6 +84,7 @@ def summarize_trace(events: list[dict[str, Any]]) -> dict[str, Any]:
     # TODO(lab 0)
     raise NotImplementedError("Lab 0: implement summarize_trace")
 
+
 def token_breakdown(messages: list[dict[str, Any]], tools: list[dict[str, Any]]) -> dict[str, int]:
     """Where the tokens of one prompt go, estimated with nanoos.types.estimate_tokens.
 
