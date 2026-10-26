@@ -1,7 +1,9 @@
 # Checks every pull request and every push to main runs, so main stays
-# publishable. "links" builds the site and fails on a relative link that does
-# not resolve; "slides" opens every deck in headless Chromium and fails on
-# console errors or broken slide numbering. Both can be made required status
+# publishable. "links" checks that each course agrees with itself (sources in
+# the bibliography, current versions of tracked facts, README layout and slide
+# counts), then builds the site and fails on a relative link that does not
+# resolve; "slides" opens every deck in headless Chromium and fails on console
+# errors or broken slide numbering. Both can be made required status
 # checks in the main ruleset (see docs/git-workflow.md).
 name: Checks
 
@@ -26,6 +28,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Check course consistency
+        run: python scripts/check_course.py
       - name: Install build dependencies
         run: pip install markdown==3.7 pygments==2.18.0
       - name: Build site

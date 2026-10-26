@@ -65,16 +65,29 @@ push, finishes later and overwrites the site with a plain rendering of the READM
 same checks locally before pushing:
 
 ```bash
+python scripts/check_course.py                                 # course agrees with itself (see below)
 python scripts/build_site.py && python scripts/check_site.py   # relative links resolve
 node scripts/check_slides.mjs                                  # decks: console errors, numbering
-python scripts/check_site.py --external                        # optional: request every external link
+python scripts/check_freshness.py                              # optional, needs network: external links, upstream versions
 ```
 
 - Slides (`*.html`) open in a browser without console errors and slide numbering is continuous
   (`check_slides.mjs`; a deck that continues another, such as a split master deck, must start on the
   slide after the one it continues).
 - Relative links in Markdown and HTML resolve (`check_site.py`); external references have been checked
-  (`--external`, or by hand when a site blocks scripted requests).
+  (`check_freshness.py`, or by hand when a site blocks scripted requests).
+- Every arXiv ID cited in a deck, README or lab is in the course's `references/`, tracked facts (such as the
+  MCP spec version in `references/tracked_sources.json`) are cited with their current value, and README
+  slide counts and the "Repository layout" tree match the files (`check_course.py`).
 - Lab code that was changed still runs (or the PR says which prerequisite, such as a GPU, was
   missing so it could not run).
 - The course README (syllabus, repository layout) matches the files actually in the course.
+
+## Keeping courses current
+
+The weekly **Freshness** workflow (`.github/workflows/freshness.yml`, `scripts/check_freshness.py`) compares
+each course's `references/tracked_sources.json` with upstream (PyPI, npm, GitHub) and checks every external
+link, and keeps one open issue labeled `freshness` with the report. To update a course with new findings
+(from that issue, a new paper or a release), follow [docs/updating-courses.md](docs/updating-courses.md):
+check the primary source, update the bibliography, update `version` and `verified` in the tracked entry, then
+the decks and labs, one PR per change.

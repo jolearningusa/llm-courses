@@ -15,6 +15,7 @@
 - [ ] Branch is rebased on the latest `origin/main`
 - [ ] One task in this PR; no stacking on another unmerged branch
 - [ ] Branch's PR state checked before the last push (not already merged)
+- [ ] `python scripts/check_course.py`: sources in the bibliography, tracked versions current, README layout and slide counts match
 - [ ] `node scripts/check_slides.mjs`: no console errors, slide numbering continuous
 - [ ] `python scripts/check_site.py`: relative links resolve; external references checked
 - [ ] Changed lab code runs (or the missing prerequisite is stated)

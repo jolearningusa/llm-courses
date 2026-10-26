@@ -1,0 +1,57 @@
+# Weekly check that the courses still match their sources. It runs
+# scripts/check_freshness.py (upstream versions of tracked sources, last
+# verification dates, external links) and keeps one open issue labeled
+# "freshness" with the latest report; the issue is closed when everything is
+# current again. How to act on a report: docs/updating-courses.md.
+name: Freshness
+
+on:
+  schedule:
+    - cron: "23 6 * * 1"  # Mondays 06:23 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: freshness
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check upstream versions and external links
+        id: check
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          if python scripts/check_freshness.py --report freshness.md; then
+            echo "attention=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "attention=true" >> "$GITHUB_OUTPUT"
+          fi
+          cat freshness.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Open, update or close the freshness issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ATTENTION: ${{ steps.check.outputs.attention }}
+        run: |
+          gh label create freshness --color FBCA04 --description "Course content may be out of date" --force
+          number=$(gh issue list --state open --label freshness --limit 1 --json number --jq '.[0].number // empty')
+          run_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          printf '\n_Updated by the [Freshness workflow](%s)._\n' "$run_url" >> freshness.md
+          if [ "$ATTENTION" = "true" ]; then
+            if [ -n "$number" ]; then
+              gh issue edit "$number" --body-file freshness.md
+            else
+              gh issue create --title "Course freshness report" --label freshness --body-file freshness.md
+            fi
+          elif [ -n "$number" ]; then
+            gh issue close "$number" --comment "Everything is current as of $(date -u +%F) ([run]($run_url))."
+          fi
