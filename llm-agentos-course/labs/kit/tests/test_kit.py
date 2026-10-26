@@ -146,3 +146,35 @@ class TestSuite(unittest.TestCase):
             self.assertTrue(all(r["success"] == "1" for r in rows))
             summary = json.loads((out / "summary.json").read_text())
             self.assertEqual((summary["success_rate"], summary["pass^2"]), (1.0, 1.0))
+
+
+class TestMemoryFixtures(unittest.TestCase):
+    def test_question_counts_and_demo_answers(self):
+        from tasks.memory import QUESTIONS
+        self.assertEqual(sum(q.needs_memory for q in QUESTIONS), 20)
+        self.assertEqual(sum(not q.needs_memory for q in QUESTIONS), 20)
+        self.assertEqual(len({q.id for q in QUESTIONS}), 40)
+        for q in QUESTIONS:
+            with self.subTest(q=q.id):
+                self.assertTrue(q.check(q.demo_answer), q.demo_answer)
+                abstain_kind = q.kind in ("forget", "other_user", "absent") or (q.kind == "poison" and not q.gold)
+                self.assertEqual(q.check("I don't know."), abstain_kind)
+                if q.stale:
+                    self.assertFalse(q.check(q.stale))
+
+    def test_every_user_turn_and_tool_result_has_gold_ops(self):
+        from tasks.memory import SESSIONS, gold_ops, session_messages
+        ops = gold_ops()
+        for user, sessions in SESSIONS.items():
+            for n in range(len(sessions)):
+                for m in session_messages(user, n):
+                    if m["role"] in ("user", "tool"):
+                        self.assertIn(m["content"], ops)
+
+    def test_parse_ops_and_model_extractor(self):
+        from nanoos.memory import ModelExtractor, parse_ops
+        self.assertEqual(parse_ops('Sure! [{"op": "ADD", "text": "x"}, 3] done'), [{"op": "ADD", "text": "x"}])
+        self.assertEqual(parse_ops("no list [here"), [])
+        ex = ModelExtractor(ScriptedModel([{"content": '[{"op": "NOOP"}]'}]))
+        self.assertEqual(ex("alice", "hi", []), [{"op": "NOOP"}])
+        self.assertGreater(ex.usage.input_tokens, 0)
