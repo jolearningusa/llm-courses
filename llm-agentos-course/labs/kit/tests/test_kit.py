@@ -217,3 +217,33 @@ class TestRedteamFixtures(unittest.TestCase):
         self.assertNotIn("AI agents", page)
         self.assertFalse(STEPS_RE.search(page))
         self.assertIn("attacker.example", page, "a filter misses the sentence that does not name an AI")
+
+
+class TestTicketFixtures(unittest.TestCase):
+    """The Lab 7 tools, called directly (the registry that builds their schemas is a Lab 7 TODO)."""
+
+    class Collect:
+        def __init__(self):
+            self.fns = {}
+
+        def register(self, fn):
+            self.fns[fn.__name__] = fn
+            return fn
+
+    def test_demos_answer_and_checks_need_work(self):
+        from tasks.tickets import TASKS, setup, v1_tools, v2_tools
+        with tempfile.TemporaryDirectory() as d:
+            ws = Path(d)
+            setup(ws)
+            v1, v2 = self.Collect(), self.Collect()
+            v1_tools(v1, ws)
+            v2_tools(v2, ws)
+            for task in TASKS:
+                with self.subTest(task=task.id):
+                    self.assertFalse(task.check("I don't know"))
+                    for demo, fns in ((task.demo_v1, v1.fns), (task.demo_v2, v2.fns)):
+                        self.assertTrue(task.check(demo[-1]["content"]), demo[-1])
+                        for step in demo[:-1]:
+                            fns[step["tool_calls"][0]["name"]](**step["tool_calls"][0]["arguments"])
+            self.assertGreater(len(v1.fns["search"](q="login")), 8000, "v1 returns everything")
+            self.assertLess(len(v2.fns["search_tickets"](query="login")), 1000)

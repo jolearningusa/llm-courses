@@ -86,6 +86,7 @@ llm-agentos-course/
 │   │   ├── memory_eval.py                     # Lab 4: one memory store, two read paths, 40 questions
 │   │   ├── cache_experiment.py                # Lab 5: break the prefix cache on purpose, simulated or on vLLM
 │   │   ├── redteam_eval.py                    # Lab 6: red-team the agent with and without each defense
+│   │   ├── tools_eval.py                      # Lab 7: a vague tool against a designed one, shell in a sandbox
 │   │   ├── grade.py                           # Autograder: tests/test_labNN.py against the scripted model
 │   │   ├── report_template.md                 # The one-page report every lab hands in
 │   │   ├── nanoos/
@@ -99,6 +100,8 @@ llm-agentos-course/
 │   │   │   ├── memory.py                      # Lab 4: consolidation, trust-gated writes, hybrid search, auto-recall (stubs)
 │   │   │   ├── prompt.py                      # Lab 5: block hashes, a simulated prefix cache, cache-break diagnosis (stubs)
 │   │   │   ├── policy.py                      # Lab 6: audit log, sender pairing, Rule of Two policy engine (stubs)
+│   │   │   ├── tools.py                       # Lab 7: tool schemas from type hints, argument checks, truncation (stubs)
+│   │   │   ├── sandbox.py                     # Lab 7: host, namespace and Docker sandboxes, a run_shell tool (stubs)
 │   │   │   └── trace.py                       # Lab 0: JSONL tracer, summarize_trace, token_breakdown (stubs)
 │   │   ├── models/
 │   │   │   ├── __init__.py
@@ -112,6 +115,7 @@ llm-agentos-course/
 │   │   │   ├── long.py                        # Three 40+ step tasks for context engines and sub-agents
 │   │   │   ├── cache_session.py               # Lab 5: a scripted 20-turn session and its cache-breaking variants
 │   │   │   ├── memory.py                      # Lab 4: four users' past sessions and 40 memory questions
+│   │   │   ├── tickets.py                     # Lab 7: a 60-ticket tracker, two search tool designs, five questions
 │   │   │   └── redteam/
 │   │   │       ├── __init__.py                # Lab 6: an office with planted injections and a fake secret
 │   │   │       └── README.md                  # Safety notes for the attack fixtures
@@ -124,7 +128,8 @@ llm-agentos-course/
 │   │   │   ├── test_lab03.py                  # Lab 3 autograder tests
 │   │   │   ├── test_lab04.py                  # Lab 4 autograder tests
 │   │   │   ├── test_lab05.py                  # Lab 5 autograder tests
-│   │   │   └── test_lab06.py                  # Lab 6 autograder tests
+│   │   │   ├── test_lab06.py                  # Lab 6 autograder tests
+│   │   │   └── test_lab07.py                  # Lab 7 autograder tests
 │   │   └── handouts/
 │   │       ├── lab00_watch_a_harness.md       # Lab 0: set up the kit, write the tracer, watch two harnesses
 │   │       ├── lab01_agent_loop.md            # Lab 1: a loop that survives errors, stalls and repetition
@@ -132,7 +137,8 @@ llm-agentos-course/
 │   │       ├── lab03_context_engines.md       # Lab 3: two context engines on 40-step tasks
 │   │       ├── lab04_long_term_memory.md      # Lab 4: build a memory system, compare two read paths
 │   │       ├── lab05_kv_cache_plane.md        # Lab 5: break the cache on purpose, offline and on vLLM
-│   │       └── lab06_access_control.md        # Lab 6: a Rule of Two policy engine, then red-team the agent
+│   │       ├── lab06_access_control.md        # Lab 6: a Rule of Two policy engine, then red-team the agent
+│   │       └── lab07_tools_sandbox.md         # Lab 7: a tool registry and a sandbox, then measure tool design
 │   ├── lab1_memory_plugins/
 │   │   ├── hermes_custom_memory.py            # Hermes Agent MemoryProvider + ContextEngine plugin template
 │   │   ├── openclaw_context_engine.ts         # OpenClaw registerContextEngine + plugins.slots config
@@ -163,7 +169,7 @@ exist today; the plan slots them in as Labs 12, 5 and 14.
 
 The new labs are built on a shared [lab kit](labs/kit/): a small student harness (`nanoos`), a task suite,
 a runner that writes the same metrics table in every lab, and an autograder that tests against a scripted model.
-Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md), then [Lab 1](labs/kit/handouts/lab01_agent_loop.md), [Lab 2](labs/kit/handouts/lab02_scheduler.md), [Lab 3](labs/kit/handouts/lab03_context_engines.md), [Lab 4](labs/kit/handouts/lab04_long_term_memory.md), [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md) and [Lab 6](labs/kit/handouts/lab06_access_control.md). The existing labs keep their names for now.
+Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md), then [Lab 1](labs/kit/handouts/lab01_agent_loop.md), [Lab 2](labs/kit/handouts/lab02_scheduler.md), [Lab 3](labs/kit/handouts/lab03_context_engines.md), [Lab 4](labs/kit/handouts/lab04_long_term_memory.md), [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md), [Lab 6](labs/kit/handouts/lab06_access_control.md) and [Lab 7](labs/kit/handouts/lab07_tools_sandbox.md). The existing labs keep their names for now.
 
 ### Lab 1: memory and context plugins (Module 5)
 
