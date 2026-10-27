@@ -54,6 +54,8 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 - [L6 — Precision contracts and measured numerical behavior](handouts/lab06_precision.md)
 - [L7 — Distributed updates and exposed communication](handouts/lab07_distributed.md)
 - [L8 — Parallel layouts, recomputation and source tracing](handouts/lab08_parallelism.md)
+- [L9 — Route, group and combine expert work](handouts/lab09_moe.md)
+- [L10 — Recover the computation, not only the weights](handouts/lab10_recovery.md)
 
 ## L5 attention execution
 
@@ -70,3 +72,7 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 ## L8 parallelism
 
 [L8](handouts/lab08_parallelism.md) separates an analytical eight-rank layout model, actual CPU checkpoint output/gradient checks and pinned TorchTitan/Megatron source inspection. Multi-GPU feasibility and timing remain unverified.
+
+## L9–L10 MoE and recovery
+
+[L9](handouts/lab09_moe.md) validates local routed expert combine; [L10](handouts/lab10_recovery.md) validates actual CPU checkpoint/resume with a missing-RNG negative control. Neither substitutes for distributed dispatcher or DCP failure testing.
