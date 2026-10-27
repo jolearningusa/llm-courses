@@ -1,5 +1,5 @@
 """
-Lab 2: the system memory plane, declared as a vLLM KVTransferConfig.
+Lab 5 (folder lab2_aios_kv_cache): the system memory plane, declared as a vLLM KVTransferConfig.
 
 MultiConnector wraps several KV connectors at once:
   - save: every child connector stores the KV cache it is given

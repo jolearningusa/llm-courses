@@ -4,11 +4,14 @@ An introductory course on treating LLM agents as an **operating-system problem**
 memory is paged in and out of the context window, how the serving engine manages KV-cache as a system
 resource, and how a harness can rewrite itself between tasks.
 
-The course pairs slide decks with three hands-on labs built on real open-source projects:
+The course pairs slide decks with fifteen hands-on labs (Labs 0–14, one per lecture deck) and a team capstone.
+Students build a small harness, `nanoos`, across the term and measure each idea in real open-source projects:
 Hermes Agent, OpenClaw, Letta, vLLM + LMCache + NIXL, and Google Research's Harness².
 
 > **Audience.** Engineers and graduate students who have built at least one tool-using agent and are comfortable
-> with Python. Lab 1B uses TypeScript; Lab 2 needs a CUDA GPU (one GPU is enough for the LMCache part).
+> with Python. Most labs run offline against a scripted model or on any OpenAI-compatible endpoint. The vLLM parts
+> of Labs 2 and 5 need a CUDA GPU (one GPU is enough for the LMCache part), and the OpenClaw parts of Labs 10 and 12
+> use TypeScript.
 
 ---
 
@@ -46,7 +49,26 @@ Open a deck in the browser; use **← / →** to move between slides and **F** f
 | 6 | **OS-level & trajectory evaluation** | Throughput, P99 latency, Jain's fairness index across agents, prefix-cache hit rate; trajectory and response evaluation for agents. Separate lecture deck on observability: agent traces and OpenTelemetry GenAI conventions, OpenClaw / Hermes / vLLM exporters, a harness metric catalog, graders, pass@k vs. pass^k, LLM-as-judge, dashboards, telemetry privacy | Google ADK evaluation (adk.dev/evaluate), OpenTelemetry GenAI semconv, τ-bench (2406.12045), Anthropic agent-evals guide |
 | 7 | **Self-improving harnesses (Harness²)** | Task-level recursion (propose harness edits → probe them on the same task → compose a refined harness) and harnessing-level recursion (keep adopted harnesses + evidence-backed lessons) over 8 editable components | Harness² (arXiv:2610.14224, github.com/google-research/harness2) |
 
-Suggested pacing: one module per week, with Lab 1 after Module 5, Lab 2 after Module 3, and Lab 3 after Module 7.
+Suggested pacing for a 15-week term: each lab is due one week after its lecture. Module 5 has the most decks
+and takes six weeks.
+
+| Week | Module | Lecture deck | Lab |
+|-----:|--------|--------------|-----|
+| 1 | 1 | Master deck (1–21), agent loop | [Lab 0](labs/kit/handouts/lab00_watch_a_harness.md): watch a harness; [Lab 1](labs/kit/handouts/lab01_agent_loop.md): the agent loop |
+| 2 | 1 | Scheduler | [Lab 2](labs/kit/handouts/lab02_scheduler.md): program-aware scheduling |
+| 3 | 1 | Context manager | [Lab 3](labs/kit/handouts/lab03_context_engines.md): context engines |
+| 4 | 2 | Long-term memory | [Lab 4](labs/kit/handouts/lab04_long_term_memory.md): long-term memory |
+| 5 | 3 | KV-cache plane | [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md): the KV-cache plane |
+| 6 | 4 | Access control and safety | [Lab 6](labs/kit/handouts/lab06_access_control.md): a policy engine, then red-teaming |
+| 7 | 5 | Tools and sandbox | [Lab 7](labs/kit/handouts/lab07_tools_sandbox.md): tools and the sandbox |
+| 8 | 5 | Skills | [Lab 8](labs/kit/handouts/lab08_skills.md): skills |
+| 9 | 5 | Multi-agent systems | [Lab 9](labs/kit/handouts/lab09_multi_agent.md): multi-agent systems |
+| 10 | 5 | Extension layer | [Lab 10](labs/kit/handouts/lab10_extension_layer.md): the extension layer; capstone proposal |
+| 11 | 5 | MCP, plugins and connectors | [Lab 11](labs/kit/handouts/lab11_mcp_connectors.md): MCP and connectors |
+| 12 | 5 | Harness deep-dives (22–31), harness landscape | [Lab 12](labs/kit/handouts/lab12_harness_plugins.md): real harness plugins; capstone midpoint demo |
+| 13 | 6 | Observability and evaluation | [Lab 13](labs/kit/handouts/lab13_observability_eval.md): observability and evaluation |
+| 14 | 7 | Master deck 21, deep-dive 30 | [Lab 14](labs/kit/handouts/lab14_self_improving_harness.md): a self-improving harness; capstone submission |
+| 15 | — | — | [Capstone](labs/kit/handouts/capstone_bakeoff.md): report and poster or demo |
 
 ---
 
@@ -200,14 +222,14 @@ llm-agentos-course/
 │   │       ├── lab13_observability_eval.md    # Lab 13: spans and graders, a calibrated judge, a dashboard
 │   │       ├── lab14_self_improving_harness.md  # Lab 14: an improvement loop over nanoos, then Harness²
 │   │       └── capstone_bakeoff.md            # Capstone: the AgentOS bake-off (teams, scoring, milestones, report)
-│   ├── lab1_memory_plugins/
-│   │   ├── hermes_custom_memory.py            # Lab 12 (1A): Hermes plugin that loads your engines from the kit
-│   │   ├── openclaw_context_engine.ts         # Lab 12 (1B): OpenClaw shell that forwards to your Python engine
-│   │   └── letta_shared_blocks.py             # Letta multi-agent shared core-memory blocks
-│   ├── lab2_aios_kv_cache/
+│   ├── lab1_memory_plugins/                   # Lab 12's harness plugins (folder name predates the kit)
+│   │   ├── hermes_custom_memory.py            # Lab 12A: Hermes plugin that loads your engines from the kit
+│   │   ├── openclaw_context_engine.ts         # Lab 12B: OpenClaw shell that forwards to your Python engine
+│   │   └── letta_shared_blocks.py             # Lab 12C: Letta multi-agent shared core-memory blocks
+│   ├── lab2_aios_kv_cache/                    # Lab 5's vLLM part
 │   │   ├── vllm_lmcache_nixl_config.py        # vLLM MultiConnector (LMCache 256-token chunks + NIXL)
 │   │   └── run_vllm_lmcache.sh                # `vllm serve` launcher with 64 GiB CPU DRAM KV offload
-│   └── lab3_google_harness2/
+│   └── lab3_google_harness2/                  # Lab 14, Part C
 │       ├── run_harness2_demo.sh               # Quickstart for google-research/harness2
 │       └── sample_lesson_entry.jsonl          # Course schema for an evidence-backed lesson record
 └── references/
@@ -224,31 +246,54 @@ between slides, **F** for full screen. Slides are laid out at 16:9 (1280×720) a
 
 ## Labs
 
-The plan for a practice lab per lecture deck (a shared lab kit, fifteen labs and a capstone, informed by a survey
-of similar university courses and tutorials) is in [`labs/LAB_PLAN.md`](labs/LAB_PLAN.md). The three labs below
-exist today; the plan slots them in as Labs 12, 5 and 14.
+There is one lab per lecture deck, Labs 0–14, then a team capstone; the week-by-week order is in the pacing table
+under the syllabus. The design, and a survey of similar university courses and tutorials it draws on, is in
+[`labs/LAB_PLAN.md`](labs/LAB_PLAN.md).
 
-The new labs are built on a shared [lab kit](labs/kit/): a small student harness (`nanoos`), a task suite,
-a runner that writes the same metrics table in every lab, and an autograder that tests against a scripted model.
-Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md), then [Lab 1](labs/kit/handouts/lab01_agent_loop.md), [Lab 2](labs/kit/handouts/lab02_scheduler.md), [Lab 3](labs/kit/handouts/lab03_context_engines.md), [Lab 4](labs/kit/handouts/lab04_long_term_memory.md), [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md), [Lab 6](labs/kit/handouts/lab06_access_control.md), [Lab 7](labs/kit/handouts/lab07_tools_sandbox.md), [Lab 8](labs/kit/handouts/lab08_skills.md), [Lab 9](labs/kit/handouts/lab09_multi_agent.md), [Lab 10](labs/kit/handouts/lab10_extension_layer.md), [Lab 11](labs/kit/handouts/lab11_mcp_connectors.md), [Lab 12](labs/kit/handouts/lab12_harness_plugins.md), [Lab 13](labs/kit/handouts/lab13_observability_eval.md) and [Lab 14](labs/kit/handouts/lab14_self_improving_harness.md), then the team [capstone](labs/kit/handouts/capstone_bakeoff.md). The existing labs keep their names for now.
+The labs are built on a shared [lab kit](labs/kit/): a small student harness (`nanoos`), a task suite, a runner that
+writes the same metrics table in every lab, and an autograder (`make grade LAB=n`) that tests against a scripted
+model. Each lab builds one part of `nanoos`, measures it, and hands in a one-page report.
 
-### Lab 1: memory and context plugins (Module 5)
+| Lab | Lecture deck | Build in `nanoos` | Measure |
+|----:|--------------|-------------------|---------|
+| [0](labs/kit/handouts/lab00_watch_a_harness.md) | Master deck | Tracer and token breakdown | Watch two harnesses on the same tasks |
+| [1](labs/kit/handouts/lab01_agent_loop.md) | Agent loop | Budgets, parallel tools, retries, interrupts, hooks | A loop that survives errors, stalls and repetition |
+| [2](labs/kit/handouts/lab02_scheduler.md) | Scheduler | Discrete-event simulator for program-aware policies | Policies on simulated workloads, then vLLM priorities |
+| [3](labs/kit/handouts/lab03_context_engines.md) | Context manager | Threshold compaction and tool-result clearing | Two engines on 40-step tasks |
+| [4](labs/kit/handouts/lab04_long_term_memory.md) | Long-term memory | A memory store with a write path and two read paths | Injection against a search tool on 40 questions |
+| [5](labs/kit/handouts/lab05_kv_cache_plane.md) | KV-cache plane | Block hashes and a cache-break diagnosis | Break the prefix cache on purpose, offline and on vLLM + LMCache |
+| [6](labs/kit/handouts/lab06_access_control.md) | Access control and safety | Audit log, sender pairing, a Rule of Two policy engine | Red-team your own agent with and without each defense |
+| [7](labs/kit/handouts/lab07_tools_sandbox.md) | Tools and sandbox | Tool schemas, argument checks, truncation, sandboxes | A vague tool against a designed one |
+| [8](labs/kit/handouts/lab08_skills.md) | Skills | Skill discovery, a budgeted index, `skill_view` | Does a skill help with 0, 1 or 50 installed |
+| [9](labs/kit/handouts/lab09_multi_agent.md) | Multi-agent systems | A delegate tool with isolated children | One agent against an orchestrator with workers |
+| [10](labs/kit/handouts/lab10_extension_layer.md) | Extension layer | Manifests, slots and ordered hooks | One feature built three ways |
+| [11](labs/kit/handouts/lab11_mcp_connectors.md) | MCP, plugins and connectors | An MCP 2026-07-28 client over stdio and HTTP | Mount a server; tokens, requests and defenses |
+| [12](labs/kit/handouts/lab12_harness_plugins.md) | Harness deep-dives | Hermes and OpenClaw adapters for your Lab 3 and 4 engines | The engines in Hermes, OpenClaw and Letta |
+| [13](labs/kit/handouts/lab13_observability_eval.md) | Observability and evaluation | OpenTelemetry spans, graders, an LLM judge | A calibrated judge and a dashboard of two configurations |
+| [14](labs/kit/handouts/lab14_self_improving_harness.md) | Harness² (Module 7) | A propose, probe and compose loop | DEV against HELDOUT tasks, then the Harness² demo |
+| [Capstone](labs/kit/handouts/capstone_bakeoff.md) | All | A team harness | Held-out tasks, a token budget per task, a safety score |
 
-Three small plugins that hook the same idea, "an OS-managed memory plane", into three different runtimes. In the
-lab plan this is Lab 12 ([handout](labs/kit/handouts/lab12_harness_plugins.md)): 1A and 1B now load the engines
-you built in the kit (Labs 3 and 4) through the adapters in `labs/kit/nanoos/ports.py`.
+Three folders predate the lab kit and keep their names. Each one is now part of a numbered lab:
 
-- **1A Hermes Agent** (`hermes_custom_memory.py`): registers your Lab 4 store as a `MemoryProvider` (recall
+### `lab1_memory_plugins/`: Lab 12 (Module 5)
+
+Three small plugins that hook the same idea, "an OS-managed memory plane", into three different runtimes. In
+[Lab 12](labs/kit/handouts/lab12_harness_plugins.md), 12A and 12B load the engines you built in the kit (Labs 3
+and 4) through the adapters in `labs/kit/nanoos/ports.py`.
+
+- **12A Hermes Agent** (`hermes_custom_memory.py`): registers your Lab 4 store as a `MemoryProvider` (recall
   before each call, writes after each turn and in `on_pre_compress`) and your Lab 3 engine as a `ContextEngine`
   that either rewrites the transcript (`compress`) or changes one request (`select_context`). Drop the file into
   `~/.hermes/plugins/nanoos/` as `__init__.py` with a `plugin.yaml`, set `NANOOS_KIT`, then select
   `memory.provider: nanoos-memory` and `context.engine: nanoos-context`.
-- **1B OpenClaw** (`openclaw_context_engine.ts`): a TypeScript shell registered with `api.registerContextEngine`
+- **12B OpenClaw** (`openclaw_context_engine.ts`): a TypeScript shell registered with `api.registerContextEngine`
   and selected through `plugins.slots.contextEngine`; it forwards each call to your engine in Python over stdio.
-- **1C Letta** (`letta_shared_blocks.py`): a supervisor and a worker agent that share one memory block through
+- **12C Letta** (`letta_shared_blocks.py`): a supervisor and a worker agent that share one memory block through
   `block_ids`, so a write by one is visible in the other's context on the next turn.
 
-### Lab 2: the system memory plane in vLLM (Module 3)
+### `lab2_aios_kv_cache/`: Lab 5 (Module 3)
+
+The vLLM part of [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md), and the server Lab 2 measures priorities on.
 
 - `run_vllm_lmcache.sh` starts `vllm serve` with LMCache as the KV offloading backend and a 64 GiB CPU DRAM tier.
 - `vllm_lmcache_nixl_config.py` builds a `KVTransferConfig` using `MultiConnector`, which saves KV to every child
@@ -257,10 +302,10 @@ you built in the kit (Labs 3 and 4) through the adapters in `labs/kit/nanoos/por
 - Exercise: send the same long system prompt with different user questions and compare time-to-first-token with
   and without offloading.
 
-### Lab 3: a self-improving harness (Module 7)
+### `lab3_google_harness2/`: Lab 14, Part C (Module 7)
 
-In the lab plan this is Part C of Lab 14 ([handout](labs/kit/handouts/lab14_self_improving_harness.md)), after
-students build their own propose, probe and compose loop over `nanoos` in `labs/kit/nanoos/improve.py`.
+Part C of [Lab 14](labs/kit/handouts/lab14_self_improving_harness.md), after students build their own propose,
+probe and compose loop over `nanoos` in `labs/kit/nanoos/improve.py`.
 
 - `run_harness2_demo.sh` clones `google-research/harness2`, installs it with `uv`, and runs the bundled
   `harness2-demo --output runs/demo --k 2`. Pass `--lab` to also set up and run one LAB task end to end
@@ -292,10 +337,10 @@ page is linked at the top of each lab file. These projects ship weekly; if a lab
 first. Known caveats:
 
 - Letta's Python `letta-client` (V1 SDK) is being deprecated in favor of the TypeScript-only Letta Agent SDK.
-  The shared-block calls used in Lab 1C are still the documented V1 calls.
+  The shared-block calls used in Lab 12C are still the documented V1 calls.
 - LMCache's in-process mode (environment variables / `LMCACHE_CONFIG_FILE`) is deprecated in favor of LMCache
   MP mode; `--kv-offloading-backend lmcache` is the current `vllm serve` path.
-- `kv_role="kv_both"` is deprecated for `NixlConnector`; Lab 2 uses explicit producer/consumer roles for NIXL.
+- `kv_role="kv_both"` is deprecated for `NixlConnector`; Lab 5 uses explicit producer/consumer roles for NIXL.
 
 ## Roadmap
 

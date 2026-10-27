@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Lab 2: serve a model with LMCache as vLLM's KV offloading backend and a 64 GiB CPU DRAM tier.
+# Lab 5 (folder lab2_aios_kv_cache): serve a model with LMCache as vLLM's KV offloading backend
+# and a 64 GiB CPU DRAM tier.
 #
 # Reference (checked Oct 2026): https://docs.vllm.ai/en/stable/examples/disaggregated/lmcache/
 #   --kv-offloading-backend lmcache   use LMCache for KV offload

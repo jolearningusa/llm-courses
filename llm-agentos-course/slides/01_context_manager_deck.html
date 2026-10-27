@@ -248,7 +248,7 @@ def register(ctx):
         <li>Default engine: <code>agent/context_compressor.py</code>, a lossy summarization algorithm.</li>
         <li>Built-in policy: preflight compression above 50% of the window, gateway auto-compression above 85% between turns, keep the last 20 messages, flush memory first, never split tool pairs.</li>
         <li>Memory providers get <code>on_pre_compress</code> to extract facts before history is summarized.</li>
-        <li>Lab 1A implements a threshold engine with this interface.</li>
+        <li>Lab 12A plugs your Lab 3 engine in through this interface.</li>
       </ul>
     </div>
   </div>
@@ -280,7 +280,7 @@ def register(ctx):
       </ul>
     </div>
   </div>
-  <div class="cite">docs.openclaw.ai/concepts/context-engine; clawhub.ai/martian-engineering/plugins/lossless-claw. Lab 1B implements an OpenClaw context engine.</div>
+  <div class="cite">docs.openclaw.ai/concepts/context-engine; clawhub.ai/martian-engineering/plugins/lossless-claw. Lab 12B runs your Lab 3 engine in this slot.</div>
 </section>
 
 <!-- 11 -->
@@ -330,7 +330,7 @@ def register(ctx):
   <div class="cols">
     <div>
       <ol style="font-size:19px;padding-left:24px">
-        <li>Start from Lab 1: the Hermes threshold engine or the OpenClaw window engine.</li>
+        <li>Start from your Lab 3 engines: threshold compaction or tool-result clearing.</li>
         <li>Implement a second engine: tool-result clearing + todo recitation, or hierarchical summaries with an expand tool.</li>
         <li>Run a 40+ step task (for example, refactor a small repo) with each engine, three times.</li>
         <li>Instrument with the observability deck's setup.</li>

@@ -2,12 +2,12 @@
 
 This is the plan for the course's hands-on work. It gives every lecture deck a lab, explains how the labs fit
 together, and records what similar courses and tutorials do, so the design choices can be checked against them.
-The three labs that exist today (`lab1_memory_plugins/`, `lab2_aios_kv_cache/`, `lab3_google_harness2/`) are
-kept and slotted into the plan; the rest is new work, listed as PRs at the end.
+The three labs that existed before the plan (`lab1_memory_plugins/`, `lab2_aios_kv_cache/`, `lab3_google_harness2/`)
+keep their folder names and are slotted in as Labs 12, 5 and 14; the rest is new work, listed as PRs at the end.
 
-Status: **plan**, written 2026-10-26. Built so far: the lab kit, Labs 0–14 and the capstone handout
-([`kit/`](kit/)), plus today's Labs 1–3. Still to do: the private held-out suite, and renumbering the labs in the
-README, syllabus and master deck.
+Status: written 2026-10-26; built by 2026-10-27. The lab kit, Labs 0–14 and the capstone handout are in
+[`kit/`](kit/), and the README, syllabus pacing and master deck use the numbering below. Still to do: the private
+held-out suite and a pilot pass (section 5).
 
 ---
 
@@ -37,16 +37,16 @@ README, syllabus and master deck.
 | 2 | Scheduler | Discrete-event simulator for program-aware policies | vLLM priority scheduling on the Lab 5 server |
 | 3 | Context manager | Two context engines behind one interface | 40+ step tasks; recall after compaction |
 | 4 | Long-term memory | Memory store with a write path and two read paths | Memory QA set; injection vs. search tool |
-| 5 | KV-cache plane (includes existing Lab 2) | Cache-stable prompt assembly, prefix-hash checker | "Break the cache on purpose" on vLLM + LMCache |
+| 5 | KV-cache plane (includes the old Lab 2) | Cache-stable prompt assembly, prefix-hash checker | "Break the cache on purpose" on vLLM + LMCache |
 | 6 | Access control and safety | Policy engine: allowlists, Rule of Two, approvals | Red-team own agent; AgentDojo; `openclaw security audit` |
 | 7 | Tools and sandbox | Tool registry, result truncation, Docker sandbox runner | Injection-in-data test with and without sandbox |
 | 8 | Skills | `SKILL.md` loader with progressive disclosure | Write, measure and harden one skill in Hermes and OpenClaw |
 | 9 | Multi-agent systems | `delegate` tool with isolated child context | Same task, three architectures; MAST labels |
 | 10 | Extension layer | Plugin manifest, discovery, hooks and slots | One feature as Hermes plugin, OpenClaw plugin and MCP server |
 | 11 | MCP, plugins and connectors | MCP client (stdio + Streamable HTTP) | Build, mount, attack and harden one MCP server |
-| 12 | Harness deep-dives (22–31; existing Lab 1) | Port the Lab 3/4 engines to a plugin interface | Hermes `MemoryProvider` / `ContextEngine`, OpenClaw slot, Letta shared blocks |
+| 12 | Harness deep-dives (22–31; the old Lab 1) | Port the Lab 3/4 engines to a plugin interface | Hermes `MemoryProvider` / `ContextEngine`, OpenClaw slot, Letta shared blocks |
 | 13 | Observability and evaluation | OpenTelemetry spans, graders, LLM judge | Dashboard comparing two harness configurations |
-| 14 | Harness² (Module 7; existing Lab 3) | Propose → probe → compose loop over `nanoos` config | Harness² demo and one LAB task |
+| 14 | Harness² (Module 7; the old Lab 3) | Propose → probe → compose loop over `nanoos` config | Harness² demo and one LAB task |
 | — | Capstone | Team harness | Held-out suite, fixed budget, safety score |
 
 ---
@@ -148,7 +148,7 @@ labs/kit/
 Rules for the kit:
 
 - **Python only for the build track**, so students do not split their time across languages. TypeScript appears
-  only where a real harness requires it (OpenClaw parts of Labs 10 and 12), as in today's Lab 1B.
+  only where a real harness requires it (OpenClaw parts of Labs 10 and 12), as in Lab 12B.
 - **A scripted model for grading.** `models/scripted.py` returns canned assistant turns (including tool calls,
   malformed calls, long outputs and timeouts). Autograder tests check harness behavior, not model quality, so
   they cost nothing and do not flake.
@@ -179,7 +179,7 @@ Each lab README follows the same template:
 - **Default model:** a small, cheap hosted model with tool calling, set once in the kit's config. Students can
   switch to a local model served by vLLM from Lab 5 onward, which also makes cache metrics visible.
 - **GPU labs:** Lab 2 (measure part) and Lab 5. One GPU with 24 GB or more is enough; Lab 5's NIXL part needs
-  two GPUs or two nodes and stays a stretch goal, as in today's Lab 2.
+  two GPUs or two nodes and stays a stretch goal.
 - **Budget per student:** to be calibrated on a pilot run. Labs that repeat runs for pass^k (3, 8, 9, 13, 14,
   capstone) dominate; the plan is to cap each with a fixed number of trials and a published token ceiling.
 
@@ -205,7 +205,8 @@ student can explain each design choice and each number.
 
 ## 4. The labs
 
-Week numbers assume a 14-week term with the seven modules taught in the README's order. Each lab is due one week
+Week numbers assume a 15-week term (14 lecture weeks and a capstone week) with the seven modules taught in the
+README's order; the README's pacing table lists them. Each lab is due one week
 after its lecture unless noted.
 
 ### Lab 0. Watch a harness work (Master deck, week 1)
@@ -272,21 +273,21 @@ after its lecture unless noted.
   in path B. Then wire the same store into Letta (core vs. archival) and compare with path A.
 - **Borrowed from:** DeepLearning.AI *LLMs as Operating Systems* (self-editing memory from scratch, then Letta).
 
-### Lab 5. The KV-cache plane (KV-cache deck, week 5; contains today's Lab 2)
+### Lab 5. The KV-cache plane (KV-cache deck, week 5; contains the old Lab 2)
 
 - **Goal:** connect harness decisions to cache hits, latency and cost.
 - **Build:** `prompt.py` checks a session's prompts for prefix stability: it hashes each prompt in vLLM-sized
   blocks and reports the first block that changed between turns and why (timestamp, tool list, memory edit,
   compaction).
 - **Measure:** the deck's "break the cache on purpose" exercise. Serve a model with vLLM (prefix caching on) using
-  today's `lab2_aios_kv_cache/run_vllm_lmcache.sh`, point `nanoos` and then Hermes or OpenClaw at it, and run a
+  `lab2_aios_kv_cache/run_vllm_lmcache.sh`, point `nanoos` and then Hermes or OpenClaw at it, and run a
   scripted 20-turn session. Repeat with one change each: a timestamp in the system prompt, a tool added at turn
   10, a memory edit at turn 10, compaction at turn 15. Repeat the baseline with `--kv-cache-dtype fp8` and with
   LMCache CPU offload. Report hit rate and TTFT per turn, prefill tokens per session, the most concurrent sessions
   before eviction, and the projected API cost with the deck's cache-price multipliers.
 - **Stretch:** in `nano-vllm`, add a prefix-cache hit counter per request, or a TTL that keeps a session's blocks
   during a tool call (the Continuum idea from Lab 2), and measure it; or the NIXL prefill/decode split from
-  today's `vllm_lmcache_nixl_config.py` on two GPUs.
+  `vllm_lmcache_nixl_config.py` on two GPUs.
 - **Budget:** one GPU (24 GB or more) for a 7–8B model.
 
 ### Lab 6. Access control and red-teaming (Access control deck, week 6)
@@ -379,14 +380,14 @@ after its lecture unless noted.
 - **Note:** check which SDKs support 2026-07-28 before the lab is released; the protocol changed shape in that
   version (no initialize handshake, no sessions).
 
-### Lab 12. Porting to real harness plugin APIs (Harness deep-dives 22–31, week 12; today's Lab 1)
+### Lab 12. Porting to real harness plugin APIs (Harness deep-dives 22–31, week 12; the old Lab 1)
 
 - **Goal:** take what was built in `nanoos` and ship it as plugins for production harnesses.
-- **Build:** today's Lab 1, unchanged in scope: **1A** a Hermes `MemoryProvider` + `ContextEngine`, **1B** an
-  OpenClaw context engine selected through `plugins.slots.contextEngine`, **1C** Letta supervisor and worker
-  agents sharing a block. The change is that 1A and 1B wrap the student's own Lab 3 and Lab 4 engines instead
+- **Build:** the old Lab 1, unchanged in scope: **12A** a Hermes `MemoryProvider` + `ContextEngine`, **12B** an
+  OpenClaw context engine selected through `plugins.slots.contextEngine`, **12C** Letta supervisor and worker
+  agents sharing a block. The change is that 12A and 12B wrap the student's own Lab 3 and Lab 4 engines instead
   of the template logic.
-- **Measure:** rerun the Lab 3 long tier through Hermes with the student's engine vs. the built-in one; for 1C,
+- **Measure:** rerun the Lab 3 long tier through Hermes with the student's engine vs. the built-in one; for 12C,
   show a write by one agent appearing in the other's context on the next turn.
 - **Note:** this lab follows the harness deep-dive slides, so it can move earlier (after Lab 4) if the course
   teaches the companion deck in Module 5 as the README suggests today.
@@ -406,14 +407,14 @@ after its lecture unless noted.
   students did not write, as Stanford CS329Z HW2 does.
 - **Borrowed from:** DeepLearning.AI *Evaluating AI Agents*, Kaggle day 4, the Hugging Face bonus unit.
 
-### Lab 14. A self-improving harness (Harness² / Module 7, week 14; today's Lab 3)
+### Lab 14. A self-improving harness (Harness² / Module 7, week 14; the old Lab 3)
 
 - **Goal:** let the harness improve itself, and keep only the changes the evidence supports.
 - **Build:** a small propose → probe → compose loop over `nanoos`'s editable parts (system prompt, tool
   descriptions, skills, context-engine settings, policy rules): a proposer model suggests edits from failed
   traces, each edit is probed on the same failing tasks, adopted edits are composed and checked on a held-back
   set, and every decision is logged with the course's lesson schema (`sample_lesson_entry.jsonl`).
-- **Measure:** today's Lab 3: the Harness² demo (`run_harness2_demo.sh`) and, with credentials, one LAB task end to
+- **Measure:** the old Lab 3: the Harness² demo (`run_harness2_demo.sh`) and, with credentials, one LAB task end to
   end; read the run outputs and fill in lesson records. Then compare Harness²'s adopted edits with the edits the
   student's own loop adopted on `nanoos`: success before and after, cost of the improvement loop, and how many
   adopted edits held on the held-back set.
@@ -443,7 +444,7 @@ Following the repo's one-task-one-PR workflow, in this order:
    [`lab03`](kit/handouts/lab03_context_engines.md).
 3. **Lab 4** (memory) and the existing TODO item "a lab for the memory deck exercise".
    Done: [`lab04`](kit/handouts/lab04_long_term_memory.md).
-4. **Lab 5**: move today's `lab2_aios_kv_cache/` under the new numbering (or keep the folder name and link it),
+4. **Lab 5**: move the old `lab2_aios_kv_cache/` under the new numbering (or keep the folder name and link it),
    add `prompt.py` and the exercise README. Done: [`lab05`](kit/handouts/lab05_kv_cache_plane.md), which keeps
    the folder name and links it.
 5. **Labs 6–8** (policy, tools and sandbox, skills), including the red-team fixtures and their safety notes.
@@ -458,14 +459,14 @@ Following the repo's one-task-one-PR workflow, in this order:
    example plugins in [`kit/plugins/`](kit/plugins/); [`lab11`](kit/handouts/lab11_mcp_connectors.md), with a
    reference server in [`kit/tasks/mcp_notes.py`](kit/tasks/mcp_notes.py) and without the poisoned tool
    description (a benign definition change tests pinning, and Lab 6's fixtures cover attacks).
-7. **Lab 12**: rework today's `lab1_memory_plugins/` to wrap the students' engines.
+7. **Lab 12**: rework the old `lab1_memory_plugins/` to wrap the students' engines.
    Done: [`lab12`](kit/handouts/lab12_harness_plugins.md), with the adapters in `kit/nanoos/ports.py`; the folder
-   keeps its name, and 1B is now a TypeScript shell that forwards to the Python engine over stdio.
+   keeps its name, and 12B is now a TypeScript shell that forwards to the Python engine over stdio.
 8. **Lab 13**: OpenTelemetry, graders, judge calibration set, dashboard.
    Done: [`lab13`](kit/handouts/lab13_observability_eval.md), with spans in `kit/nanoos/otel.py` (OTLP JSON, no SDK
    needed), graders in `kit/nanoos/graders.py` and 30 labeled cases in
    [`kit/tasks/judge_cases.json`](kit/tasks/judge_cases.json).
-9. **Lab 14**: improvement loop; link today's `lab3_google_harness2/`.
+9. **Lab 14**: improvement loop; link the old `lab3_google_harness2/`.
    Done: [`lab14`](kit/handouts/lab14_self_improving_harness.md), with the loop in `kit/nanoos/improve.py` and a
    simulated agent with bad habits in [`kit/tasks/improve_sim.py`](kit/tasks/improve_sim.py); Part C runs the
    Harness² demo from `lab3_google_harness2/`, which keeps its name.
@@ -473,6 +474,9 @@ Following the repo's one-task-one-PR workflow, in this order:
    Done: the [handout](kit/handouts/capstone_bakeoff.md) and the scorer `kit/capstone_eval.py` (dev suite =
    basic + long tiers; the held-out suite is a private file the staff pass with `--heldout`).
 11. **README and syllabus update:** renumber labs, update the course map slide in the master deck, and pacing.
+   Done: the README has a week-by-week pacing table and a lab table, the master deck's course map lists the labs
+   per module, and the decks, handouts and the three old folders' headers use the new numbers (12A–12C for the
+   old 1A–1C).
 
 Before the course runs, a pilot pass through all labs should set the real token budgets, check every upstream
 API again (the README's "fast-moving APIs" note applies), and time each lab.
@@ -481,9 +485,8 @@ API again (the README's "fast-moving APIs" note applies), and time each lab.
 
 ## 6. Open questions
 
-- **Lab numbering.** This plan numbers labs by lecture (0–14). The master deck and README call today's labs
-  Lab 1, 2 and 3. Renumbering touches the master deck's course map; keeping both names for a term is the
-  alternative.
+- **Lab numbering** (resolved 2026-10-27). Labs are numbered by lecture (0–14) everywhere; the three old folders
+  keep their names, and their headers say which lab they belong to.
 - **Hosted model and credits.** Which provider and model to standardize on, and whether students get credits.
 - **GPU access.** Labs 2 and 5 need a GPU; a shared course server running vLLM would let every student hit the
   same endpoint and still read its metrics.
