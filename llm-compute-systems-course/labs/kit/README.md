@@ -56,6 +56,7 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 - [L8 — Parallel layouts, recomputation and source tracing](handouts/lab08_parallelism.md)
 - [L9 — Route, group and combine expert work](handouts/lab09_moe.md)
 - [L10 — Recover the computation, not only the weights](handouts/lab10_recovery.md)
+- [L11 — State ownership and inference-cache mechanisms](handouts/lab11_cache.md)
 
 ## L5 attention execution
 
@@ -76,3 +77,7 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 ## L9–L10 MoE and recovery
 
 [L9](handouts/lab09_moe.md) validates local routed expert combine; [L10](handouts/lab10_recovery.md) validates actual CPU checkpoint/resume with a missing-RNG negative control. Neither substitutes for distributed dispatcher or DCP failure testing.
+
+## L11 serving and caches
+
+[L11](handouts/lab11_cache.md) tests a logical full-block prefix model with identity, shared ownership, pressure and cancellation. It stores no KV tensors. A vLLM/llama.cpp comparison worksheet is provided; no engine run is claimed.
