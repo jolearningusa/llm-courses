@@ -82,6 +82,8 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [Reading a Production Training Stack](slides/18_training_stack_walkthrough.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [MoE Routing, Dispatch and Grouped Compute](slides/19_moe_execution.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [Checkpointing, Input State and Useful Training Work](slides/20_checkpoint_recovery.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Serving Iterations, Admission and State Ownership](slides/21_serving_scheduler.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [KV, Prefix and Response Caches across Inference Stacks](slides/22_kv_prefix_cache_mechanisms.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -108,10 +110,12 @@ llm-compute-systems-course/
 │   │   │   ├── lab07_distributed.md
 │   │   │   ├── lab08_parallelism.md
 │   │   │   ├── lab09_moe.md
-│   │   │   └── lab10_recovery.md
+│   │   │   ├── lab10_recovery.md
+│   │   │   └── lab11_cache.md
 │   │   ├── tests/
 │   │   │   ├── test_attention.py
 │   │   │   ├── test_budgets.py
+│   │   │   ├── test_cache.py
 │   │   │   ├── test_distributed.py
 │   │   │   ├── test_gemm.py
 │   │   │   ├── test_measurement.py
@@ -123,6 +127,7 @@ llm-compute-systems-course/
 │   │   ├── README.md
 │   │   ├── attention_lab.py
 │   │   ├── budgets.py
+│   │   ├── cache_lab.py
 │   │   ├── distributed_lab.py
 │   │   ├── gemm_lab.py
 │   │   ├── measurement.py
@@ -169,7 +174,9 @@ llm-compute-systems-course/
 │   ├── 17_parallelism_recomputation.html
 │   ├── 18_training_stack_walkthrough.html
 │   ├── 19_moe_execution.html
-│   └── 20_checkpoint_recovery.html
+│   ├── 20_checkpoint_recovery.html
+│   ├── 21_serving_scheduler.html
+│   └── 22_kv_prefix_cache_mechanisms.html
 ├── BUILD_PLAN.md
 ├── LICENSE
 ├── README.md

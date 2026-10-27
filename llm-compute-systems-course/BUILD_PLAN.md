@@ -112,8 +112,8 @@ The units below are implementation milestones, not a promise to combine everythi
 | P7 | Decks 13–14 and L6 | P6 | Merged in #55; packed CPU quantization and BF16 autocast, accelerated recipes unverified |
 | P8 | Decks 15–16 and L7 | P7 | Merged in #56; CPU Gloo DDP and analytical collective model, accelerator path unverified |
 | P9 | Decks 17–18 and L8 | P8 | Merged in #58; analytical layouts, CPU recomputation check and pinned source walkthrough |
-| P10 | Decks 19–20 and L9–L10 | P9 | Implemented local CPU MoE and deterministic checkpoint/resume; distributed extensions unverified |
-| P11 | Decks 21–22 and L11 | P10 | Planned |
+| P10 | Decks 19–20 and L9–L10 | P9 | Merged in #59; local CPU MoE and deterministic checkpoint/resume; distributed extensions unverified |
+| P11 | Decks 21–22 and L11 | P10 | Implemented logical prefix ownership simulation and two-engine comparison worksheet; engines not executed |
 | P12 | Decks 23–24 and L12 | P11 | Planned |
 | P13 | Decks 25–26 and L13A/B | P12 | Planned |
 | P14 | Decks 27–28 and L14 | P13 | Planned |
