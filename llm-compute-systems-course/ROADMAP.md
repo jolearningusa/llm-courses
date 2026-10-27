@@ -13,6 +13,10 @@ This research/outline installment is deliberately reviewable before full slides 
 
 [BUILD_PLAN.md](BUILD_PLAN.md) specifies each planned deck, paired lab work, required artifacts, dependencies, serial PR units and completion gates. The user authorized continuing one unit at a time on 2026-10-26: merge each green PR, refresh `origin/main`, and only then start the next.
 
+## Released foundation
+
+The master overview, workload/roofline lecture and short architecture primer now accompany a standard-library L0 calculator, worked exercises and arithmetic tests. Results are analytical; no GPU benchmark or student-duration pilot is claimed.
+
 ## Follow-on installments
 
 1. **Measurement foundation:** opening lecture deck, resource calculator, workload fixtures, environment manifests and L0–L2 executable kit. Pilot CPU and one-GPU paths.

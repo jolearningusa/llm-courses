@@ -102,8 +102,8 @@ The units below are implementation milestones, not a promise to combine everythi
 
 | Unit | Scope | Depends on | Status |
 |---|---|---|---|
-| P0 | This build plan and cross-links | Merged research blueprint | In preparation |
-| P1 | Master, decks 01–02 and L0; common fixture/result contracts | P0 | Planned |
+| P0 | This build plan and cross-links | Merged research blueprint | Merged in #45 |
+| P1 | Master, decks 01–02 and L0; common fixture/result contracts | P0 | Implemented; CPU checks passed, student pilot pending |
 | P2 | Decks 03–04 and L1; shared timing/profiling guidance | P1 | Planned |
 | P3 | Decks 05–06 and L2 | P2 | Planned |
 | P4 | Decks 07–08 and L3 | P3 | Planned |
