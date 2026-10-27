@@ -8,6 +8,8 @@ The subject is the computing system. A small decoder and a small MoE layer provi
 
 Every optimization must answer: which resource is limiting, which mechanism changes that limit, which correctness conditions hold, and whether the job-level objective improves. Training uses useful tokens/s and time to a fixed validation-loss target where feasible. Serving uses accepted output tokens/s at stated latency and quality constraints. Energy and cost are evaluated only when measurement boundaries and pricing assumptions are supplied.
 
+The [build plan](BUILD_PLAN.md) turns every lecture below into a named deck and paired practical exercise, delivered as sequential merged PRs.
+
 ## Weekly schedule
 
 | Week | Lecture A | Lecture B | Practical evidence and required reading |

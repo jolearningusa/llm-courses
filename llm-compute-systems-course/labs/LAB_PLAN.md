@@ -72,6 +72,10 @@ Use identical weights/input for eager, compiled, exported-and-reloaded, AOTInduc
 
 Draw a training and an agentic serving dataflow on the documented Rubin topology. Map each bottleneck to an actual NVIDIA software layer. Compare the corresponding AMD responsibility and identify a supported target path; list reused, retuned and replaced components. Acceptance: all hardware facts/source dates cited, vendor claims separated from measurements, software compatibility unverified until tested. Include both retain/offload/recompute and a collective/compute example. Hardware access is an extension, not a prerequisite.
 
+## Deck and kit production mapping
+
+The [slide and lab build plan](../BUILD_PLAN.md) maps every lecture to its paired exercise and defines the kit files, environment paths, validation gates and serial implementation order. This document remains the experiment specification; the build plan tracks production.
+
 ## Release order
 
 Implement shared measurement/reference utilities and L0–L2 first; then kernel labs L3–L6, distributed training L7–L10, serving/cache L11–L13 and deployment/integration L14–L15. Ship bounded lab kits in separate PRs following [the roadmap](../ROADMAP.md). Each release must have a named tested configuration and clear skip behavior for unavailable hardware.

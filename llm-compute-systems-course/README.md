@@ -15,6 +15,7 @@ A systems engineering course on building and measuring the computing stack for L
    Compare the [NVIDIA library map](notes/nvidia_stack.md) with the [AMD ROCm stack](notes/amd_stack.md).
 7. [AgentOS inference and cache mechanisms](notes/agentic_caching.md): vLLM, llama.cpp and SGLang, tool waits and cache policy.
 8. [Lab plan](labs/LAB_PLAN.md) and [experiment report](labs/report_template.md).
+9. [Slide and lab build plan](BUILD_PLAN.md): 32 planned decks, L0–L15 kits, serial PR order and release gates.
 
 ## Audience and prerequisites
 
@@ -58,7 +59,7 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 
 ## Slide decks
 
-No slide decks are included in this blueprint. Planned decks follow the syllabus blocks; add each deck here when it is implemented and checked.
+No slide decks are included in this blueprint. The [build plan](BUILD_PLAN.md) maps all 30 lecture topics, the master overview and capstone workshop to planned decks and paired practice. Add each deck here when it is implemented and checked.
 
 ## Assessment
 
@@ -72,6 +73,7 @@ llm-compute-systems-course/
 ├── LICENSE
 ├── SYLLABUS.md
 ├── ROADMAP.md
+├── BUILD_PLAN.md
 ├── notes/
 │   ├── workload_primer.md
 │   ├── pytorch_stack.md
