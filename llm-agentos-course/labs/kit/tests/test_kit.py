@@ -286,3 +286,80 @@ class TestResearchFixtures(unittest.TestCase):
                         path = step["tool_calls"][0]["arguments"].get("path")
                         self.assertTrue(path in task.files or any(f.startswith(path + "/") for f in task.files))
                         self.assertNotIn("..", path)
+
+
+class TestNotesServer(unittest.TestCase):
+    """The Lab 11 reference MCP server checks requests the way the 2026-07-28 spec asks."""
+
+    def post(self, url, body, headers=None, method="POST"):
+        import urllib.error
+        import urllib.request
+        h = {"Content-Type": "application/json", "Accept": "application/json, text/event-stream"}
+        h.update(headers or {})
+        req = urllib.request.Request(url, data=json.dumps(body).encode() if body is not None else None, headers=h,
+                                     method=method)
+        try:
+            with urllib.request.urlopen(req, timeout=10) as r:
+                data = r.read()
+                return r.status, json.loads(data) if data else None
+        except urllib.error.HTTPError as e:
+            data = e.read()
+            return e.code, json.loads(data) if data else None
+
+    def test_http_validation(self):
+        from tasks.mcp_notes import M, NotesServer, start_http
+        server = NotesServer()
+        httpd, url = start_http(server)
+        self.addCleanup(httpd.shutdown)
+
+        def call(name, args, version="2026-07-28", caps=None, extra=None):
+            meta = {M + "protocolVersion": version, M + "clientInfo": {"name": "t", "version": "1"},
+                    M + "clientCapabilities": {"elicitation": {}} if caps is None else caps}
+            return {"jsonrpc": "2.0", "id": 1, "method": "tools/call",
+                    "params": {"name": name, "arguments": args, "_meta": meta, **(extra or {})}}
+
+        good = {"MCP-Protocol-Version": "2026-07-28", "Mcp-Method": "tools/call", "Mcp-Name": "read_note"}
+        status, body = self.post(url, call("read_note", {"id": "n03"}), good)
+        self.assertEqual(status, 200)
+        self.assertIn("Chen Smith", body["result"]["content"][0]["text"])
+        for headers in ({**good, "Mcp-Name": "send_note"}, {k: v for k, v in good.items() if k != "Mcp-Method"}):
+            status, body = self.post(url, call("read_note", {"id": "n03"}), headers)
+            self.assertEqual((status, body["error"]["code"]), (400, -32020))
+        status, body = self.post(url, call("search_notes", {"query": "", "folder": "ops"}),
+                                 {**good, "Mcp-Name": "search_notes"})
+        self.assertEqual((status, body["error"]["code"]), (400, -32020), "Mcp-Param-Folder is required")
+        status, body = self.post(url, call("read_note", {"id": "n03"}, "2027-01-01"),
+                                 {**good, "MCP-Protocol-Version": "2027-01-01"})
+        self.assertEqual((status, body["error"]["code"], body["error"]["data"]["supported"]),
+                         (400, -32022, ["2026-07-28"]))
+        status, body = self.post(url, {"jsonrpc": "2.0", "id": 2, "method": "nope/x", "params": {
+            "_meta": {M + "protocolVersion": "2026-07-28"}}}, {**good, "Mcp-Method": "nope/x"})
+        self.assertEqual((status, body["error"]["code"]), (404, -32601))
+        self.assertEqual(self.post(url, {"jsonrpc": "2.0", "method": "notifications/cancelled"})[0], 202)
+        self.assertEqual(self.post(url, None, method="GET")[0], 405)
+        status, _ = self.post(url, call("read_note", {"id": "n03"}), {**good, "Origin": "https://evil.example"})
+        self.assertEqual(status, 403)
+        send = {**good, "Mcp-Name": "send_note"}
+        args = {"id": "n01", "to": "a@example.org"}
+        status, body = self.post(url, call("send_note", args, caps={}), send)
+        self.assertEqual((status, body["error"]["code"]), (400, -32021))
+        status, body = self.post(url, call("send_note", args), send)
+        r = body["result"]
+        self.assertEqual(r["resultType"], "input_required")
+        self.assertEqual(r["inputRequests"]["confirm"]["method"], "elicitation/create")
+        accept = {"confirm": {"action": "accept", "content": {"confirm": True}}}
+        forged = call("send_note", {**args, "to": "b@example.org"},
+                      extra={"inputResponses": accept, "requestState": r["requestState"]})
+        status, body = self.post(url, forged, send)
+        self.assertEqual(body["error"]["code"], -32602, "requestState is bound to the call's arguments")
+        status, body = self.post(url, call("send_note", args, extra={"inputResponses": accept,
+                                                                     "requestState": r["requestState"]}), send)
+        self.assertFalse(body["result"]["isError"])
+        self.assertEqual(server.sent, [args])
+
+    def test_tasks_need_the_tools(self):
+        from tasks.mcp_notes import TASKS
+        for task in TASKS:
+            with self.subTest(task=task.id):
+                self.assertFalse(task.check("I don't know", [{"id": "n99", "to": "x@example.org"}]))
+                self.assertTrue(task.demo[-1]["content"])
