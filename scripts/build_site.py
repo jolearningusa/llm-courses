@@ -25,6 +25,7 @@ import html
 import posixpath
 import re
 import shutil
+import subprocess
 from pathlib import Path
 
 import markdown
@@ -69,6 +70,8 @@ img { max-width:100%; }
 .card p { margin:0 0 12px; color:var(--muted); }
 .card ul { margin:0; padding-left:20px; }
 .muted { color:var(--muted); }
+.notice { border:1px solid #d4a72c; border-left-width:4px; border-radius:6px; background:#fff8c5; color:#3b2300; padding:12px 16px; margin:0 0 24px; }
+@media (prefers-color-scheme: dark) { .notice { background:#272115; color:#e3b341; border-color:#9e6a03; } }
 .materials { display:flex; gap:32px; flex-wrap:wrap; margin:0 0 24px; }
 .materials ul { margin:4px 0 0; padding-left:20px; }
 .toolbar { display:flex; gap:16px; flex-wrap:wrap; margin:0 0 16px; font-size:14px; }
@@ -190,6 +193,20 @@ def is_text(path: Path) -> bool:
     return b"\0" not in chunk
 
 
+def last_updated(path: Path) -> str | None:
+    """Date (YYYY-MM-DD) of the last commit touching path; needs full history (fetch-depth: 0 in CI)."""
+    try:
+        done = subprocess.run(["git", "log", "-1", "--format=%cs", "--", str(path)],
+                              cwd=ROOT, capture_output=True, text=True, check=True)
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return done.stdout.strip() or None
+
+
+def updated_line(c: dict) -> str:
+    return f'<p class="muted">Last updated {c["updated"]}</p>' if c["updated"] else ""
+
+
 def build_course(course: Path, out: Path) -> dict:
     name = course.name
     readme = (course / "README.md").read_text(encoding="utf-8")
@@ -258,10 +275,11 @@ def build_course(course: Path, out: Path) -> dict:
         crumbs = [(title, "../" * (depth - 1) + "index.html")]
         (out / name / sub / "index.html").write_text(page(sub.as_posix(), body, depth, crumbs), encoding="utf-8")
 
-    info = {"name": name, "title": title, "summary": first_paragraph(readme), "decks": decks, "labs": labs, "refs": refs}
+    info = {"name": name, "title": title, "summary": first_paragraph(readme), "decks": decks, "labs": labs, "refs": refs,
+            "updated": last_updated(course)}
     panel = materials(info, "")
     (out / name / "index.html").write_text(
-        page(title, f'<div class="card materials">{panel}</div>' + render_markdown(readme, f"{name}/README.md"), 1, [], f"{name}/README.md"),
+        page(title, updated_line(info) + f'<div class="card materials">{panel}</div>' + render_markdown(readme, f"{name}/README.md"), 1, [], f"{name}/README.md"),
         encoding="utf-8",
     )
     return info
@@ -291,11 +309,14 @@ def build_index(courses: list[dict], out: Path) -> None:
         parts = [
             f'<li class="card"><h2><a href="{base}index.html">{html.escape(c["title"])}</a></h2>',
             f"<p>{html.escape(c['summary'])}</p>",
+            updated_line(c),
         ]
         parts.append(materials(c, base) + "</li>")
         cards.append("".join(parts))
     body = (
         f"<h1>{SITE_TITLE}</h1>"
+        '<p class="notice" role="note"><strong>These courses are under construction.</strong> '
+        "The materials have not yet been vetted for accuracy.</p>"
         f'<p class="muted">{len(courses)} course{"s" if len(courses) != 1 else ""}. '
         "Slide decks open full-screen; use ← / → to move between slides and F for full screen.</p>"
         f'<ul class="cards">{"".join(cards)}</ul>'
