@@ -93,6 +93,7 @@ llm-agentos-course/
 │   │   ├── mcp_eval.py                        # Lab 11: mount an MCP server, measure tokens, requests and defenses
 │   │   ├── ports_eval.py                      # Lab 12: your Lab 3 engines through Hermes and OpenClaw contracts
 │   │   ├── obs_eval.py                        # Lab 13: trace, grade and compare two configurations; calibrate a judge
+│   │   ├── improve_eval.py                    # Lab 14: the improvement loop on DEV and HELDOUT tasks, with its lessons
 │   │   ├── grade.py                           # Autograder: tests/test_labNN.py against the scripted model
 │   │   ├── report_template.md                 # The one-page report every lab hands in
 │   │   ├── nanoos/
@@ -116,6 +117,7 @@ llm-agentos-course/
 │   │   │   ├── hosts.py                       # Lab 12: hosts that call plugins as Hermes and OpenClaw do
 │   │   │   ├── otel.py                        # Lab 13: OpenTelemetry GenAI spans with redaction, OTLP export (stubs)
 │   │   │   ├── graders.py                     # Lab 13: exact match, trajectory, convergence, LLM judge, agreement (stubs)
+│   │   │   ├── improve.py                     # Lab 14: propose, probe and compose harness edits; lessons (stubs)
 │   │   │   └── trace.py                       # Lab 0: JSONL tracer, summarize_trace, token_breakdown (stubs)
 │   │   ├── models/
 │   │   │   ├── __init__.py
@@ -149,6 +151,7 @@ llm-agentos-course/
 │   │   │   ├── shell_ops.py                   # Lab 10: five shell tasks on a simulated shell that runs nothing
 │   │   │   ├── mcp_notes.py                   # Lab 11: a reference MCP notes server and five tasks
 │   │   │   ├── judge_cases.json               # Lab 13: 30 answers labeled pass or fail, to calibrate a judge
+│   │   │   ├── improve_sim.py                 # Lab 14: a simulated agent whose bad habits harness edits remove
 │   │   │   ├── redteam/
 │   │   │   │   ├── __init__.py                # Lab 6: an office with planted injections and a fake secret
 │   │   │   │   └── README.md                  # Safety notes for the attack fixtures
@@ -176,7 +179,8 @@ llm-agentos-course/
 │   │   │   ├── test_lab10.py                  # Lab 10 autograder tests
 │   │   │   ├── test_lab11.py                  # Lab 11 autograder tests
 │   │   │   ├── test_lab12.py                  # Lab 12 autograder tests
-│   │   │   └── test_lab13.py                  # Lab 13 autograder tests
+│   │   │   ├── test_lab13.py                  # Lab 13 autograder tests
+│   │   │   └── test_lab14.py                  # Lab 14 autograder tests
 │   │   └── handouts/
 │   │       ├── lab00_watch_a_harness.md       # Lab 0: set up the kit, write the tracer, watch two harnesses
 │   │       ├── lab01_agent_loop.md            # Lab 1: a loop that survives errors, stalls and repetition
@@ -191,7 +195,8 @@ llm-agentos-course/
 │   │       ├── lab10_extension_layer.md       # Lab 10: a plugin host, then one feature built three ways
 │   │       ├── lab11_mcp_connectors.md        # Lab 11: an MCP client, then mount a server and measure defenses
 │   │       ├── lab12_harness_plugins.md       # Lab 12: port your engines to Hermes, OpenClaw and Letta
-│   │       └── lab13_observability_eval.md    # Lab 13: spans and graders, a calibrated judge, a dashboard
+│   │       ├── lab13_observability_eval.md    # Lab 13: spans and graders, a calibrated judge, a dashboard
+│   │       └── lab14_self_improving_harness.md  # Lab 14: an improvement loop over nanoos, then Harness²
 │   ├── lab1_memory_plugins/
 │   │   ├── hermes_custom_memory.py            # Lab 12 (1A): Hermes plugin that loads your engines from the kit
 │   │   ├── openclaw_context_engine.ts         # Lab 12 (1B): OpenClaw shell that forwards to your Python engine
@@ -222,7 +227,7 @@ exist today; the plan slots them in as Labs 12, 5 and 14.
 
 The new labs are built on a shared [lab kit](labs/kit/): a small student harness (`nanoos`), a task suite,
 a runner that writes the same metrics table in every lab, and an autograder that tests against a scripted model.
-Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md), then [Lab 1](labs/kit/handouts/lab01_agent_loop.md), [Lab 2](labs/kit/handouts/lab02_scheduler.md), [Lab 3](labs/kit/handouts/lab03_context_engines.md), [Lab 4](labs/kit/handouts/lab04_long_term_memory.md), [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md), [Lab 6](labs/kit/handouts/lab06_access_control.md), [Lab 7](labs/kit/handouts/lab07_tools_sandbox.md), [Lab 8](labs/kit/handouts/lab08_skills.md), [Lab 9](labs/kit/handouts/lab09_multi_agent.md), [Lab 10](labs/kit/handouts/lab10_extension_layer.md), [Lab 11](labs/kit/handouts/lab11_mcp_connectors.md), [Lab 12](labs/kit/handouts/lab12_harness_plugins.md) and [Lab 13](labs/kit/handouts/lab13_observability_eval.md). The existing labs keep their names for now.
+Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md), then [Lab 1](labs/kit/handouts/lab01_agent_loop.md), [Lab 2](labs/kit/handouts/lab02_scheduler.md), [Lab 3](labs/kit/handouts/lab03_context_engines.md), [Lab 4](labs/kit/handouts/lab04_long_term_memory.md), [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md), [Lab 6](labs/kit/handouts/lab06_access_control.md), [Lab 7](labs/kit/handouts/lab07_tools_sandbox.md), [Lab 8](labs/kit/handouts/lab08_skills.md), [Lab 9](labs/kit/handouts/lab09_multi_agent.md), [Lab 10](labs/kit/handouts/lab10_extension_layer.md), [Lab 11](labs/kit/handouts/lab11_mcp_connectors.md), [Lab 12](labs/kit/handouts/lab12_harness_plugins.md), [Lab 13](labs/kit/handouts/lab13_observability_eval.md) and [Lab 14](labs/kit/handouts/lab14_self_improving_harness.md). The existing labs keep their names for now.
 
 ### Lab 1: memory and context plugins (Module 5)
 
@@ -250,6 +255,9 @@ you built in the kit (Labs 3 and 4) through the adapters in `labs/kit/nanoos/por
   and without offloading.
 
 ### Lab 3: a self-improving harness (Module 7)
+
+In the lab plan this is Part C of Lab 14 ([handout](labs/kit/handouts/lab14_self_improving_harness.md)), after
+students build their own propose, probe and compose loop over `nanoos` in `labs/kit/nanoos/improve.py`.
 
 - `run_harness2_demo.sh` clones `google-research/harness2`, installs it with `uv`, and runs the bundled
   `harness2-demo --output runs/demo --k 2`. Pass `--lab` to also set up and run one LAB task end to end

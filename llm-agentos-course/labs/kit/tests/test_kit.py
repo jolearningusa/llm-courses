@@ -508,3 +508,54 @@ class TestObservabilityProvided(unittest.TestCase):
             rows = list(csv.DictReader(open(Path(tmp) / "base" / "metrics.csv", encoding="utf-8")))
             self.assertEqual([r["success"] for r in rows], ["1"] * 4)
             self.assertIn("pass@1", (Path(tmp) / "dashboard.html").read_text(encoding="utf-8"))
+
+
+class TestImproveProvided(unittest.TestCase):
+    """Lab 14's provided pieces: the simulated agent, edits, the harness runner and the scripted proposer."""
+
+    def test_habits_follow_the_harness(self):
+        from nanoos.improve import READ_FIRST, WRITE_STRICT
+        from tasks.improve_sim import active_habits
+        tools = WorkspaceTools(Path(tempfile.mkdtemp())).schemas()
+        sys_msg = [{"role": "system", "content": "You are an assistant."}]
+        self.assertEqual(active_habits("b01_count_lines", sys_msg, tools), ["guess"])
+        self.assertEqual(active_habits("b01_count_lines", [{"role": "system", "content": READ_FIRST}], tools), [])
+        self.assertEqual(active_habits("b03_fix_typo", sys_msg, tools), [])
+        strict = [dict(t, function=dict(t["function"], description=WRITE_STRICT))
+                  if t["function"]["name"] == "write_file" else t for t in tools]
+        self.assertEqual(active_habits("b03_fix_typo", sys_msg, strict), ["no_overwrite"])
+        self.assertEqual(active_habits("b08_collect_todos", sys_msg, strict), [])
+
+    def test_edits_runner_and_scores(self):
+        from nanoos.improve import (Edit, Evaluator, HarnessConfig, ScriptedProposer, apply_edit, conflicts,
+                                    failure_report, success)
+        from tasks.basic import TASKS
+        from tasks.improve_sim import DEV, HELDOUT, HabitModel
+        cfg = HarnessConfig()
+        new = apply_edit(cfg, Edit("tool:write_file", "set", "Paths are relative to the workspace root."))
+        self.assertEqual(cfg.tool_descriptions, {})
+        self.assertTrue(conflicts(Edit("setting:max_steps", "set", 8), Edit("setting:max_steps", "set", 9)))
+        self.assertFalse(conflicts(Edit("system_prompt", "append", "a"), Edit("system_prompt", "append", "b")))
+        ev = Evaluator(TASKS, HabitModel, Path(tempfile.mkdtemp()))
+        dev = ev.run(cfg, DEV)
+        self.assertAlmostEqual(success(dev), 2 / 6)
+        self.assertAlmostEqual(success(ev.run(cfg, HELDOUT)), 3 / 4)
+        self.assertEqual(sorted(t for t, r in ev.run(new, ["b08_collect_todos"]).items() if r[0].success),
+                         ["b08_collect_todos"])
+        report = failure_report(dev, {t.id: t.prompt for t in TASKS})
+        self.assertEqual({r["task_id"]: r["signature"] for r in report},
+                         {"b01_count_lines": "answered_without_tools", "b04_csv_sum": "answered_without_tools",
+                          "b08_collect_todos": "bad_write", "b09_urgent_refund": "wrong_answer"})
+        p = ScriptedProposer()
+        first = p.propose(cfg, report, [])
+        self.assertEqual(len(first), 3)
+        again = p.propose(cfg, report, [e.describe() for e in first])
+        self.assertTrue(all(e.describe() not in {x.describe() for x in first} for e in again))
+
+    def test_improve_eval_runs_at_any_stage(self):
+        import improve_eval
+        with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()), \
+                contextlib.redirect_stderr(io.StringIO()):
+            code = improve_eval.main(["--rounds", "1", "--out", tmp])
+            self.assertIn(code, (0, 1))
+            self.assertTrue((Path(tmp) / "config_before.json").is_file())

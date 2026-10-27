@@ -5,7 +5,7 @@ together, and records what similar courses and tutorials do, so the design choic
 The three labs that exist today (`lab1_memory_plugins/`, `lab2_aios_kv_cache/`, `lab3_google_harness2/`) are
 kept and slotted into the plan; the rest is new work, listed as PRs at the end.
 
-Status: **plan**, written 2026-10-26. Built so far: the lab kit and Labs 0–13 ([`kit/`](kit/)), plus today's
+Status: **plan**, written 2026-10-26. Built so far: the lab kit and Labs 0–14 ([`kit/`](kit/)), plus today's
 Labs 1–3. The rest is not written yet.
 
 ---
@@ -465,6 +465,9 @@ Following the repo's one-task-one-PR workflow, in this order:
    needed), graders in `kit/nanoos/graders.py` and 30 labeled cases in
    [`kit/tasks/judge_cases.json`](kit/tasks/judge_cases.json).
 9. **Lab 14**: improvement loop; link today's `lab3_google_harness2/`.
+   Done: [`lab14`](kit/handouts/lab14_self_improving_harness.md), with the loop in `kit/nanoos/improve.py` and a
+   simulated agent with bad habits in [`kit/tasks/improve_sim.py`](kit/tasks/improve_sim.py); Part C runs the
+   Harness² demo from `lab3_google_harness2/`, which keeps its name.
 10. **Capstone** handout and the held-out suite (kept private).
 11. **README and syllabus update:** renumber labs, update the course map slide in the master deck, and pacing.
 
