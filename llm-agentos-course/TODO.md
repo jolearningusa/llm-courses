@@ -88,5 +88,5 @@ Done as deck **`slides/06_observability_evaluation_deck.html`** (the lab is outl
   [`references/tracked_sources.json`](references/tracked_sources.json); see the repo's `docs/updating-courses.md`.
 - [x] Add a lab for the memory deck exercise (same store, automatic injection vs. search tool): Lab 4 in the kit.
 - [ ] Build the lab track in [`labs/LAB_PLAN.md`](labs/LAB_PLAN.md), one PR per step in its section 5 (lab kit first).
-  Done: the lab kit and Labs 0–9 ([`labs/kit/`](labs/kit/)). Next: Lab 10 (the extension layer).
+  Done: the lab kit and Labs 0–10 ([`labs/kit/`](labs/kit/)). Next: Lab 11 (MCP and connectors).
 - [x] Add a link checker as the repo's first CI job (`checks.yml`; external links are checked weekly by `freshness.yml`).

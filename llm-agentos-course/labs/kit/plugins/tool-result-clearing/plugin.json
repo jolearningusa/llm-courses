@@ -1,0 +1,14 @@
+{
+  "id": "tool-result-clearing",
+  "version": "1.0.0",
+  "description": "Lab 3's tool-result clearing as the context-engine slot.",
+  "kind": "context-engine",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "keep_last_results": {"type": "integer", "default": 3},
+      "min_chars": {"type": "integer", "default": 200}
+    }
+  }
+}

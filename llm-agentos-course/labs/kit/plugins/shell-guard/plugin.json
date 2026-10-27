@@ -1,0 +1,19 @@
+{
+  "id": "shell-guard",
+  "version": "1.0.0",
+  "description": "Log every shell command the agent runs and block piped installers (curl | sh).",
+  "kind": null,
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "log_path": {"type": "string", "default": "shell_commands.jsonl", "description": "JSONL file for the command log"},
+      "block_patterns": {"type": "array", "items": {"type": "string"},
+                         "default": ["\\b(curl|wget)\\b[^|;&]*\\|\\s*(sudo\\s+)?(ba|z)?sh\\b"],
+                         "description": "regular expressions; a command that matches one is blocked"},
+      "shell_tools": {"type": "array", "items": {"type": "string"}, "default": ["run_shell"]},
+      "priority": {"type": "integer", "default": 100},
+      "crash_on": {"type": "string", "default": "", "description": "for the crash experiment: raise when a command contains this text"}
+    }
+  }
+}
