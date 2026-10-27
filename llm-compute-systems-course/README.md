@@ -2,7 +2,7 @@
 
 A systems engineering course on building and measuring the computing stack for LLM training and inference, from PyTorch and compilers through CUDA kernels, memory, operating systems, interconnects and cluster runtimes, using NVIDIA Vera Rubin as a recurring case study.
 
-**Status: research-backed course blueprint, prepared 2026-10-26.** This first installment contains the research review, detailed syllabus, technical primers and lab specifications. Full lecture decks, executable lab kits and measured GPU results are future installments; none are claimed here. The repository's contribution workflow asks large courses to land as an outline followed by modules and labs.
+**Status: foundation unit available, 2026-10-26.** The overview and first two lecture decks accompany a working CPU-only L0 resource-budget lab. The research review, syllabus, primers and later lab specifications remain the course blueprint. Later decks, later executable kits and GPU measurements are still planned; no GPU validation is claimed. See the build plan for serial release progress.
 
 ## Start here
 
@@ -59,7 +59,13 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 
 ## Slide decks
 
-No slide decks are included in this blueprint. The [build plan](BUILD_PLAN.md) maps all 30 lecture topics, the master overview and capstone workshop to planned decks and paired practice. Add each deck here when it is implemented and checked.
+| Deck | Scope |
+|---|---|
+| [Efficient LLM Computing Systems](slides/00_master_compute_systems.html) (12 slides) | Course map and released-deck navigation |
+| [Workloads, Rooflines and Capacity](slides/01_workloads_rooflines.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Architecture as a Computing Workload](slides/02_architecture_workload_primer.html) (12 slides) | Topic lecture, worked examples and practical exercises |
+
+Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
 ## Assessment
 
@@ -69,24 +75,35 @@ Suggested weighting: labs 45%, paper/trace critiques 15%, capstone 40%. Correctn
 
 ```text
 llm-compute-systems-course/
-├── README.md
-├── LICENSE
-├── SYLLABUS.md
-├── ROADMAP.md
-├── BUILD_PLAN.md
-├── notes/
-│   ├── workload_primer.md
-│   ├── pytorch_stack.md
-│   ├── vera_rubin.md
-│   ├── nvidia_stack.md
-│   ├── amd_stack.md
-│   └── agentic_caching.md
 ├── labs/
+│   ├── kit/
+│   │   ├── handouts/
+│   │   │   └── lab00_budgets.md
+│   │   ├── tests/
+│   │   │   └── test_budgets.py
+│   │   ├── README.md
+│   │   └── budgets.py
 │   ├── LAB_PLAN.md
 │   └── report_template.md
-└── references/
-    ├── bibliography_and_links.md
-    └── research_review.md
+├── notes/
+│   ├── agentic_caching.md
+│   ├── amd_stack.md
+│   ├── nvidia_stack.md
+│   ├── pytorch_stack.md
+│   ├── vera_rubin.md
+│   └── workload_primer.md
+├── references/
+│   ├── bibliography_and_links.md
+│   └── research_review.md
+├── slides/
+│   ├── 00_master_compute_systems.html
+│   ├── 01_workloads_rooflines.html
+│   └── 02_architecture_workload_primer.html
+├── BUILD_PLAN.md
+├── LICENSE
+├── README.md
+├── ROADMAP.md
+└── SYLLABUS.md
 ```
 
 ## Source and version policy
