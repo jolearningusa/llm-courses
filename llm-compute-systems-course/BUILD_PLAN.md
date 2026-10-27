@@ -103,8 +103,8 @@ The units below are implementation milestones, not a promise to combine everythi
 | Unit | Scope | Depends on | Status |
 |---|---|---|---|
 | P0 | This build plan and cross-links | Merged research blueprint | Merged in #45 |
-| P1 | Master, decks 01–02 and L0; common fixture/result contracts | P0 | Implemented; CPU checks passed, student pilot pending |
-| P2 | Decks 03–04 and L1; shared timing/profiling guidance | P1 | Planned |
+| P1 | Master, decks 01–02 and L0; common fixture/result contracts | P0 | Merged in #46; CPU checks passed, student pilot pending |
+| P2 | Decks 03–04 and L1; shared timing/profiling guidance | P1 | Implemented CPU/analytical path; CUDA trace extension unverified |
 | P3 | Decks 05–06 and L2 | P2 | Planned |
 | P4 | Decks 07–08 and L3 | P3 | Planned |
 | P5 | Decks 09–10 and L4 | P4 | Planned |

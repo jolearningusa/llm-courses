@@ -1,6 +1,6 @@
 # Lab specifications
 
-These are implementation-ready assignment specifications, not executable lab releases. Proposed timing is 5–8 hours for a major lab, subject to pilot calibration. L0 and L15 are analytical work; selected shorter exercises may be combined. Students should not need to install every upstream stack.
+This document specifies the full assignments. The [released kit](kit/) currently provides L0 and the CPU/analytical path for L1; later kits and GPU validation remain planned. Proposed timing is 5–8 hours for a major lab, subject to pilot calibration. L0 and L15 are analytical work; selected shorter exercises may be combined. Students should not need to install every upstream stack.
 
 ## Common protocol
 

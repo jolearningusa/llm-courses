@@ -1,6 +1,6 @@
 # Syllabus: Efficient LLM Computing Systems
 
-Sixteen weeks, two 75–90 minute lectures and approximately 5–8 hours of practical work per week. Timing is a planning estimate to revise after a pilot. All labs below are specifications in [LAB_PLAN.md](labs/LAB_PLAN.md), not released implementations.
+Sixteen weeks, two 75–90 minute lectures and approximately 5–8 hours of practical work per week. Timing is a planning estimate to revise after a pilot. Full lab specifications are in [LAB_PLAN.md](labs/LAB_PLAN.md); the [kit README](labs/kit/) identifies currently released paths and their validation limits.
 
 ## Teaching contract
 

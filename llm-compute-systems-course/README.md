@@ -2,7 +2,7 @@
 
 A systems engineering course on building and measuring the computing stack for LLM training and inference, from PyTorch and compilers through CUDA kernels, memory, operating systems, interconnects and cluster runtimes, using NVIDIA Vera Rubin as a recurring case study.
 
-**Status: foundation unit available, 2026-10-26.** The overview and first two lecture decks accompany a working CPU-only L0 resource-budget lab. The research review, syllabus, primers and later lab specifications remain the course blueprint. Later decks, later executable kits and GPU measurements are still planned; no GPU validation is claimed. See the build plan for serial release progress.
+**Status: foundation and measurement units available, 2026-10-26.** The overview and first four lecture decks accompany working CPU-only L0 resource-budget and L1 measurement labs. The research review, syllabus, primers and later lab specifications remain the course blueprint. Later decks, later executable kits and GPU measurements are still planned; no GPU validation is claimed. See the build plan for serial release progress.
 
 ## Start here
 
@@ -64,6 +64,8 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [Efficient LLM Computing Systems](slides/00_master_compute_systems.html) (12 slides) | Course map and released-deck navigation |
 | [Workloads, Rooflines and Capacity](slides/01_workloads_rooflines.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [Architecture as a Computing Workload](slides/02_architecture_workload_primer.html) (12 slides) | Topic lecture, worked examples and practical exercises |
+| [Measurement and Profiling](slides/03_measurement_profiling.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Host, OS and Data Paths](slides/04_host_os_data_paths.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -78,11 +80,14 @@ llm-compute-systems-course/
 ├── labs/
 │   ├── kit/
 │   │   ├── handouts/
-│   │   │   └── lab00_budgets.md
+│   │   │   ├── lab00_budgets.md
+│   │   │   └── lab01_measurement.md
 │   │   ├── tests/
-│   │   │   └── test_budgets.py
+│   │   │   ├── test_budgets.py
+│   │   │   └── test_measurement.py
 │   │   ├── README.md
-│   │   └── budgets.py
+│   │   ├── budgets.py
+│   │   └── measurement.py
 │   ├── LAB_PLAN.md
 │   └── report_template.md
 ├── notes/
@@ -98,7 +103,9 @@ llm-compute-systems-course/
 ├── slides/
 │   ├── 00_master_compute_systems.html
 │   ├── 01_workloads_rooflines.html
-│   └── 02_architecture_workload_primer.html
+│   ├── 02_architecture_workload_primer.html
+│   ├── 03_measurement_profiling.html
+│   └── 04_host_os_data_paths.html
 ├── BUILD_PLAN.md
 ├── LICENSE
 ├── README.md
