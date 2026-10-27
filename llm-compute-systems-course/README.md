@@ -2,7 +2,7 @@
 
 A systems engineering course on building and measuring the computing stack for LLM training and inference, from PyTorch and compilers through CUDA kernels, memory, operating systems, interconnects and cluster runtimes, using NVIDIA Vera Rubin as a recurring case study.
 
-**Status: foundation through GEMM/pipeline teaching units available, 2026-10-26.** The overview and first ten lecture decks accompany L0–L4 lab paths: CPU budgets, timing, PyTorch/compiler execution and numerical reductions. A standalone CUDA RMSNorm exercise is supplied but has not been compiled or run on this host. The research review, syllabus, primers and later lab specifications remain the course blueprint. Later decks, later executable kits and GPU measurements are still planned; no GPU validation is claimed. See the build plan for serial release progress.
+**Status: incremental teaching releases in progress, 2026-10-26.** The deck table and lab-kit index identify supplied materials. The build plan records serial PR progress and distinguishes validated CPU paths, analytical exercises, student extensions and hardware validation still needed. No GPU benchmark is claimed without an explicit release record.
 
 ## Start here
 
@@ -72,6 +72,8 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [Reductions and Custom Operator Contracts](slides/08_reductions_custom_operators.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [GEMM Tiling and Tensor Cores](slides/09_gemm_tensor_cores.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [Asynchronous Kernel Pipelines](slides/10_async_kernel_pipelines.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Attention Execution and Online Softmax](slides/11_attention_execution.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Attention Kernel and Hardware Co-design](slides/12_attention_kernel_codesign.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -92,14 +94,17 @@ llm-compute-systems-course/
 │   │   │   ├── lab01_measurement.md
 │   │   │   ├── lab02_pytorch.md
 │   │   │   ├── lab03_reductions.md
-│   │   │   └── lab04_gemm.md
+│   │   │   ├── lab04_gemm.md
+│   │   │   └── lab05_attention.md
 │   │   ├── tests/
+│   │   │   ├── test_attention.py
 │   │   │   ├── test_budgets.py
 │   │   │   ├── test_gemm.py
 │   │   │   ├── test_measurement.py
 │   │   │   ├── test_pytorch_lab.py
 │   │   │   └── test_reductions.py
 │   │   ├── README.md
+│   │   ├── attention_lab.py
 │   │   ├── budgets.py
 │   │   ├── gemm_lab.py
 │   │   ├── measurement.py
@@ -131,7 +136,9 @@ llm-compute-systems-course/
 │   ├── 07_cuda_execution_memory.html
 │   ├── 08_reductions_custom_operators.html
 │   ├── 09_gemm_tensor_cores.html
-│   └── 10_async_kernel_pipelines.html
+│   ├── 10_async_kernel_pipelines.html
+│   ├── 11_attention_execution.html
+│   └── 12_attention_kernel_codesign.html
 ├── BUILD_PLAN.md
 ├── LICENSE
 ├── README.md
