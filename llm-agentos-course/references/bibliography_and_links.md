@@ -317,6 +317,10 @@ Star and fork counts were read from each repository page on 2026-10-26.
 - **OpenTelemetry semantic conventions for generative AI** (operations `chat`, `invoke_agent`, `execute_tool`, …; `gen_ai.*` attributes;
   status: Development). Moved to https://github.com/open-telemetry/semantic-conventions-genai
   (old page with the move notice: https://opentelemetry.io/docs/specs/semconv/gen-ai/). Explainer: https://greptime.com/blogs/2026-05-09-opentelemetry-genai-semantic-conventions
+  Lab 13's spans also use the `retrieval` operation (`retrieval {gen_ai.data_source.id}`), the
+  `gen_ai.usage.cache_read.input_tokens` and `gen_ai.tool.call.arguments` / `.result` attributes; attribute registry
+  (with the move notice): https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/ ; explainer listing
+  the operations, checked 2026-10-27: https://www.dash0.com/knowledge/opentelemetry-genai-semantic-conventions-explained
 - **OpenInference** semantic conventions (Arize, Apache-2.0): https://github.com/Arize-ai/openinference
 - **OpenClaw OpenTelemetry export** (`diagnostics-otel` plugin, `diagnostics.otel` config, exported spans and metrics, content-capture privacy):
   https://docs.openclaw.ai/gateway/opentelemetry

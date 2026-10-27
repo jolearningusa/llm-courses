@@ -5,7 +5,7 @@ together, and records what similar courses and tutorials do, so the design choic
 The three labs that exist today (`lab1_memory_plugins/`, `lab2_aios_kv_cache/`, `lab3_google_harness2/`) are
 kept and slotted into the plan; the rest is new work, listed as PRs at the end.
 
-Status: **plan**, written 2026-10-26. Built so far: the lab kit and Labs 0–12 ([`kit/`](kit/)), plus today's
+Status: **plan**, written 2026-10-26. Built so far: the lab kit and Labs 0–13 ([`kit/`](kit/)), plus today's
 Labs 1–3. The rest is not written yet.
 
 ---
@@ -461,6 +461,9 @@ Following the repo's one-task-one-PR workflow, in this order:
    Done: [`lab12`](kit/handouts/lab12_harness_plugins.md), with the adapters in `kit/nanoos/ports.py`; the folder
    keeps its name, and 1B is now a TypeScript shell that forwards to the Python engine over stdio.
 8. **Lab 13**: OpenTelemetry, graders, judge calibration set, dashboard.
+   Done: [`lab13`](kit/handouts/lab13_observability_eval.md), with spans in `kit/nanoos/otel.py` (OTLP JSON, no SDK
+   needed), graders in `kit/nanoos/graders.py` and 30 labeled cases in
+   [`kit/tasks/judge_cases.json`](kit/tasks/judge_cases.json).
 9. **Lab 14**: improvement loop; link today's `lab3_google_harness2/`.
 10. **Capstone** handout and the held-out suite (kept private).
 11. **README and syllabus update:** renumber labs, update the course map slide in the master deck, and pacing.
