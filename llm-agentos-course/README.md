@@ -94,6 +94,8 @@ llm-agentos-course/
 │   │   ├── ports_eval.py                      # Lab 12: your Lab 3 engines through Hermes and OpenClaw contracts
 │   │   ├── obs_eval.py                        # Lab 13: trace, grade and compare two configurations; calibrate a judge
 │   │   ├── improve_eval.py                    # Lab 14: the improvement loop on DEV and HELDOUT tasks, with its lessons
+│   │   ├── capstone_eval.py                   # Capstone: score a submission (pass^3 × safety, token budgets), leaderboard
+│   │   ├── capstone_team.example.json         # Capstone: an example submission
 │   │   ├── grade.py                           # Autograder: tests/test_labNN.py against the scripted model
 │   │   ├── report_template.md                 # The one-page report every lab hands in
 │   │   ├── nanoos/
@@ -196,7 +198,8 @@ llm-agentos-course/
 │   │       ├── lab11_mcp_connectors.md        # Lab 11: an MCP client, then mount a server and measure defenses
 │   │       ├── lab12_harness_plugins.md       # Lab 12: port your engines to Hermes, OpenClaw and Letta
 │   │       ├── lab13_observability_eval.md    # Lab 13: spans and graders, a calibrated judge, a dashboard
-│   │       └── lab14_self_improving_harness.md  # Lab 14: an improvement loop over nanoos, then Harness²
+│   │       ├── lab14_self_improving_harness.md  # Lab 14: an improvement loop over nanoos, then Harness²
+│   │       └── capstone_bakeoff.md            # Capstone: the AgentOS bake-off (teams, scoring, milestones, report)
 │   ├── lab1_memory_plugins/
 │   │   ├── hermes_custom_memory.py            # Lab 12 (1A): Hermes plugin that loads your engines from the kit
 │   │   ├── openclaw_context_engine.ts         # Lab 12 (1B): OpenClaw shell that forwards to your Python engine
@@ -227,7 +230,7 @@ exist today; the plan slots them in as Labs 12, 5 and 14.
 
 The new labs are built on a shared [lab kit](labs/kit/): a small student harness (`nanoos`), a task suite,
 a runner that writes the same metrics table in every lab, and an autograder that tests against a scripted model.
-Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md), then [Lab 1](labs/kit/handouts/lab01_agent_loop.md), [Lab 2](labs/kit/handouts/lab02_scheduler.md), [Lab 3](labs/kit/handouts/lab03_context_engines.md), [Lab 4](labs/kit/handouts/lab04_long_term_memory.md), [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md), [Lab 6](labs/kit/handouts/lab06_access_control.md), [Lab 7](labs/kit/handouts/lab07_tools_sandbox.md), [Lab 8](labs/kit/handouts/lab08_skills.md), [Lab 9](labs/kit/handouts/lab09_multi_agent.md), [Lab 10](labs/kit/handouts/lab10_extension_layer.md), [Lab 11](labs/kit/handouts/lab11_mcp_connectors.md), [Lab 12](labs/kit/handouts/lab12_harness_plugins.md), [Lab 13](labs/kit/handouts/lab13_observability_eval.md) and [Lab 14](labs/kit/handouts/lab14_self_improving_harness.md). The existing labs keep their names for now.
+Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md), then [Lab 1](labs/kit/handouts/lab01_agent_loop.md), [Lab 2](labs/kit/handouts/lab02_scheduler.md), [Lab 3](labs/kit/handouts/lab03_context_engines.md), [Lab 4](labs/kit/handouts/lab04_long_term_memory.md), [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md), [Lab 6](labs/kit/handouts/lab06_access_control.md), [Lab 7](labs/kit/handouts/lab07_tools_sandbox.md), [Lab 8](labs/kit/handouts/lab08_skills.md), [Lab 9](labs/kit/handouts/lab09_multi_agent.md), [Lab 10](labs/kit/handouts/lab10_extension_layer.md), [Lab 11](labs/kit/handouts/lab11_mcp_connectors.md), [Lab 12](labs/kit/handouts/lab12_harness_plugins.md), [Lab 13](labs/kit/handouts/lab13_observability_eval.md) and [Lab 14](labs/kit/handouts/lab14_self_improving_harness.md), then the team [capstone](labs/kit/handouts/capstone_bakeoff.md). The existing labs keep their names for now.
 
 ### Lab 1: memory and context plugins (Module 5)
 

@@ -559,3 +559,36 @@ class TestImproveProvided(unittest.TestCase):
             code = improve_eval.main(["--rounds", "1", "--out", tmp])
             self.assertIn(code, (0, 1))
             self.assertTrue((Path(tmp) / "config_before.json").is_file())
+
+
+class TestCapstoneProvided(unittest.TestCase):
+    """The capstone scorer: token budgets, scoring and the leaderboard."""
+
+    def test_budget_stops_a_run(self):
+        from capstone_eval import BudgetedModel, BudgetExceeded
+        m = BudgetedModel(ScriptedModel([{"content": "a", "usage": {"input_tokens": 90, "output_tokens": 20}},
+                                         {"content": "b"}]), budget=100)
+        m.complete([{"role": "user", "content": "x"}], [])
+        self.assertEqual(m.used, 110)
+        with self.assertRaises(BudgetExceeded):
+            m.complete([{"role": "user", "content": "x"}], [])
+        self.assertTrue(issubclass(BudgetExceeded, ModelError), "loops treat it as a failed model call")
+
+    def test_dry_run_and_leaderboard(self):
+        import capstone_eval
+        with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()), \
+                contextlib.redirect_stderr(io.StringIO()):
+            sub = Path(tmp) / "team.json"
+            sub.write_text(json.dumps({"team": "t1", "loop": "baseline", "defense": "none"}))
+            board = Path(tmp) / "board.csv"
+            args = ["--submission", str(sub), "--tasks", "b01,b07", "--trials", "2", "--leaderboard", str(board)]
+            self.assertEqual(capstone_eval.main(args + ["--out", str(Path(tmp) / "a")]), 0)
+            s = json.loads((Path(tmp) / "a" / "summary.json").read_text())
+            self.assertEqual((s["pass^k"], s["safety"], s["score"]), (1.0, 0.0, 0.0),
+                             "no defense: the gullible model leaks, so the score is zero")
+            self.assertEqual(capstone_eval.main(args + ["--budget", "basic=50", "--out", str(Path(tmp) / "b")]), 0)
+            s = json.loads((Path(tmp) / "b" / "summary.json").read_text())
+            self.assertEqual(s["pass^k"], 0.0)
+            self.assertEqual(s["stopped_by"], {"token_budget": 4})
+            rows = list(csv.DictReader(open(board, encoding="utf-8")))
+            self.assertEqual([(r["team"], r["suite"]) for r in rows], [("t1", "dev-partial")], "one row per team")
