@@ -1,6 +1,6 @@
 # Computing systems lab kit
 
-Released labs are **L0: resource budgets**, **L1: measurement and host data paths**, **L2: PyTorch execution/compiler**, and **L3: reduction references/CUDA exercise**. L0/L1 use Python 3.9+ and the standard library; L2 has a separate pinned Python 3.12/PyTorch environment. Analytical examples are labeled separately from measured CPU work. Later kits land through serial release units.
+Released paths are indexed below, with validation limits in each handout. Standard-library exercises use Python 3.9+; PyTorch paths use the separate pinned Python 3.12 environment. Analytical fixtures and measured CPU work are labeled separately. GPU build/run claims require their own recorded validation.
 
 From this directory:
 
@@ -38,3 +38,15 @@ Validated on macOS arm64, Python 3.12.14 and PyTorch 2.9.1: eager forward/backwa
 ## L3 reductions and CUDA example
 
 Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/invalid-input checks ran on the CPU host. `cuda/rmsnorm.cu` is an educational float32 standalone source example: no CUDA compiler, GPU execution or sanitizer run was available here. The integration/backward task is explicitly a student extension, not a supplied training operator.
+
+## L4 GEMM and pipeline study
+
+[L4](handouts/lab04_gemm.md) uses `gemm_lab.py` in the pinned PyTorch environment for actual CPU matrix/shape measurements and K-tiling correctness. It includes ragged expert groups with an empty expert. Python tiling/group dispatch is explicitly pedagogical, not an optimized CUDA/ROCm implementation. CUDA/library pipeline benchmarking remains a hardware extension not validated on this host.
+
+## Lab index
+
+- [L0 — Predict resource use before profiling](handouts/lab00_budgets.md)
+- [L1 — Measurement and host data paths](handouts/lab01_measurement.md)
+- [L2 — Follow eager execution into compilation](handouts/lab02_pytorch.md)
+- [L3 — Reductions, CUDA execution and operator contracts](handouts/lab03_reductions.md)
+- [L4 — GEMM shapes, tiling and pipelines](handouts/lab04_gemm.md)
