@@ -6,6 +6,10 @@ import contextlib
 import csv
 import io
 import json
+import os
+import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -363,3 +367,64 @@ class TestNotesServer(unittest.TestCase):
             with self.subTest(task=task.id):
                 self.assertFalse(task.check("I don't know", [{"id": "n99", "to": "x@example.org"}]))
                 self.assertTrue(task.demo[-1]["content"])
+
+
+class TestPortsProvided(unittest.TestCase):
+    """Lab 12's provided pieces: the budget cut, and the plugin files that load the kit into Hermes and OpenClaw."""
+
+    PLUGINS = Path(__file__).resolve().parent.parent.parent / "lab1_memory_plugins"
+
+    def test_fit_budget(self):
+        from nanoos.context import count_tokens
+        from nanoos.ports import fit_budget
+        msgs = [{"role": "system", "content": "sys"}, {"role": "user", "content": "task"}]
+        for i in range(6):
+            msgs += [{"role": "assistant", "content": None, "tool_calls": [
+                {"id": f"c{i}", "type": "function", "function": {"name": "read_file", "arguments": "{}"}}]},
+                {"role": "tool", "tool_call_id": f"c{i}", "content": "x" * 400}]
+        kept = fit_budget(msgs, 450)
+        self.assertEqual(kept[0]["role"], "system")
+        self.assertNotEqual(kept[1]["role"], "tool", "never starts the tail with an orphaned tool result")
+        self.assertLessEqual(count_tokens(kept), 450)
+        self.assertEqual(fit_budget(msgs, None), msgs)
+
+    def test_hermes_plugin_registers_both(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("hermes_nanoos_plugin", self.PLUGINS / "hermes_custom_memory.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        names = []
+        ctx = type("Ctx", (), {"register_memory_provider": lambda s, p: names.append(p.name),
+                               "register_context_engine": lambda s, e: names.append(e.name)})()
+        mod.register(ctx)
+        self.assertEqual(names, ["nanoos-memory", "nanoos-context"])
+
+    def test_openclaw_shell_forwards_to_python(self):
+        node = shutil.which("node")
+        if not node:
+            self.skipTest("node is not installed")
+        major, minor = (int(x) for x in subprocess.run([node, "--version"], capture_output=True, text=True)
+                        .stdout.strip().lstrip("v").split(".")[:2])
+        if (major, minor) < (22, 6):
+            self.skipTest("node 22.6 or newer is needed to run TypeScript directly")
+        kit = Path(__file__).resolve().parent.parent
+        driver = """
+const [ts, kit] = process.argv.slice(1);
+const mod = await import(ts);
+let factory;
+mod.default({ registerContextEngine: (id, f) => { factory = f; } });
+const eng = factory({ config: { kitDir: kit, python: process.env.PY } });
+const out = { info: eng.info };
+out.ingest = await eng.ingest({ sessionId: "s", message: { role: "user", content: "hi" } });
+try { await eng.assemble({}); } catch (e) { out.error = e.message; }
+await eng.dispose();
+console.log(JSON.stringify(out));
+"""
+        proc = subprocess.run([node, "--experimental-strip-types", "--no-warnings", "--input-type=module", "-e", driver,
+                               str(self.PLUGINS / "openclaw_context_engine.ts"), str(kit)], capture_output=True,
+                              text=True, timeout=60, env={**os.environ, "PY": sys.executable})
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        out = json.loads(proc.stdout)
+        self.assertEqual((out["info"]["id"], out["info"]["ownsCompaction"]), ("nanoos-engine", True))
+        self.assertEqual(out["ingest"], {"ingested": True})
+        self.assertIn("nanoos engine:", out["error"], "a Python error rejects the call")

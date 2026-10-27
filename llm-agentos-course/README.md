@@ -91,6 +91,7 @@ llm-agentos-course/
 │   │   ├── multiagent_eval.py                 # Lab 9: one agent against an orchestrator with workers
 │   │   ├── plugins_eval.py                    # Lab 10: a shell-guard plugin on a simulated shell
 │   │   ├── mcp_eval.py                        # Lab 11: mount an MCP server, measure tokens, requests and defenses
+│   │   ├── ports_eval.py                      # Lab 12: your Lab 3 engines through Hermes and OpenClaw contracts
 │   │   ├── grade.py                           # Autograder: tests/test_labNN.py against the scripted model
 │   │   ├── report_template.md                 # The one-page report every lab hands in
 │   │   ├── nanoos/
@@ -110,6 +111,8 @@ llm-agentos-course/
 │   │   │   ├── delegate.py                    # Lab 9: delegate tools, child isolation and limits (stubs)
 │   │   │   ├── plugins.py                     # Lab 10: manifests, config checks, slots, ordered hooks (stubs)
 │   │   │   ├── mcp_client.py                  # Lab 11: MCP 2026-07-28 client, stdio and HTTP, MRTR, filters (stubs)
+│   │   │   ├── ports.py                       # Lab 12: Hermes and OpenClaw adapters for your engines (stubs)
+│   │   │   ├── hosts.py                       # Lab 12: hosts that call plugins as Hermes and OpenClaw do
 │   │   │   └── trace.py                       # Lab 0: JSONL tracer, summarize_trace, token_breakdown (stubs)
 │   │   ├── models/
 │   │   │   ├── __init__.py
@@ -166,7 +169,8 @@ llm-agentos-course/
 │   │   │   ├── test_lab08.py                  # Lab 8 autograder tests
 │   │   │   ├── test_lab09.py                  # Lab 9 autograder tests
 │   │   │   ├── test_lab10.py                  # Lab 10 autograder tests
-│   │   │   └── test_lab11.py                  # Lab 11 autograder tests
+│   │   │   ├── test_lab11.py                  # Lab 11 autograder tests
+│   │   │   └── test_lab12.py                  # Lab 12 autograder tests
 │   │   └── handouts/
 │   │       ├── lab00_watch_a_harness.md       # Lab 0: set up the kit, write the tracer, watch two harnesses
 │   │       ├── lab01_agent_loop.md            # Lab 1: a loop that survives errors, stalls and repetition
@@ -179,10 +183,11 @@ llm-agentos-course/
 │   │       ├── lab08_skills.md                # Lab 8: load skills on demand, then measure whether one helps
 │   │       ├── lab09_multi_agent.md           # Lab 9: a delegate tool, then measure when workers pay
 │   │       ├── lab10_extension_layer.md       # Lab 10: a plugin host, then one feature built three ways
-│   │       └── lab11_mcp_connectors.md        # Lab 11: an MCP client, then mount a server and measure defenses
+│   │       ├── lab11_mcp_connectors.md        # Lab 11: an MCP client, then mount a server and measure defenses
+│   │       └── lab12_harness_plugins.md       # Lab 12: port your engines to Hermes, OpenClaw and Letta
 │   ├── lab1_memory_plugins/
-│   │   ├── hermes_custom_memory.py            # Hermes Agent MemoryProvider + ContextEngine plugin template
-│   │   ├── openclaw_context_engine.ts         # OpenClaw registerContextEngine + plugins.slots config
+│   │   ├── hermes_custom_memory.py            # Lab 12 (1A): Hermes plugin that loads your engines from the kit
+│   │   ├── openclaw_context_engine.ts         # Lab 12 (1B): OpenClaw shell that forwards to your Python engine
 │   │   └── letta_shared_blocks.py             # Letta multi-agent shared core-memory blocks
 │   ├── lab2_aios_kv_cache/
 │   │   ├── vllm_lmcache_nixl_config.py        # vLLM MultiConnector (LMCache 256-token chunks + NIXL)
@@ -210,18 +215,21 @@ exist today; the plan slots them in as Labs 12, 5 and 14.
 
 The new labs are built on a shared [lab kit](labs/kit/): a small student harness (`nanoos`), a task suite,
 a runner that writes the same metrics table in every lab, and an autograder that tests against a scripted model.
-Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md), then [Lab 1](labs/kit/handouts/lab01_agent_loop.md), [Lab 2](labs/kit/handouts/lab02_scheduler.md), [Lab 3](labs/kit/handouts/lab03_context_engines.md), [Lab 4](labs/kit/handouts/lab04_long_term_memory.md), [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md), [Lab 6](labs/kit/handouts/lab06_access_control.md), [Lab 7](labs/kit/handouts/lab07_tools_sandbox.md), [Lab 8](labs/kit/handouts/lab08_skills.md), [Lab 9](labs/kit/handouts/lab09_multi_agent.md), [Lab 10](labs/kit/handouts/lab10_extension_layer.md) and [Lab 11](labs/kit/handouts/lab11_mcp_connectors.md). The existing labs keep their names for now.
+Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md), then [Lab 1](labs/kit/handouts/lab01_agent_loop.md), [Lab 2](labs/kit/handouts/lab02_scheduler.md), [Lab 3](labs/kit/handouts/lab03_context_engines.md), [Lab 4](labs/kit/handouts/lab04_long_term_memory.md), [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md), [Lab 6](labs/kit/handouts/lab06_access_control.md), [Lab 7](labs/kit/handouts/lab07_tools_sandbox.md), [Lab 8](labs/kit/handouts/lab08_skills.md), [Lab 9](labs/kit/handouts/lab09_multi_agent.md), [Lab 10](labs/kit/handouts/lab10_extension_layer.md), [Lab 11](labs/kit/handouts/lab11_mcp_connectors.md) and [Lab 12](labs/kit/handouts/lab12_harness_plugins.md). The existing labs keep their names for now.
 
 ### Lab 1: memory and context plugins (Module 5)
 
-Three small plugins that hook the same idea, "an OS-managed memory plane", into three different runtimes.
+Three small plugins that hook the same idea, "an OS-managed memory plane", into three different runtimes. In the
+lab plan this is Lab 12 ([handout](labs/kit/handouts/lab12_harness_plugins.md)): 1A and 1B now load the engines
+you built in the kit (Labs 3 and 4) through the adapters in `labs/kit/nanoos/ports.py`.
 
-- **1A Hermes Agent** (`hermes_custom_memory.py`): a `MemoryProvider` that recalls notes before each turn and
-  extracts facts in `on_pre_compress` before the context engine compresses history, plus a `ContextEngine` that
-  only compresses when the token threshold is crossed. Drop the file into `~/.hermes/plugins/course-graph-mem/`
-  as `__init__.py` with a `plugin.yaml`, then set `memory.provider: course-graph-mem`.
-- **1B OpenClaw** (`openclaw_context_engine.ts`): a context engine registered with `api.registerContextEngine`
-  and selected through `plugins.slots.contextEngine`.
+- **1A Hermes Agent** (`hermes_custom_memory.py`): registers your Lab 4 store as a `MemoryProvider` (recall
+  before each call, writes after each turn and in `on_pre_compress`) and your Lab 3 engine as a `ContextEngine`
+  that either rewrites the transcript (`compress`) or changes one request (`select_context`). Drop the file into
+  `~/.hermes/plugins/nanoos/` as `__init__.py` with a `plugin.yaml`, set `NANOOS_KIT`, then select
+  `memory.provider: nanoos-memory` and `context.engine: nanoos-context`.
+- **1B OpenClaw** (`openclaw_context_engine.ts`): a TypeScript shell registered with `api.registerContextEngine`
+  and selected through `plugins.slots.contextEngine`; it forwards each call to your engine in Python over stdio.
 - **1C Letta** (`letta_shared_blocks.py`): a supervisor and a worker agent that share one memory block through
   `block_ids`, so a write by one is visible in the other's context on the next turn.
 

@@ -1,117 +1,127 @@
 /**
- * Lab 1B: an OpenClaw context-engine plugin.
+ * Lab 12, part B (was Lab 1B): your nanoos context engine in OpenClaw's context-engine slot.
  *
- * API reference (checked Oct 2026):
- *   - Context engine concept: https://docs.openclaw.ai/context-engine
+ * OpenClaw plugins are TypeScript; your engine is Python. This plugin is a thin shell: it starts
+ * `python3 -m nanoos.ports` (the OpenClawEngine you finish in labs/kit/nanoos/ports.py) and forwards each
+ * lifecycle call as one JSON line, so the engine itself stays the one you tested in the kit.
+ *
+ * API reference (checked 2026-10-27):
+ *   - Context engine concept: https://docs.openclaw.ai/concepts/context-engine
  *   - Plugin internals:       https://docs.openclaw.ai/plugins/architecture-internals/context-engines
  *   - Plugin manifest:        https://docs.openclaw.ai/plugins/manifest
- *
- * The engine keeps an append-only per-session log (ingest), and on every model call
- * returns the newest messages that fit the token budget (assemble). Compaction is
- * delegated back to the runtime, so this engine sets ownsCompaction: false.
  *
  * 1. Plugin manifest, openclaw.plugin.json (next to this file):
  *
  *    {
- *      "id": "course-window-engine",
+ *      "id": "nanoos-engine",
  *      "kind": "context-engine",
- *      "configSchema": { "type": "object", "additionalProperties": false, "properties": {} }
+ *      "configSchema": {
+ *        "type": "object", "additionalProperties": false,
+ *        "properties": {
+ *          "kitDir": { "type": "string" },
+ *          "python": { "type": "string", "default": "python3" },
+ *          "engine": { "type": "string", "enum": ["threshold", "clearing", "none"], "default": "threshold" }
+ *        },
+ *        "required": ["kitDir"]
+ *      }
  *    }
  *
- * 2. Select it in the OpenClaw config (JSON5). The default engine is "legacy":
+ * 2. Install it (`openclaw plugins install -l ./this-folder`), then select it in openclaw.json:
  *
  *    {
  *      plugins: {
- *        slots: {
- *          contextEngine: "course-window-engine",
- *        },
+ *        slots: { contextEngine: "nanoos-engine" },
+ *        entries: { "nanoos-engine": { enabled: true, config: { kitDir: "/path/to/labs/kit" } } },
  *      },
  *    }
  *
- *    A memory plugin can be selected independently through plugins.slots.memory.
+ *    Restart the gateway and check with `openclaw doctor`. Set contextEngine back to "legacy" to undo.
+ *
+ * If the Python side raises, the call rejects; OpenClaw then quarantines the engine for the rest of the
+ * gateway process and falls back to "legacy" (the kit's OpenClawHost does the same).
  */
 
-import {
-  buildMemorySystemPromptAddition,
-  delegateCompactionToRuntime,
-} from "openclaw/plugin-sdk/core";
+import { spawn } from "node:child_process";
+import { createInterface } from "node:readline";
 
-type Message = { role: string; content: unknown };
+type Json = any;
+type Config = { kitDir?: string; python?: string; engine?: string };
 
-// Rough token estimate (~4 chars/token); swap in a real tokenizer for grading runs.
-const estimateTokens = (m: Message): number =>
-  Math.ceil(JSON.stringify(m.content ?? "").length / 4) + 4;
+/** One Python process per engine instance; requests are matched to replies by id. */
+export class Bridge {
+  private next = 0;
+  private pending = new Map<number, { resolve: (v: Json) => void; reject: (e: Error) => void }>();
+  private proc;
+
+  constructor(cfg: Config) {
+    this.proc = spawn(cfg.python ?? "python3", ["-m", "nanoos.ports", "--engine", cfg.engine ?? "threshold"], {
+      cwd: cfg.kitDir,
+      stdio: ["pipe", "pipe", "inherit"],
+    });
+    createInterface({ input: this.proc.stdout! }).on("line", (line: string) => {
+      const reply = JSON.parse(line);
+      const waiter = this.pending.get(reply.id);
+      if (!waiter) return;
+      this.pending.delete(reply.id);
+      if (reply.error) waiter.reject(new Error(`nanoos engine: ${reply.error.message}`));
+      else waiter.resolve(reply.result);
+    });
+    this.proc.on("exit", (code: number | null) => {
+      for (const w of this.pending.values()) w.reject(new Error(`nanoos engine exited (${code})`));
+      this.pending.clear();
+    });
+  }
+
+  call(method: string, params: Json = {}): Promise<Json> {
+    const id = ++this.next;
+    return new Promise((resolve, reject) => {
+      this.pending.set(id, { resolve, reject });
+      this.proc.stdin!.write(JSON.stringify({ id, method, params }) + "\n");
+    });
+  }
+
+  close(): void {
+    this.proc.stdin!.end();
+  }
+}
 
 export default function (api: any) {
-  // sessionId -> messages seen so far. A real engine would persist this (see afterTurn).
-  const store = new Map<string, Message[]>();
+  api.registerContextEngine("nanoos-engine", (ctx: { config?: Config }) => {
+    const bridge = new Bridge(ctx?.config ?? {});
+    return {
+      // Static, so OpenClaw can read it before the first call. Must match the Python side's info().
+      info: {
+        id: "nanoos-engine",
+        name: "nanoos context engine (Lab 12)",
+        ownsCompaction: true,
+        acceptedHostParams: ["sessionKey"],
+      },
 
-  api.registerContextEngine("course-window-engine", (_ctx: unknown) => ({
-    info: {
-      id: "course-window-engine",
-      name: "Course Sliding-Window Engine",
-      ownsCompaction: false,
-      acceptedHostParams: ["sessionKey"],
-    },
+      // Each message added to the session; the Python side keeps the session's log.
+      async ingest(params: Json) {
+        return bridge.call("ingest", params);
+      },
 
-    // Called once per message as the transcript grows.
-    async ingest({ sessionId, message, isHeartbeat }: {
-      sessionId: string;
-      message: Message;
-      isHeartbeat?: boolean;
-    }) {
-      if (isHeartbeat) return { ingested: false };
-      const log = store.get(sessionId) ?? [];
-      log.push(message);
-      store.set(sessionId, log);
-      return { ingested: true };
-    },
+      // Before each model run: the view under the token budget. Pass the host's tool and citation context
+      // through unchanged; this engine does not use them.
+      async assemble(params: Json) {
+        const { availableTools, citationsMode, ...rest } = params ?? {};
+        return bridge.call("assemble", rest);
+      },
 
-    // Called before every model call: choose what goes into the context window.
-    async assemble({ sessionId, sessionKey, messages, tokenBudget, availableTools, citationsMode }: {
-      sessionId: string;
-      sessionKey?: string;
-      messages: Message[];
-      tokenBudget?: number;
-      availableTools?: Set<string>;
-      citationsMode?: unknown;
-    }) {
-      const budget = tokenBudget ?? Number.POSITIVE_INFINITY;
-      const source = messages.length ? messages : store.get(sessionId) ?? [];
+      // ownsCompaction is true, so OpenClaw's auto-compaction is off and this must shrink the session.
+      async compact(params: Json) {
+        return bridge.call("compact", params);
+      },
 
-      // Walk backwards so the most recent turns survive; keep the result in order.
-      const kept: Message[] = [];
-      let used = 0;
-      for (let i = source.length - 1; i >= 0; i--) {
-        const cost = estimateTokens(source[i]);
-        if (used + cost > budget) break;
-        kept.unshift(source[i]);
-        used += cost;
-      }
+      async afterTurn(params: Json) {
+        await bridge.call("afterTurn", params);
+      },
 
-      return {
-        messages: kept,
-        estimatedTokens: used,
-        // Lets the active memory plugin add its recall instructions to the system prompt.
-        systemPromptAddition: buildMemorySystemPromptAddition({
-          availableTools: availableTools ?? new Set(),
-          citationsMode,
-          agentSessionKey: sessionKey,
-        }),
-      };
-    },
-
-    // Summarization stays with the runtime's built-in compactor.
-    async compact(params: { sessionId: string; force?: boolean }) {
-      return await delegateCompactionToRuntime(params);
-    },
-
-    // Optional lifecycle hook: persist state or kick off background work after a run.
-    async afterTurn(_params: unknown) {},
-
-    // Optional: release resources on gateway shutdown or plugin reload.
-    async dispose() {
-      store.clear();
-    },
-  }));
+      async dispose() {
+        await bridge.call("dispose", {});
+        bridge.close();
+      },
+    };
+  });
 }
