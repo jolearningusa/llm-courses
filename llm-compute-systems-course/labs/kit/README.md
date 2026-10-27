@@ -51,7 +51,12 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 - [L3 — Reductions, CUDA execution and operator contracts](handouts/lab03_reductions.md)
 - [L4 — GEMM shapes, tiling and pipelines](handouts/lab04_gemm.md)
 - [L5 — Online attention and matched backend comparison](handouts/lab05_attention.md)
+- [L6 — Precision contracts and measured numerical behavior](handouts/lab06_precision.md)
 
 ## L5 attention execution
 
 [L5](handouts/lab05_attention.md) provides CPU full/tiled single-head self-attention, causal/noncausal checks, tail handling and gradient comparisons. `attention_lab.py` ran in the pinned PyTorch environment. Its Python autograd graph is not a fused training-memory implementation, and its CPU wall timings do not establish GPU backend performance.
+
+## L6 precision
+
+[L6](handouts/lab06_precision.md) includes actual packed int4/int8 array storage and a CPU BF16 autocast loss/gradient comparison. These numerical experiments do not establish TorchAO/TE GPU acceleration or LLM task quality.
