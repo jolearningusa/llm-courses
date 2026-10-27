@@ -4,7 +4,7 @@ The shared code for the course's practice labs, as planned in [`../LAB_PLAN.md`]
 one small harness, **`nanoos`**, across the term; each lab adds one module, is graded by tests against a
 scripted model, and then measures the same idea in a production harness or engine.
 
-Python 3.10 or newer, no dependencies. Handouts: [Lab 0](handouts/lab00_watch_a_harness.md), [Lab 1](handouts/lab01_agent_loop.md), [Lab 2](handouts/lab02_scheduler.md), [Lab 3](handouts/lab03_context_engines.md), [Lab 4](handouts/lab04_long_term_memory.md), [Lab 5](handouts/lab05_kv_cache_plane.md), [Lab 6](handouts/lab06_access_control.md), [Lab 7](handouts/lab07_tools_sandbox.md), [Lab 8](handouts/lab08_skills.md), [Lab 9](handouts/lab09_multi_agent.md), [Lab 10](handouts/lab10_extension_layer.md), [Lab 11](handouts/lab11_mcp_connectors.md), [Lab 12](handouts/lab12_harness_plugins.md), [Lab 13](handouts/lab13_observability_eval.md).
+Python 3.10 or newer, no dependencies. Handouts: [Lab 0](handouts/lab00_watch_a_harness.md), [Lab 1](handouts/lab01_agent_loop.md), [Lab 2](handouts/lab02_scheduler.md), [Lab 3](handouts/lab03_context_engines.md), [Lab 4](handouts/lab04_long_term_memory.md), [Lab 5](handouts/lab05_kv_cache_plane.md), [Lab 6](handouts/lab06_access_control.md), [Lab 7](handouts/lab07_tools_sandbox.md), [Lab 8](handouts/lab08_skills.md), [Lab 9](handouts/lab09_multi_agent.md), [Lab 10](handouts/lab10_extension_layer.md), [Lab 11](handouts/lab11_mcp_connectors.md), [Lab 12](handouts/lab12_harness_plugins.md), [Lab 13](handouts/lab13_observability_eval.md), [Lab 14](handouts/lab14_self_improving_harness.md).
 
 ```bash
 make test-kit      # the kit's own tests
@@ -35,6 +35,7 @@ make suite TRIALS=3 NAME=baseline   # the basic tier on your model (set NANOOS_B
 | `nanoos/ports.py` | Your Lab 3 and Lab 4 engines as a Hermes `ContextEngine` (compress or select) and `MemoryProvider`, and as an OpenClaw context engine served over stdio | **Lab 12** |
 | `nanoos/otel.py` | OpenTelemetry spans from the loop's events, following the GenAI semantic conventions, with content redacted by default; OTLP JSON to a file or an endpoint | **Lab 13** |
 | `nanoos/graders.py` | Graders: exact match, outcome, tool trajectory, convergence, an LLM judge, and its agreement with human labels | **Lab 13** |
+| `nanoos/improve.py` | A self-improving harness: edits to the system prompt, tool descriptions and settings, proposed from failed runs, probed, composed with a held-out check, logged as lessons | **Lab 14** |
 | `nanoos/hosts.py` | Hosts that call plugins in Hermes's and OpenClaw's order, a stdio bridge client, and the cacheable-share measure | Provided |
 | `nanoos/sched_sim.py` | Discrete-event simulator: per-call vs. program-aware policies, KV kept across tool calls | **Lab 2** |
 | `models/scripted.py` | Replays canned assistant turns (tool calls, errors, delays) and records what it was sent | Provided |
@@ -42,7 +43,7 @@ make suite TRIALS=3 NAME=baseline   # the basic tier on your model (set NANOOS_B
 | `models/substring_judge.py` | A naive offline judge (passes when the reference appears in the answer), to calibrate against the labels | Provided |
 | `models/flaky.py` | Wraps a model so a share of its calls fail (`run_suite.py --fail-rate`) | Provided |
 | `models/openai_compat.py` | Client for any OpenAI-compatible endpoint (hosted API or vLLM), standard library only | Provided |
-| `tasks/` | The task suite: prompt, fixture files, checker and a scripted solution per task (tiers `basic`, `long`), plus the Lab 4 memory fixtures, the Lab 5 session, the Lab 6 red-team office, the Lab 7 ticket tracker, the Lab 8 skills, the Lab 9 research tasks, the Lab 10 shell tasks, the Lab 11 MCP notes server and the Lab 13 judge calibration set | Provided |
+| `tasks/` | The task suite: prompt, fixture files, checker and a scripted solution per task (tiers `basic`, `long`), plus the Lab 4 memory fixtures, the Lab 5 session, the Lab 6 red-team office, the Lab 7 ticket tracker, the Lab 8 skills, the Lab 9 research tasks, the Lab 10 shell tasks, the Lab 11 MCP notes server, the Lab 13 judge calibration set and the Lab 14 simulated agent with bad habits | Provided |
 | `run_suite.py` | Runs a tier k times per task; writes `metrics.csv`, `summary.json`, traces and messages | Provided |
 | `sched_experiment.py`, `sched_replay.py` | Lab 2's policy comparison on simulated workloads, and a replay against vLLM | Provided |
 | `memory_eval.py` | Lab 4's exercise: one store, read paths none / auto / tool / both, on the fixtures in `tasks/memory.py` | Provided |
@@ -56,12 +57,13 @@ make suite TRIALS=3 NAME=baseline   # the basic tier on your model (set NANOOS_B
 | `mcp_eval.py` | Lab 11's exercise: five tasks against the notes server over stdio or HTTP, with filters, pins and confirmation policies | Provided |
 | `ports_eval.py` | Lab 12's exercise: the long tier through the Hermes and OpenClaw ports, views against rewrites | Provided |
 | `obs_eval.py` | Lab 13's exercise: two configurations traced, graded four ways and compared on a dashboard; judge calibration | Provided |
+| `improve_eval.py` | Lab 14's exercise: the improvement loop on DEV and HELDOUT tasks, with the lessons it logged and what it cost | Provided |
 | `export_task.py` | Writes one task's files to a folder (and scores an answer) to run it in another harness | Provided |
 | `grade.py`, `tests/` | The autograder: `tests/test_labNN.py` per lab, `tests/test_kit.py` for the kit | Provided |
 | `report_template.md` | The one-page report every lab hands in | Provided |
 | `handouts/` | One handout per lab | Provided |
 
-Lab 14 adds a loop that proposes, tests and keeps changes to `nanoos`'s settings.
+The capstone builds on all of them; its handout and held-out suite come next.
 
 ## How grading works
 
