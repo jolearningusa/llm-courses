@@ -1,5 +1,5 @@
 """
-Lab 12, part A (was Lab 1A): your nanoos memory and context engine as a Hermes Agent plugin.
+Lab 12A (folder lab1_memory_plugins): your nanoos memory and context engine as a Hermes Agent plugin.
 
 The adapters live in the lab kit (labs/kit/nanoos/ports.py, finished in Lab 12, Part A); this file is only the
 plugin that loads them into Hermes with your Lab 3 engine and your Lab 4 MemoryStore.

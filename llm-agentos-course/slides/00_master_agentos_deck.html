@@ -62,7 +62,7 @@
   <span class="pill">LLM AgentOS · Introductory course</span>
   <h1 style="margin-top:24px">How an Agent OS Works,<br>and How Today's Open<br>Harnesses Build One</h1>
   <p class="muted" style="max-width:920px">Treating LLM agents as an operating-system problem: scheduling, context and memory management, KV-cache as a system resource, tools and isolation, and harnesses that rewrite themselves. Every component is mapped to how Hermes Agent, OpenClaw, Letta and AIOS actually implement it.</p>
-  <p style="margin-top:28px"><span class="pill">7 modules</span><span class="pill">3 labs</span><span class="pill">Hermes Agent · OpenClaw · Letta · AIOS · vLLM · Harness²</span></p>
+  <p style="margin-top:28px"><span class="pill">7 modules</span><span class="pill">15 labs + capstone</span><span class="pill">Hermes Agent · OpenClaw · Letta · AIOS · vLLM · Harness²</span></p>
 </section>
 
 <!-- 2 -->
@@ -93,16 +93,16 @@
 
 <!-- 3 -->
 <section class="slide">
-  <h2><small>Course map</small>Seven modules, three labs</h2>
+  <h2><small>Course map</small>Seven modules, fifteen labs, one capstone</h2>
   <table class="dense">
     <tr><th>#</th><th>Module</th><th>Slides</th><th>Lab</th></tr>
-    <tr><td>1</td><td>AgentOS architecture, AIOS kernel &amp; program-aware scheduling</td><td>4–8, loop, scheduler and context decks</td><td></td></tr>
-    <tr><td>2</td><td>Plane 1: user / cognitive memory</td><td>9–11, memory deck</td><td></td></tr>
-    <tr><td>3</td><td>Plane 2: system / KV-cache memory</td><td>12–14, 29, KV-cache deck</td><td class="accent2">Lab 2: vLLM + LMCache + NIXL</td></tr>
-    <tr><td>4</td><td>Tool arbitration &amp; memory security</td><td>15–16, access control deck</td><td></td></tr>
-    <tr><td>5</td><td>How open harnesses implement AgentOS</td><td>17–19, 22–28, tools, skills, multi-agent, extension, MCP, landscape decks</td><td class="accent2">Lab 1: Hermes, OpenClaw, Letta plugins</td></tr>
-    <tr><td>6</td><td>OS-level &amp; trajectory evaluation</td><td>20, observability deck</td><td></td></tr>
-    <tr><td>7</td><td>Self-improving harnesses (Harness²)</td><td>21, 30</td><td class="accent2">Lab 3: google-research/harness2</td></tr>
+    <tr><td>1</td><td>AgentOS architecture, AIOS kernel &amp; program-aware scheduling</td><td>4–8, loop, scheduler and context decks</td><td class="accent2">Labs 0–3: tracer, loop, scheduler, context engines</td></tr>
+    <tr><td>2</td><td>Plane 1: user / cognitive memory</td><td>9–11, memory deck</td><td class="accent2">Lab 4: memory store, two read paths</td></tr>
+    <tr><td>3</td><td>Plane 2: system / KV-cache memory</td><td>12–14, 29, KV-cache deck</td><td class="accent2">Lab 5: prefix cache, vLLM + LMCache</td></tr>
+    <tr><td>4</td><td>Tool arbitration &amp; memory security</td><td>15–16, access control deck</td><td class="accent2">Lab 6: policy engine, red-teaming</td></tr>
+    <tr><td>5</td><td>How open harnesses implement AgentOS</td><td>17–19, 22–28, tools, skills, multi-agent, extension, MCP, landscape decks</td><td class="accent2">Labs 7–12: tools, skills, sub-agents, plugins, MCP, Hermes / OpenClaw / Letta</td></tr>
+    <tr><td>6</td><td>OS-level &amp; trajectory evaluation</td><td>20, observability deck</td><td class="accent2">Lab 13: spans, graders, judge</td></tr>
+    <tr><td>7</td><td>Self-improving harnesses (Harness²)</td><td>21, 30</td><td class="accent2">Lab 14: improvement loop, Harness²; then the capstone</td></tr>
   </table>
   <p class="muted" style="font-size:16px;margin-top:12px">Slides 22–31 are in the companion deck <a href="05_opensource_plugin_apis_slides.html"><code>05_opensource_plugin_apis_slides.html</code></a>; module lectures: <a href="01_agent_loop_deck.html"><code>01_agent_loop_deck.html</code></a> (agent loop), <a href="01_scheduler_deck.html"><code>01_scheduler_deck.html</code></a> (scheduler), <a href="01_context_manager_deck.html"><code>01_context_manager_deck.html</code></a> (context), <a href="02_long_term_memory_deck.html"><code>02_long_term_memory_deck.html</code></a> (memory), <a href="03_kv_cache_deck.html"><code>03_kv_cache_deck.html</code></a> (KV cache), <a href="04_access_control_deck.html"><code>04_access_control_deck.html</code></a> (access control), <a href="05_tools_sandbox_deck.html"><code>05_tools_sandbox_deck.html</code></a> (tools), <a href="05_skills_deck.html"><code>05_skills_deck.html</code></a> (skills), <a href="05_multi_agent_deck.html"><code>05_multi_agent_deck.html</code></a> (multi-agent), <a href="05_extension_layer_deck.html"><code>05_extension_layer_deck.html</code></a> (extensions), <a href="05_mcp_connectors_deck.html"><code>05_mcp_connectors_deck.html</code></a> (MCP and connectors), <a href="05_harness_landscape_deck.html"><code>05_harness_landscape_deck.html</code></a> (harness landscape), <a href="06_observability_evaluation_deck.html"><code>06_observability_evaluation_deck.html</code></a> (observability &amp; evals).</p>
 </section>
@@ -252,7 +252,7 @@
         <li><b>Memory blocks</b>: label, description, value, character limit; pinned in context. Can be <code>read_only</code>.</li>
         <li><b>Archival memory</b>: vector store of passages, queried with <code>archival_memory_search</code>.</li>
         <li><b>Conversation search</b> recovers messages that fell out of the window.</li>
-        <li>A block can be <b>shared</b> by several agents (Lab 1C), and <b>sleep-time agents</b> rewrite shared blocks in the background every N steps (default 5).</li>
+        <li>A block can be <b>shared</b> by several agents (Lab 12C), and <b>sleep-time agents</b> rewrite shared blocks in the background every N steps (default 5).</li>
       </ul>
     </div>
     <pre>shared = client.blocks.create(
@@ -327,7 +327,7 @@ chunk_size: 256
 local_cpu: true
 max_local_cpu_size: 64   # GiB
 
-# vllm serve (Lab 2)
+# vllm serve (Lab 5)
 vllm serve Qwen/Qwen3-8B \
   --kv-offloading-backend lmcache \
   --kv-offloading-size 64</pre>

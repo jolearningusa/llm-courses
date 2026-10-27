@@ -258,11 +258,11 @@ Caching (read 0.1×, write 1.25×):
       <ul style="font-size:18px">
         <li><b>DistServe</b>: separate GPUs for prefill and decode remove interference; 7.4× more requests or 12.6× tighter SLO.</li>
         <li><b>Mooncake</b> (Moonshot AI, serves Kimi): disaggregated clusters plus a KV pool built from idle CPU, DRAM and SSD; up to 525% throughput in simulation, 75% more requests on real workloads; early rejection under overload.</li>
-        <li>vLLM exposes this through KV connectors (Lab 2: LMCache + NIXL).</li>
+        <li>vLLM exposes this through KV connectors (Lab 5: LMCache + NIXL).</li>
       </ul>
     </div>
   </div>
-  <div class="cite">Zhong et al., DistServe, arXiv:2401.09670; Qin et al., Mooncake, arXiv:2407.00079; Lab 2.</div>
+  <div class="cite">Zhong et al., DistServe, arXiv:2401.09670; Qin et al., Mooncake, arXiv:2407.00079; Lab 5.</div>
 </section>
 
 <!-- 9 -->
@@ -349,7 +349,7 @@ Caching (read 0.1×, write 1.25×):
         <li>Serve a model with vLLM (prefix caching on) and point Hermes or OpenClaw at it.</li>
         <li>Run a 20-turn scripted session; record hit rate and TTFT per turn.</li>
         <li>Repeat with one change each: a timestamp in the system prompt; a tool added at turn 10; a memory edit at turn 10; compaction at turn 15.</li>
-        <li>Repeat the baseline with <code>--kv-cache-dtype fp8</code> and with LMCache CPU offload (Lab 2).</li>
+        <li>Repeat the baseline with <code>--kv-cache-dtype fp8</code> and with LMCache CPU offload (Lab 5).</li>
       </ol>
     </div>
     <div class="card">

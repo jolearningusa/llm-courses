@@ -11,7 +11,7 @@ slides and F for full screen.
 
 | Course | What it covers | Materials |
 |--------|----------------|-----------|
-| [LLM AgentOS](llm-agentos-course/) ([website](https://jolearningusa.github.io/llm-courses/llm-agentos-course/)) | Treating LLM agents as an operating-system problem: scheduling, dual-plane memory (user memory and KV-cache), tool arbitration and memory security, how open harnesses (Hermes Agent, OpenClaw, Letta, AIOS) implement it, evaluation, and self-improving harnesses (Harness²) | Slide decks, three labs, bibliography |
+| [LLM AgentOS](llm-agentos-course/) ([website](https://jolearningusa.github.io/llm-courses/llm-agentos-course/)) | Treating LLM agents as an operating-system problem: scheduling, dual-plane memory (user memory and KV-cache), tool arbitration and memory security, how open harnesses (Hermes Agent, OpenClaw, Letta, AIOS) implement it, evaluation, and self-improving harnesses (Harness²) | Slide decks, a lab kit with 15 labs and a capstone, bibliography |
 | [Efficient LLM Computing Systems](llm-compute-systems-course/) | Training and inference execution stacks: PyTorch, compilers, CUDA kernels, distributed training, serving and agentic caching; Vera Rubin/NVIDIA software and AMD ROCm comparison | Research review, syllabus, technical primers and lab specifications (blueprint) |
 
 ## Repository layout

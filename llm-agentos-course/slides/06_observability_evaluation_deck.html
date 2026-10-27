@@ -106,7 +106,7 @@
       <rect x="0" y="292" width="1136" height="120" rx="12" fill="#14213a" stroke="#ffb86b"/>
       <text x="24" y="330" font-size="22" font-weight="700" fill="#ffb86b">Inference engine layer</text>
       <text x="24" y="362">TTFT, inter-token latency, queue time, running / waiting requests, KV-cache use, prefix-cache hits.</text>
-      <text x="24" y="390" fill="#9aa6bd">Source: vLLM Prometheus /metrics (Lab 2), provider usage fields for hosted APIs</text>
+      <text x="24" y="390" fill="#9aa6bd">Source: vLLM Prometheus /metrics (Lab 5), provider usage fields for hosted APIs</text>
     </g>
   </svg>
   <p class="muted" style="font-size:18px;margin-top:8px">One trace ID should tie the three together: OpenClaw sends a W3C <code>traceparent</code> header on provider calls when the transport allows it.</p>
@@ -257,7 +257,7 @@
         <li>Rising <b>queue time</b> with flat model latency means the scheduler, not the model, is the bottleneck.</li>
         <li>KV usage near 1.0 predicts preemption and latency spikes.</li>
       </ul>
-      <p class="muted" style="font-size:16px">Lab 2 already runs vLLM; add Prometheus and Grafana to watch these live.</p>
+      <p class="muted" style="font-size:16px">Lab 5 already runs vLLM; add Prometheus and Grafana to watch these live.</p>
     </div>
   </div>
   <div class="cite">docs.vllm.ai/en/stable/design/metrics. Master deck slides 9 and 12–14 cover the KV-cache plane.</div>
@@ -478,9 +478,9 @@
       <ol style="font-size:19px;padding-left:24px">
         <li>Run a local trace backend (Phoenix or Jaeger) and Prometheus + Grafana.</li>
         <li>Enable tracing in the harness: OpenClaw <code>diagnostics-otel</code>, or Hermes with <code>hermes-otel</code> (<code>content_capture: preview</code>).</li>
-        <li>Point Prometheus at the Lab 2 vLLM server's <code>/metrics</code>.</li>
+        <li>Point Prometheus at the Lab 5 vLLM server's <code>/metrics</code>.</li>
         <li>Write 10 tasks with outcome checks; run each 4 times (k = 4).</li>
-        <li>Run with config A and config B (for example, two context engines from Lab 1).</li>
+        <li>Run with config A and config B (for example, two context engines from Lab 3).</li>
       </ol>
     </div>
     <div class="card">

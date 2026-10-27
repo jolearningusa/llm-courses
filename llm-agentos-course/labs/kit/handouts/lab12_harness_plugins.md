@@ -7,12 +7,12 @@
 and a Letta server.
 
 Labs 3 and 4 built a context engine and a memory store behind nanoos's own small interfaces. This lab ships
-them as plugins for production harnesses, without changing them. It reworks the old Lab 1
-([`../../lab1_memory_plugins/`](../../lab1_memory_plugins/), which keeps its folder name for now):
+them as plugins for production harnesses, without changing them. It reworks the course's first plugin lab
+([`../../lab1_memory_plugins/`](../../lab1_memory_plugins/), which keeps its folder name):
 
-- **1A** the Hermes plugin now wraps your engines;
-- **1B** the OpenClaw plugin is now a thin TypeScript shell around your Python engine;
-- **1C** the Letta exercise is unchanged.
+- **12A** the Hermes plugin now wraps your engines;
+- **12B** the OpenClaw plugin is now a thin TypeScript shell around your Python engine;
+- **12C** the Letta exercise is unchanged.
 
 The lesson is in the mismatch. A nanoos engine returns a **view** of an append-only history on every call.
 Hermes offers it two places:
@@ -99,7 +99,7 @@ Then run the threshold engine in both Hermes modes, clearing, and the OpenClaw b
 
 ## Part C: the real harnesses (report)
 
-**Hermes Agent (1A).** Install the plugin as its header says, and select `nanoos-memory` and `nanoos-context`.
+**Hermes Agent (12A).** Install the plugin as its header says, and select `nanoos-memory` and `nanoos-context`.
 
 1. Write each long task to a folder with `python export_task.py l01_sum_parts /tmp/l01 --tier long`. Run it 3
    times with your engine and 3 times with Hermes's built-in compressor (no `context.engine`).
@@ -111,14 +111,14 @@ Then run the threshold engine in both Hermes modes, clearing, and the OpenClaw b
    - Does your Hermes version have `agent.memory_provider.spawn_context_thread`? If so, use it in `spawn()` and
      say why a bare thread could write to the wrong profile.
 
-**OpenClaw (1B).** Install the shell as its header says, with `kitDir` pointing at your kit.
+**OpenClaw (12B).** Install the shell as its header says, with `kitDir` pointing at your kit.
 
 1. Run the same tasks with `plugins.slots.contextEngine` set to `nanoos-engine`, then to `legacy`.
 2. Make your `assemble` raise on the tenth call and show what OpenClaw does: the engine should be quarantined
    for the rest of the gateway process.
 3. Check the engine with `openclaw doctor`.
 
-**Letta (1C).** Run [`letta_shared_blocks.py`](../../lab1_memory_plugins/letta_shared_blocks.py) and show the
+**Letta (12C).** Run [`letta_shared_blocks.py`](../../lab1_memory_plugins/letta_shared_blocks.py) and show the
 supervisor's write appearing in the worker's context on its next turn. Compare the three memory models in a few
 sentences:
 - a block that is always in context and shared by agents;

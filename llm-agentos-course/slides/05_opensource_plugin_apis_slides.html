@@ -258,7 +258,7 @@ export default function (api) {
 
 <!-- 29 -->
 <section class="slide">
-  <h2><small>Module 3 · Lab 2</small>vLLM KV connectors: composing the system memory plane</h2>
+  <h2><small>Module 3 · Lab 5</small>vLLM KV connectors: composing the system memory plane</h2>
   <div class="cols">
     <div>
       <ul style="font-size:19px">
@@ -293,7 +293,7 @@ LMCACHE_MAX_LOCAL_CPU_SIZE=64   # GiB</pre>
 
 <!-- 30 -->
 <section class="slide">
-  <h2><small>Module 7 · Lab 3</small>Harness² internals</h2>
+  <h2><small>Module 7 · Lab 14</small>Harness² internals</h2>
   <svg viewBox="0 0 1136 250" width="1136" height="250">
     <rect x="0" y="0" width="1136" height="250" rx="14" fill="#14213a" stroke="#2a3550"/>
     <text x="24" y="36" font-size="19" font-weight="700" fill="#7be0b8">Task-level recursion (budget k)</text>
@@ -321,7 +321,7 @@ harness2-report --bench lab --k 1 --mode parallel</pre>
     <div class="card">
       <h3>Reading the outputs</h3>
       <p>Results land under <code>runs/</code>: task summaries, deliverables, adopted harnesses, reflection notes, evaluation results.</p>
-      <p class="muted">Lab 3's <code>sample_lesson_entry.jsonl</code> is a course worksheet for recording lessons, not the upstream file format.</p>
+      <p class="muted">Lab 14's <code>sample_lesson_entry.jsonl</code> is a course worksheet for recording lessons, not the upstream file format.</p>
     </div>
   </div>
   <div class="cite">Xu et al., arXiv:2610.14224 · github.com/google-research/harness2 (README, Oct 2026)</div>
@@ -332,9 +332,9 @@ harness2-report --bench lab --k 1 --mode parallel</pre>
 <section class="slide">
   <h2><small>Wrap-up</small>Labs and what's next</h2>
   <div class="cols3">
-    <div class="card"><h3>Lab 1 · Plugins</h3><p>Write a Hermes <code>MemoryProvider</code> + <code>ContextEngine</code>, an OpenClaw context engine, and Letta shared blocks.</p></div>
-    <div class="card"><h3>Lab 2 · KV plane</h3><p>Serve with LMCache CPU offload; compose LMCache + NIXL with <code>MultiConnector</code>; measure TTFT.</p></div>
-    <div class="card"><h3>Lab 3 · Harness²</h3><p>Run the demo, read the adopted harness and lessons, fill in the evidence-backed lesson worksheet.</p></div>
+    <div class="card"><h3>Lab 12 · Plugins</h3><p>Load your Lab 3 and 4 engines as a Hermes <code>MemoryProvider</code> + <code>ContextEngine</code> and an OpenClaw context engine; Letta shared blocks.</p></div>
+    <div class="card"><h3>Lab 5 · KV plane</h3><p>Serve with LMCache CPU offload; compose LMCache + NIXL with <code>MultiConnector</code>; measure TTFT.</p></div>
+    <div class="card"><h3>Lab 14 · Harness²</h3><p>Run the demo, read the adopted harness and lessons, fill in the evidence-backed lesson worksheet.</p></div>
   </div>
   <div class="card" style="margin-top:24px">
     <h3>Open questions</h3>

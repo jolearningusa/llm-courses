@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Lab 3: quickstart for Google Research's Harness² (recursive agent harnessing).
+# Lab 14, Part C (folder lab3_google_harness2): quickstart for Google Research's Harness² (recursive agent harnessing).
 #
 #   Paper: Xu et al., "Harness²: Recursive Agent Harnessing for an Open World", arXiv:2610.14224
 #   Repo:  https://github.com/google-research/harness2   (Apache-2.0, "not an officially supported Google product")

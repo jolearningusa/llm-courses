@@ -1,5 +1,5 @@
 """
-Lab 1C: Letta multi-agent shared memory blocks.
+Lab 12C: Letta multi-agent shared memory blocks.
 
 In Letta (formerly MemGPT) a *memory block* is a labeled, size-limited piece of text that is
 always in the agent's context window: the "core memory" or L1 of the MemGPT memory hierarchy.

@@ -13,11 +13,11 @@ The master deck (slide 5) defines a nine-component reference architecture. Curre
 |---|-----------|--------------|----------------|
 | 1 | Agent loop | Master deck 19 (hook timeline), harness slides 22–25, **`01_agent_loop_deck.html`** | Yes |
 | 2 | Scheduler | Master deck 6–7 (AIOS, Autellix, Continuum, KVFlow, ThunderAgent), **`01_scheduler_deck.html`** | Yes |
-| 3 | Context manager (select / compress / isolate) | Master deck 8, Lab 1 context engines, **`01_context_manager_deck.html`** | Yes |
-| 4 | Memory manager | Master deck 9–14, **`02_long_term_memory_deck.html`** | Yes (cognitive plane); KV plane in Lab 2 |
+| 3 | Context manager (select / compress / isolate) | Master deck 8, Lab 3 context engines, **`01_context_manager_deck.html`** | Yes |
+| 4 | Memory manager | Master deck 9–14, **`02_long_term_memory_deck.html`** | Yes (cognitive plane); KV plane in Lab 5 |
 | 5 | Tools and execution / sandbox | Master deck 17–18 (component map), **`05_tools_sandbox_deck.html`** | Yes |
 | 6 | Skills | Master deck 17–18, Hermes deep-dive 22, **`05_skills_deck.html`** | Yes |
-| 7 | Multi-agent | Master deck 17–18, Lab 1C (Letta shared blocks), **`05_multi_agent_deck.html`** | Yes |
+| 7 | Multi-agent | Master deck 17–18, Lab 12C (Letta shared blocks), **`05_multi_agent_deck.html`** | Yes |
 | 8 | Access control | Master deck 15–16, **`04_access_control_deck.html`** | Yes |
 | 9 | Extension layer (plugins) | Companion deck 28 (plugin APIs side by side), **`05_extension_layer_deck.html`** | Yes |
 
@@ -44,8 +44,8 @@ OpenClaw, Letta (and a Rust runtime where relevant) implement it, failure modes,
 - [x] **Access control and safety.** Done as deck **`slides/04_access_control_deck.html`**. Permission models, user confirmation, credential handling, prompt-injection
   defenses for tools and memory, audit logs. Start from: AIOS access manager, memory security survey, A-MemGuard.
 - [x] **Extension layer.** Done as deck **`slides/05_extension_layer_deck.html`**. Plugin manifests, slots and lifecycles, versioning and compatibility, plugin
-  security. Start from: companion deck 28 and Lab 1.
-- [x] **KV-cache plane, second pass.** Done as deck **`slides/03_kv_cache_deck.html`**. A standalone deck for Module 3 beyond the master-deck slides and Lab 2.
+  security. Start from: companion deck 28 and Lab 12.
+- [x] **KV-cache plane, second pass.** Done as deck **`slides/03_kv_cache_deck.html`**. A standalone deck for Module 3 beyond the master-deck slides and Lab 5.
 - [x] **MCP, plugins and connectors** (added on request, 2026-10-25). Done as deck **`slides/05_mcp_connectors_deck.html`**: MCP 2026-07-28, OAuth for remote servers, registries and connector directories, tool poisoning.
 
 ## B. Observability and evaluation deep-dive (logging, telemetry, analytics, dashboards)
@@ -63,7 +63,7 @@ Done as deck **`slides/06_observability_evaluation_deck.html`** (the lab is outl
 - [x] **Telemetry and metrics.**
   - System: throughput, latency (TTFT, P50/P99 per turn and per task), token usage and cost, prefix-cache hit
     rate, queueing time, fairness across agents (Jain's index). vLLM serves Prometheus metrics, which
-    can link this to Lab 2.
+    can link this to Lab 5.
   - Agent behavior: steps per task, tool-call error and retry rates, loop and stall detection, context size
     over time, compaction frequency, memory recall hit rate and injection precision (see memory deck slide 17).
 - [x] **Evaluating quality.**
@@ -87,7 +87,9 @@ Done as deck **`slides/06_observability_evaluation_deck.html`** (the lab is outl
   The weekly Freshness workflow reports upstream changes and stale checks for the sources in
   [`references/tracked_sources.json`](references/tracked_sources.json); see the repo's `docs/updating-courses.md`.
 - [x] Add a lab for the memory deck exercise (same store, automatic injection vs. search tool): Lab 4 in the kit.
-- [ ] Build the lab track in [`labs/LAB_PLAN.md`](labs/LAB_PLAN.md), one PR per step in its section 5 (lab kit first).
-  Done: the lab kit, Labs 0–14 and the capstone handout ([`labs/kit/`](labs/kit/)). Next: the README and
-  syllabus renumbering, and the private held-out suite.
+- [x] Build the lab track in [`labs/LAB_PLAN.md`](labs/LAB_PLAN.md), one PR per step in its section 5 (lab kit first).
+  Done: the lab kit, Labs 0–14, the capstone handout ([`labs/kit/`](labs/kit/)), and the renumbering of the
+  README, syllabus pacing and master deck course map.
+- [ ] Write the private held-out suite for the capstone (staff only, kept out of the repo) and pilot all labs to set
+  real token budgets and times.
 - [x] Add a link checker as the repo's first CI job (`checks.yml`; external links are checked weekly by `freshness.yml`).

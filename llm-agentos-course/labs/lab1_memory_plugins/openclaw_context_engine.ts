@@ -1,5 +1,5 @@
 /**
- * Lab 12, part B (was Lab 1B): your nanoos context engine in OpenClaw's context-engine slot.
+ * Lab 12B (folder lab1_memory_plugins): your nanoos context engine in OpenClaw's context-engine slot.
  *
  * OpenClaw plugins are TypeScript; your engine is Python. This plugin is a thin shell: it starts
  * `python3 -m nanoos.ports` (the OpenClawEngine you finish in labs/kit/nanoos/ports.py) and forwards each
