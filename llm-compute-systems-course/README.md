@@ -78,6 +78,8 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [Precision in Training and Serving](slides/14_precision_training_serving.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [DDP, ZeRO and Fully Sharded Training](slides/15_ddp_zero_fsdp.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [Collectives, Topology and Exposed Communication](slides/16_collectives_overlap.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Parallel Layouts and Recomputation](slides/17_parallelism_recomputation.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Reading a Production Training Stack](slides/18_training_stack_walkthrough.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -101,13 +103,15 @@ llm-compute-systems-course/
 │   │   │   ├── lab04_gemm.md
 │   │   │   ├── lab05_attention.md
 │   │   │   ├── lab06_precision.md
-│   │   │   └── lab07_distributed.md
+│   │   │   ├── lab07_distributed.md
+│   │   │   └── lab08_parallelism.md
 │   │   ├── tests/
 │   │   │   ├── test_attention.py
 │   │   │   ├── test_budgets.py
 │   │   │   ├── test_distributed.py
 │   │   │   ├── test_gemm.py
 │   │   │   ├── test_measurement.py
+│   │   │   ├── test_parallelism.py
 │   │   │   ├── test_precision.py
 │   │   │   ├── test_pytorch_lab.py
 │   │   │   └── test_reductions.py
@@ -117,11 +121,13 @@ llm-compute-systems-course/
 │   │   ├── distributed_lab.py
 │   │   ├── gemm_lab.py
 │   │   ├── measurement.py
+│   │   ├── parallelism_lab.py
 │   │   ├── precision_lab.py
 │   │   ├── pytorch_lab.py
 │   │   ├── reductions.py
 │   │   ├── requirements-pytorch-lock.txt
-│   │   └── requirements-pytorch.txt
+│   │   ├── requirements-pytorch.txt
+│   │   └── training_source_walkthrough.md
 │   ├── LAB_PLAN.md
 │   └── report_template.md
 ├── notes/
@@ -152,7 +158,9 @@ llm-compute-systems-course/
 │   ├── 13_precision_numerics.html
 │   ├── 14_precision_training_serving.html
 │   ├── 15_ddp_zero_fsdp.html
-│   └── 16_collectives_overlap.html
+│   ├── 16_collectives_overlap.html
+│   ├── 17_parallelism_recomputation.html
+│   └── 18_training_stack_walkthrough.html
 ├── BUILD_PLAN.md
 ├── LICENSE
 ├── README.md
