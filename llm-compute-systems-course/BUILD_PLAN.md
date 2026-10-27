@@ -110,8 +110,8 @@ The units below are implementation milestones, not a promise to combine everythi
 | P5 | Decks 09–10 and L4 | P4 | Merged in #52; CPU shape/tiling study, GPU pipelines unverified |
 | P6 | Decks 11–12 and L5 | P5 | Merged in #53; CPU exact/tiled output and gradient study, GPU paths unverified |
 | P7 | Decks 13–14 and L6 | P6 | Merged in #55; packed CPU quantization and BF16 autocast, accelerated recipes unverified |
-| P8 | Decks 15–16 and L7 | P7 | Implemented CPU Gloo DDP experiment and analytical collective model; accelerator path unverified |
-| P9 | Decks 17–18 and L8 | P8 | Planned |
+| P8 | Decks 15–16 and L7 | P7 | Merged in #56; CPU Gloo DDP and analytical collective model, accelerator path unverified |
+| P9 | Decks 17–18 and L8 | P8 | Implemented analytical layouts, CPU recomputation check and pinned source walkthrough |
 | P10 | Decks 19–20 and L9–L10 | P9 | Planned |
 | P11 | Decks 21–22 and L11 | P10 | Planned |
 | P12 | Decks 23–24 and L12 | P11 | Planned |
