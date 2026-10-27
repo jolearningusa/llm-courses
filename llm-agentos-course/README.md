@@ -92,6 +92,7 @@ llm-agentos-course/
 │   │   ├── plugins_eval.py                    # Lab 10: a shell-guard plugin on a simulated shell
 │   │   ├── mcp_eval.py                        # Lab 11: mount an MCP server, measure tokens, requests and defenses
 │   │   ├── ports_eval.py                      # Lab 12: your Lab 3 engines through Hermes and OpenClaw contracts
+│   │   ├── obs_eval.py                        # Lab 13: trace, grade and compare two configurations; calibrate a judge
 │   │   ├── grade.py                           # Autograder: tests/test_labNN.py against the scripted model
 │   │   ├── report_template.md                 # The one-page report every lab hands in
 │   │   ├── nanoos/
@@ -113,12 +114,15 @@ llm-agentos-course/
 │   │   │   ├── mcp_client.py                  # Lab 11: MCP 2026-07-28 client, stdio and HTTP, MRTR, filters (stubs)
 │   │   │   ├── ports.py                       # Lab 12: Hermes and OpenClaw adapters for your engines (stubs)
 │   │   │   ├── hosts.py                       # Lab 12: hosts that call plugins as Hermes and OpenClaw do
+│   │   │   ├── otel.py                        # Lab 13: OpenTelemetry GenAI spans with redaction, OTLP export (stubs)
+│   │   │   ├── graders.py                     # Lab 13: exact match, trajectory, convergence, LLM judge, agreement (stubs)
 │   │   │   └── trace.py                       # Lab 0: JSONL tracer, summarize_trace, token_breakdown (stubs)
 │   │   ├── models/
 │   │   │   ├── __init__.py
 │   │   │   ├── scripted.py                    # Scripted model for free, deterministic tests
 │   │   │   ├── flaky.py                       # Wraps a model so a share of calls fail (--fail-rate)
 │   │   │   ├── gullible.py                    # Lab 6: a scripted model that obeys every injection it reads
+│   │   │   ├── substring_judge.py             # Lab 13: a naive offline judge to calibrate
 │   │   │   └── openai_compat.py               # Client for OpenAI-compatible endpoints (hosted API or vLLM)
 │   │   ├── plugins/
 │   │   │   ├── README.md                      # Lab 10: the example plugins
@@ -144,6 +148,7 @@ llm-agentos-course/
 │   │   │   ├── research.py                    # Lab 9: a parallel survey and a dependency chain, with answer keys
 │   │   │   ├── shell_ops.py                   # Lab 10: five shell tasks on a simulated shell that runs nothing
 │   │   │   ├── mcp_notes.py                   # Lab 11: a reference MCP notes server and five tasks
+│   │   │   ├── judge_cases.json               # Lab 13: 30 answers labeled pass or fail, to calibrate a judge
 │   │   │   ├── redteam/
 │   │   │   │   ├── __init__.py                # Lab 6: an office with planted injections and a fake secret
 │   │   │   │   └── README.md                  # Safety notes for the attack fixtures
@@ -170,7 +175,8 @@ llm-agentos-course/
 │   │   │   ├── test_lab09.py                  # Lab 9 autograder tests
 │   │   │   ├── test_lab10.py                  # Lab 10 autograder tests
 │   │   │   ├── test_lab11.py                  # Lab 11 autograder tests
-│   │   │   └── test_lab12.py                  # Lab 12 autograder tests
+│   │   │   ├── test_lab12.py                  # Lab 12 autograder tests
+│   │   │   └── test_lab13.py                  # Lab 13 autograder tests
 │   │   └── handouts/
 │   │       ├── lab00_watch_a_harness.md       # Lab 0: set up the kit, write the tracer, watch two harnesses
 │   │       ├── lab01_agent_loop.md            # Lab 1: a loop that survives errors, stalls and repetition
@@ -184,7 +190,8 @@ llm-agentos-course/
 │   │       ├── lab09_multi_agent.md           # Lab 9: a delegate tool, then measure when workers pay
 │   │       ├── lab10_extension_layer.md       # Lab 10: a plugin host, then one feature built three ways
 │   │       ├── lab11_mcp_connectors.md        # Lab 11: an MCP client, then mount a server and measure defenses
-│   │       └── lab12_harness_plugins.md       # Lab 12: port your engines to Hermes, OpenClaw and Letta
+│   │       ├── lab12_harness_plugins.md       # Lab 12: port your engines to Hermes, OpenClaw and Letta
+│   │       └── lab13_observability_eval.md    # Lab 13: spans and graders, a calibrated judge, a dashboard
 │   ├── lab1_memory_plugins/
 │   │   ├── hermes_custom_memory.py            # Lab 12 (1A): Hermes plugin that loads your engines from the kit
 │   │   ├── openclaw_context_engine.ts         # Lab 12 (1B): OpenClaw shell that forwards to your Python engine
@@ -215,7 +222,7 @@ exist today; the plan slots them in as Labs 12, 5 and 14.
 
 The new labs are built on a shared [lab kit](labs/kit/): a small student harness (`nanoos`), a task suite,
 a runner that writes the same metrics table in every lab, and an autograder that tests against a scripted model.
-Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md), then [Lab 1](labs/kit/handouts/lab01_agent_loop.md), [Lab 2](labs/kit/handouts/lab02_scheduler.md), [Lab 3](labs/kit/handouts/lab03_context_engines.md), [Lab 4](labs/kit/handouts/lab04_long_term_memory.md), [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md), [Lab 6](labs/kit/handouts/lab06_access_control.md), [Lab 7](labs/kit/handouts/lab07_tools_sandbox.md), [Lab 8](labs/kit/handouts/lab08_skills.md), [Lab 9](labs/kit/handouts/lab09_multi_agent.md), [Lab 10](labs/kit/handouts/lab10_extension_layer.md), [Lab 11](labs/kit/handouts/lab11_mcp_connectors.md) and [Lab 12](labs/kit/handouts/lab12_harness_plugins.md). The existing labs keep their names for now.
+Start with the [Lab 0 handout](labs/kit/handouts/lab00_watch_a_harness.md), then [Lab 1](labs/kit/handouts/lab01_agent_loop.md), [Lab 2](labs/kit/handouts/lab02_scheduler.md), [Lab 3](labs/kit/handouts/lab03_context_engines.md), [Lab 4](labs/kit/handouts/lab04_long_term_memory.md), [Lab 5](labs/kit/handouts/lab05_kv_cache_plane.md), [Lab 6](labs/kit/handouts/lab06_access_control.md), [Lab 7](labs/kit/handouts/lab07_tools_sandbox.md), [Lab 8](labs/kit/handouts/lab08_skills.md), [Lab 9](labs/kit/handouts/lab09_multi_agent.md), [Lab 10](labs/kit/handouts/lab10_extension_layer.md), [Lab 11](labs/kit/handouts/lab11_mcp_connectors.md), [Lab 12](labs/kit/handouts/lab12_harness_plugins.md) and [Lab 13](labs/kit/handouts/lab13_observability_eval.md). The existing labs keep their names for now.
 
 ### Lab 1: memory and context plugins (Module 5)
 

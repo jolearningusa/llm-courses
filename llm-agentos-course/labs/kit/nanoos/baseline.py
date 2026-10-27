@@ -42,7 +42,8 @@ def run(model: Model, task_prompt: str, tools: Any, tracer: Any = None, max_step
             out, is_error = tools.call(call.name, call.arguments)
             tool_errors += is_error
             tracer.event("tool_call", step=step, name=call.name, arguments=json.dumps(call.arguments)[:500],
-                         is_error=is_error, output_chars=len(out), latency_s=round(time.time() - t0, 4))
+                         is_error=is_error, output_chars=len(out), output=out[:2000],
+                         latency_s=round(time.time() - t0, 4))
             messages.append({"role": "tool", "tool_call_id": call.id, "content": out})
     tracer.event("run_end", stopped_by="budget", steps=max_steps)
     return RunResult("", max_steps, usage, tool_errors, 0, "budget", messages)

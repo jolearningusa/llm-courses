@@ -428,3 +428,83 @@ console.log(JSON.stringify(out));
         self.assertEqual((out["info"]["id"], out["info"]["ownsCompaction"]), ("nanoos-engine", True))
         self.assertEqual(out["ingest"], {"ingested": True})
         self.assertIn("nanoos engine:", out["error"], "a Python error rejects the call")
+
+
+class TestObservabilityProvided(unittest.TestCase):
+    """Lab 13's provided pieces: OTLP encoding and export, the offline judge, the calibration set, obs_eval.py."""
+
+    def spans(self):
+        from nanoos.otel import Span
+        root = Span("invoke_agent nanoos", "a" * 32, "1" * 16, None, 1_000, 9_000, attributes={"n": 3, "ok": True})
+        tool = Span("execute_tool read_file", "a" * 32, "2" * 16, "1" * 16, 2_000, 5_000, status="ERROR",
+                    attributes={"x": 0.5, "names": ["a", "b"]}, events=[{"name": "retry", "time_ns": 3_000,
+                                                                          "attributes": {"attempt": 1}}])
+        return [root, tool]
+
+    def test_otlp_round_trip_and_tree(self):
+        from nanoos.otel import from_otlp, span_tree, to_otlp
+        body = to_otlp(self.spans(), "svc")
+        rs = body["resourceSpans"][0]
+        self.assertIn({"key": "service.name", "value": {"stringValue": "svc"}}, rs["resource"]["attributes"])
+        raw = rs["scopeSpans"][0]["spans"]
+        self.assertEqual(raw[1]["parentSpanId"], "1" * 16)
+        self.assertNotIn("parentSpanId", raw[0])
+        self.assertEqual(raw[1]["status"]["code"], 2)
+        back = from_otlp(json.loads(json.dumps(body)))
+        self.assertEqual(back[0].attributes, {"n": 3, "ok": True})
+        self.assertEqual(back[1].attributes, {"x": 0.5, "names": ["a", "b"]})
+        self.assertEqual(back[1].events[0]["attributes"], {"attempt": 1})
+        self.assertEqual(span_tree(back).splitlines(),
+                         ["invoke_agent nanoos  0.0 ms", "  execute_tool read_file  0.0 ms  ERROR"])
+
+    def test_http_exporter_posts_json_and_fails_open(self):
+        import http.server
+        import threading
+        from nanoos.otel import OtlpHttpExporter
+        got = []
+
+        class H(http.server.BaseHTTPRequestHandler):
+            def do_POST(self):
+                got.append((self.path, self.headers["Content-Type"],
+                            json.loads(self.rfile.read(int(self.headers["Content-Length"])))))
+                self.send_response(200)
+                self.end_headers()
+
+            def log_message(self, *a):
+                pass
+
+        srv = http.server.HTTPServer(("127.0.0.1", 0), H)
+        threading.Thread(target=srv.serve_forever, daemon=True).start()
+        try:
+            OtlpHttpExporter(f"http://127.0.0.1:{srv.server_port}").export(self.spans())
+        finally:
+            srv.shutdown()
+        self.assertEqual(got[0][:2], ("/v1/traces", "application/json"))
+        self.assertEqual(len(got[0][2]["resourceSpans"][0]["scopeSpans"][0]["spans"]), 2)
+        dead = OtlpHttpExporter(f"http://127.0.0.1:{srv.server_port}", timeout_s=0.5)
+        with contextlib.redirect_stdout(io.StringIO()):
+            dead.export(self.spans())
+        self.assertEqual(dead.failures, 1)
+
+    def test_calibration_set_and_offline_judge(self):
+        from models.substring_judge import SubstringJudge
+        from nanoos.graders import judge_messages, load_cases
+        cases = load_cases()
+        self.assertEqual(len(cases), 30)
+        self.assertEqual(len({c["id"] for c in cases}), 30)
+        self.assertEqual({c["label"] for c in cases}, {"pass", "fail"})
+        self.assertTrue(all(c["question"] and c["reference"] and c["answer"] and c["why"] for c in cases))
+        j = SubstringJudge()
+        self.assertTrue(j.complete(judge_messages("q", "4210", "West totals 4,210."), []).content.endswith("PASS"))
+        self.assertTrue(j.complete(judge_messages("q", "30", "set to 300"), []).content.endswith("FAIL"))
+
+    def test_obs_eval_runs_at_any_stage(self):
+        import obs_eval
+        with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()), \
+                contextlib.redirect_stderr(io.StringIO()):
+            code = obs_eval.main(["--config", "base=loop=baseline", "--tasks", "b01,b07", "--trials", "2",
+                                  "--judge", "none", "--out", tmp])
+            self.assertEqual(code, 0)
+            rows = list(csv.DictReader(open(Path(tmp) / "base" / "metrics.csv", encoding="utf-8")))
+            self.assertEqual([r["success"] for r in rows], ["1"] * 4)
+            self.assertIn("pass@1", (Path(tmp) / "dashboard.html").read_text(encoding="utf-8"))

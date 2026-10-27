@@ -9,7 +9,7 @@ The baseline loop emits four kinds of events:
 
     run_start   task, model
     model_call  step, input_tokens, cached_input_tokens, output_tokens, latency_s, n_tool_calls
-    tool_call   step, name, arguments, is_error, output_chars, latency_s
+    tool_call   step, name, arguments, is_error, output_chars, output, latency_s
     run_end     stopped_by, steps
 
 Your job (search for TODO): write the events to a file, then read a run back two ways. `make grade LAB=0`
