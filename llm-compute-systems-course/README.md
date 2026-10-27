@@ -84,6 +84,8 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [Checkpointing, Input State and Useful Training Work](slides/20_checkpoint_recovery.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [Serving Iterations, Admission and State Ownership](slides/21_serving_scheduler.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [KV, Prefix and Response Caches across Inference Stacks](slides/22_kv_prefix_cache_mechanisms.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Prefill, Decode and Latency-Constrained Scheduling](slides/23_prefill_decode_scheduling.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Disaggregated Inference and KV Handoff](slides/24_disaggregated_inference.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -111,7 +113,8 @@ llm-compute-systems-course/
 │   │   │   ├── lab08_parallelism.md
 │   │   │   ├── lab09_moe.md
 │   │   │   ├── lab10_recovery.md
-│   │   │   └── lab11_cache.md
+│   │   │   ├── lab11_cache.md
+│   │   │   └── lab12_scheduling.md
 │   │   ├── tests/
 │   │   │   ├── test_attention.py
 │   │   │   ├── test_budgets.py
@@ -123,7 +126,8 @@ llm-compute-systems-course/
 │   │   │   ├── test_parallelism.py
 │   │   │   ├── test_precision.py
 │   │   │   ├── test_pytorch_lab.py
-│   │   │   └── test_reductions.py
+│   │   │   ├── test_reductions.py
+│   │   │   └── test_scheduling.py
 │   │   ├── README.md
 │   │   ├── attention_lab.py
 │   │   ├── budgets.py
@@ -139,6 +143,7 @@ llm-compute-systems-course/
 │   │   ├── reductions.py
 │   │   ├── requirements-pytorch-lock.txt
 │   │   ├── requirements-pytorch.txt
+│   │   ├── scheduling_lab.py
 │   │   └── training_source_walkthrough.md
 │   ├── LAB_PLAN.md
 │   └── report_template.md
@@ -176,7 +181,9 @@ llm-compute-systems-course/
 │   ├── 19_moe_execution.html
 │   ├── 20_checkpoint_recovery.html
 │   ├── 21_serving_scheduler.html
-│   └── 22_kv_prefix_cache_mechanisms.html
+│   ├── 22_kv_prefix_cache_mechanisms.html
+│   ├── 23_prefill_decode_scheduling.html
+│   └── 24_disaggregated_inference.html
 ├── BUILD_PLAN.md
 ├── LICENSE
 ├── README.md
