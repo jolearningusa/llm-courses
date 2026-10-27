@@ -9,6 +9,10 @@ This research/outline installment is deliberately reviewable before full slides 
 - Workload/algorithm primer, PyTorch/compiler/deployment guide, Rubin case study, NVIDIA and AMD stack maps, and AgentOS caching comparison.
 - Shared experiment/report contract, hardware tiers and numerical/performance evaluation policy.
 
+## Detailed build plan
+
+[BUILD_PLAN.md](BUILD_PLAN.md) specifies each planned deck, paired lab work, required artifacts, dependencies, serial PR units and completion gates. The user authorized continuing one unit at a time on 2026-10-26: merge each green PR, refresh `origin/main`, and only then start the next.
+
 ## Follow-on installments
 
 1. **Measurement foundation:** opening lecture deck, resource calculator, workload fixtures, environment manifests and L0–L2 executable kit. Pilot CPU and one-GPU paths.
