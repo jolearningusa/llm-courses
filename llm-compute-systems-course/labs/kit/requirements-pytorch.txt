@@ -1,0 +1,2 @@
+# Tested CPU lab environment: Python 3.12, macOS arm64. Not a CUDA/ROCm matrix.
+torch==2.9.1
