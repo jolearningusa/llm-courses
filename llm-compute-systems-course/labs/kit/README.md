@@ -1,6 +1,6 @@
 # Computing systems lab kit
 
-Released labs are **L0: resource budgets** and **L1: measurement and host data paths**. It uses Python 3.9 or later and only the standard library. Its numbers are analytical estimates, not GPU measurements. Later lab implementations will be added as their serial release units land.
+Released labs are **L0: resource budgets**, **L1: measurement and host data paths**, and **L2: PyTorch execution/compiler**. L0/L1 use Python 3.9+ and the standard library; L2 has a separate pinned Python 3.12/PyTorch environment. Analytical examples are labeled separately from measured CPU work. Later kits land through serial release units.
 
 From this directory:
 
@@ -28,3 +28,9 @@ The analytical unit checks and CLI demo ran on the course-authoring CPU host wit
 ## L1 measurement path
 
 [Measurement handout](handouts/lab01_measurement.md) pairs actual CPU wall timing with analytical interval/pipeline exercises. `measurement.py` records raw samples and environment, uses explicit warmup, and reports nearest-rank p95. Its interval-union helper does not infer causal bottlenecks. The CLI ran on Python 3.9.6 and its accounting/warmup checks passed; no CUDA timeline was collected.
+
+## L2 pinned PyTorch environment
+
+Create a separate Python 3.12 environment and install `requirements-pytorch.txt` (direct dependency) or `requirements-pytorch-lock.txt` (the resolved CPU authoring environment). Read [L2](handouts/lab02_pytorch.md). The standard-library labs do not require PyTorch. Without it, the L2 tests explicitly skip.
+
+Validated on macOS arm64, Python 3.12.14 and PyTorch 2.9.1: eager forward/backward, Inductor compiled forward/backward, two batch sizes and dynamic-shape execution, with output/input/parameter-gradient checks. Cold first use and warm samples are recorded separately; no CUDA/ROCm performance claim or student-duration pilot is made. PyTorch's optional NumPy bridge is not used by this kit.

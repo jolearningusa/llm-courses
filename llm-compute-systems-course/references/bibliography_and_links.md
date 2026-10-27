@@ -110,6 +110,11 @@ Checked against primary web sources on **2026-10-26**. **Core** means assigned f
 - **Advanced — NVIDIA Vera Rubin Maximizes Intelligence per Dollar for Post-Training**. [NVIDIA article](https://blogs.nvidia.com/blog/nvidia-vera-rubin-post-training-intelligence-per-dollar/). Rollout/training economics; illustrative assumptions and vendor comparisons require attribution.
 - **Reference — Vera Rubin platform overview**. [NVIDIA product page](https://www.nvidia.com/en-us/data-center/technologies/rubin/). Current platform positioning alongside detailed architecture articles.
 
+## Pinned L2 implementation references
+
+- **Reference — PyTorch 2.9 autograd**. [Versioned API](https://docs.pytorch.org/docs/2.9/autograd.html). Saved-tensor inspection and backward interface used by the CPU kit.
+- **Reference — PyTorch 2.9 compile**. [Versioned API](https://docs.pytorch.org/docs/2.9/generated/torch.compile.html). Full-graph capture and dynamic setting used in the tested L2 environment.
+
 ## Revalidation policy
 
 Before teaching a module, read its assigned design/evaluation sections and upstream code at a recorded commit. Before shipping executable labs, record driver/runtime/compiler/framework/library versions, target GPU, supported dtype/model/backend and test results. `latest`, `stable` and repository `main` are moving references. Track pinned API dependencies with the repository's freshness workflow after executable kits exist.

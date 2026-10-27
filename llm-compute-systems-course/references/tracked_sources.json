@@ -1,0 +1,21 @@
+{
+  "max_age_days": 120,
+  "items": [
+    {
+      "name": "L2 PyTorch lab pin",
+      "version": "2.9.1",
+      "verified": "2026-10-26",
+      "compare": 2,
+      "upstream": {
+        "type": "pypi",
+        "package": "torch"
+      },
+      "used_in": [
+        "labs/kit/pytorch_lab.py",
+        "labs/kit/requirements-pytorch.txt",
+        "labs/kit/handouts/lab02_pytorch.md"
+      ],
+      "notes": "Intentional tested CPU pin; upstream updates trigger a compatibility pilot, not a claim that this is the latest release."
+    }
+  ]
+}

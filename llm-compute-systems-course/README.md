@@ -2,7 +2,7 @@
 
 A systems engineering course on building and measuring the computing stack for LLM training and inference, from PyTorch and compilers through CUDA kernels, memory, operating systems, interconnects and cluster runtimes, using NVIDIA Vera Rubin as a recurring case study.
 
-**Status: foundation and measurement units available, 2026-10-26.** The overview and first four lecture decks accompany working CPU-only L0 resource-budget and L1 measurement labs. The research review, syllabus, primers and later lab specifications remain the course blueprint. Later decks, later executable kits and GPU measurements are still planned; no GPU validation is claimed. See the build plan for serial release progress.
+**Status: foundation, measurement and PyTorch units available, 2026-10-26.** The overview and first six lecture decks accompany CPU L0 resource-budget, L1 measurement and L2 PyTorch execution/compiler labs. The research review, syllabus, primers and later lab specifications remain the course blueprint. Later decks, later executable kits and GPU measurements are still planned; no GPU validation is claimed. See the build plan for serial release progress.
 
 ## Start here
 
@@ -66,6 +66,8 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [Architecture as a Computing Workload](slides/02_architecture_workload_primer.html) (12 slides) | Topic lecture, worked examples and practical exercises |
 | [Measurement and Profiling](slides/03_measurement_profiling.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [Host, OS and Data Paths](slides/04_host_os_data_paths.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [PyTorch Execution and Autograd](slides/05_pytorch_execution_autograd.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [PyTorch Compiler and Specialization](slides/06_pytorch_compiler.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -81,13 +83,18 @@ llm-compute-systems-course/
 │   ├── kit/
 │   │   ├── handouts/
 │   │   │   ├── lab00_budgets.md
-│   │   │   └── lab01_measurement.md
+│   │   │   ├── lab01_measurement.md
+│   │   │   └── lab02_pytorch.md
 │   │   ├── tests/
 │   │   │   ├── test_budgets.py
-│   │   │   └── test_measurement.py
+│   │   │   ├── test_measurement.py
+│   │   │   └── test_pytorch_lab.py
 │   │   ├── README.md
 │   │   ├── budgets.py
-│   │   └── measurement.py
+│   │   ├── measurement.py
+│   │   ├── pytorch_lab.py
+│   │   ├── requirements-pytorch-lock.txt
+│   │   └── requirements-pytorch.txt
 │   ├── LAB_PLAN.md
 │   └── report_template.md
 ├── notes/
@@ -99,13 +106,16 @@ llm-compute-systems-course/
 │   └── workload_primer.md
 ├── references/
 │   ├── bibliography_and_links.md
-│   └── research_review.md
+│   ├── research_review.md
+│   └── tracked_sources.json
 ├── slides/
 │   ├── 00_master_compute_systems.html
 │   ├── 01_workloads_rooflines.html
 │   ├── 02_architecture_workload_primer.html
 │   ├── 03_measurement_profiling.html
-│   └── 04_host_os_data_paths.html
+│   ├── 04_host_os_data_paths.html
+│   ├── 05_pytorch_execution_autograd.html
+│   └── 06_pytorch_compiler.html
 ├── BUILD_PLAN.md
 ├── LICENSE
 ├── README.md
