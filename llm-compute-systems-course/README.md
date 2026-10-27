@@ -74,6 +74,8 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [Asynchronous Kernel Pipelines](slides/10_async_kernel_pipelines.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [Attention Execution and Online Softmax](slides/11_attention_execution.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [Attention Kernel and Hardware Co-design](slides/12_attention_kernel_codesign.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Precision, Scales and Numerical Contracts](slides/13_precision_numerics.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Precision in Training and Serving](slides/14_precision_training_serving.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -95,12 +97,14 @@ llm-compute-systems-course/
 │   │   │   ├── lab02_pytorch.md
 │   │   │   ├── lab03_reductions.md
 │   │   │   ├── lab04_gemm.md
-│   │   │   └── lab05_attention.md
+│   │   │   ├── lab05_attention.md
+│   │   │   └── lab06_precision.md
 │   │   ├── tests/
 │   │   │   ├── test_attention.py
 │   │   │   ├── test_budgets.py
 │   │   │   ├── test_gemm.py
 │   │   │   ├── test_measurement.py
+│   │   │   ├── test_precision.py
 │   │   │   ├── test_pytorch_lab.py
 │   │   │   └── test_reductions.py
 │   │   ├── README.md
@@ -108,6 +112,7 @@ llm-compute-systems-course/
 │   │   ├── budgets.py
 │   │   ├── gemm_lab.py
 │   │   ├── measurement.py
+│   │   ├── precision_lab.py
 │   │   ├── pytorch_lab.py
 │   │   ├── reductions.py
 │   │   ├── requirements-pytorch-lock.txt
@@ -138,7 +143,9 @@ llm-compute-systems-course/
 │   ├── 09_gemm_tensor_cores.html
 │   ├── 10_async_kernel_pipelines.html
 │   ├── 11_attention_execution.html
-│   └── 12_attention_kernel_codesign.html
+│   ├── 12_attention_kernel_codesign.html
+│   ├── 13_precision_numerics.html
+│   └── 14_precision_training_serving.html
 ├── BUILD_PLAN.md
 ├── LICENSE
 ├── README.md
