@@ -5,8 +5,9 @@ together, and records what similar courses and tutorials do, so the design choic
 The three labs that exist today (`lab1_memory_plugins/`, `lab2_aios_kv_cache/`, `lab3_google_harness2/`) are
 kept and slotted into the plan; the rest is new work, listed as PRs at the end.
 
-Status: **plan**, written 2026-10-26. Built so far: the lab kit and Labs 0–14 ([`kit/`](kit/)), plus today's
-Labs 1–3. The rest is not written yet.
+Status: **plan**, written 2026-10-26. Built so far: the lab kit, Labs 0–14 and the capstone handout
+([`kit/`](kit/)), plus today's Labs 1–3. Still to do: the private held-out suite, and renumbering the labs in the
+README, syllabus and master deck.
 
 ---
 
@@ -469,6 +470,8 @@ Following the repo's one-task-one-PR workflow, in this order:
    simulated agent with bad habits in [`kit/tasks/improve_sim.py`](kit/tasks/improve_sim.py); Part C runs the
    Harness² demo from `lab3_google_harness2/`, which keeps its name.
 10. **Capstone** handout and the held-out suite (kept private).
+   Done: the [handout](kit/handouts/capstone_bakeoff.md) and the scorer `kit/capstone_eval.py` (dev suite =
+   basic + long tiers; the held-out suite is a private file the staff pass with `--heldout`).
 11. **README and syllabus update:** renumber labs, update the course map slide in the master deck, and pacing.
 
 Before the course runs, a pilot pass through all labs should set the real token budgets, check every upstream

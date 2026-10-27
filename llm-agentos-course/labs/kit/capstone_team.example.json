@@ -1,0 +1,7 @@
+{
+  "team": "team-00",
+  "loop": "nanoos",
+  "context": "clearing",
+  "keep_last": 6,
+  "defense": "rule_of_two,egress"
+}

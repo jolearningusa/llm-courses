@@ -4,7 +4,7 @@ The shared code for the course's practice labs, as planned in [`../LAB_PLAN.md`]
 one small harness, **`nanoos`**, across the term; each lab adds one module, is graded by tests against a
 scripted model, and then measures the same idea in a production harness or engine.
 
-Python 3.10 or newer, no dependencies. Handouts: [Lab 0](handouts/lab00_watch_a_harness.md), [Lab 1](handouts/lab01_agent_loop.md), [Lab 2](handouts/lab02_scheduler.md), [Lab 3](handouts/lab03_context_engines.md), [Lab 4](handouts/lab04_long_term_memory.md), [Lab 5](handouts/lab05_kv_cache_plane.md), [Lab 6](handouts/lab06_access_control.md), [Lab 7](handouts/lab07_tools_sandbox.md), [Lab 8](handouts/lab08_skills.md), [Lab 9](handouts/lab09_multi_agent.md), [Lab 10](handouts/lab10_extension_layer.md), [Lab 11](handouts/lab11_mcp_connectors.md), [Lab 12](handouts/lab12_harness_plugins.md), [Lab 13](handouts/lab13_observability_eval.md), [Lab 14](handouts/lab14_self_improving_harness.md).
+Python 3.10 or newer, no dependencies. Handouts: [Lab 0](handouts/lab00_watch_a_harness.md), [Lab 1](handouts/lab01_agent_loop.md), [Lab 2](handouts/lab02_scheduler.md), [Lab 3](handouts/lab03_context_engines.md), [Lab 4](handouts/lab04_long_term_memory.md), [Lab 5](handouts/lab05_kv_cache_plane.md), [Lab 6](handouts/lab06_access_control.md), [Lab 7](handouts/lab07_tools_sandbox.md), [Lab 8](handouts/lab08_skills.md), [Lab 9](handouts/lab09_multi_agent.md), [Lab 10](handouts/lab10_extension_layer.md), [Lab 11](handouts/lab11_mcp_connectors.md), [Lab 12](handouts/lab12_harness_plugins.md), [Lab 13](handouts/lab13_observability_eval.md), [Lab 14](handouts/lab14_self_improving_harness.md), and the [capstone](handouts/capstone_bakeoff.md).
 
 ```bash
 make test-kit      # the kit's own tests
@@ -58,12 +58,13 @@ make suite TRIALS=3 NAME=baseline   # the basic tier on your model (set NANOOS_B
 | `ports_eval.py` | Lab 12's exercise: the long tier through the Hermes and OpenClaw ports, views against rewrites | Provided |
 | `obs_eval.py` | Lab 13's exercise: two configurations traced, graded four ways and compared on a dashboard; judge calibration | Provided |
 | `improve_eval.py` | Lab 14's exercise: the improvement loop on DEV and HELDOUT tasks, with the lessons it logged and what it cost | Provided |
+| `capstone_eval.py`, `capstone_team.example.json` | The capstone scorer: a team's submission on the dev (or held-out) suite with a token budget per task, plus the Lab 6 red-team suite; score = 100 × pass^3 × safety, and a leaderboard | Provided |
 | `export_task.py` | Writes one task's files to a folder (and scores an answer) to run it in another harness | Provided |
 | `grade.py`, `tests/` | The autograder: `tests/test_labNN.py` per lab, `tests/test_kit.py` for the kit | Provided |
 | `report_template.md` | The one-page report every lab hands in | Provided |
 | `handouts/` | One handout per lab | Provided |
 
-The capstone builds on all of them; its handout and held-out suite come next.
+The [capstone](handouts/capstone_bakeoff.md) builds on all of them. Its held-out suite is kept private by the staff.
 
 ## How grading works
 
