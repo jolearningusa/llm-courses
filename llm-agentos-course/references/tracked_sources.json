@@ -53,8 +53,8 @@
       "verified": "2026-10-26",
       "upstream": {"type": "npm", "package": "openclaw"},
       "compare": 2,
-      "used_in": ["labs/lab1_memory_plugins/openclaw_context_engine.ts", "slides/05_opensource_plugin_apis_slides.html", "slides/05_extension_layer_deck.html"],
-      "notes": "Check registerContextEngine and plugins.slots in the plugin docs."
+      "used_in": ["labs/lab1_memory_plugins/openclaw_context_engine.ts", "labs/kit/nanoos/ports.py", "slides/05_opensource_plugin_apis_slides.html", "slides/05_extension_layer_deck.html"],
+      "notes": "Check registerContextEngine, plugins.slots, ownsCompaction and the quarantine-to-legacy rule in the context-engine docs."
     },
     {
       "name": "Hermes Agent",
@@ -62,8 +62,8 @@
       "verified": "2026-10-26",
       "upstream": {"type": "github_release", "repo": "NousResearch/hermes-agent"},
       "compare": 2,
-      "used_in": ["labs/lab1_memory_plugins/hermes_custom_memory.py", "slides/05_opensource_plugin_apis_slides.html", "slides/05_skills_deck.html"],
-      "notes": "Lab 1A matches the memory-provider and context-engine plugin docs as of v0.22.5. Check MemoryProvider and ContextEngine in the plugin docs."
+      "used_in": ["labs/lab1_memory_plugins/hermes_custom_memory.py", "labs/kit/nanoos/ports.py", "slides/05_opensource_plugin_apis_slides.html", "slides/05_skills_deck.html"],
+      "notes": "Lab 12 (1A) matches the memory-provider and context-engine plugin docs as of v0.22.5 (select_context, clone_for_agent; the docs ask for spawn_context_thread, not yet in the main branch on 2026-10-27). Check MemoryProvider and ContextEngine in the plugin docs."
     }
   ]
 }

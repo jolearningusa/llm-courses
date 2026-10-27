@@ -71,4 +71,4 @@ Hand in one page from [`report_template.md`](../report_template.md).
 - **Hierarchical summaries with an expand tool**: keep per-chunk summaries and give the model an `expand(chunk)`
   tool that brings one chunk back.
 - **Port an engine to Hermes or OpenClaw**: wrap your engine in Hermes's `ContextEngine` interface or
-  OpenClaw's context-engine slot (today's `../../lab1_memory_plugins/` has templates; this is Lab 12 in the plan).
+  OpenClaw's context-engine slot; [Lab 12](lab12_harness_plugins.md) does this.

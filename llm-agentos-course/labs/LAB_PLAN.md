@@ -5,7 +5,7 @@ together, and records what similar courses and tutorials do, so the design choic
 The three labs that exist today (`lab1_memory_plugins/`, `lab2_aios_kv_cache/`, `lab3_google_harness2/`) are
 kept and slotted into the plan; the rest is new work, listed as PRs at the end.
 
-Status: **plan**, written 2026-10-26. Built so far: the lab kit and Labs 0–11 ([`kit/`](kit/)), plus today's
+Status: **plan**, written 2026-10-26. Built so far: the lab kit and Labs 0–12 ([`kit/`](kit/)), plus today's
 Labs 1–3. The rest is not written yet.
 
 ---
@@ -458,6 +458,8 @@ Following the repo's one-task-one-PR workflow, in this order:
    reference server in [`kit/tasks/mcp_notes.py`](kit/tasks/mcp_notes.py) and without the poisoned tool
    description (a benign definition change tests pinning, and Lab 6's fixtures cover attacks).
 7. **Lab 12**: rework today's `lab1_memory_plugins/` to wrap the students' engines.
+   Done: [`lab12`](kit/handouts/lab12_harness_plugins.md), with the adapters in `kit/nanoos/ports.py`; the folder
+   keeps its name, and 1B is now a TypeScript shell that forwards to the Python engine over stdio.
 8. **Lab 13**: OpenTelemetry, graders, judge calibration set, dashboard.
 9. **Lab 14**: improvement loop; link today's `lab3_google_harness2/`.
 10. **Capstone** handout and the held-out suite (kept private).
