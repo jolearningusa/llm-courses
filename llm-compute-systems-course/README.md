@@ -80,6 +80,8 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [Collectives, Topology and Exposed Communication](slides/16_collectives_overlap.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [Parallel Layouts and Recomputation](slides/17_parallelism_recomputation.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [Reading a Production Training Stack](slides/18_training_stack_walkthrough.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [MoE Routing, Dispatch and Grouped Compute](slides/19_moe_execution.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Checkpointing, Input State and Useful Training Work](slides/20_checkpoint_recovery.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -104,13 +106,16 @@ llm-compute-systems-course/
 │   │   │   ├── lab05_attention.md
 │   │   │   ├── lab06_precision.md
 │   │   │   ├── lab07_distributed.md
-│   │   │   └── lab08_parallelism.md
+│   │   │   ├── lab08_parallelism.md
+│   │   │   ├── lab09_moe.md
+│   │   │   └── lab10_recovery.md
 │   │   ├── tests/
 │   │   │   ├── test_attention.py
 │   │   │   ├── test_budgets.py
 │   │   │   ├── test_distributed.py
 │   │   │   ├── test_gemm.py
 │   │   │   ├── test_measurement.py
+│   │   │   ├── test_moe_recovery.py
 │   │   │   ├── test_parallelism.py
 │   │   │   ├── test_precision.py
 │   │   │   ├── test_pytorch_lab.py
@@ -121,9 +126,11 @@ llm-compute-systems-course/
 │   │   ├── distributed_lab.py
 │   │   ├── gemm_lab.py
 │   │   ├── measurement.py
+│   │   ├── moe_lab.py
 │   │   ├── parallelism_lab.py
 │   │   ├── precision_lab.py
 │   │   ├── pytorch_lab.py
+│   │   ├── recovery_lab.py
 │   │   ├── reductions.py
 │   │   ├── requirements-pytorch-lock.txt
 │   │   ├── requirements-pytorch.txt
@@ -160,7 +167,9 @@ llm-compute-systems-course/
 │   ├── 15_ddp_zero_fsdp.html
 │   ├── 16_collectives_overlap.html
 │   ├── 17_parallelism_recomputation.html
-│   └── 18_training_stack_walkthrough.html
+│   ├── 18_training_stack_walkthrough.html
+│   ├── 19_moe_execution.html
+│   └── 20_checkpoint_recovery.html
 ├── BUILD_PLAN.md
 ├── LICENSE
 ├── README.md
