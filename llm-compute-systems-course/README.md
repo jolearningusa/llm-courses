@@ -2,7 +2,7 @@
 
 A systems engineering course on building and measuring the computing stack for LLM training and inference, from PyTorch and compilers through CUDA kernels, memory, operating systems, interconnects and cluster runtimes, using NVIDIA Vera Rubin as a recurring case study.
 
-**Status: foundation, measurement and PyTorch units available, 2026-10-26.** The overview and first six lecture decks accompany CPU L0 resource-budget, L1 measurement and L2 PyTorch execution/compiler labs. The research review, syllabus, primers and later lab specifications remain the course blueprint. Later decks, later executable kits and GPU measurements are still planned; no GPU validation is claimed. See the build plan for serial release progress.
+**Status: foundation through CUDA/reduction teaching units available, 2026-10-26.** The overview and first eight lecture decks accompany L0–L3 lab paths: CPU budgets, timing, PyTorch/compiler execution and numerical reductions. A standalone CUDA RMSNorm exercise is supplied but has not been compiled or run on this host. The research review, syllabus, primers and later lab specifications remain the course blueprint. Later decks, later executable kits and GPU measurements are still planned; no GPU validation is claimed. See the build plan for serial release progress.
 
 ## Start here
 
@@ -68,6 +68,8 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [Host, OS and Data Paths](slides/04_host_os_data_paths.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [PyTorch Execution and Autograd](slides/05_pytorch_execution_autograd.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [PyTorch Compiler and Specialization](slides/06_pytorch_compiler.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [CUDA Execution and Memory](slides/07_cuda_execution_memory.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Reductions and Custom Operator Contracts](slides/08_reductions_custom_operators.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -81,18 +83,23 @@ Suggested weighting: labs 45%, paper/trace critiques 15%, capstone 40%. Correctn
 llm-compute-systems-course/
 ├── labs/
 │   ├── kit/
+│   │   ├── cuda/
+│   │   │   └── rmsnorm.cu
 │   │   ├── handouts/
 │   │   │   ├── lab00_budgets.md
 │   │   │   ├── lab01_measurement.md
-│   │   │   └── lab02_pytorch.md
+│   │   │   ├── lab02_pytorch.md
+│   │   │   └── lab03_reductions.md
 │   │   ├── tests/
 │   │   │   ├── test_budgets.py
 │   │   │   ├── test_measurement.py
-│   │   │   └── test_pytorch_lab.py
+│   │   │   ├── test_pytorch_lab.py
+│   │   │   └── test_reductions.py
 │   │   ├── README.md
 │   │   ├── budgets.py
 │   │   ├── measurement.py
 │   │   ├── pytorch_lab.py
+│   │   ├── reductions.py
 │   │   ├── requirements-pytorch-lock.txt
 │   │   └── requirements-pytorch.txt
 │   ├── LAB_PLAN.md
@@ -115,7 +122,9 @@ llm-compute-systems-course/
 │   ├── 03_measurement_profiling.html
 │   ├── 04_host_os_data_paths.html
 │   ├── 05_pytorch_execution_autograd.html
-│   └── 06_pytorch_compiler.html
+│   ├── 06_pytorch_compiler.html
+│   ├── 07_cuda_execution_memory.html
+│   └── 08_reductions_custom_operators.html
 ├── BUILD_PLAN.md
 ├── LICENSE
 ├── README.md
