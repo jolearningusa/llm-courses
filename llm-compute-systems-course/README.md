@@ -61,7 +61,7 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 
 | Deck | Scope |
 |---|---|
-| [Efficient LLM Computing Systems](slides/00_master_compute_systems.html) (12 slides) | Course map and released-deck navigation |
+| [Efficient LLM Computing Systems](slides/00_master_compute_systems.html) (13 slides) | Course map and released-deck navigation |
 | [Workloads, Rooflines and Capacity](slides/01_workloads_rooflines.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [Architecture as a Computing Workload](slides/02_architecture_workload_primer.html) (12 slides) | Topic lecture, worked examples and practical exercises |
 | [Measurement and Profiling](slides/03_measurement_profiling.html) (16 slides) | Topic lecture, worked examples and practical exercises |
@@ -76,6 +76,8 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [Attention Kernel and Hardware Co-design](slides/12_attention_kernel_codesign.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [Precision, Scales and Numerical Contracts](slides/13_precision_numerics.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 | [Precision in Training and Serving](slides/14_precision_training_serving.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [DDP, ZeRO and Fully Sharded Training](slides/15_ddp_zero_fsdp.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Collectives, Topology and Exposed Communication](slides/16_collectives_overlap.html) (16 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -98,10 +100,12 @@ llm-compute-systems-course/
 │   │   │   ├── lab03_reductions.md
 │   │   │   ├── lab04_gemm.md
 │   │   │   ├── lab05_attention.md
-│   │   │   └── lab06_precision.md
+│   │   │   ├── lab06_precision.md
+│   │   │   └── lab07_distributed.md
 │   │   ├── tests/
 │   │   │   ├── test_attention.py
 │   │   │   ├── test_budgets.py
+│   │   │   ├── test_distributed.py
 │   │   │   ├── test_gemm.py
 │   │   │   ├── test_measurement.py
 │   │   │   ├── test_precision.py
@@ -110,6 +114,7 @@ llm-compute-systems-course/
 │   │   ├── README.md
 │   │   ├── attention_lab.py
 │   │   ├── budgets.py
+│   │   ├── distributed_lab.py
 │   │   ├── gemm_lab.py
 │   │   ├── measurement.py
 │   │   ├── precision_lab.py
@@ -145,7 +150,9 @@ llm-compute-systems-course/
 │   ├── 11_attention_execution.html
 │   ├── 12_attention_kernel_codesign.html
 │   ├── 13_precision_numerics.html
-│   └── 14_precision_training_serving.html
+│   ├── 14_precision_training_serving.html
+│   ├── 15_ddp_zero_fsdp.html
+│   └── 16_collectives_overlap.html
 ├── BUILD_PLAN.md
 ├── LICENSE
 ├── README.md
