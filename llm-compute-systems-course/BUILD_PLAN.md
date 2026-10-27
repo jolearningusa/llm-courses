@@ -106,8 +106,8 @@ The units below are implementation milestones, not a promise to combine everythi
 | P1 | Master, decks 01–02 and L0; common fixture/result contracts | P0 | Merged in #46; CPU checks passed, student pilot pending |
 | P2 | Decks 03–04 and L1; shared timing/profiling guidance | P1 | Merged in #48; CPU/analytical path, CUDA extension unverified |
 | P3 | Decks 05–06 and L2 | P2 | Merged in #49; PyTorch CPU eager/compiler validation |
-| P4 | Decks 07–08 and L3 | P3 | Implemented CPU references; CUDA source/build/run unverified |
-| P5 | Decks 09–10 and L4 | P4 | Planned |
+| P4 | Decks 07–08 and L3 | P3 | Merged in #50; CPU references, CUDA source/build/run unverified |
+| P5 | Decks 09–10 and L4 | P4 | Implemented CPU shape/tiling study; GPU pipelines unverified |
 | P6 | Decks 11–12 and L5 | P5 | Planned |
 | P7 | Decks 13–14 and L6 | P6 | Planned |
 | P8 | Decks 15–16 and L7 | P7 | Planned |

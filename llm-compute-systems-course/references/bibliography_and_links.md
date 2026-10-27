@@ -115,6 +115,8 @@ Checked against primary web sources on **2026-10-26**. **Core** means assigned f
 - **Reference — PyTorch 2.9 autograd**. [Versioned API](https://docs.pytorch.org/docs/2.9/autograd.html). Saved-tensor inspection and backward interface used by the CPU kit.
 - **Reference — PyTorch 2.9 compile**. [Versioned API](https://docs.pytorch.org/docs/2.9/generated/torch.compile.html). Full-graph capture and dynamic setting used in the tested L2 environment.
 
+- **Reference — CUTLASS efficient GEMM**. [Current guide](https://docs.nvidia.com/cutlass/latest/media/docs/cpp/efficient_gemm.html). Hierarchical tiling, reuse and pipeline implementation study for L4.
+
 ## Revalidation policy
 
 Before teaching a module, read its assigned design/evaluation sections and upstream code at a recorded commit. Before shipping executable labs, record driver/runtime/compiler/framework/library versions, target GPU, supported dtype/model/backend and test results. `latest`, `stable` and repository `main` are moving references. Track pinned API dependencies with the repository's freshness workflow after executable kits exist.
