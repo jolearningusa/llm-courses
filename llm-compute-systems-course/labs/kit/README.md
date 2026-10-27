@@ -57,6 +57,7 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 - [L9 — Route, group and combine expert work](handouts/lab09_moe.md)
 - [L10 — Recover the computation, not only the weights](handouts/lab10_recovery.md)
 - [L11 — State ownership and inference-cache mechanisms](handouts/lab11_cache.md)
+- [L12 — Replay scheduling and budget disaggregation](handouts/lab12_scheduling.md)
 
 ## L5 attention execution
 
@@ -81,3 +82,7 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 ## L11 serving and caches
 
 [L11](handouts/lab11_cache.md) tests a logical full-block prefix model with identity, shared ownership, pressure and cancellation. It stores no KV tensors. A vLLM/llama.cpp comparison worksheet is provided; no engine run is claimed.
+
+## L12 scheduling and disaggregation
+
+[L12](handouts/lab12_scheduling.md) replays a finite workload under explicit virtual-time costs and compares chunked/unbounded prefill. The transfer calculator is analytical; it is not a full split-cluster simulator or measured disaggregated deployment.
