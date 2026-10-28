@@ -58,6 +58,7 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 - [L10 — Recover the computation, not only the weights](handouts/lab10_recovery.md)
 - [L11 — State ownership and inference-cache mechanisms](handouts/lab11_cache.md)
 - [L12 — Replay scheduling and budget disaggregation](handouts/lab12_scheduling.md)
+- [L13 — Speculative correction and agent-wait policies](handouts/lab13_agent_policy.md)
 
 ## L5 attention execution
 
@@ -86,3 +87,7 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 ## L12 scheduling and disaggregation
 
 [L12](handouts/lab12_scheduling.md) replays a finite workload under explicit virtual-time costs and compares chunked/unbounded prefill. The transfer calculator is analytical; it is not a full split-cluster simulator or measured disaggregated deployment.
+
+## L13 speculation and agent policy
+
+[L13](handouts/lab13_agent_policy.md) validates exact one-step categorical correction and samples a synthetic distribution. Its wait-policy accounting is analytical, with explicit identity and byte-second boundaries; no engine/model throughput is claimed.
