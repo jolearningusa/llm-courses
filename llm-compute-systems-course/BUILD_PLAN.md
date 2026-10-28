@@ -116,8 +116,8 @@ The units below are implementation milestones, not a promise to combine everythi
 | P11 | Decks 21–22 and L11 | P10 | Merged in #60; logical prefix ownership simulation and two-engine comparison worksheet; engines not executed |
 | P12 | Decks 23–24 and L12 | P11 | Merged in #61; virtual-time scheduling replay and analytical KV-transfer budget; split cluster unverified |
 | P13 | Decks 25–26 and L13A/B | P12 | Merged in #65; exact categorical correction and analytical agent-wait policy; engine extensions unverified |
-| P14 | Decks 27–28 and L14 | P13 | Implemented actual CPU AOTInductor and ExecuTorch XNNPACK export/load; other targets unverified |
-| P15 | Decks 29–30 and L15; revisit L10 | P14 | Planned |
+| P14 | Decks 27–28 and L14 | P13 | Merged in #66; actual CPU AOTInductor and ExecuTorch XNNPACK export/load; other targets unverified |
+| P15 | Decks 29–30 and L15; revisit L10 | P14 | Implemented source-grounded Rubin/NVIDIA/AMD dossier and analytical useful-work ledger; vendor hardware unverified |
 | P16 | Capstone deck, package and complete-course pilot | P15 | Planned |
 
 A unit with unavailable hardware may ship a clearly labeled analytical/reference path plus unverified GPU exercises, but must not be marked GPU-validated. Continue independent authoring while recording the exact missing validation. Do not publish fabricated results or advertise a runnable accelerated path that has never been checked.

@@ -60,6 +60,7 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 - [L12 — Replay scheduling and budget disaggregation](handouts/lab12_scheduling.md)
 - [L13 — Speculative correction and agent-wait policies](handouts/lab13_agent_policy.md)
 - [L14 — Export, compile, lower and reload real artifacts](handouts/lab14_deployment.md)
+- [L15 — Rubin/AMD dossier and whole-system efficiency](handouts/lab15_vendor_efficiency.md)
 
 ## L5 attention execution
 
@@ -96,3 +97,7 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 ## L14 deployment
 
 [L14](handouts/lab14_deployment.md) builds and loads actual CPU AOTInductor .pt2 and ExecuTorch .pte artifacts, including fresh-process reload, output checks and shape/stride/dtype guard rejection. ExecuTorch uses a separate pinned environment; CUDA, edge devices and quantized native extensions are not validated.
+
+## L15 vendor and whole-system study
+
+[L15](handouts/lab15_vendor_efficiency.md) uses a source-grounded dossier and analytical disjoint phase ledger. It preserves conflicting published rate scopes and separates dense/sparse precision. No Rubin/AMD or power benchmark is claimed.

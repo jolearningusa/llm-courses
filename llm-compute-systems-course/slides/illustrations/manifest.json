@@ -261,6 +261,24 @@
     "asset": "executorch-partitions.svg"
   },
   {
+    "prefix": "29",
+    "after": "Three communication boundaries",
+    "slug": "rubin-data-paths",
+    "title": "CPU, scale-up and scale-out are different paths",
+    "caption": "Conceptual traffic boundaries, not a complete board/rack layout. Local HBM, coherent links and network transfers have different costs.",
+    "deck": "29_rubin_vendor_stacks.html",
+    "asset": "rubin-data-paths.svg"
+  },
+  {
+    "prefix": "30",
+    "after": "Worked 2\u00d7 kernel example",
+    "slug": "amdahl-ledger",
+    "title": "A 2\u00d7 component improvement becomes 1.43\u00d7 overall",
+    "caption": "Constructed disjoint phase example: 60 s compute + 40 s other becomes 30 + 40 = 70 s for the same useful work.",
+    "deck": "30_whole_system_efficiency.html",
+    "asset": "amdahl-ledger.svg"
+  },
+  {
     "prefix": "32",
     "after": "Three implementation choices",
     "slug": "optimization-choices",

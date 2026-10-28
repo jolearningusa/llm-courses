@@ -61,7 +61,7 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 
 | Deck | Scope |
 |---|---|
-| [Efficient LLM Computing Systems](slides/00_master_compute_systems.html) (14 slides) | Course map and released-deck navigation |
+| [Efficient LLM Computing Systems](slides/00_master_compute_systems.html) (15 slides) | Course map and released-deck navigation |
 | [Workloads, Rooflines and Capacity](slides/01_workloads_rooflines.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Architecture as a Computing Workload](slides/02_architecture_workload_primer.html) (13 slides) | Topic lecture, worked examples and practical exercises |
 | [Measurement and Profiling](slides/03_measurement_profiling.html) (17 slides) | Topic lecture, worked examples and practical exercises |
@@ -90,6 +90,8 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [AgentOS Workloads and Cache-Lifecycle Policies](slides/26_agentos_inference_cache_policy.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Export Contracts and AOTInductor Deployment](slides/27_export_aotinductor.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [ExecuTorch Runtime, Delegation and Memory Planning](slides/28_executorch_deployment.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Vera Rubin and NVIDIA/AMD Software Stacks](slides/29_rubin_vendor_stacks.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Whole-System Efficiency and Useful Work](slides/30_whole_system_efficiency.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Optimization Decisions and Automated Performance Engineering](slides/32_optimization_decision_systems.html) (23 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
@@ -124,7 +126,8 @@ llm-compute-systems-course/
 │   │   │   ├── lab11_cache.md
 │   │   │   ├── lab12_scheduling.md
 │   │   │   ├── lab13_agent_policy.md
-│   │   │   └── lab14_deployment.md
+│   │   │   ├── lab14_deployment.md
+│   │   │   └── lab15_vendor_efficiency.md
 │   │   ├── tests/
 │   │   │   ├── test_agent_policy.py
 │   │   │   ├── test_attention.py
@@ -132,6 +135,7 @@ llm-compute-systems-course/
 │   │   │   ├── test_cache.py
 │   │   │   ├── test_deployment.py
 │   │   │   ├── test_distributed.py
+│   │   │   ├── test_efficiency.py
 │   │   │   ├── test_gemm.py
 │   │   │   ├── test_measurement.py
 │   │   │   ├── test_moe_recovery.py
@@ -160,7 +164,9 @@ llm-compute-systems-course/
 │   │   ├── requirements-pytorch-lock.txt
 │   │   ├── requirements-pytorch.txt
 │   │   ├── scheduling_lab.py
-│   │   └── training_source_walkthrough.md
+│   │   ├── system_efficiency.py
+│   │   ├── training_source_walkthrough.md
+│   │   └── vendor_dossier_template.md
 │   ├── LAB_PLAN.md
 │   └── report_template.md
 ├── notes/
@@ -183,6 +189,7 @@ llm-compute-systems-course/
 │   ├── illustrations/
 │   │   ├── README.md
 │   │   ├── agent-wait.svg
+│   │   ├── amdahl-ledger.svg
 │   │   ├── aoti-artifact.svg
 │   │   ├── attention-pipeline.svg
 │   │   ├── autograd-graph.svg
@@ -210,6 +217,7 @@ llm-compute-systems-course/
 │   │   ├── reduction-tree.svg
 │   │   ├── restart-state.svg
 │   │   ├── roofline.svg
+│   │   ├── rubin-data-paths.svg
 │   │   ├── shared-blocks.svg
 │   │   ├── source-walk.svg
 │   │   ├── speculative-correction.svg
@@ -243,6 +251,8 @@ llm-compute-systems-course/
 │   ├── 26_agentos_inference_cache_policy.html
 │   ├── 27_export_aotinductor.html
 │   ├── 28_executorch_deployment.html
+│   ├── 29_rubin_vendor_stacks.html
+│   ├── 30_whole_system_efficiency.html
 │   └── 32_optimization_decision_systems.html
 ├── BUILD_PLAN.md
 ├── LICENSE

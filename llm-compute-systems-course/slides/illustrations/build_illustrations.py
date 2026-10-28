@@ -213,6 +213,21 @@ def build():
         s.box(60,235,300,60,'Target delegate',TEAL);s.box(400,235,300,60,'Eligible CPU kernels',AMBER);s.box(740,235,300,60,'Target delegate',TEAL)
         for x in [210,550,890]:s.line(x,109,x,235,arrow=True)
 
+
+    if list(SLIDES.glob('29_*.html')):
+        s=figure('29','Three communication boundaries','rubin-data-paths','CPU, scale-up and scale-out are different paths','Conceptual traffic boundaries, not a complete board/rack layout. Local HBM, coherent links and network transfers have different costs.','Vera CPU connects to two Rubin GPUs with local HBM; GPU scale-up uses NVLink while external communication uses NIC/fabric paths.')
+        s.box(20,130,215,70,'Vera CPU',AMBER)
+        for y in [35,235]:s.box(350,y,260,65,'Rubin GPU|local HBM4',TEAL);s.path([(235,165),(290,165),(290,y+32),(350,y+32)],AMBER)
+        s.box(800,35,275,65,'NVLink 6|scale-up peers',BLUE);s.box(800,235,275,65,'NIC / DPU|scale-out fabric',BLUE)
+        s.line(610,67,800,67,BLUE,True);s.line(610,267,800,267,BLUE,True)
+        s.path([(610,267),(675,267),(675,67),(800,67)],BLUE);s.path([(610,67),(720,67),(720,267),(800,267)],MUTED)
+        s.text(30,285,'CPU–GPU: C2C',22,AMBER)
+    if list(SLIDES.glob('30_*.html')):
+        s=figure('30','Worked 2× kernel example','amdahl-ledger','A 2× component improvement becomes 1.43× overall','Constructed disjoint phase example: 60 s compute + 40 s other becomes 30 + 40 = 70 s for the same useful work.','Two proportional stacked time bars show 100 seconds before and 70 seconds after halving only a 60-second compute component.')
+        s.text(20,65,'Before',24);s.box(200,30,480,70,'compute 60 s',BLUE);s.box(680,30,320,70,'other 40 s',AMBER)
+        s.text(20,225,'After',24);s.box(200,190,240,70,'compute 30 s',BLUE);s.box(440,190,320,70,'other 40 s',AMBER)
+        s.text(250,325,'Same useful tokens; nonoverlapping phase costs; no vendor benchmark',22,MUTED)
+
     if list(SLIDES.glob('32_*.html')):
         s=figure('32','Three implementation choices','optimization-choices','Choose an implementation, then validate it','Libraries, graph compilation and custom kernels are alternative or composable paths; the target and numerical contract decide eligibility.','An exported workload branches to a library, graph compiler or custom kernel path, then all candidates converge on the same correctness and measurement gate.')
         s.box(20,135,180,65,'Workload|contract',AMBER)

@@ -38,3 +38,7 @@ Use one normalization/reduction, three GEMM shapes (training/prefill, decode, gr
 Then examine a training step or serving request containing that operation. Explain whether a local kernel improvement remains material after communication, input, runtime and queueing costs. Compare percent-of-achievable-performance within each system before making an absolute speed or cost claim. Disclose power boundaries and resource costs when presenting efficiency comparisons.
 
 This exercise teaches how to build a portable system with explicit specialization points, rather than how to repeat a vendor benchmark.
+
+## 2026-10-27 operator-library refresh
+
+The current AITER README additionally describes FlyDSL/OPUS and Iris-based communication paths. Treat these as backend-specific extensions and inspect target/operator coverage; a single AITER installation does not establish every backend is available. The core responsibility map remains HIP/runtime, GEMM/construction, AI operators and communication. No AMD kernel was executed on the authoring host.
