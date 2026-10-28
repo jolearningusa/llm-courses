@@ -56,3 +56,7 @@ Suggested rubric: correctness/quality 25%, experimental validity 25%, causal sys
 ## First paper discussion
 
 Compare FlashAttention, PagedAttention and GQA. For each, draw the dataflow, identify what is reused or moved, state whether model semantics/weights change, and identify which resource gets smaller. Explain why all three may coexist in the same serving engine. This discussion establishes the vocabulary used throughout the course.
+
+## Supplement: optimization decisions and automated search
+
+Use released deck 32 and [the technique map](notes/optimization_techniques.md) after the compiler/kernel foundations, then revisit after serving/deployment. The supplement distinguishes platform, library, graph compiler and kernel DSL; compares existing vLLM/TileLang tuning and FlashInfer-Bench; and asks students to measure final performance **and search cost** with held-out workloads. This adds a cross-topic section without replacing the training/inference objectives or implying that every target has been executed.

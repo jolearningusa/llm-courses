@@ -6,7 +6,7 @@ This is the implementation checklist for the [syllabus](SYLLABUS.md), with one d
 
 ## Deliverables and status
 
-- **32 planned decks:** a master overview, 30 topic lectures for weeks 1–15, and a capstone workshop. Week 16 uses the workshop and student presentations.
+- **32 core planned decks, plus released supplement 32:** a master overview, 30 topic lectures for weeks 1–15, and a capstone workshop. Week 16 uses the workshop and student presentations.
 - **16 planned lab kits:** L0–L15, each with a handout, starter/reference material, runnable experiment or explicitly labeled analytical/trace path, validation and reporting instructions.
 - **Shared infrastructure:** workload fixtures, environment manifests, metrics format, benchmark utilities, correctness helpers and release documentation.
 - **Status at plan creation:** technical primers and lab specifications exist; no decks or executable kits have yet been released. Proposed filenames below are targets, not links to existing files. Update the progress table as units land.
@@ -134,3 +134,7 @@ A unit with unavailable hardware may ship a clearly labeled analytical/reference
 ## Final course pilot
 
 Walk the student path from setup to capstone. Check that each topic has its deck and practical exercise, that references resolve, environments can be recreated, workloads fit the stated hardware and completion times fit the syllabus. Verify both training and inference objectives, agent cache behavior, and NVIDIA/AMD attribution/support boundaries. Revise pacing from pilot evidence; keep research findings, planned work and validated teaching artifacts visibly distinct.
+
+## Additional review units
+
+The 2026-10-27 requests add SVG illustrations, a verified optimization-technique supplement and separate potential-project specifications. Illustration PR #62 is merged. Deck 32/technique-map authoring follows that PR; project specifications follow in another serial PR. These additions do not mark the remaining core units P13–P16 complete.
