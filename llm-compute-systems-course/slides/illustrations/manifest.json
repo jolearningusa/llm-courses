@@ -243,6 +243,24 @@
     "asset": "agent-wait.svg"
   },
   {
+    "prefix": "27",
+    "after": "The deployment boundary",
+    "slug": "aoti-artifact",
+    "title": "The producer and loader meet at an artifact",
+    "caption": "Record input, target and runtime contracts. Exported graph archives and compiled packages can share a suffix but need different loaders.",
+    "deck": "27_export_aotinductor.html",
+    "asset": "aoti-artifact.svg"
+  },
+  {
+    "prefix": "28",
+    "after": "Delegation is graph partitioning",
+    "slug": "executorch-partitions",
+    "title": "Delegation does not remove boundary costs",
+    "caption": "Count conversion, transfer and fallback between graph partitions. The validated lab uses one unquantized CPU XNNPACK segment.",
+    "deck": "28_executorch_deployment.html",
+    "asset": "executorch-partitions.svg"
+  },
+  {
     "prefix": "32",
     "after": "Three implementation choices",
     "slug": "optimization-choices",

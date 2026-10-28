@@ -88,6 +88,8 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [Disaggregated Inference and KV Handoff](slides/24_disaggregated_inference.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Speculative Decoding and Correct Verification](slides/25_speculative_decoding.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [AgentOS Workloads and Cache-Lifecycle Policies](slides/26_agentos_inference_cache_policy.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Export Contracts and AOTInductor Deployment](slides/27_export_aotinductor.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [ExecuTorch Runtime, Delegation and Memory Planning](slides/28_executorch_deployment.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Optimization Decisions and Automated Performance Engineering](slides/32_optimization_decision_systems.html) (23 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
@@ -104,6 +106,9 @@ llm-compute-systems-course/
 │   ├── kit/
 │   │   ├── cuda/
 │   │   │   └── rmsnorm.cu
+│   │   ├── examples/
+│   │   │   ├── l14_aoti_cpu.json
+│   │   │   └── l14_executorch_cpu.json
 │   │   ├── handouts/
 │   │   │   ├── lab00_budgets.md
 │   │   │   ├── lab01_measurement.md
@@ -118,12 +123,14 @@ llm-compute-systems-course/
 │   │   │   ├── lab10_recovery.md
 │   │   │   ├── lab11_cache.md
 │   │   │   ├── lab12_scheduling.md
-│   │   │   └── lab13_agent_policy.md
+│   │   │   ├── lab13_agent_policy.md
+│   │   │   └── lab14_deployment.md
 │   │   ├── tests/
 │   │   │   ├── test_agent_policy.py
 │   │   │   ├── test_attention.py
 │   │   │   ├── test_budgets.py
 │   │   │   ├── test_cache.py
+│   │   │   ├── test_deployment.py
 │   │   │   ├── test_distributed.py
 │   │   │   ├── test_gemm.py
 │   │   │   ├── test_measurement.py
@@ -138,6 +145,7 @@ llm-compute-systems-course/
 │   │   ├── attention_lab.py
 │   │   ├── budgets.py
 │   │   ├── cache_lab.py
+│   │   ├── deployment_lab.py
 │   │   ├── distributed_lab.py
 │   │   ├── gemm_lab.py
 │   │   ├── measurement.py
@@ -147,6 +155,8 @@ llm-compute-systems-course/
 │   │   ├── pytorch_lab.py
 │   │   ├── recovery_lab.py
 │   │   ├── reductions.py
+│   │   ├── requirements-executorch-lock.txt
+│   │   ├── requirements-executorch.txt
 │   │   ├── requirements-pytorch-lock.txt
 │   │   ├── requirements-pytorch.txt
 │   │   ├── scheduling_lab.py
@@ -173,6 +183,7 @@ llm-compute-systems-course/
 │   ├── illustrations/
 │   │   ├── README.md
 │   │   ├── agent-wait.svg
+│   │   ├── aoti-artifact.svg
 │   │   ├── attention-pipeline.svg
 │   │   ├── autograd-graph.svg
 │   │   ├── build_illustrations.py
@@ -182,6 +193,7 @@ llm-compute-systems-course/
 │   │   ├── cuda-hierarchy.svg
 │   │   ├── double-buffer.svg
 │   │   ├── execution-stack.svg
+│   │   ├── executorch-partitions.svg
 │   │   ├── expert-skew.svg
 │   │   ├── fsdp-shards.svg
 │   │   ├── gemm-tiles.svg
@@ -229,6 +241,8 @@ llm-compute-systems-course/
 │   ├── 24_disaggregated_inference.html
 │   ├── 25_speculative_decoding.html
 │   ├── 26_agentos_inference_cache_policy.html
+│   ├── 27_export_aotinductor.html
+│   ├── 28_executorch_deployment.html
 │   └── 32_optimization_decision_systems.html
 ├── BUILD_PLAN.md
 ├── LICENSE

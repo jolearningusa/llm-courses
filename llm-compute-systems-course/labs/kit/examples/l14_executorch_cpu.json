@@ -1,0 +1,61 @@
+{
+  "lab": "L14",
+  "provenance": "measured local CPU artifact build/load/execute; small synthetic MLP, not LLM performance",
+  "backend": "executorch",
+  "python": "3.12.14",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "torch": "2.9.1",
+  "input_shape": [
+    3,
+    8
+  ],
+  "contract": "contiguous static CPU float32 shape (3,8); export rejects (4,8); checked loader rejects other shape/dtype/stride",
+  "export_seconds": 0.3774138344451785,
+  "build_seconds": 2.267914042342454,
+  "load_seconds": 0.0003843330778181553,
+  "first_execution_seconds": 8.516712114214897e-05,
+  "warm_wall_seconds": [
+    6.500165909528732e-06,
+    5.916692316532135e-06,
+    4.58303838968277e-06,
+    4.875008016824722e-06,
+    4.542060196399689e-06,
+    4.875008016824722e-06,
+    7.125083357095718e-06,
+    7.750000804662704e-06,
+    6.332993507385254e-06,
+    4.500150680541992e-06
+  ],
+  "baseline_wall_seconds": {
+    "eager": [
+      6.95791095495224e-06,
+      6.624963134527206e-06,
+      6.3749030232429504e-06,
+      6.1248429119586945e-06,
+      5.958136171102524e-06,
+      6.292015314102173e-06,
+      5.834270268678665e-06,
+      5.959067493677139e-06,
+      6.1248429119586945e-06,
+      5.958136171102524e-06
+    ],
+    "exported": [
+      0.0011349157430231571,
+      0.0011459160596132278,
+      0.0019043749198317528,
+      0.0010291249491274357,
+      0.0011045830324292183,
+      0.0010889172554016113,
+      0.001221375074237585,
+      0.0010714591480791569,
+      0.0010103327222168446,
+      0.0010970416478812695
+    ]
+  },
+  "artifact": "mlp.pte",
+  "artifact_bytes": 3728,
+  "max_abs_error": 5.960464477539063e-08,
+  "executorch": "1.0.0",
+  "delegate_requested": "XNNPACK",
+  "delegate_segments": 1
+}

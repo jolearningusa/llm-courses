@@ -59,6 +59,7 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 - [L11 — State ownership and inference-cache mechanisms](handouts/lab11_cache.md)
 - [L12 — Replay scheduling and budget disaggregation](handouts/lab12_scheduling.md)
 - [L13 — Speculative correction and agent-wait policies](handouts/lab13_agent_policy.md)
+- [L14 — Export, compile, lower and reload real artifacts](handouts/lab14_deployment.md)
 
 ## L5 attention execution
 
@@ -91,3 +92,7 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 ## L13 speculation and agent policy
 
 [L13](handouts/lab13_agent_policy.md) validates exact one-step categorical correction and samples a synthetic distribution. Its wait-policy accounting is analytical, with explicit identity and byte-second boundaries; no engine/model throughput is claimed.
+
+## L14 deployment
+
+[L14](handouts/lab14_deployment.md) builds and loads actual CPU AOTInductor .pt2 and ExecuTorch .pte artifacts, including fresh-process reload, output checks and shape/stride/dtype guard rejection. ExecuTorch uses a separate pinned environment; CUDA, edge devices and quantized native extensions are not validated.

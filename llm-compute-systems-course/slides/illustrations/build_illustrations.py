@@ -202,6 +202,17 @@ def build():
             s.box(340,y,330,65,label,color);s.path([(200,162),(260,162),(260,y+32),(340,y+32)],color);s.path([(670,y+32),(750,y+32),(750,162),(830,162)],color)
         s.box(830,130,240,65,'Validate + resume',AMBER)
 
+
+    if list(SLIDES.glob('27_*.html')):
+        s=figure('27','The deployment boundary','aoti-artifact','The producer and loader meet at an artifact','Record input, target and runtime contracts. Exported graph archives and compiled packages can share a suffix but need different loaders.','A producer exports a contracted graph and compiles a native package; a separate runtime loader validates inputs and executes the artifact.')
+        s.chain(['Model + contract','Export graph','Compile package','Checked loader'],70)
+        s.box(320,245,450,60,'Build / load / first / warm are separate',AMBER)
+    if list(SLIDES.glob('28_*.html')):
+        s=figure('28','Delegation is graph partitioning','executorch-partitions','Delegation does not remove boundary costs','Count conversion, transfer and fallback between graph partitions. The validated lab uses one unquantized CPU XNNPACK segment.','An exported graph contains two supported regions with an unsupported region between; delegate and fallback transitions may require conversion or transfer.')
+        s.chain(['Supported region','Fallback region','Supported region'],45,[TEAL,AMBER,TEAL])
+        s.box(60,235,300,60,'Target delegate',TEAL);s.box(400,235,300,60,'Eligible CPU kernels',AMBER);s.box(740,235,300,60,'Target delegate',TEAL)
+        for x in [210,550,890]:s.line(x,109,x,235,arrow=True)
+
     if list(SLIDES.glob('32_*.html')):
         s=figure('32','Three implementation choices','optimization-choices','Choose an implementation, then validate it','Libraries, graph compilation and custom kernels are alternative or composable paths; the target and numerical contract decide eligibility.','An exported workload branches to a library, graph compiler or custom kernel path, then all candidates converge on the same correctness and measurement gate.')
         s.box(20,135,180,65,'Workload|contract',AMBER)
