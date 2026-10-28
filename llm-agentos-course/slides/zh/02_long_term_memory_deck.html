@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — 长期记忆</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  a { color: inherit; text-decoration: underline dotted; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · 模块 2 讲座</div>
+  <h1 style="margin-top:22px">长期记忆是如何构建的</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">用户记忆、RAG 与记忆搜索工具：智能体如何写入所学内容、存储它、再次找到它，
+    并把它带回上下文窗口。涵盖 Hermes Agent、OpenClaw 和 Letta 中的真实设计。</p>
+  <p style="margin-top:28px"><span class="pill">写入路径</span><span class="pill">索引</span><span class="pill">读取路径：自动注入 vs. 工具调用</span><span class="pill">工具链</span><span class="pill">评估</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>框架</small>上下文窗口不是记忆</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>模型是无状态的。它在跨会话中“记得”的任何内容，都是<b>被写在某处</b>，再由框架（harness）<b>放回提示中</b>的。</li>
+        <li>因此长期记忆是一个小型数据系统：写入路径、存储、索引和读取路径。</li>
+        <li>用操作系统的话说，上下文窗口是内存（RAM），记忆存储是磁盘。由框架决定哪些内容被换入（MemGPT）。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>三种长期记忆</h3>
+      <table class="dense">
+        <tr><td>语义记忆</td><td>关于用户或世界的事实和偏好：“偏好 Rust”、“住在西雅图”。以画像或不断增长的集合形式保存。</td></tr>
+        <tr><td>情景记忆</td><td>发生过什么：过往会话、决策、示范案例。常被复用为 few-shot 示例。</td></tr>
+        <tr><td>程序记忆</td><td>如何行动：系统提示、规则、技能。通常通过反思来更新。</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="cite">分类法沿用 LangGraph 记忆文档 (docs.langchain.com/oss/python/langgraph/memory)；操作系统类比：Packer et al., MemGPT (arXiv:2310.08560)。</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>关键区别</small>RAG、用户记忆和搜索工具是不同的东西</h2>
+  <table>
+    <tr><th></th><th>知识 RAG</th><th>长期（用户）记忆</th><th>记忆搜索工具</th></tr>
+    <tr><td class="accent2">是什么</td><td>对文档语料库的检索</td><td>智能体根据自身对话<b>写入</b>的存储</td><td>通向存储的一条<b>读取路径</b></td></tr>
+    <tr><td class="accent2">谁来写</td><td>人类，离线摄取</td><td>智能体或后台任务，每轮或每个会话</td><td>无人：它只读取</td></tr>
+    <tr><td class="accent2">是否变化？</td><td>很少，批量重建索引</td><td>持续变化：事实被更新、被推翻、被遗忘</td><td>不适用</td></tr>
+    <tr><td class="accent2">范围</td><td>所有用户共享</td><td>按用户 / 智能体 / 会话</td><td>取决于存储的作用域</td></tr>
+    <tr><td class="accent2">难点</td><td>分块、排序</td><td>提取、去重、更新、过期、隐私</td><td>模型知道<i>何时</i>该搜索</td></tr>
+  </table>
+  <p style="margin-top:18px">记忆系统在读取路径上<b>复用 RAG 的机制</b>（嵌入、向量 + BM25 搜索、重排序）。它们新增的是写入路径和生命周期管理。
+    搜索工具可以建立在二者中的任何一个之上。</p>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>流水线</small>记忆系统的七个阶段</h2>
+  <svg viewBox="0 0 1136 300" width="1136" height="300">
+    <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9aa6bd"/></marker></defs>
+    <g font-size="19" font-weight="700" text-anchor="middle">
+      <rect x="0" y="40" width="140" height="70" rx="10" fill="#14213a" stroke="#7be0b8"/><text x="70" y="82" fill="#7be0b8">1 捕获</text>
+      <rect x="166" y="40" width="140" height="70" rx="10" fill="#14213a" stroke="#7be0b8"/><text x="236" y="82" fill="#7be0b8">2 提取</text>
+      <rect x="332" y="40" width="160" height="70" rx="10" fill="#14213a" stroke="#7be0b8"/><text x="412" y="82" fill="#7be0b8">3 整合</text>
+      <rect x="518" y="40" width="140" height="70" rx="10" fill="#14213a" stroke="#ffb86b"/><text x="588" y="82" fill="#ffb86b">4 索引</text>
+      <rect x="684" y="40" width="140" height="70" rx="10" fill="#14213a" stroke="#6ea8ff"/><text x="754" y="82" fill="#6ea8ff">5 检索</text>
+      <rect x="850" y="40" width="130" height="70" rx="10" fill="#14213a" stroke="#6ea8ff"/><text x="915" y="82" fill="#6ea8ff">6 注入</text>
+      <rect x="1006" y="40" width="130" height="70" rx="10" fill="#14213a" stroke="#ff7a85"/><text x="1071" y="82" fill="#ff7a85">7 遗忘</text>
+    </g>
+    <g stroke="#9aa6bd" stroke-width="2" marker-end="url(#ar)">
+      <line x1="140" y1="75" x2="164" y2="75"/><line x1="306" y1="75" x2="330" y2="75"/><line x1="492" y1="75" x2="516" y2="75"/>
+      <line x1="658" y1="75" x2="682" y2="75"/><line x1="824" y1="75" x2="848" y2="75"/><line x1="980" y1="75" x2="1004" y2="75"/>
+    </g>
+    <g font-size="15" fill="#9aa6bd" text-anchor="middle">
+      <text x="70" y="140">对话轮次、工具结果、</text><text x="70" y="160">转录</text>
+      <text x="236" y="140">LLM 提取事实、</text><text x="236" y="160">实体、事件</text>
+      <text x="412" y="140">去重、合并、更新、</text><text x="412" y="160">化解矛盾</text>
+      <text x="588" y="140">关键词、向量、</text><text x="588" y="160">图、纯文件</text>
+      <text x="754" y="140">打分：相关性、</text><text x="754" y="160">时效性、重要性</text>
+      <text x="915" y="140">提示块或</text><text x="915" y="160">工具结果</text>
+      <text x="1071" y="140">衰减、过期、</text><text x="1071" y="160">按要求删除</text>
+    </g>
+    <rect x="0" y="200" width="658" height="70" rx="10" fill="none" stroke="#7be0b8" stroke-dasharray="6 5"/>
+    <text x="329" y="242" font-size="19" text-anchor="middle" fill="#7be0b8">写入路径：热路径（轮次内）或后台（轮次后）</text>
+    <rect x="684" y="200" width="452" height="70" rx="10" fill="none" stroke="#6ea8ff" stroke-dasharray="6 5"/>
+    <text x="910" y="242" font-size="19" text-anchor="middle" fill="#6ea8ff">读取路径：自动或由智能体调用</text>
+  </svg>
+  <p class="muted" style="font-size:19px">每个框架都实现了全部七个阶段。它们的区别在于每个阶段<b>由谁触发</b>（框架、模型或后台任务），以及所选择的<b>索引</b>。</p>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>写入路径</small>捕获与提取：记忆何时被写入？</h2>
+  <div class="cols">
+    <div>
+      <h3 class="accent2" style="margin:0 0 8px">热路径（轮次内）</h3>
+      <ul style="font-size:18px">
+        <li>模型调用写入工具：Letta <code>archival_memory_insert</code>、Hermes 中的 Mem0 <code>mem0_add</code>、LanceDB <code>memory_store</code>。</li>
+        <li>立即可用；但要花费延迟和模型注意力。</li>
+      </ul>
+      <h3 class="accent2" style="margin:10px 0 6px">后台（轮次后）</h3>
+      <ul style="font-size:18px">
+        <li>由钩子或任务在无需模型请求的情况下提取记忆：Hermes <code>sync_turn</code>、<code>on_pre_compress</code>、<code>on_session_end</code>。</li>
+        <li>OpenClaw 在压缩前把尚未写入的上下文刷新到每日笔记中；Letta 的睡眠时（sleep-time）智能体在步骤之间重写记忆。</li>
+        <li>没有回复延迟；但更难决定<i>何时</i>运行。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>提取是什么样的（Mem0）</h3>
+      <ol style="font-size:18px;padding-left:22px;margin:0">
+        <li>查找相关的已有记忆。</li>
+        <li>LLM 提取偏好、决策、计划。</li>
+        <li>去重，然后对每条记忆做嵌入。</li>
+        <li>提取实体用于实体匹配。</li>
+      </ol>
+<pre style="margin-top:14px">from mem0 import Memory
+m = Memory()
+m.add(messages, user_id="alice")
+# infer=False stores raw text, no extraction</pre>
+    </div>
+  </div>
+  <div class="cite">LangGraph 记忆文档（热路径 vs. 后台）; docs.mem0.ai/core-concepts/how-it-works 与 memory-operations/add; Hermes MemoryProvider 钩子; docs.openclaw.ai/concepts/memory-architecture。</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>写入路径</small>整合：记忆必须变化，而不只是堆积</h2>
+  <table class="dense">
+    <tr><th>方法</th><th>如何处理更新与矛盾</th><th>来源</th></tr>
+    <tr><td>LLM 决定操作</td><td>对每个候选事实，针对相似的已有记忆选择 ADD / UPDATE / DELETE / NOOP。</td><td>Mem0 论文 (arXiv:2504.19413)</td></tr>
+    <tr><td>追加 + 显式编辑</td><td>当前 Mem0 文档：自动提取是追加式的；更正或删除事实需要显式的更新或删除调用。</td><td>docs.mem0.ai</td></tr>
+    <tr><td>双时态边</td><td>事实是带有 <code>valid_at</code> / <code>invalid_at</code> 的图边；新事实使旧边失效而不是删除它。</td><td>Zep / Graphiti (arXiv:2501.13956)</td></tr>
+    <tr><td>笔记演化</td><td>新笔记链接到相关笔记，并可重写它们的描述（卡片盒笔记法风格）。</td><td>A-MEM (arXiv:2502.12110)</td></tr>
+    <tr><td>单一受控写入者</td><td>每日笔记可自由追加；只有“做梦（dreaming）”这一轮在经过确定性关卡和一次整合模型轮次之后，才把候选项提升到 MEMORY.md。USER.md 的更新会取代旧的指令。</td><td>OpenClaw 记忆架构</td></tr>
+    <tr><td>睡眠时重写</td><td>第二个智能体在后台重新组织主智能体的记忆块。</td><td>Letta; Lin et al. (arXiv:2504.13171)</td></tr>
+    <tr><td>反思</td><td>定期从原始观察中综合出更高层的“反思”，并同样将其存为记忆。</td><td>Generative Agents (arXiv:2304.03442)</td></tr>
+  </table>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>索引</small>存储和索引记忆的四种方式</h2>
+  <table class="dense">
+    <tr><th>索引</th><th>擅长</th><th>不擅长</th><th>出现于</th></tr>
+    <tr><td>上下文中的纯文件</td><td>小而精选、始终可见、可人工编辑</td><td>无法扩展；每个 token 每轮都要付费</td><td>MEMORY.md / USER.md (Hermes, OpenClaw)、Letta 核心块</td></tr>
+    <tr><td>关键词 (BM25, FTS5)</td><td>精确词项：ID、名称、错误字符串；无嵌入成本</td><td>同义词和改写</td><td>Hermes 会话搜索 (SQLite FTS5)、Holographic 提供者</td></tr>
+    <tr><td>向量（嵌入）</td><td>语义和改写</td><td>精确 token、数字；需要嵌入模型</td><td>Letta 归档记忆、Mem0、memory-lancedb</td></tr>
+    <tr><td>知识图谱</td><td>实体、关系、多跳和时间性问题</td><td>提取成本高；模式漂移</td><td>Graphiti / Zep、Hindsight、Mem0 图记忆</td></tr>
+  </table>
+  <div class="card" style="margin-top:18px">
+    <h3>实践中：混合</h3>
+    <p style="margin:0">OpenClaw 的 <code>memory_search</code> 并行运行向量和 BM25 并合并结果（若其中一方不可用，则另一方单独运行）。
+      Graphiti 用倒数排名融合（Reciprocal Rank Fusion）合并语义 + BM25，并可按到某个节点的图距离重排序。</p>
+  </div>
+  <div class="cite">docs.openclaw.ai concepts/memory-search; graphiti-core README (pypi); Hermes memory-providers 文档。</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>检索</small>打分：仅有相关性是不够的</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li><b>相关性</b>：嵌入相似度和 / 或 BM25。</li>
+        <li><b>时效性</b>：越新的记忆得分越高。OpenClaw 会衰减带日期的每日笔记；MEMORY.md 从不衰减。</li>
+        <li><b>重要性</b>：一条记忆有多重要，通常在写入时由 LLM 评级。</li>
+        <li>Generative Agents 结合时效性 + 重要性 + 相关性；OpenClaw 的 <code>memory_search</code> 按相关性、时效衰减和重要性排序。</li>
+        <li>Mem0 搜索融合语义、关键词、实体和时间信号。</li>
+        <li><b>先限定范围</b>：在排序之前先按 <code>user_id</code> / <code>agent_id</code> / <code>run_id</code> 过滤，否则记忆会在用户之间泄漏。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>更好的分块，更好的召回</h3>
+      <p>Anthropic 的 Contextual Retrieval 在对每个块做嵌入和 BM25 索引之前，先在其前面加上一小段该块特有的上下文。前 20 名检索失败率：</p>
+      <table class="dense">
+        <tr><td>上下文嵌入</td><td>−35%（5.7% → 3.7%）</td></tr>
+        <tr><td>+ 上下文 BM25</td><td>−49%（→ 2.9%）</td></tr>
+        <tr><td>+ 重排序</td><td>−67%（→ 1.9%）</td></tr>
+      </table>
+<pre style="margin-top:12px">m.search("coffee or tea?",
+         filters={"user_id": "alice"})</pre>
+    </div>
+  </div>
+  <div class="cite">Park et al., Generative Agents (arXiv:2304.03442); OpenClaw memory-search 和 memory-architecture 文档; docs.mem0.ai search; anthropic.com/news/contextual-retrieval。</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>读取路径</small>记忆回到提示中的两种方式</h2>
+  <svg viewBox="0 0 1136 380" width="1136" height="380">
+    <defs><marker id="ar2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9aa6bd"/></marker></defs>
+    <rect x="0" y="0" width="550" height="380" rx="14" fill="#14213a" stroke="#7be0b8"/>
+    <text x="24" y="40" font-size="24" font-weight="700" fill="#7be0b8">A · 自动注入</text>
+    <text x="24" y="70" font-size="16" fill="#9aa6bd">框架在模型运行之前先搜索</text>
+    <g font-size="17" text-anchor="middle">
+      <rect x="24" y="96" width="140" height="54" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="94" y="129">用户消息</text>
+      <rect x="186" y="96" width="146" height="54" rx="8" fill="#161d2e" stroke="#7be0b8"/><text x="259" y="129">框架：搜索</text>
+      <rect x="354" y="96" width="172" height="54" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="440" y="129">提示 + 记忆</text>
+      <rect x="354" y="182" width="172" height="54" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="440" y="215">LLM 回复</text>
+    </g>
+    <g stroke="#9aa6bd" stroke-width="2" marker-end="url(#ar2)"><line x1="164" y1="123" x2="184" y2="123"/><line x1="332" y1="123" x2="352" y2="123"/><line x1="440" y1="150" x2="440" y2="180"/></g>
+    <g font-size="17"><text x="24" y="280">+ 始终开启：模型无需“知道”要去询问</text><text x="24" y="308">+ 每轮一次模型调用</text><text x="24" y="336">− 每轮都要花费 token 和延迟，即使没用</text><text x="24" y="364">− 查询只是用户消息；会漏掉间接需求</text></g>
+
+    <rect x="586" y="0" width="550" height="380" rx="14" fill="#14213a" stroke="#6ea8ff"/>
+    <text x="610" y="40" font-size="24" font-weight="700" fill="#6ea8ff">B · 由智能体调用的搜索工具</text>
+    <text x="610" y="70" font-size="16" fill="#9aa6bd">模型决定调用 memory_search(query)</text>
+    <g font-size="17" text-anchor="middle">
+      <rect x="610" y="96" width="150" height="54" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="685" y="129">用户消息</text>
+      <rect x="786" y="96" width="150" height="54" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="861" y="129">LLM：工具调用</text>
+      <rect x="962" y="96" width="150" height="54" rx="8" fill="#161d2e" stroke="#6ea8ff"/><text x="1037" y="129">搜索存储</text>
+      <rect x="786" y="182" width="150" height="54" rx="8" fill="#161d2e" stroke="#2a3550"/><text x="861" y="215">LLM 回复</text>
+    </g>
+    <g stroke="#9aa6bd" stroke-width="2" marker-end="url(#ar2)"><line x1="760" y1="123" x2="784" y2="123"/><line x1="936" y1="123" x2="960" y2="123"/><path d="M1037,150 L1037,209 L938,209" fill="none"/></g>
+    <text x="990" y="232" font-size="14" fill="#9aa6bd">工具结果</text>
+    <g font-size="17"><text x="610" y="280">+ 模型编写有针对性的查询；可再次搜索</text><text x="610" y="308">+ 不需要记忆的轮次零成本</text><text x="610" y="336">− 多一次往返；模型可能没意识到该搜索</text><text x="610" y="364">− 与网络搜索机制相同，因此需要好的工具文档</text></g>
+  </svg>
+  <p class="muted" style="font-size:18px;margin-top:10px">“搜索工具”其实就是针对记忆存储的方案 B。大多数生产框架<b>两者并用</b>：一个自动注入的小型画像，加上一个用于深度召回的工具。</p>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>读取路径</small>大多数框架趋同的混合模式</h2>
+  <div class="cols3">
+    <div class="card">
+      <h3>第 1 层 · 常驻</h3>
+      <p>固定在提示中的小型精选画像：MEMORY.md / USER.md、Letta 核心记忆块。</p>
+      <p class="muted">便于推理且成本低。保持它小巧，并按会话冻结，以使提示前缀可缓存（Hermes）。</p>
+    </div>
+    <div class="card">
+      <h3>第 2 层 · 每轮自动召回</h3>
+      <p>框架预取少量相关记忆，并把它们作为隐藏上下文注入。</p>
+      <p class="muted">Hermes 提供者 <code>prefetch</code>（后台、非阻塞）；OpenClaw 触发词注入（最多 3 条精选条目）；LanceDB 自动召回。</p>
+    </div>
+    <div class="card">
+      <h3>第 3 层 · 按需</h3>
+      <p>大型或嘈杂的存储（转录、每日笔记、归档）只能通过工具访问。</p>
+      <p class="muted">OpenClaw <code>memory_search</code>；Letta <code>archival_memory_search</code>；Hermes <code>session_search</code> 及提供者工具。</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px">
+    <h3>升级：召回子智能体</h3>
+    <p style="margin:0">OpenClaw 的 <b>Active Memory</b>（默认模式 <code>escalate</code>）只有在消息询问过去的事情、且基于规则的通道未找到强匹配时，才运行一个阻塞式召回子智能体。
+      它也可以设为始终开启或关闭。这针对的是先前的决策以及时间性或多跳问题，而无需在每一轮都为搜索付费。</p>
+  </div>
+  <div class="cite">docs.openclaw.ai concepts/active-memory 与 memory-architecture; Hermes memory-providers 文档; Letta 归档记忆文档。</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>框架 · Hermes Agent</small>内置记忆加一个外部提供者</h2>
+  <div class="cols" style="grid-template-columns: 0.9fr 1.1fr">
+    <div>
+      <ul style="font-size:19px">
+        <li><b>内置</b>（始终开启）：MEMORY.md + USER.md，每个会话一份冻结快照；对过往对话的 SQLite FTS5 会话搜索。</li>
+        <li><b>外部提供者</b>：恰好启用一个，通过 <code>hermes memory setup</code> 或 <code>memory.provider</code> 添加。</li>
+        <li>启用的提供者在每轮之前预取（后台、非阻塞），其上下文被注入系统提示。</li>
+        <li>它的工具来自 <code>get_tool_schemas()</code>；写入来自 <code>sync_turn</code>、<code>on_pre_compress</code>、<code>on_session_end</code>。</li>
+      </ul>
+    </div>
+    <table class="dense">
+      <tr><th>提供者</th><th>召回</th><th>存储</th></tr>
+      <tr><td>Honcho</td><td><code>recallMode</code> 混合：自动 + 5 个工具</td><td>Honcho 云 / 自托管</td></tr>
+      <tr><td>Hindsight</td><td><code>auto_recall</code> 开启；hybrid / context / tools</td><td>知识图谱，实体解析</td></tr>
+      <tr><td>Supermemory</td><td><code>auto_recall</code> 开启 + 4 个工具</td><td>云 / 自托管</td></tr>
+      <tr><td>Mem0</td><td>工具：<code>mem0_search</code>、<code>mem0_add</code>、…</td><td>向量（OSS 中为 Qdrant、pgvector）</td></tr>
+      <tr><td>OpenViking</td><td>工具：<code>viking_search</code>、<code>viking_read</code>、…</td><td><code>viking://</code> 文件层级</td></tr>
+      <tr><td>Holographic</td><td>工具：<code>fact_store</code>、<code>fact_feedback</code></td><td>本地 SQLite FTS5 + HRR</td></tr>
+      <tr><td>RetainDB</td><td>工具包括 <code>retaindb_search</code></td><td>向量 + BM25 + 重排序</td></tr>
+    </table>
+  </div>
+  <div class="cite">hermes-agent.nousresearch.com/docs/user-guide/features/memory-providers (2026 年 10 月)。RetainDB 和 ByteRover 于 2026 年 10 月 15 日退出核心。</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>框架 · OpenClaw</small>文件、受控写入者和三条召回通道</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><th>层</th><th>作用</th></tr>
+        <tr><td>MEMORY.md / USER.md</td><td>精选的核心与用户模型；在预算内加载，每轮刷新</td></tr>
+        <tr><td>每日笔记</td><td><code>memory/YYYY-MM-DD.md</code>；情景式、追加、在排序中衰减</td></tr>
+        <tr><td>做梦（Dreaming）</td><td>定时整合（Light、REM、Deep）；持久记忆的唯一写入者；记录到 DREAMS.md</td></tr>
+        <tr><td>常驻意图</td><td>前瞻记忆：基于时间的意图会变成 cron 任务</td></tr>
+        <tr><td>记忆插槽插件</td><td><code>plugins.slots.memory</code>，例如 <code>@openclaw/memory-lancedb</code></td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="card">
+        <h3>召回通道</h3>
+        <ul>
+          <li><b>自动，无模型调用</b>：最多 3 条精选条目，其触发短语与消息匹配。</li>
+          <li><b>工具</b>：<code>memory_search</code> / <code>memory_get</code>，向量 + BM25 混合。每日笔记和转录只能通过这种方式访问：它们“从不自动注入”。</li>
+          <li><b>升级</b>：Active Memory 子智能体。</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h3>memory-lancedb 插件</h3>
+        <p style="margin:0">LanceDB 向量存储，带自动召回和自动捕获；工具 <code>memory_store</code>、<code>memory_recall</code>、<code>memory_forget</code>。</p>
+      </div>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/concepts/memory-architecture; docs.openclaw.ai concepts/memory-search, active-memory; hub.openclaw.ai/openclaw/plugins/memory-lancedb。</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>框架 · Letta</small>MemGPT 的层级：智能体为自己的记忆分页</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li><b>核心记忆块</b>（label、description、value、limit）始终在上下文窗口中。智能体用记忆工具编辑它们；块可通过 <code>block_ids</code> 在智能体之间共享。</li>
+        <li><b>归档记忆</b>是带可选标签的段落向量数据库。它<b>不</b>在上下文中：它“必须通过工具按需查询”。</li>
+        <li><b>对话搜索</b>检索过往消息。</li>
+        <li><b>睡眠时智能体</b>在后台整合记忆（每 N 步一次，默认 5）。</li>
+      </ul>
+    </div>
+    <div>
+<pre># the agent's own tools
+archival_memory_insert(content, tags)
+archival_memory_search(query)
+
+# the developer can write passages too
+client.agents.passages.insert(
+    agent_id=agent.id,
+    content="Alice prefers tea",
+    tags=["prefs"])</pre>
+      <p class="muted" style="font-size:17px;margin-top:12px">Letta 是方案 B 最纯粹的形式：除核心块之外，只有当模型调用工具时才会发生召回。</p>
+    </div>
+  </div>
+  <div class="cite">docs.letta.com 记忆块、归档记忆（V1 SDK）和睡眠时智能体; Packer et al., MemGPT (arXiv:2310.08560)。</div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>并排比较</small>每个阶段由谁触发？</h2>
+  <table class="dense">
+    <tr><th>阶段</th><th>Hermes Agent</th><th>OpenClaw</th><th>Letta</th></tr>
+    <tr><td>始终在上下文中</td><td>MEMORY.md、USER.md（每会话冻结）</td><td>MEMORY.md、USER.md（每轮刷新）</td><td>核心记忆块</td></tr>
+    <tr><td>写入：模型</td><td><code>memory</code> 工具；提供者工具</td><td>写入每日笔记；LanceDB <code>memory_store</code></td><td>记忆编辑工具、<code>archival_memory_insert</code></td></tr>
+    <tr><td>写入：后台</td><td><code>sync_turn</code>、<code>on_pre_compress</code>、<code>on_session_end</code></td><td>压缩前刷新；做梦</td><td>睡眠时智能体</td></tr>
+    <tr><td>读取：自动</td><td>提供者 <code>prefetch</code> 进入系统提示</td><td>触发词注入；LanceDB 自动召回</td><td>（仅核心块）</td></tr>
+    <tr><td>读取：工具</td><td><code>session_search</code>、提供者工具</td><td><code>memory_search</code>、<code>memory_get</code></td><td><code>archival_memory_search</code>、对话搜索</td></tr>
+    <tr><td>升级</td><td class="muted">—</td><td>Active Memory 子智能体</td><td class="muted">—</td></tr>
+    <tr><td>索引</td><td>文件 + FTS5；提供者自有索引</td><td>文件 + SQLite 索引；向量 + BM25</td><td>段落向量数据库</td></tr>
+    <tr><td>插入点</td><td><code>MemoryProvider</code> ABC</td><td><code>plugins.slots.memory</code></td><td>自定义工具、共享块</td></tr>
+  </table>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>工具箱</small>构建记忆（和 RAG）系统的常用工具</h2>
+  <table class="dense">
+    <tr><th>层</th><th>常见选择</th><th>说明</th></tr>
+    <tr><td>嵌入</td><td>OpenAI、Voyage、Gemini、Mistral；开源：BGE、Nomic，通过 Ollama 或 vLLM 提供服务</td><td>OpenClaw 支持 10 多种嵌入提供者；<code>provider: "none"</code> = 仅关键词</td></tr>
+    <tr><td>向量存储</td><td>pgvector、Qdrant、Chroma、LanceDB、Milvus、FAISS、sqlite-vec</td><td>从嵌入式开始（LanceDB、sqlite-vec、Chroma）；如果已经在运行 Postgres，则用 pgvector</td></tr>
+    <tr><td>关键词索引</td><td>SQLite FTS5、Tantivy、Elasticsearch / OpenSearch</td><td>与向量搭配用于混合搜索</td></tr>
+    <tr><td>重排序器</td><td>交叉编码器（BGE reranker）、托管重排序 API</td><td>在 Contextual Retrieval 测试中，将失败率降幅从 49% 提高到 67%</td></tr>
+    <tr><td>图</td><td>Graphiti (Neo4j)、Microsoft GraphRAG、LightRAG</td><td>用于实体、关系、多跳</td></tr>
+    <tr><td>RAG 框架</td><td>LlamaIndex、LangChain / LangGraph Store、Haystack</td><td>LangGraph <code>store.put</code> / <code>store.search</code>，带嵌入索引</td></tr>
+    <tr><td>记忆层</td><td>Mem0、Zep / Graphiti、Letta、LangMem、Honcho、Supermemory、Hindsight、Cognee</td><td>替你完成提取 + 整合；Mem0、Honcho、Supermemory、Hindsight 提供 Hermes 提供者</td></tr>
+  </table>
+  <div class="cite">每个工具的链接见 references/bibliography_and_links.md §2b。先按索引类型选择，再按产品选择。</div>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <h2><small>超越扁平分块</small>记忆系统借鉴的结构化检索思路</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>图结构</h3>
+      <ul>
+        <li><b>GraphRAG</b>：构建实体图和社区摘要，用于全局、以查询为中心的问题。</li>
+        <li><b>LightRAG</b>：图 + 向量的双层检索，支持增量更新。</li>
+        <li><b>HippoRAG</b>：知识图谱 + 个性化 PageRank，仿照海马体索引建模。</li>
+        <li><b>Zep / Graphiti</b>：由情节（episode）构建的时间图。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>层级与上下文</h3>
+      <ul>
+        <li><b>RAPTOR</b>：递归地对块进行聚类并摘要成树；可在任意层级检索。</li>
+        <li><b>Contextual Retrieval</b>：在索引之前添加块特有的上下文。</li>
+        <li><b>反思（Reflections）</b>（Generative Agents）和<b>做梦（dreaming）</b>（OpenClaw）是记忆方面的类比：摘要被存为记忆。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Edge et al. arXiv:2404.16130; Guo et al. arXiv:2410.05779; Gutiérrez et al. arXiv:2405.14831; Sarthi et al. arXiv:2401.18059; Rasmussen et al. arXiv:2501.13956。</div>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+  <h2><small>评估</small>如何知道记忆有效？</h2>
+  <div class="cols">
+    <div>
+      <h3 class="accent2" style="margin:0 0 8px">基准测试</h3>
+      <ul style="font-size:19px">
+        <li><b>LoCoMo</b>：超长期对话（多个会话），含问答、摘要和生成任务。</li>
+        <li><b>LongMemEval</b>：五种能力：信息提取、多会话推理、时间推理、知识更新、拒答（abstention）。商用助手和长上下文 LLM 在持续交互中准确率下降约 30%。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>在你自己的框架中要度量什么</h3>
+      <ul>
+        <li>在带标注的“应该记住”问题集上的 Recall@k</li>
+        <li>注入精确率：被注入的记忆中实际被用到的比例</li>
+        <li>过期：使用了已被取代事实的回答</li>
+        <li>拒答：在没有存储任何内容时说“我不知道”</li>
+        <li>每轮增加的 token 和延迟，自动 vs. 工具</li>
+        <li>跨用户泄漏：始终为零</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Maharana et al., LoCoMo (arXiv:2402.17753); Wu et al., LongMemEval (arXiv:2410.10813)。</div>
+</section>
+
+<!-- 18 -->
+<section class="slide">
+  <h2><small>失效模式</small>会出什么问题，以及常见的修复方法</h2>
+  <table class="dense">
+    <tr><th>失效</th><th>症状</th><th>缓解措施</th></tr>
+    <tr><td>过期事实</td><td>用户搬家后仍说“你住在奥斯汀”</td><td>显式更新、双时态有效性、时效衰减</td></tr>
+    <tr><td>记忆膨胀</td><td>画像增长，每一轮都变得更慢、更贵</td><td>对第 1 层设预算；整合；把细节移到第 3 层</td></tr>
+    <tr><td>漏召回</td><td>模型从不调用搜索工具</td><td>自动注入一个小型画像；写明何时搜索的工具描述；升级子智能体</td></tr>
+    <tr><td>嘈杂召回</td><td>无关记忆分散模型注意力</td><td>混合搜索 + 重排序；分数阈值；更少但更好的注入</td></tr>
+    <tr><td>跨用户泄漏</td><td>一个用户的事实出现在另一个用户那里</td><td>按用户 / 智能体 / 会话 id 限定每次读取和写入的范围</td></tr>
+    <tr><td>投毒</td><td>被注入的文本作为“事实”存储，之后左右智能体</td><td>管控写入（OpenClaw 单一写入者）、溯源，参见总览幻灯片第 15–16 页</td></tr>
+    <tr><td>被遗忘权</td><td>用户要求删除数据</td><td>删除 API 和过期（Mem0 <code>expiration_date</code>）、遗忘工具</td></tr>
+  </table>
+  <div class="cite">威胁模型：Lin et al., 长期记忆安全综述 (arXiv:2604.16548); A-MemGuard (arXiv:2510.02373)。</div>
+</section>
+
+<!-- 19 -->
+<section class="slide">
+  <h2><small>设计清单</small>为你自己的智能体构建记忆</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:20px;padding-left:26px">
+        <li>决定<b>记住什么</b>：语义、情景、程序。</li>
+        <li>选择<b>写入触发方式</b>：热路径工具、后台钩子，或两者兼用。</li>
+        <li>按问题类型选择<b>索引</b>：精确 → BM25，模糊 → 向量，关系 → 图。通常是混合。</li>
+        <li>按层选择<b>读取触发方式</b>：固定、自动召回、工具。</li>
+        <li>在上线前定义<b>更新与遗忘</b>规则。</li>
+        <li>所有内容都按用户<b>限定范围</b>。</li>
+        <li><b>度量</b>召回、过期、成本。</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>练习：同一份记忆，两条读取路径</h3>
+      <p>实现一个存储（例如 Mem0 OSS 或 LanceDB），并在实验 12A 的 Hermes 提供者中以两种方式接入（实验 4 在 nanoos 里做同样的对比）：</p>
+      <ul>
+        <li><b>A</b>：从 <code>prefetch()</code> 返回记忆</li>
+        <li><b>B</b>：通过 <code>get_tool_schemas()</code> 暴露一个 <code>search_memory</code> 工具</li>
+      </ul>
+      <p>运行 20 个需要记忆的问题和 20 个不需要记忆的问题。比较准确率、每轮 token 数，以及模型实际调用工具的频率。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 20 -->
+<section class="slide">
+  <h2><small>参考文献</small>延伸阅读</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:17px">
+        <li>Packer et al., MemGPT, arXiv:2310.08560</li>
+        <li>Park et al., Generative Agents, arXiv:2304.03442</li>
+        <li>Rasmussen et al., Zep, arXiv:2501.13956</li>
+        <li>Xu et al., A-MEM, arXiv:2502.12110</li>
+        <li>Chhikara et al., Mem0, arXiv:2504.19413</li>
+        <li>Edge et al., GraphRAG, arXiv:2404.16130</li>
+        <li>Guo et al., LightRAG, arXiv:2410.05779</li>
+        <li>Gutiérrez et al., HippoRAG, arXiv:2405.14831</li>
+        <li>Sarthi et al., RAPTOR, arXiv:2401.18059</li>
+        <li>Maharana et al., LoCoMo, arXiv:2402.17753</li>
+        <li>Wu et al., LongMemEval, arXiv:2410.10813</li>
+      </ul>
+    </div>
+    <div>
+      <ul style="font-size:17px">
+        <li>Hermes Agent：记忆提供者指南</li>
+        <li>OpenClaw：记忆架构、记忆搜索、active memory</li>
+        <li>OpenClaw hub：memory-lancedb 插件</li>
+        <li>Letta：记忆块、归档记忆、睡眠时智能体</li>
+        <li>Mem0 文档：工作原理、add、search</li>
+        <li>Graphiti README (getzep/graphiti)</li>
+        <li>LangGraph 文档：记忆与存储</li>
+        <li>Anthropic：Introducing Contextual Retrieval</li>
+      </ul>
+      <p class="muted" style="font-size:16px;margin-top:16px">完整 URL：<code>references/bibliography_and_links.md</code>，§2 和 §2b。</p>
+    </div>
+  </div>
+</section>
+</div>
+<div id="hint">← / → 翻页 · 按 F 全屏</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

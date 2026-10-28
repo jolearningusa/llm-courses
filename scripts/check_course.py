@@ -11,8 +11,12 @@ Runs on the source tree (no build, no network) and fails on:
   list, or a file in that tree that does not exist;
 - a slide count in the README ("17 slides", "slides 22–31") that does not match
   the number of .slide elements in the deck;
-- a master deck (slides/00_*.html) that does not link every other deck;
-- a course directory missing from the course table in the root README.
+- a master deck (slides/00_*.html, including slides/zh/) that does not link every other deck
+  in its own directory;
+- a course directory missing from the course table in the root README;
+- a course with slides/zh/ whose Mandarin deck is missing, has a different slide count from
+  the English deck, is not linked on that deck's README row, or was left unchanged while the
+  English deck changed since origin/main.
 
 Usage:
 
@@ -147,11 +151,13 @@ def check_readme(course: Path, files: list[Path]) -> list[str]:
             if path not in listed:
                 problems.append(f"{rel}: layout does not list {path}")
 
-    decks = {f.name: f for f in files if f.parent == course / "slides" and f.suffix == ".html"}
-    lines = [(f"slides/{p.split('/')[-1]}", c) for p, c in entries if p.startswith("slides/")]
-    lines += [(m[1], line) for line in readme.splitlines() for m in [re.search(r"\]\((slides/[^)#]+\.html)\)", line)] if m]
+    decks = {f.relative_to(course).as_posix(): f for f in files
+             if f.suffix == ".html" and f.relative_to(course).parts[:1] == ("slides",)}
+    lines = [(p, c) for p, c in entries if p.startswith("slides/") and p.endswith(".html")]
+    lines += [(m.group(1), line) for line in readme.splitlines()
+              for m in re.finditer(r"\]\((slides/[^)#]+\.html)\)", line)]
     for link, text in lines:
-        deck = decks.get(link.split("/", 1)[1])
+        deck = decks.get(link)
         if deck is None:
             continue
         actual = slide_count(deck)
@@ -159,12 +165,73 @@ def check_readme(course: Path, files: list[Path]) -> list[str]:
             if n != actual:
                 problems.append(f"{rel}: says \"{claim}\" for {link}, but the deck has {actual} slides")
 
-    master = sorted(n for n in decks if n.startswith("00_"))
-    if master:
-        text = read(decks[master[0]])
-        for name in sorted(decks):
+    by_dir: dict[Path, dict[str, Path]] = {}
+    for path, deck in decks.items():
+        by_dir.setdefault(deck.parent, {})[Path(path).name] = deck
+    for decks_here in by_dir.values():
+        master = sorted(n for n in decks_here if n.startswith("00_"))
+        if not master:
+            continue
+        text = read(decks_here[master[0]])
+        where = decks_here[master[0]].relative_to(ROOT)
+        for name in sorted(decks_here):
             if name != master[0] and f'href="{name}' not in text:
-                problems.append(f"{course.name}/slides/{master[0]}: no link to {name}")
+                problems.append(f"{where}: no link to {name}")
+    return problems
+
+
+def files_changed_since_main() -> set[str] | None:
+    """Paths changed since origin/main, or None when that history is not available."""
+    try:
+        base = subprocess.run(["git", "merge-base", "HEAD", "origin/main"], cwd=ROOT, check=True,
+                              capture_output=True, text=True).stdout.strip()
+        out = subprocess.run(["git", "diff", "--name-only", base], cwd=ROOT, check=True,
+                             capture_output=True, text=True).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return set(out.splitlines())
+
+
+def check_translations(course: Path) -> list[str]:
+    """Mandarin twins under slides/zh/ stay paired with the English decks."""
+    zh_dir = course / "slides" / "zh"
+    if not zh_dir.is_dir():
+        return []
+    problems = []
+    en_decks = sorted((course / "slides").glob("*.html"))
+    en_names = {p.name for p in en_decks}
+    for en in en_decks:
+        twin = zh_dir / en.name
+        if not twin.is_file():
+            problems.append(f"{en.relative_to(ROOT)}: missing Mandarin deck {twin.relative_to(ROOT).as_posix()}")
+            continue
+        en_n, zh_n = slide_count(en), slide_count(twin)
+        if en_n != zh_n:
+            problems.append(f"{twin.relative_to(ROOT)}: has {zh_n} slides; {en.relative_to(ROOT)} has {en_n}")
+    for twin in sorted(zh_dir.glob("*.html")):
+        if twin.name not in en_names:
+            problems.append(f"{twin.relative_to(ROOT)}: no English deck slides/{twin.name}")
+
+    readme = read(course / "README.md")
+    section = re.search(r"^## Slide decks\n(.*?)(?=^## |\Z)", readme, re.S | re.M)
+    linked: dict[str, str] = {}
+    for line in (section.group(1) if section else "").splitlines():
+        for href in re.findall(r"\]\((slides/(?!zh/)[^)#]+\.html)\)", line):
+            linked[href] = line
+    for en in en_decks:
+        href = f"slides/{en.name}"
+        twin_href = f"slides/zh/{en.name}"
+        line = linked.get(href)
+        if line is None or f"]({twin_href})" not in line:
+            problems.append(f"{course.name}/README.md: put ]({twin_href}) on the same Slide decks row as ]({href})")
+
+    changed = files_changed_since_main()
+    if changed is not None:
+        for en in en_decks:
+            rel = en.relative_to(ROOT).as_posix()
+            twin = f"{course.name}/slides/zh/{en.name}"
+            if rel in changed and twin not in changed:
+                problems.append(f"{rel}: English deck changed without updating {twin} in the same change")
     return problems
 
 
@@ -182,6 +249,7 @@ def main() -> int:
         problems += check_arxiv(course, files)
         problems += check_tracked(course, files)
         problems += check_readme(course, files)
+        problems += check_translations(course)
     for p in problems:
         print(f"problem  {p}")
     print(f"Checked {len(found)} course(s): {len(problems)} problem(s)")

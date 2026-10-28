@@ -1,11 +1,12 @@
 #!/usr/bin/env node
-// Open every slide deck (<course>/slides/*.html) in headless Chromium and fail
+// Open every slide deck (<course>/slides/**/*.html) in headless Chromium and fail
 // on console errors, uncaught exceptions, or broken slide numbering.
 //
 // Each deck draws "N / TOTAL" on its slides. Within a deck the numbers must
 // step by one, and every slide must show the same TOTAL. A deck that starts
-// above 1 continues another deck of the same course (a master deck split over
-// several files), so some deck there must end on the slide just before it.
+// above 1 continues another deck in the same directory (a master deck split over
+// several files, or the same split under slides/zh/), so some deck there must
+// end on the slide just before it.
 // A TOTAL that disagrees between such parts is reported as a warning.
 //
 // Usage: node scripts/check_slides.mjs   (needs the playwright package)
@@ -20,11 +21,18 @@ const { chromium } = createRequire(import.meta.url)('playwright');
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const skip = new Set(['.git', '.github', 'docs', 'scripts', '_site', 'node_modules']);
 
+function htmlFiles(dir) {
+  return readdirSync(dir).sort().flatMap(name => {
+    const path = join(dir, name);
+    if (statSync(path).isDirectory()) return htmlFiles(path);
+    return /\.html?$/i.test(name) ? [path] : [];
+  });
+}
+
 const decks = readdirSync(root)
   .filter(d => !skip.has(d) && !d.startsWith('.') && statSync(join(root, d)).isDirectory())
   .filter(d => existsSync(join(root, d, 'README.md')) && existsSync(join(root, d, 'slides')))
-  .flatMap(d => readdirSync(join(root, d, 'slides'))
-    .filter(f => /\.html?$/i.test(f)).sort().map(f => join(root, d, 'slides', f)));
+  .flatMap(d => htmlFiles(join(root, d, 'slides')));
 
 const problems = [];
 const seen = []; // {name, course, first, last, total}
@@ -54,14 +62,14 @@ for (const file of decks) {
     if (i && s[0] !== slides[i - 1][0] + 1) problems.push(`${name}: slide ${slides[i - 1][0]} is followed by ${s[0]}`);
   });
   const [first, last] = [slides[0][0], slides.at(-1)[0]];
-  seen.push({ name, course: name.split('/')[0], first, last, total: slides[0][1] });
+  seen.push({ name, group: dirname(file), first, last, total: slides[0][1] });
   console.log(`${name}: slides ${first}-${last} of ${slides[0][1]}${errors.length ? `, ${errors.length} error(s)` : ''}`);
 }
 await browser.close();
 
 for (const d of seen.filter(d => d.first > 1)) {
-  const prev = seen.find(p => p.course === d.course && p.last === d.first - 1);
-  if (!prev) problems.push(`${d.name}: starts at ${d.first}, but no deck in the course ends at ${d.first - 1}`);
+  const prev = seen.find(p => p.group === d.group && p.last === d.first - 1);
+  if (!prev) problems.push(`${d.name}: starts at ${d.first}, but no deck in this directory ends at ${d.first - 1}`);
   else if (prev.total !== d.total) warnings.push(`${prev.name} says ${prev.total} slides in total, ${d.name} says ${d.total}`);
 }
 

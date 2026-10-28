@@ -84,6 +84,26 @@ python scripts/check_freshness.py                              # optional, needs
 - Lab code that was changed still runs (or the PR says which prerequisite, such as a GPU, was
   missing so it could not run).
 - The course README (syllabus, repository layout) matches the files actually in the course.
+- A course that has `slides/zh/` keeps every Mandarin deck in step with its English twin (see below).
+
+## Mandarin slide decks
+
+A course that publishes Simplified Chinese puts one twin of each English deck at
+`slides/zh/<same file name>.html`. The English deck stays at `slides/<file>.html`. Both are
+published, so the site URLs differ only by that `zh/` segment, for example
+`.../llm-agentos-course/slides/00_master_agentos_deck.html` and
+`.../llm-agentos-course/slides/zh/00_master_agentos_deck.html`.
+
+On the course README's "Slide decks" row, the Mandarin link sits on the same row as the English
+link, immediately after it: `[简体中文](slides/zh/<file>.html)`. The site's deck list follows that
+row, so the two URLs stay next to each other on the course page and the site home.
+
+Whenever an English deck is added or edited, the same PR updates `slides/zh/<file>.html` so the
+twin matches the new slide count and the claims that changed (lab numbers, versions, citations).
+`scripts/check_course.py` fails if a twin is missing, the slide counts differ, the README row
+omits the Mandarin link, or (when `origin/main` is in the local history) an English deck changed
+without its twin. `check_slides.mjs` checks numbering inside `slides/zh/` on its own, separate
+from the English decks.
 
 ## Keeping courses current
 

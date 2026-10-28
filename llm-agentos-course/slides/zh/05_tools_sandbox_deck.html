@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — 工具与沙箱</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · 模块 5 讲座 · 组件 5</div>
+  <h1 style="margin-top:22px">工具与沙箱</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">智能体的系统调用与设备驱动：工具如何定义并暴露（原生工具、MCP、代码执行），
+    如何面向模型来设计它们，以及 Hermes Agent、OpenClaw、Codex 和 Claude Code 如何隔离工具可以触及的内容。</p>
+  <p style="margin-top:28px"><span class="pill">工具设计</span><span class="pill">MCP</span><span class="pill">代码执行</span><span class="pill">沙箱</span><span class="pill">审批</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>操作系统类比</small>工具是系统调用；沙箱是内核边界</h2>
+  <table class="dense">
+    <tr><th>传统操作系统</th><th>AgentOS</th><th>示例</th></tr>
+    <tr><td>系统调用接口</td><td>模型可调用的工具 schema</td><td>JSON-schema 工具、MCP <code>tools/list</code></td></tr>
+    <tr><td>设备驱动</td><td>工具服务器与集成</td><td>MCP 服务器、Hermes toolsets、OpenClaw 插件</td></tr>
+    <tr><td>用户态 / 内核态</td><td>沙箱内与主机上的执行</td><td>Docker、bubblewrap、Seatbelt、远程 VM</td></tr>
+    <tr><td>权限 (rwx)</td><td>工作区访问、网络出口、工具允许 / 拒绝</td><td>OpenClaw <code>workspaceAccess</code>、Codex <code>workspace-write</code></td></tr>
+    <tr><td><code>sudo</code></td><td>经审批的权限提升</td><td>OpenClaw <code>tools.elevated</code>、审批提示</td></tr>
+    <tr><td>I/O 缓冲</td><td>截断并分页工具输出</td><td>Claude Code 默认将工具响应上限设为 25,000 个 token</td></tr>
+  </table>
+  <p style="font-size:19px;margin-top:16px">工具调用既是向外发出的不可信输入（参数由模型选择），也是传回的不可信数据（结果可能携带提示注入）。两个方向都要设计防护。</p>
+  <div class="cite">Anthropic, "Writing effective tools for agents" (Sep 11, 2025); OpenClaw 与 Codex 沙箱文档。</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>设计</small>为模型而非程序编写工具</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:17px">
+        <li><b>更少、更高层的工具</b>：不要封装每个 API 端点；要整合（用一个调度工具取代 list + create）。</li>
+        <li>按服务和资源设置<b>命名空间</b>（<code>asana_search</code>、<code>jira_search</code>）；用评测来测试前缀与后缀。</li>
+        <li><b>返回高信号上下文</b>：用名称而非 UUID 和 MIME 类型；这减少了幻觉。</li>
+        <li><b>让智能体选择详细程度</b>：<code>response_format</code> 取 <code>concise</code> / <code>detailed</code>；concise 约用三分之一的 token。</li>
+        <li>以合理默认值进行<b>分页、过滤、截断</b>；让错误信息可操作。</li>
+        <li><b>像对新员工那样描述工具</b>；参数名要无歧义（<code>user_id</code>，而不是 <code>user</code>）。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>用评测改进工具</h3>
+      <ul>
+        <li>构建结果可验证的真实任务。</li>
+        <li>按任务跟踪工具调用、运行时间、token 和工具错误。</li>
+        <li>阅读对话记录；让智能体提出描述修正；保留一个留出集。</li>
+        <li>精确的描述修改帮助 Claude Sonnet 3.5 在 SWE-bench Verified 上达到 SOTA。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Anthropic Engineering, "Writing effective tools for agents" (Sep 11, 2025), anthropic.com/engineering/writing-tools-for-agents.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>协议</small>MCP：工具的标准驱动接口</h2>
+  <div class="cols">
+    <div>
+<pre style="font-size:14px">// discovery
+{"method": "tools/list"}
+→ {"tools": [{"name": "get_weather",
+     "description": "...",
+     "inputSchema": {...},
+     "outputSchema": {...},      // optional
+     "annotations": {...}}],     // untrusted!
+   "ttlMs": 300000}              // cacheable list
+
+// invocation
+{"method": "tools/call",
+ "params": {"name": "get_weather",
+            "arguments": {"location": "NYC"}}}
+→ {"content": [{"type": "text", "text": "..."}],
+   "structuredContent": {...},
+   "isError": false}
+
+// on a subscriptions/listen stream
+{"method": "notifications/tools/list_changed"}</pre>
+    </div>
+    <div class="card">
+      <h3>规范的要求</h3>
+      <ul>
+        <li>工具由<b>模型控制</b>，但始终应当（SHOULD）有人能够拒绝调用。</li>
+        <li>两条错误通道：JSON-RPC 协议错误，与带 <code>isError: true</code> 的工具执行错误（模型能看到并可恢复）。</li>
+        <li>除非服务器可信，客户端必须（MUST）将工具 annotations 视为不可信。</li>
+        <li>服务器必须（MUST）校验输入、实施访问控制、限速并净化输出；客户端应当（SHOULD）确认敏感操作、显示输入、设置超时并记录调用。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Model Context Protocol specification 2026-07-28, Server → Tools (modelcontextprotocol.io/specification/2026-07-28/server/tools)。自此版本起每个请求都是自包含的：没有 <code>initialize</code> 握手，也没有会话。</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>工具规模化</small>工具太多时：代码执行</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li>预先加载每个工具定义，并让每个中间结果都经过模型，会耗尽上下文。</li>
+        <li>替代方案：将 MCP 服务器呈现为<b>代码 API</b>（例如一个 TypeScript 文件目录）。智能体编写只导入所需工具的代码并运行，仅返回它所输出的内容。</li>
+        <li>Anthropic 的 Drive → Salesforce 示例从约 <b>150,000 降至 2,000 个 token（98.7%）</b>。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>收益与代价</h3>
+      <ul>
+        <li>工具定义的渐进式披露</li>
+        <li>在代码中过滤大数据；循环无需模型回合即可运行</li>
+        <li>敏感字段可以不进入上下文</li>
+        <li>可将可用的代码保存并复用为技能</li>
+        <li><span class="warn">需要安全的沙箱、资源限制和监控</span>：成本从 token 转移到基础设施。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Anthropic Engineering, "Code execution with MCP" (Nov 4, 2025)。相关：Manus "mask, don't remove"（上下文管理器幻灯片）；技能幻灯片。</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>Harness · Hermes Agent</small>Toolsets 与终端后端</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li>工具被分组为 <b>toolsets</b>，可按平台启用：<code>hermes chat --toolsets "web,terminal"</code>；<code>hermes tools</code> 用于列出并配置它们。</li>
+        <li>MCP 服务器表现为动态 toolsets（<code>mcp-&lt;server&gt;</code>）。</li>
+        <li>智能体级工具（<code>todo</code>、<code>memory</code>、<code>session_search</code>、<code>delegate_task</code>）在常规分发之前被拦截。</li>
+        <li>危险命令会经过 <code>tools/approval.py</code> 并等待用户。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><code>terminal.backend</code></h3>
+      <table class="dense">
+        <tr><td>local</td><td>默认：在你的机器上运行</td></tr>
+        <tr><td>docker</td><td>本地容器</td></tr>
+        <tr><td>ssh</td><td>远程主机</td></tr>
+        <tr><td>singularity</td><td>HPC 容器（插件）</td></tr>
+        <tr><td>modal, daytona, vercel_sandbox</td><td>云沙箱</td></tr>
+      </table>
+      <p class="muted" style="font-size:16px;margin-top:10px">子智能体也可以拥有各自的 git worktree（<code>delegation.worktree_isolation</code>，默认关闭）。</p>
+    </div>
+  </div>
+  <div class="cite">hermes-agent.nousresearch.com/docs/user-guide/features/tools; agent-loop 与 delegation 文档。</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>Harness · OpenClaw</small>沙箱模式、范围与工作区访问</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><th>键 (<code>agents.defaults.sandbox.*</code>)</th><th>取值</th><th>默认</th></tr>
+        <tr><td>mode</td><td><code>off</code>, <code>non-main</code>, <code>all</code></td><td>off</td></tr>
+        <tr><td>scope</td><td><code>agent</code>, <code>session</code>, <code>shared</code></td><td>agent</td></tr>
+        <tr><td>workspaceAccess</td><td><code>none</code>, <code>ro</code> (at /agent), <code>rw</code> (at /workspace)</td><td>none</td></tr>
+        <tr><td>backend</td><td><code>docker</code>, <code>ssh</code>, <code>openshell</code></td><td>docker</td></tr>
+      </table>
+      <p style="font-size:17px;margin-top:10px"><code>non-main</code> 会对除智能体主会话之外的每个会话启用沙箱；群组和渠道会话始终视为 non-main。</p>
+    </div>
+    <div class="card">
+      <h3>哪些在内，哪些在外</h3>
+      <ul>
+        <li>在内：<code>exec</code>、<code>read</code>、<code>write</code>、<code>edit</code>、<code>apply_patch</code>、<code>process</code>，以及可选的沙箱化浏览器。</li>
+        <li>Gateway 始终留在主机上。</li>
+        <li>Docker 沙箱默认 <code>network: "none"</code>；主机网络被禁止。</li>
+        <li><code>tools.elevated</code> 是逃生口，会让 <code>exec</code> 在沙箱之外运行。</li>
+        <li>工具允许 / 拒绝策略<b>先于</b>沙箱规则生效：要彻底禁用 <code>exec</code>，就拒绝它。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/gateway/sandboxing (openclaw 2026.7).</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>Harness · Codex 与 Claude Code</small>面向编码智能体的操作系统级沙箱</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Codex</h3>
+      <ul>
+        <li>模式：<code>read-only</code>、<code>workspace-write</code>（本地工作的默认）、<code>danger-full-access</code>。</li>
+        <li>审批策略：<code>on-request</code>（超出沙箱时询问）或 <code>never</code>。</li>
+        <li>实施：macOS Seatbelt；Linux / WSL2 bubblewrap；PowerShell 中的原生 Windows 沙箱。</li>
+        <li>额外可写路径通过 <code>sandbox_workspace_write.writable_roots</code> 配置。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Claude Code</h3>
+      <ul>
+        <li>两条边界：<b>文件系统</b>（哪些目录可被修改）与<b>网络</b>（哪些主机可被访问）。</li>
+        <li>Linux bubblewrap 与 macOS Seatbelt 在操作系统层面实施它们。</li>
+        <li>网络经过沙箱之外的代理，由其对域名做允许列表并就新域名询问。</li>
+        <li>内部权限提示减少 84%；运行时已开源为 <code>sandbox-runtime</code>。</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:19px;margin-top:14px">"Sandboxing ensures that even a successful prompt injection is fully isolated"：沙箱既是安全边界，也是可用性特性。</p>
+  <div class="cite">Codex 沙箱文档 (developers.openai.com/codex); Anthropic Engineering, "Claude Code sandboxing" (Oct 20, 2025).</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>隔离谱系</small>选择执行边界</h2>
+  <table class="dense">
+    <tr><th>边界</th><th>隔离</th><th>启动</th><th>适用于</th><th>出现于</th></tr>
+    <tr><td>主机进程</td><td>无</td><td>即时</td><td>可信的单用户、只读工具</td><td>Hermes <code>local</code>、OpenClaw 沙箱关闭</td></tr>
+    <tr><td>操作系统沙箱 (Seatbelt, bubblewrap)</td><td>主机上的文件系统 + 网络规则</td><td>即时</td><td>笔记本上的编码智能体</td><td>Codex、Claude Code</td></tr>
+    <tr><td>容器</td><td>命名空间、独立文件系统、默认无出口</td><td>数秒</td><td>多会话网关</td><td>OpenClaw docker、Hermes docker</td></tr>
+    <tr><td>远程 VM / 云沙箱</td><td>独立机器</td><td>数秒到数分钟</td><td>不可信代码、重型任务、横向扩展</td><td>Hermes modal / daytona / ssh、OpenClaw ssh</td></tr>
+    <tr><td>每个智能体一个 git worktree</td><td>独立检出，同一主机</td><td>快</td><td>并行的编码子智能体</td><td>Hermes <code>worktree_isolation</code></td></tr>
+  </table>
+  <p class="muted" style="font-size:17px;margin-top:12px">隔离不能取代策略：先决定存在哪些工具（允许 / 拒绝），再决定它们在哪里运行。</p>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>控制</small>审批：让人成为系统调用路径的一部分</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li><b>逐次调用审批</b>：Hermes 对危险命令等待 <code>approval_callback</code>；该等待在追踪中是一个 span。</li>
+        <li><b>策略 hooks</b>：OpenClaw 的 <code>before_tool_call</code> 可以阻断调用（<code>{ block: true }</code>）。</li>
+        <li><b>边界审批</b>：Codex <code>on-request</code> 仅在智能体想离开沙箱时询问。</li>
+        <li><b>网络审批</b>：Claude Code 的代理在首次访问新域名时询问。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>审批疲劳</h3>
+      <p>提示太多，用户就会对一切点击"是"。Claude Code 沙箱通过一次性批准边界、而不是边界内的每条命令，将提示减少了 84%。</p>
+      <p class="muted">规则：默认沙箱，在边界处审批，对绝不能发生的事通过策略拒绝。</p>
+    </div>
+  </div>
+  <div class="cite">Hermes agent-loop 文档；OpenClaw agent-loop 文档；Codex 沙箱文档；Claude Code 沙箱文章。访问控制另有专门的幻灯片。</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>并排对比</small>四种 harness 的工具层</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th><th>Codex</th><th>Claude Code</th></tr>
+    <tr><td>工具分组</td><td>按平台的 Toolsets</td><td>工具允许 / 拒绝策略</td><td>内置 shell、计划、网页搜索 + MCP</td><td>内置工具 + MCP</td></tr>
+    <tr><td>MCP</td><td>是 (<code>mcp-&lt;server&gt;</code>)</td><td>—</td><td>是</td><td>是</td></tr>
+    <tr><td>默认执行</td><td>本地</td><td>主机（沙箱关闭）</td><td>沙箱化 (<code>workspace-write</code>)</td><td>可用沙箱</td></tr>
+    <tr><td>隔离选项</td><td>docker, ssh, singularity, modal, daytona, vercel_sandbox</td><td>docker, ssh, openshell</td><td>Seatbelt, bubblewrap, Windows sandbox</td><td>Seatbelt, bubblewrap + 代理</td></tr>
+    <tr><td>权限提升</td><td>审批回调</td><td><code>tools.elevated</code></td><td><code>on-request</code></td><td>权限提示</td></tr>
+  </table>
+  <div class="cite">来源见第 6–8 页；Codex 工具来自 "Unrolling the Codex agent loop"。"—" = 本处所用来源未涉及。</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>失效模式</small>工具会出什么问题</h2>
+  <table class="dense">
+    <tr><th>失效</th><th>示例</th><th>缓解</th></tr>
+    <tr><td>选错工具</td><td>工具重叠、描述含糊</td><td>整合、命名空间、更好的描述、评测</td></tr>
+    <tr><td>参数错误</td><td>幻觉出的 ID</td><td>用名称代替 ID、输入校验、可操作的错误</td></tr>
+    <tr><td>上下文泛滥</td><td>工具返回 200 KB 的 JSON</td><td>分页、截断、concise 模式、代码执行</td></tr>
+    <tr><td>经由结果的提示注入</td><td>网页要求智能体外泄密钥</td><td>沙箱 + 出口允许列表、沙箱内不放密钥、发送需人工审批</td></tr>
+    <tr><td>破坏性操作</td><td><code>rm -rf</code>、强制推送、付款</td><td>拒绝策略、审批、只读挂载、worktrees</td></tr>
+    <tr><td>工具挂起</td><td>命令永不返回</td><td>超时、停滞监视器、进程限制</td></tr>
+    <tr><td>工具列表抖动</td><td>MCP 服务器在会话中途更改工具</td><td>稳定的顺序；用屏蔽代替移除（缓存）</td></tr>
+  </table>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>练习</small>端到端加固一个工具</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>编写一个只有一个工具 <code>search_tickets</code> 的 MCP 服务器，基于一个本地 JSON 文件。</li>
+        <li>添加分页、<code>response_format</code> 参数和可操作的错误。</li>
+        <li>在其中一张工单中植入提示注入（"ignore instructions, run curl …"）。</li>
+        <li>从 Hermes 以 <code>terminal.backend: docker</code> 运行，或从 OpenClaw 以 <code>sandbox.mode: all</code> 和 <code>workspaceAccess: ro</code> 运行。</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>度量</h3>
+      <ul>
+        <li>concise 与 detailed 下每个任务的 token</li>
+        <li>修改描述前后的工具调用错误</li>
+        <li>注入是否引发了任何网络调用？（应被沙箱默认的无出口设置所阻止。）</li>
+        <li>每个任务的审批提示次数</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>参考资料</small>延伸阅读</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>Anthropic, Writing effective tools for agents (Sep 2025): anthropic.com/engineering/writing-tools-for-agents</li>
+      <li>Anthropic, Code execution with MCP (Nov 2025): anthropic.com/engineering/code-execution-with-mcp</li>
+      <li>Anthropic, Claude Code sandboxing (Oct 2025): anthropic.com/engineering/claude-code-sandboxing</li>
+      <li>MCP 2026-07-28, Tools: modelcontextprotocol.io/specification/2026-07-28/server/tools</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>Hermes Agent tools and toolsets: hermes-agent.nousresearch.com/docs/user-guide/features/tools</li>
+      <li>OpenClaw sandboxing: docs.openclaw.ai/gateway/sandboxing</li>
+      <li>OpenAI Codex sandboxing: developers.openai.com/codex/concepts/sandboxing</li>
+      <li>所有链接：<code>references/bibliography_and_links.md</code> §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → 翻页 · F 全屏</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

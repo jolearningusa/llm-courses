@@ -98,8 +98,11 @@ PYGMENTS_CSS = (
 DECK_NAV_ID = "site-deck-nav"
 
 
-def deck_nav(course_title: str) -> str:
-    return f"""<nav id="{DECK_NAV_ID}" aria-label="Site"><a href="../../index.html">{SITE_TITLE}</a> / <a href="../index.html" title="{html.escape(course_title)}">Course page</a></nav>
+def deck_nav(course_title: str, depth: int) -> str:
+    """depth is directories from the deck up to the course directory (2 for slides/*.html, 3 for slides/zh/*.html)."""
+    home = "../" * depth + "index.html"
+    course = "../" * (depth - 1) + "index.html"
+    return f"""<nav id="{DECK_NAV_ID}" aria-label="Site"><a href="{home}">{SITE_TITLE}</a> / <a href="{course}" title="{html.escape(course_title)}">Course page</a></nav>
 <style>#{DECK_NAV_ID}{{position:fixed;left:8px;top:6px;z-index:2147483647;font:12px/1.4 system-ui,sans-serif;
 padding:2px 8px;border-radius:4px;background:rgba(0,0,0,.55);color:#ccd;opacity:.6}}
 #{DECK_NAV_ID}:hover,#{DECK_NAV_ID}:focus-within{{opacity:1}}
@@ -108,9 +111,9 @@ padding:2px 8px;border-radius:4px;background:rgba(0,0,0,.55);color:#ccd;opacity:
 """
 
 
-def add_deck_nav(deck_html: str, course_title: str) -> str:
+def add_deck_nav(deck_html: str, course_title: str, depth: int) -> str:
     """Insert the site link bar just before </body> (or at the end if there is none)."""
-    nav = deck_nav(course_title)
+    nav = deck_nav(course_title, depth)
     i = deck_html.lower().rfind("</body>")
     return deck_html + nav if i < 0 else deck_html[:i] + nav + deck_html[i:]
 
@@ -254,7 +257,7 @@ def build_course(course: Path, out: Path) -> dict:
         if src.suffix.lower() in (".html", ".htm"):
             if rel.parts[0] == "slides":
                 decks.append((html_title(src), rel.as_posix()))
-                dest.write_text(add_deck_nav(src.read_text(encoding="utf-8"), title), encoding="utf-8")
+                dest.write_text(add_deck_nav(src.read_text(encoding="utf-8"), title, depth), encoding="utf-8")
             continue
         if src.suffix.lower() == ".md":
             text = src.read_text(encoding="utf-8")

@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — 智能体循环</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · 模块 1 讲义 · 组件 1</div>
+  <h1 style="margin-top:22px">智能体循环</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">AgentOS 的“进程”：一轮对话如何从用户消息运行到最终答案，以及 Hermes Agent、
+    OpenClaw、Codex CLI 和 Letta 如何在其中处理预算、工具、错误、中断、压缩和钩子。</p>
+  <p style="margin-top:28px"><span class="pill">迭代</span><span class="pill">停止条件</span><span class="pill">中断与转向</span><span class="pill">钩子</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>核心思想</small>一个循环：思考、行动、观察、重复</h2>
+  <svg viewBox="0 0 1136 330" width="1136" height="330">
+    <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9aa6bd"/></marker></defs>
+    <g font-size="18" text-anchor="middle">
+      <rect x="0" y="40" width="170" height="70" rx="10" fill="#14213a" stroke="#2a3550"/><text x="85" y="81">用户消息</text>
+      <rect x="210" y="40" width="200" height="70" rx="10" fill="#14213a" stroke="#7be0b8"/><text x="310" y="72">组装提示词</text><text x="310" y="96" font-size="14" fill="#9aa6bd">系统提示 + 历史 + 记忆</text>
+      <rect x="450" y="40" width="170" height="70" rx="10" fill="#14213a" stroke="#6ea8ff"/><text x="535" y="81">调用模型</text>
+      <rect x="660" y="40" width="200" height="70" rx="10" fill="#14213a" stroke="#ffb86b"/><text x="760" y="72">有工具调用？</text><text x="760" y="96" font-size="14" fill="#9aa6bd">解析响应</text>
+      <rect x="906" y="40" width="230" height="70" rx="10" fill="#14213a" stroke="#7be0b8"/><text x="1021" y="72">最终答案</text><text x="1021" y="96" font-size="14" fill="#9aa6bd">本轮结束，持久化</text>
+      <rect x="660" y="200" width="200" height="70" rx="10" fill="#14213a" stroke="#ffb86b"/><text x="760" y="232">执行工具</text><text x="760" y="256" font-size="14" fill="#9aa6bd">追加结果</text>
+    </g>
+    <g stroke="#9aa6bd" stroke-width="2" marker-end="url(#ar)" fill="none">
+      <line x1="170" y1="75" x2="208" y2="75"/><line x1="410" y1="75" x2="448" y2="75"/><line x1="620" y1="75" x2="658" y2="75"/><line x1="860" y1="75" x2="904" y2="75"/>
+      <path d="M760,110 L760,198"/><path d="M660,235 L310,235 L310,112"/>
+    </g>
+    <text x="872" y="62" font-size="14" fill="#9aa6bd">否</text><text x="772" y="160" font-size="14" fill="#9aa6bd">是</text>
+    <text x="330" y="300" font-size="16" fill="#9aa6bd">每经过循环一次就是一次迭代（step）。一轮（turn）指 用户输入 → 最终的助手消息。</text>
+  </svg>
+  <ul style="font-size:19px">
+    <li>ReAct (Yao et al., ICLR 2023) 命名了这一模式：把推理与行动交错进行，并把观察结果反馈回去。</li>
+    <li>如今模型会输出结构化的工具调用；Harness 运行它们并追加结果，直到模型以文本作答。</li>
+  </ul>
+  <div class="cite">Yao et al., ReAct (arXiv:2210.03629); OpenAI, "Unrolling the Codex agent loop" (Jan 2026).</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>设计空间</small>工作流与智能体</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li><b>工作流 (Workflow)</b>：LLM 与工具通过<i>预先定义的代码路径</i>编排。控制流归 Harness 所有。</li>
+        <li><b>智能体 (Agent)</b>：LLM <i>动态地指挥自己的流程和工具使用</i>。循环只负责底层机制。</li>
+        <li>两者共同的构件：<b>增强型 LLM</b>（检索、工具、记忆）。</li>
+        <li>智能体在循环中运行，因此要加入停止条件，例如最大迭代次数。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>工作流模式（位于循环之内或周围）</h3>
+      <ol style="font-size:18px;padding-left:22px;margin:0">
+        <li>提示链 (Prompt chaining)</li>
+        <li>路由 (Routing)</li>
+        <li>并行化（分段、投票）</li>
+        <li>编排者-工作者 (Orchestrator-workers)</li>
+        <li>评估者-优化者 (Evaluator-optimizer)</li>
+      </ol>
+      <p class="muted" style="font-size:16px;margin-top:12px">Harness 两者兼用：自由的智能体循环，加上工作流式的部件，如压缩、审批和子智能体委派。</p>
+    </div>
+  </div>
+  <div class="cite">Anthropic, "Building effective agents" (Dec 19, 2024), anthropic.com/research/building-effective-agents.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>Harness · Hermes Agent</small>一次迭代的内部</h2>
+  <table class="dense">
+    <tr><th>#</th><th><code>AIAgent.run_conversation()</code> (<code>agent/conversation_loop.py</code>) 中的步骤</th><th>操作系统类比</th></tr>
+    <tr><td>1</td><td>生成 <code>task_id</code>；把用户消息追加到历史</td><td>进程启动</td></tr>
+    <tr><td>2</td><td>构建或复用缓存的系统提示词 (<code>prompt_builder.py</code>)</td><td>加载镜像</td></tr>
+    <tr><td>3</td><td>历史过大时进行预检压缩</td><td>换出页面</td></tr>
+    <tr><td>4</td><td>把历史转换为 API 模式：<code>chat_completions</code>、<code>codex_responses</code> 或 <code>anthropic_messages</code></td><td>ABI</td></tr>
+    <tr><td>5</td><td>注入临时层（预算警告、上下文压力）；在 Anthropic 上添加 prompt-caching 标记</td><td>信号</td></tr>
+    <tr><td>6</td><td>可中断的 API 调用 (<code>_interruptible_api_call</code>)</td><td>阻塞式系统调用</td></tr>
+    <tr><td>7</td><td>工具调用 → 执行、追加结果，回到步骤 4；文本 → 持久化并返回</td><td>陷入 / 返回</td></tr>
+  </table>
+  <p class="muted" style="font-size:17px;margin-top:12px">每一轮结束后，消息保存到 SQLite (<code>hermes_state.py</code>)，记忆被刷新写入 MEMORY.md / USER.md。</p>
+  <div class="cite">hermes-agent.nousresearch.com/docs/developer-guide/agent-loop.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>Harness · Codex CLI</small>一轮就是一个不断增长的无状态提示词</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li>一个<b>轮 (turn)</b> 从用户输入运行到助手消息；当模型不再输出工具调用时结束。</li>
+        <li>每个 Responses API 请求都携带 <code>instructions</code>、<code>tools</code> 和 <code>input</code> 条目，并重发完整历史。Codex 不使用 <code>previous_response_id</code>，以保持无状态并支持零数据保留 (Zero Data Retention)。</li>
+        <li>从原理上说，重发的开销是平方级的。但由于每个新提示词都<b>以此前完全相同的提示词开头</b>，提示词缓存使采样大致呈线性。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>什么会破坏缓存</h3>
+      <ul>
+        <li>在对话中途更改 <code>tools</code>（一个 MCP bug 曾以不一致的顺序列出工具）</li>
+        <li>更换模型</li>
+        <li>更改沙箱配置、审批模式或工作目录</li>
+      </ul>
+      <p><b>解决办法</b>：绝不编辑之前的条目；追加一条描述变更的新开发者消息或用户消息。</p>
+    </div>
+  </div>
+  <div class="cite">Michael Bolin, OpenAI, "Unrolling the Codex agent loop" (Jan 23, 2026), openai.com/index/unrolling-the-codex-agent-loop. 关联模块 3（前缀缓存）。</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>控制</small>停止条件与预算</h2>
+  <table class="dense">
+    <tr><th>Harness</th><th>预算 / 超时</th><th>达到上限时会发生什么</th></tr>
+    <tr><td>Hermes Agent</td><td><code>IterationBudget</code> 默认 500 (<code>agent.max_turns</code>)；子智能体受 <code>delegation.max_iterations</code> 限制（委派指南中为 250；agent-loop 页面写的是 50）</td><td>智能体停止并返回摘要；在此之前会注入预算警告</td></tr>
+    <tr><td>OpenClaw</td><td>运行超时 <code>agents.defaults.timeoutSeconds</code> = 172800 s（48 h）；模型空闲超时上限 120 s；<code>agent.wait</code> 30 s（仅等待）</td><td><code>runEmbeddedAgent</code> 中的中止计时器；<code>diagnostics.stuckSessionWarnMs</code> = 120 s 之后发出会话卡住警告</td></tr>
+    <tr><td>Codex CLI</td><td>助手消息使本轮结束；上下文用 <code>auto_compact_limit</code></td><td>压缩而不是停止</td></tr>
+    <tr><td>Letta (MemGPT 时代)</td><td><code>request_heartbeat</code> 默认为 false：除非智能体请求下一步，否则停止</td><td>在 <code>letta_v1_agent</code> 中弃用（2025 年 10 月）</td></tr>
+  </table>
+  <div class="card" style="margin-top:16px">
+    <h3>设计准则</h3>
+    <p style="margin:0">同时使用多种限制：步数、墙钟时间、token / 成本，以及“无进展”检测器（重复相同的工具和参数）。在硬性停止前先警告模型，使其能够收尾。</p>
+  </div>
+  <div class="cite">Hermes agent-loop docs; docs.openclaw.ai/concepts/agent-loop; Codex agent-loop post; letta.com/blog/letta-v1-agent.</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>行动</small>在循环内运行工具</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li><b>安全时并行</b>：Hermes 在主线程上运行单个工具调用，多个则在 <code>ThreadPoolExecutor</code> 中并发运行。</li>
+        <li><b>交互时串行</b>：像 <code>clarify</code> 这样的工具强制顺序执行。</li>
+        <li><b>保持顺序</b>：无论完成顺序如何，结果都按原始调用顺序返回。</li>
+        <li><b>保持成对</b>：每个工具结果始终与产生它的调用配对（压缩绝不拆开一对）。</li>
+        <li><b>拦截操作系统级工具</b>：Hermes 在常规分发之前，把 <code>todo</code>、<code>memory</code>、<code>session_search</code>、<code>delegate_task</code> 路由给智能体自身处理。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>结果重新进入提示词之前</h3>
+      <ul>
+        <li>OpenClaw 会针对大小和图像清理工具结果；<code>tool_result_persist</code> 钩子可在写入前对其进行转换。</li>
+        <li>危险命令会等待审批回调（Hermes <code>tools/approval.py</code>）。</li>
+        <li>OpenClaw 的 <code>before_tool_call</code> 可返回 <code>{ block: true }</code> 来阻止调用。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Hermes agent-loop docs; OpenClaw agent-loop docs. 工具与沙箱另有专门课件。</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>韧性</small>错误、重试与回退</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>模型错误</h3>
+      <ul>
+        <li>Hermes 在 429、5xx 和 401/403 时进行故障转移，按顺序尝试 <code>fallback_providers</code>；遇到 401/403 时先尝试刷新凭据。</li>
+        <li>某个 Codex Responses 轮次若在仅有推理输出的状态下停滞，连续三次续接后，会以原因 <code>incomplete_response</code> 进行故障转移。</li>
+        <li>辅助工作（视觉、压缩、网页提取）有各自的回退链。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>工具错误与空轮次</h3>
+      <ul>
+        <li>把错误作为工具结果返回给模型，并附足够的细节以便恢复，而不是让循环崩溃。</li>
+        <li>OpenClaw：如果没有可渲染的内容且有工具出错，会发送一条回退的工具错误回复。</li>
+        <li>OpenClaw 导出 <code>openclaw.model.failover</code> 和工具循环指标（可观测性课件）。</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:16px">重试会成倍增加成本。按轮次统计重试次数，并对重试风暴发出告警。</p>
+  <div class="cite">Hermes agent-loop docs; OpenClaw agent-loop docs; 06_observability_evaluation_deck.html.</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>控制</small>中断与转向</h2>
+  <div class="cols">
+    <div>
+      <h3 class="accent2" style="margin:0 0 8px">Hermes：可中断的模型调用</h3>
+      <ul style="font-size:18px">
+        <li>HTTP 调用在后台线程中运行；主线程等待响应、中断或超时。</li>
+        <li>发生中断时，API 线程被放弃，其响应被丢弃：不会有部分响应进入历史。</li>
+      </ul>
+      <h3 class="accent2" style="margin:16px 0 8px">OpenClaw：队列模式</h3>
+      <table class="dense">
+        <tr><td>steer</td><td>默认。把新消息注入当前运行</td></tr>
+        <tr><td>followup</td><td>在当前运行结束后再运行</td></tr>
+        <tr><td>collect</td><td>把排队的消息合并到之后的一轮</td></tr>
+        <tr><td>interrupt</td><td>中止当前运行，开始处理最新消息</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>转向发生在模型边界</h3>
+      <ol style="font-size:18px;padding-left:22px;margin:0">
+        <li>模型请求工具调用。</li>
+        <li>这一批工具运行至完成。</li>
+        <li>排空排队的转向消息。</li>
+        <li>在下一次模型调用之前，把它们作为用户消息添加进去。</li>
+      </ol>
+      <p style="font-size:17px;margin-top:12px">转向绝不会打断正在运行的工具，因此工具结果始终与其请求保持配对。</p>
+    </div>
+  </div>
+  <div class="cite">Hermes agent-loop docs; docs.openclaw.ai/concepts/queue-steering.</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>并发</small>每个会话同一时间只运行一次</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:19px">
+        <li>OpenClaw 按<b>会话键 (session key)</b> 串行化运行（会话通道 session lane），也可选择再经过全局通道。</li>
+        <li>写入转录记录时需获取基于文件、感知进程的<b>会话写锁</b>；写入方最多等待 <code>session.writeLock.acquireTimeoutMs</code>（60 000 ms），之后会话被报告为忙碌。</li>
+        <li><code>agent</code> RPC 立即返回 <code>{ runId, acceptedAt }</code>；<code>agent.wait</code> 等待生命周期结束或出错。</li>
+        <li>事件通过三个通道流式输出：<code>tool</code>、<code>assistant</code>、<code>lifecycle</code>（<code>start</code> / <code>end</code> / <code>error</code>）。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>为什么要串行化？</h3>
+      <p>同一份转录上的两个并发运行会使工具调用和结果交错，并破坏历史。按会话串行化能让每份历史保持线性，而不同会话仍可并行运行。</p>
+      <p class="muted">这是“每进程一把锁”的智能体版本；跨会话和跨智能体的调度见调度器课件。</p>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/concepts/agent-loop (openclaw 2026.7).</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>内存压力</small>循环内的压缩</h2>
+  <table class="dense">
+    <tr><th>Harness</th><th>触发条件</th><th>保留什么</th></tr>
+    <tr><td>Hermes Agent</td><td>超过上下文窗口 50% 时进行预检压缩；网关在轮次之间于超过 85% 时自动压缩</td><td>先刷新记忆，总结中间轮次，保留最后 20 条消息 (<code>compression.protect_last_n</code>)，绝不拆开工具调用对；开启一个子会话谱系</td></tr>
+    <tr><td>Codex CLI</td><td>超过 <code>auto_compact_limit</code></td><td>调用 <code>/responses/compact</code>；得到一个带有不透明 <code>encrypted_content</code> 的 <code>compaction</code> 条目</td></tr>
+    <tr><td>OpenClaw</td><td>接近上限时自动压缩</td><td>发出 <code>compaction</code> 流事件，并可能重试；<code>before_compaction</code> / <code>after_compaction</code> 钩子；先把记忆刷新到每日笔记</td></tr>
+  </table>
+  <p style="font-size:19px;margin-top:16px">压缩会改变提示词前缀，因此也会重置前缀缓存的复用（模块 3）。上下文管理器课件会深入比较各种策略。</p>
+  <div class="cite">Hermes agent-loop docs; Codex agent-loop post; OpenClaw agent-loop and memory-architecture docs.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>扩展点</small>沿循环分布的钩子</h2>
+  <table class="dense">
+    <tr><th>时刻</th><th>OpenClaw 插件钩子</th><th>Hermes 钩子（示例）</th></tr>
+    <tr><td>消息进入</td><td><code>message_received</code></td><td><code>on_session_start</code></td></tr>
+    <tr><td>提示词 / 模型之前</td><td><code>before_model_resolve</code>、<code>before_prompt_build</code>、<code>before_agent_reply</code>（可合成或静音回复）</td><td><code>pre_llm_call</code>、<code>pre_api_request</code></td></tr>
+    <tr><td>模型之后</td><td>（流事件）</td><td><code>post_api_request</code>、<code>post_llm_call</code>、<code>api_request_error</code></td></tr>
+    <tr><td>围绕工具</td><td><code>before_tool_call</code>（<code>{ block: true }</code> 为终结性）、<code>after_tool_call</code></td><td><code>pre_tool_call</code>、<code>post_tool_call</code>、<code>pre_approval_request</code>、<code>post_approval_response</code></td></tr>
+    <tr><td>压缩</td><td><code>before_compaction</code>、<code>after_compaction</code></td><td>记忆提供者 <code>on_pre_compress</code></td></tr>
+    <tr><td>子智能体</td><td>（子智能体运行）</td><td><code>subagent_start</code>、<code>subagent_stop</code></td></tr>
+    <tr><td>消息发出 / 结束</td><td><code>message_sending</code>（<code>{ cancel: true }</code> 为终结性）、<code>message_sent</code>、<code>agent_end</code></td><td><code>on_session_end</code>、<code>on_session_finalize</code></td></tr>
+  </table>
+  <div class="cite">OpenClaw agent-loop docs (plugin hooks); Hermes hook names as consumed by the hermes-otel plugin. 总览课件第 19 张幻灯片展示了同一条时间线。</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>Harness · Letta</small>从 MemGPT 心跳到 <code style="font-size:30px">letta_v1_agent</code></h2>
+  <div class="cols">
+    <div class="card">
+      <h3>MemGPT 式循环（旧版）</h3>
+      <ul>
+        <li>每个动作都是工具调用，包括通过 <code>send_message</code> 回复。</li>
+        <li>每个工具都带 <code>request_heartbeat</code>；只有模型提出请求时循环才继续（默认 false）。</li>
+        <li>推理由提示词引导：把 <code>thinking</code> 参数注入工具 schema。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><code>letta_v1_agent</code>（2025 年 10 月）</h3>
+      <ul>
+        <li><code>request_heartbeat</code> 和 <code>send_message</code> 已弃用。</li>
+        <li>与其他 Harness 一样，模型直接发出的助手消息使本轮结束。</li>
+        <li>仅使用原生推理（OpenAI 用 Responses API；跨提供者处理加密的推理内容）。</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:19px;margin-top:16px">教训：随着模型原生学会工具调用，Harness 把循环控制技巧从提示词中移除，转而放进 API 和 Harness 本身。</p>
+  <div class="cite">Letta, "Rearchitecting Letta's agent loop" (Oct 14, 2025), letta.com/blog/letta-v1-agent; Packer et al., MemGPT (arXiv:2310.08560).</div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>横向对比</small>四种智能体循环</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th><th>Codex CLI</th><th>Letta v1</th></tr>
+    <tr><td>入口</td><td><code>run_conversation()</code></td><td>Gateway <code>agent</code> RPC</td><td>线程上的一轮</td><td><code>agents.messages.create</code></td></tr>
+    <tr><td>本轮结束</td><td>文本响应</td><td>生命周期结束 / 错误</td><td>助手消息</td><td>助手消息</td></tr>
+    <tr><td>预算</td><td>500 次迭代</td><td>48 h 运行超时</td><td>—</td><td>—</td></tr>
+    <tr><td>并行工具</td><td>是（线程池）</td><td>每次模型调用按批处理</td><td>—</td><td>—</td></tr>
+    <tr><td>中断</td><td>放弃 API 调用</td><td>steer / interrupt 模式</td><td><code>turn/steer</code></td><td>—</td></tr>
+    <tr><td>压缩</td><td>50% / 85%</td><td>自动 + 钩子</td><td><code>/responses/compact</code></td><td>—</td></tr>
+    <tr><td>并发</td><td>—</td><td>按会话的通道 + 锁</td><td>—</td><td>—</td></tr>
+  </table>
+  <p class="muted" style="font-size:17px;margin-top:12px">“—”表示此处所用资料未涉及，并不表示该功能不存在。Codex 的 <code>turn/steer</code> 是 OpenClaw 对其原生 Codex app-server Harness 进行转向的方式。</p>
+  <div class="cite">Hermes and OpenClaw agent-loop docs; OpenClaw queue-steering docs; Codex agent-loop post; Letta v1 agent post.</div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>失效模式</small>智能体循环中会出什么问题</h2>
+  <table class="dense">
+    <tr><th>失效</th><th>症状</th><th>循环内的缓解措施</th></tr>
+    <tr><td>失控循环</td><td>相同工具、相同参数，毫无进展</td><td>迭代预算、重复检测、预算警告</td></tr>
+    <tr><td>过早停止</td><td>任务未完成模型就作答</td><td>结果检查、todo / 计划工具、评估者-优化者步骤</td></tr>
+    <tr><td>上下文泛滥</td><td>巨大的工具输出塞满窗口</td><td>截断并清理结果；把大型输出存为文件</td></tr>
+    <tr><td>孤立的工具调用</td><td>中断或压缩后，有调用而无结果</td><td>绝不拆开成对；丢弃部分响应</td></tr>
+    <tr><td>丢失用户输入</td><td>运行期间收到的消息被忽略</td><td>队列模式：steer 或 follow up</td></tr>
+    <tr><td>缓存抖动</td><td>会话中途延迟和成本骤增</td><td>只追加的历史、稳定的工具列表</td></tr>
+    <tr><td>运行挂起</td><td>在提供者或工具上无限等待</td><td>空闲与运行超时、卡住会话检测</td></tr>
+  </table>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <h2><small>练习</small>编写一个最小的智能体循环</h2>
+  <div class="cols">
+<pre style="font-size:14px">def run_turn(history, tools, budget=25):
+    for step in range(budget):
+        resp = model(history, tools=schemas(tools))
+        history.append(resp.message)
+        if not resp.tool_calls:
+            return resp.text            # turn ends
+        results = run_parallel(resp.tool_calls)
+        for call, out in zip(resp.tool_calls, results):
+            history.append(tool_result(call.id,
+                                       truncate(out)))
+        if repeated(history):
+            history.append(user("You are repeating "
+                                "the same call. Stop or "
+                                "change approach."))
+        if step == budget - 3:
+            history.append(user("3 steps left: wrap up."))
+    return summarize(history)            # budget hit</pre>
+    <div class="card">
+      <h3>扩展它，然后与 Hermes 对比</h3>
+      <ul>
+        <li>让模型调用可中断（线程 + 事件）。</li>
+        <li>让工具结果保持调用顺序。</li>
+        <li>添加在模型调用之间排空的转向队列。</li>
+        <li>添加钩子：<code>pre_tool_call</code>、<code>post_tool_call</code>。</li>
+        <li>每一步输出一个 span（可观测性课件）。</li>
+        <li>度量：每个任务的步数和前缀缓存命中率。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+  <h2><small>参考文献</small>延伸阅读</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>Yao et al., ReAct (ICLR 2023): arxiv.org/abs/2210.03629</li>
+      <li>Anthropic, Building effective agents (Dec 2024): anthropic.com/research/building-effective-agents</li>
+      <li>OpenAI, Unrolling the Codex agent loop (Jan 2026): openai.com/index/unrolling-the-codex-agent-loop</li>
+      <li>Letta, Rearchitecting Letta's agent loop (Oct 2025): letta.com/blog/letta-v1-agent</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>Hermes Agent agent loop: hermes-agent.nousresearch.com/docs/developer-guide/agent-loop</li>
+      <li>OpenClaw agent loop: docs.openclaw.ai/concepts/agent-loop</li>
+      <li>OpenClaw queue steering: docs.openclaw.ai/concepts/queue-steering</li>
+      <li>Packer et al., MemGPT: arxiv.org/abs/2310.08560</li>
+      <li>所有链接：<code>references/bibliography_and_links.md</code> §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → 翻页 · F 全屏</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>
