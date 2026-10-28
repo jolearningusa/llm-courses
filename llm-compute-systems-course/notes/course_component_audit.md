@@ -15,7 +15,7 @@ The audit compares the computing-systems course with the relevant optimization d
 | Agent lifecycle hints | Cache validity/retain/offload/recompute background | Add current RFC/implementation distinction and existing agentic-api context | vLLM #52113 open RFC at review date; not execution evidence |
 | DeepInfer | Not a central course dependency | Source-grounded optional specialized-engine/service case | Pinned README/support review; no model/target run |
 | Cross-device optimization | NVIDIA/AMD core coverage | Add bounded edge/backend comparison as an optional extension | Primary backend entry points; hardware-specific execution pending |
-| New projects | Capstone scope existed | Separate potential-project catalogue/specifications from released lab code | Next serial documentation unit; no project implementation implied |
+| New projects | Capstone scope existed | Separate potential-project catalogue/specifications from released lab code | [Twenty independent specifications](../projects/POTENTIAL_PROJECTS.md); no project implementation implied |
 
 ## Integration guide
 
