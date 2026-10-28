@@ -42,3 +42,7 @@ This exercise teaches how to build a portable system with explicit specializatio
 ## 2026-10-27 operator-library refresh
 
 The current AITER README additionally describes FlyDSL/OPUS and Iris-based communication paths. Treat these as backend-specific extensions and inspect target/operator coverage; a single AITER installation does not establish every backend is available. The core responsibility map remains HIP/runtime, GEMM/construction, AI operators and communication. No AMD kernel was executed on the authoring host.
+
+## Programming-model comparison (2026-10-28)
+
+[Deck 33](../slides/33_programming_models_beyond_cuda.html) places HIP next to the other vendors' answers to CUDA (SYCL, Metal, Pallas, NKI) and the portable tile DSLs (Triton, TileLang). It records the HIP execution-group width (64 on CDNA, 32 on RDNA), AMD's layered kernel options (HIP, CK Tile, FlyDSL, Triton, TileLang, AITER) and the three routes for running CUDA code on AMD (HIPIFY, SCALE, ZLUDA). Sources are in the [bibliography](../references/bibliography_and_links.md#programming-models-beyond-cuda-reviewed-2026-10-28).

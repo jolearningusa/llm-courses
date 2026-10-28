@@ -295,5 +295,14 @@
     "caption": "Libraries, graph compilation and custom kernels are alternative or composable paths; the target and numerical contract decide eligibility.",
     "deck": "32_optimization_decision_systems.html",
     "asset": "optimization-choices.svg"
+  },
+  {
+    "prefix": "33",
+    "after": "Layers: graph compilers, kernel DSLs, vendor targets",
+    "slug": "programming-model-layers",
+    "title": "Graph compilers, kernel DSLs and vendor targets",
+    "caption": "Arrows show kernel-DSL paths only; graph compilers also call vendor libraries and emit their own code. Dashed: an opaque custom call.",
+    "deck": "33_programming_models_beyond_cuda.html",
+    "asset": "programming-model-layers.svg"
   }
 ]

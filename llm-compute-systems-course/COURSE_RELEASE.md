@@ -1,6 +1,6 @@
 # Course materials release — 2026-10-27
 
-The authored package contains **33 HTML decks** (master, 30 core lectures, capstone and optimization supplement), **33 editable SVG teaching figures**, **L0–L15 handouts/reference kits**, a capstone assessment package, source notes/bibliography and **20 separate potential-project specifications**. Every deck contains a companion vector illustration; standalone figures and their generator/placement manifest are supplied.
+The authored package contains **34 HTML decks** (master, 30 core lectures, capstone and two supplements: optimization decisions and programming models beyond CUDA), **34 editable SVG teaching figures**, **L0–L15 handouts/reference kits**, a capstone assessment package, source notes/bibliography and **20 separate potential-project specifications**. Every deck contains a companion vector illustration; standalone figures and their generator/placement manifest are supplied.
 
 This is a materials and CPU-reference release. It is **not** a claim that all accelerated labs, vendor targets or student pacing have been piloted. See the [validation record](VALIDATION.md) for tested paths and pending work.
 

@@ -244,6 +244,17 @@ def build():
             s.path([(680,y+32),(745,y+32),(745,167),(805,167)],color)
         s.box(805,135,275,65,'Build / validate|measure / retain',AMBER)
 
+    if list(SLIDES.glob('33_*.html')):
+        s=figure('33','Layers: graph compilers, kernel DSLs, vendor targets','programming-model-layers','Graph compilers, kernel DSLs and vendor targets','Arrows show kernel-DSL paths only; graph compilers also call vendor libraries and emit their own code. Dashed: an opaque custom call.','TorchInductor generates Triton; XLA reaches Triton and TileLang kernels through custom calls and Pallas through JAX; Triton targets NVIDIA and AMD, TileLang targets NVIDIA, AMD and Apple Metal, Pallas targets TPU and NVIDIA, cuTile targets NVIDIA.')
+        s.box(180,20,330,58,'TorchInductor',TEAL);s.box(600,20,330,58,'XLA (StableHLO in)',TEAL)
+        xs=[30,300,570,840]
+        for x,label in zip(xs,['Triton','TileLang','Pallas','cuTile']):s.box(x,140,230,58,label,BLUE)
+        for x,label in zip(xs,['NVIDIA (PTX)','AMD (AMDGCN)','Apple Metal','TPU (Mosaic)']):s.box(x,262,230,58,label,AMBER)
+        s.line(260,78,150,140,TEAL,True)
+        s.line(700,78,180,140,MUTED,True,True);s.line(740,78,420,140,MUTED,True,True);s.line(800,78,685,140,TEAL,True)
+        for a,b in [(0,0),(0,1),(1,0),(1,1),(1,2),(2,3),(2,0),(3,0)]:
+            s.line(xs[a]+40+b*50,198,xs[b]+40+a*50,262,BLUE,True)
+
 
 def apply():
     build();manifest=[]

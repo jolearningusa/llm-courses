@@ -2,7 +2,7 @@
 
 A systems engineering course on building and measuring the computing stack for LLM training and inference, from PyTorch and compilers through CUDA kernels, memory, operating systems, interconnects and cluster runtimes, using NVIDIA Vera Rubin as a recurring case study.
 
-**Status: materials and CPU-reference release, 2026-10-27.** The package contains 33 decks with 33 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 separate project specifications. [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
+**Status: materials and CPU-reference release, 2026-10-27.** The package contains 34 decks with 34 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 separate project specifications. [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
 
 ## Start here
 
@@ -15,7 +15,7 @@ A systems engineering course on building and measuring the computing stack for L
    Compare the [NVIDIA library map](notes/nvidia_stack.md) with the [AMD ROCm stack](notes/amd_stack.md).
 7. [AgentOS inference and cache mechanisms](notes/agentic_caching.md): vLLM, llama.cpp and SGLang, tool waits and cache policy.
 8. [Lab plan](labs/LAB_PLAN.md) and [experiment report](labs/report_template.md).
-9. [Slide and lab build plan](BUILD_PLAN.md): 32 core decks plus the optimization supplement, L0–L15 kits, serial PR order and release gates.
+9. [Slide and lab build plan](BUILD_PLAN.md): 32 core decks plus two supplements (optimization decisions; programming models beyond CUDA), L0–L15 kits, serial PR order and release gates.
 
 10. [Release guide](COURSE_RELEASE.md), [validation record](VALIDATION.md), [SVG illustration library](slides/illustrations/) and [capstone](labs/kit/capstone/CAPSTONE.md).
 
@@ -38,7 +38,7 @@ The course has six parts, ordered from the workload and one device out to cluste
 | V. Inference serving | 11–13 | 21–26 | L11–L13 | How do we deliver useful tokens under latency, memory and load constraints? |
 | VI. Deployment and whole-system integration | 14–16 | 27–31 | L14–L15, capstone | How do we package a program for a target, and which cross-layer change improves the actual job objective? |
 
-Deck 32 (optimization decisions and automated search) is a supplement used after Part II and revisited after Part V. The order (foundations, single-device execution, distributed training, inference, integration) follows the same spine as CMU 15-442, Stanford CS336's systems unit, CMU 11-868 and *How To Scale Your Model*; numerics gets its own part because it serves both training and inference. The comparison and sources are in the [research review](references/research_review.md#course-structure-compared-with-other-courses).
+Deck 32 (optimization decisions and automated search) is a supplement used after Part II and revisited after Part V. Deck 33 (programming models beyond CUDA) follows deck 07 and pairs with decks 28–29. The order (foundations, single-device execution, distributed training, inference, integration) follows the same spine as CMU 15-442, Stanford CS336's systems unit, CMU 11-868 and *How To Scale Your Model*; numerics gets its own part because it serves both training and inference. The comparison and sources are in the [research review](references/research_review.md#course-structure-compared-with-other-courses).
 
 Each lab follows **predict → implement → validate correctness → profile → explain → compare end-to-end**. A speedup without a stated baseline, error check and workload is incomplete.
 
@@ -75,8 +75,8 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [Measurement and Profiling](slides/03_measurement_profiling.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Host, OS and Data Paths](slides/04_host_os_data_paths.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | **Part II · Single-GPU execution: PyTorch, compilers and kernels (weeks 3–6)** | |
-| [PyTorch Execution and Autograd](slides/05_pytorch_execution_autograd.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [PyTorch Compiler and Specialization](slides/06_pytorch_compiler.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [PyTorch Execution and Autograd](slides/05_pytorch_execution_autograd.html) (18 slides) | Topic lecture, worked examples and practical exercises |
+| [PyTorch Compiler and Specialization](slides/06_pytorch_compiler.html) (18 slides) | Topic lecture, worked examples and practical exercises |
 | [CUDA Execution and Memory](slides/07_cuda_execution_memory.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Reductions and Custom Operator Contracts](slides/08_reductions_custom_operators.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [GEMM Tiling and Tensor Cores](slides/09_gemm_tensor_cores.html) (17 slides) | Topic lecture, worked examples and practical exercises |
@@ -102,12 +102,13 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [AgentOS Workloads and Cache-Lifecycle Policies](slides/26_agentos_inference_cache_policy.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | **Part VI · Deployment and whole-system integration (weeks 14–16)** | |
 | [Export Contracts and AOTInductor Deployment](slides/27_export_aotinductor.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [ExecuTorch Runtime, Delegation and Memory Planning](slides/28_executorch_deployment.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [ExecuTorch Runtime, Delegation and Memory Planning](slides/28_executorch_deployment.html) (18 slides) | Topic lecture, worked examples and practical exercises |
 | [Vera Rubin and NVIDIA/AMD Software Stacks](slides/29_rubin_vendor_stacks.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Whole-System Efficiency and Useful Work](slides/30_whole_system_efficiency.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Capstone Workshop: Evidence to Decision](slides/31_capstone_workshop.html) (11 slides) | Topic lecture, worked examples and practical exercises |
 | **Supplement** | |
 | [Optimization Decisions and Automated Performance Engineering](slides/32_optimization_decision_systems.html) (23 slides) | Topic lecture, worked examples and practical exercises |
+| [Programming Models beyond CUDA](slides/33_programming_models_beyond_cuda.html) (19 slides) | AMD, Intel, Apple, TPU and Trainium answers to CUDA; Triton, TileLang and Pallas; XLA; new-accelerator bring-up; edge DSP and NPU toolchains |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -233,6 +234,7 @@ llm-compute-systems-course/
 │   │   ├── pd-placement.svg
 │   │   ├── precision-lifecycle.svg
 │   │   ├── prefix-branches.svg
+│   │   ├── programming-model-layers.svg
 │   │   ├── quantized-bytes.svg
 │   │   ├── reduction-tree.svg
 │   │   ├── restart-state.svg
@@ -274,7 +276,8 @@ llm-compute-systems-course/
 │   ├── 29_rubin_vendor_stacks.html
 │   ├── 30_whole_system_efficiency.html
 │   ├── 31_capstone_workshop.html
-│   └── 32_optimization_decision_systems.html
+│   ├── 32_optimization_decision_systems.html
+│   └── 33_programming_models_beyond_cuda.html
 ├── BUILD_PLAN.md
 ├── COURSE_RELEASE.md
 ├── LICENSE
