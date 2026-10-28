@@ -189,6 +189,19 @@ def build():
     s.line(420,272,660,272,AMBER,True);s.text(465,252,'KV transfer',21,AMBER)
 
 
+
+    if list(SLIDES.glob('25_*.html')):
+        s=figure('25','Draft, verify, correct','speculative-correction','Verify the draft before keeping its state','Keep the accepted prefix; correct the first rejected token and discard later speculative state. The lab validates one categorical step.','Draft tokens are verified by the target; an accepted prefix is retained and the first rejected position is sampled from a corrected distribution.')
+        s.chain(['Draft q','Target scores p','Accept prefix','Correct / bonus'],65)
+        for i,(label,color) in enumerate([('keep',TEAL),('keep',TEAL),('reject',AMBER),('discard',GRAY)]):s.box(170+i*205,235,175,60,label,color)
+        s.text(200,195,'Accepted history ends at the first rejection',24,AMBER)
+    if list(SLIDES.glob('26_*.html')):
+        s=figure('26','The retained-state decision','agent-wait','State has a lifetime while the agent waits','Compare resume work and displaced capacity across a complete task; idle byte-seconds alone do not select a policy.','A model call enters a tool wait. During the wait a policy retains HBM state, moves compatible state, or evicts it for recomputation on resume.')
+        s.box(20,130,180,65,'Tool wait',BLUE)
+        for y,label,color in [(20,'Retain in HBM',TEAL),(130,'Offload / restore',BLUE),(240,'Evict / recompute',AMBER)]:
+            s.box(340,y,330,65,label,color);s.path([(200,162),(260,162),(260,y+32),(340,y+32)],color);s.path([(670,y+32),(750,y+32),(750,162),(830,162)],color)
+        s.box(830,130,240,65,'Validate + resume',AMBER)
+
     if list(SLIDES.glob('32_*.html')):
         s=figure('32','Three implementation choices','optimization-choices','Choose an implementation, then validate it','Libraries, graph compilation and custom kernels are alternative or composable paths; the target and numerical contract decide eligibility.','An exported workload branches to a library, graph compiler or custom kernel path, then all candidates converge on the same correctness and measurement gate.')
         s.box(20,135,180,65,'Workload|contract',AMBER)

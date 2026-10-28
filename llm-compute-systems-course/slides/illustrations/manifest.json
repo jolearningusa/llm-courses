@@ -225,6 +225,24 @@
     "asset": "pd-placement.svg"
   },
   {
+    "prefix": "25",
+    "after": "Draft, verify, correct",
+    "slug": "speculative-correction",
+    "title": "Verify the draft before keeping its state",
+    "caption": "Keep the accepted prefix; correct the first rejected token and discard later speculative state. The lab validates one categorical step.",
+    "deck": "25_speculative_decoding.html",
+    "asset": "speculative-correction.svg"
+  },
+  {
+    "prefix": "26",
+    "after": "The retained-state decision",
+    "slug": "agent-wait",
+    "title": "State has a lifetime while the agent waits",
+    "caption": "Compare resume work and displaced capacity across a complete task; idle byte-seconds alone do not select a policy.",
+    "deck": "26_agentos_inference_cache_policy.html",
+    "asset": "agent-wait.svg"
+  },
+  {
     "prefix": "32",
     "after": "Three implementation choices",
     "slug": "optimization-choices",

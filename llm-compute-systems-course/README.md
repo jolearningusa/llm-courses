@@ -86,6 +86,8 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [KV, Prefix and Response Caches across Inference Stacks](slides/22_kv_prefix_cache_mechanisms.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Prefill, Decode and Latency-Constrained Scheduling](slides/23_prefill_decode_scheduling.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Disaggregated Inference and KV Handoff](slides/24_disaggregated_inference.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Speculative Decoding and Correct Verification](slides/25_speculative_decoding.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [AgentOS Workloads and Cache-Lifecycle Policies](slides/26_agentos_inference_cache_policy.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Optimization Decisions and Automated Performance Engineering](slides/32_optimization_decision_systems.html) (23 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
@@ -115,8 +117,10 @@ llm-compute-systems-course/
 │   │   │   ├── lab09_moe.md
 │   │   │   ├── lab10_recovery.md
 │   │   │   ├── lab11_cache.md
-│   │   │   └── lab12_scheduling.md
+│   │   │   ├── lab12_scheduling.md
+│   │   │   └── lab13_agent_policy.md
 │   │   ├── tests/
+│   │   │   ├── test_agent_policy.py
 │   │   │   ├── test_attention.py
 │   │   │   ├── test_budgets.py
 │   │   │   ├── test_cache.py
@@ -130,6 +134,7 @@ llm-compute-systems-course/
 │   │   │   ├── test_reductions.py
 │   │   │   └── test_scheduling.py
 │   │   ├── README.md
+│   │   ├── agent_policy_lab.py
 │   │   ├── attention_lab.py
 │   │   ├── budgets.py
 │   │   ├── cache_lab.py
@@ -167,6 +172,7 @@ llm-compute-systems-course/
 ├── slides/
 │   ├── illustrations/
 │   │   ├── README.md
+│   │   ├── agent-wait.svg
 │   │   ├── attention-pipeline.svg
 │   │   ├── autograd-graph.svg
 │   │   ├── build_illustrations.py
@@ -194,6 +200,7 @@ llm-compute-systems-course/
 │   │   ├── roofline.svg
 │   │   ├── shared-blocks.svg
 │   │   ├── source-walk.svg
+│   │   ├── speculative-correction.svg
 │   │   └── timing-boundaries.svg
 │   ├── 00_master_compute_systems.html
 │   ├── 01_workloads_rooflines.html
@@ -220,6 +227,8 @@ llm-compute-systems-course/
 │   ├── 22_kv_prefix_cache_mechanisms.html
 │   ├── 23_prefill_decode_scheduling.html
 │   ├── 24_disaggregated_inference.html
+│   ├── 25_speculative_decoding.html
+│   ├── 26_agentos_inference_cache_policy.html
 │   └── 32_optimization_decision_systems.html
 ├── BUILD_PLAN.md
 ├── LICENSE
