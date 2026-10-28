@@ -1,6 +1,6 @@
 # Vera Rubin: hardware/software co-design case study
 
-**Source-check date: 2026-10-26.** Use NVIDIA's technical descriptions for the architecture and library support matrices for deployability. No Rubin hardware was benchmarked for this course blueprint. The classroom questions and projections below are proposed experiments.
+**Source-check date: 2026-10-27.** Use NVIDIA's technical descriptions for the architecture and library support matrices for deployability. No Rubin hardware was benchmarked for this course blueprint. The classroom questions and projections below are proposed experiments.
 
 Vera Rubin supports training and inference, with agentic AI and sustained reasoning/inference a major design emphasis. Its relevance to AgentOS comes from the workload, rather than a requirement to run a particular agent operating system. See the [agentic cache topic](agentic_caching.md).
 
@@ -15,6 +15,12 @@ The January article carries an update: broader platform coverage later includes 
 NVIDIA's [July GPU architecture article](https://developer.nvidia.com/blog/inside-nvidia-rubin-gpu-architecture-powering-the-era-of-agentic-ai/) describes two compute dies in one GPU, 224 SMs, 896 Tensor Cores, up to 288 GB HBM4 and 22 TB/s peak HBM bandwidth. It gives 3.6 TB/s NVLink and 1.8 TB/s NVLink-C2C bandwidth figures. Its execution changes include inline TMA descriptor updates, larger Tensor Core K operations, faster exponentials, finer-grained producer/consumer coordination and counted writes for device-initiated communication. These mechanisms motivate experiments on MoE movement, GEMM, softmax and synchronization. Peak NVFP4 figures are not BF16 training throughput.
 
 Do not add link bandwidths into an application throughput prediction. Directionality, protocol overhead, contention, topology and achievable rates need separate treatment. Do not infer exact instruction syntax or a compiler target flag from a marketing diagram; consult the [CUDA/PTX documentation](https://docs.nvidia.com/cuda/parallel-thread-execution/) and the installed toolchain.
+
+## Current product table and source differences
+
+The [NVL72 product table](https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/) reviewed on 2026-10-27 lists 288 GB HBM4, 19.2 TB/s memory bandwidth and 3 TB/s NVLink per Rubin GPU. The July architecture article above describes up-to peaks of 22 TB/s and 3.6 TB/s. These published values have different source scopes; this review does not establish the reason for the discrepancy. Keep both with dates rather than mix them into a synthetic SKU or silently use the larger rate.
+
+The product comparison labels inference cost/tokens-per-MW results for Kimi-K2-Thinking at 32K/8K input/output lengths against GB200 NVL72, subject to change. Its training GPU-count comparison is projected for a 10T MoE/100T-token fixed-time workload. These are vendor results/assumptions, not local measurements. The advertised roughly 10× power-normalized inference and 1/4 GPU-count training claims must retain their separate conditions; neither is a blanket speedup across all LLMs.
 
 ## Hardware-to-software experiment map
 
