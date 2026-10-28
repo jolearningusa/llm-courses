@@ -132,3 +132,11 @@ Before teaching a module, read its assigned design/evaluation sections and upstr
 - **L11 cache layers**. [vLLM design](https://docs.vllm.ai/en/latest/design/prefix_caching/), [SGLang HiCache design](https://docs.sglang.io/docs/advanced_features/hicache_design), [llama.cpp server](https://github.com/ggml-org/llama.cpp/tree/master/tools/server), [GPTCache](https://github.com/zilliztech/GPTCache). Reviewed 2026-10-26; moving flags/defaults must be pinned in student engine experiments.
 
 - **L12 serving**. [DistServe](https://arxiv.org/abs/2401.09670), [DeepSpeed-FastGen](https://arxiv.org/abs/2401.08671), [vLLM disaggregated prefill](https://docs.vllm.ai/en/latest/features/disagg_prefill/). Primary mechanisms reviewed 2026-10-26; paper headline gains are not promised for current engines.
+
+## Optimization decision systems — reviewed 2026-10-27
+
+- **Core — FlashInfer-Bench**, arXiv:2601.00227. [Paper](https://arxiv.org/abs/2601.00227). Workload, evaluation and substitution framework; compare proposed optimization loops with existing work.
+- **Reference — Towards Automated Kernel Generation in the Era of LLMs**, arXiv:2601.15727. [Survey](https://arxiv.org/abs/2601.15727). Abstract/scope reviewed; benchmark and taxonomy leads.
+- **Reference — TileLang and TileKernels**. [Language](https://github.com/tile-ai/tilelang), [tools](https://www.tilelang.com/tools/index.html), [autotuning](https://www.tilelang.com/programming_guides/autotuning.html), [library](https://github.com/deepseek-ai/TileKernels). Distinguish language/compiler, tuning tools and reusable operators.
+- **Reference — Existing serving optimization**. [vLLM auto-tuning](https://github.com/vllm-project/vllm/blob/main/benchmarks/auto_tune/README.md), [DeepInfer](https://github.com/deepseek-ai/DeepInfer), [session-aware hint RFC](https://github.com/vllm-project/vllm/issues/52113). Support and proposal status are bounded in [the review](../notes/optimization_techniques.md).
+- **Reference — Deployment composition**. [Torch-TensorRT](https://docs.pytorch.org/TensorRT/user_guide/torch_tensorrt_explained.html), [AOT deployment](https://docs.pytorch.org/TensorRT/user_guide/runtime_performance/aot_inductor.html), [ExecuTorch CUDA backend](https://docs.pytorch.org/executorch/stable/backends/cuda/cuda-overview.html). Selected target/release support must be checked independently.

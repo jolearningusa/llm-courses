@@ -2,7 +2,7 @@
 
 These figures are editable vectors with native text, paths and shapes. They are conceptual diagrams and constructed accounting examples, not photographs, hardware die layouts or measured performance charts. Colors distinguish computation (blue/teal), retained state or synchronization (amber), and inactive/context elements (gray); labels carry the meaning independently of color.
 
-Every released deck 00–24 has one companion visual slide next to the relevant mechanism. The original slide remains intact. Each figure has an accessible SVG title/description, a concise teaching caption and the neighboring slide's primary-source citation. Standalone `.svg` files are supplied for reuse; the HTML also embeds their contents so decks remain self-contained offline.
+Every released deck 00–24 and supplementary deck 32 has one companion visual slide next to the relevant mechanism. The original slide remains intact. Each figure has an accessible SVG title/description, a concise teaching caption and the neighboring slide's primary-source citation. Standalone `.svg` files are supplied for reuse; the HTML also embeds their contents so decks remain self-contained offline.
 
 `manifest.json` maps each figure to its deck and teaching anchor. `build_illustrations.py` contains the editable drawing source. To regenerate all current figures and their companion slides:
 

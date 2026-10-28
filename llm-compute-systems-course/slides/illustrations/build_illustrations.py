@@ -189,6 +189,16 @@ def build():
     s.line(420,272,660,272,AMBER,True);s.text(465,252,'KV transfer',21,AMBER)
 
 
+    if list(SLIDES.glob('32_*.html')):
+        s=figure('32','Three implementation choices','optimization-choices','Choose an implementation, then validate it','Libraries, graph compilation and custom kernels are alternative or composable paths; the target and numerical contract decide eligibility.','An exported workload branches to a library, graph compiler or custom kernel path, then all candidates converge on the same correctness and measurement gate.')
+        s.box(20,135,180,65,'Workload|contract',AMBER)
+        for y,label,color in [(20,'Existing library|cuBLAS / cuDNN',BLUE),(135,'Graph compiler|Inductor / TensorRT',TEAL),(250,'Custom kernel|Triton / TileLang / CUDA',BLUE)]:
+            s.box(330,y,350,65,label,color)
+            s.path([(200,167),(265,167),(265,y+32),(330,y+32)],color)
+            s.path([(680,y+32),(745,y+32),(745,167),(805,167)],color)
+        s.box(805,135,275,65,'Build / validate|measure / retain',AMBER)
+
+
 def apply():
     build();manifest=[]
     for entry in FIGURES:

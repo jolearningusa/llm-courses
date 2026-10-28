@@ -24,3 +24,7 @@ On compatible hardware, implement a guarded shared-memory tiled GEMM or inspect 
 Choose a supported cuBLASLt/CUTLASS or hipBLASLt/CK path and record version, algorithm/layout, workspace and actual backend. Match the mathematical contract and numerical threshold. Compare one tile/pipeline/epilogue choice at a time across all three regimes. Include kernel-only and allocation/copy-inclusive scope where relevant. Report first use, warm repetitions and an adverse case. Higher-level source syntax alone is not evidence of generated instructions or overlap.
 
 Without device access, complete A/B and a source walkthrough for C/D, label hardware results unverified, and state the measurements needed to test the hypothesis. Use the [report template](../../report_template.md).
+
+## Optimization-backend source comparison
+
+Using [the technique map](../../../notes/optimization_techniques.md), select one supported library baseline and two eligible paths among Triton, TileLang, CuTe DSL and CUDA C++. Identify who controls tiles, layout, asynchronous movement and synchronization. Inspect an existing autotuner before proposing a new one. Record target/release constraints, correctness cases and the compile/search budget. This is a source worksheet unless you actually build/run the target; no TileLang or GPU validation is added by this documentation update.

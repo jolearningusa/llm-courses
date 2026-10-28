@@ -223,5 +223,14 @@
     "caption": "Two colocated workers and one prefill plus one decode worker each use two devices. State movement and queueing can change the result.",
     "deck": "24_disaggregated_inference.html",
     "asset": "pd-placement.svg"
+  },
+  {
+    "prefix": "32",
+    "after": "Three implementation choices",
+    "slug": "optimization-choices",
+    "title": "Choose an implementation, then validate it",
+    "caption": "Libraries, graph compilation and custom kernels are alternative or composable paths; the target and numerical contract decide eligibility.",
+    "deck": "32_optimization_decision_systems.html",
+    "asset": "optimization-choices.svg"
   }
 ]

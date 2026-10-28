@@ -86,6 +86,7 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [KV, Prefix and Response Caches across Inference Stacks](slides/22_kv_prefix_cache_mechanisms.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Prefill, Decode and Latency-Constrained Scheduling](slides/23_prefill_decode_scheduling.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Disaggregated Inference and KV Handoff](slides/24_disaggregated_inference.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Optimization Decisions and Automated Performance Engineering](slides/32_optimization_decision_systems.html) (23 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -150,7 +151,9 @@ llm-compute-systems-course/
 ├── notes/
 │   ├── agentic_caching.md
 │   ├── amd_stack.md
+│   ├── course_component_audit.md
 │   ├── nvidia_stack.md
+│   ├── optimization_techniques.md
 │   ├── pytorch_stack.md
 │   ├── vera_rubin.md
 │   └── workload_primer.md
@@ -177,6 +180,7 @@ llm-compute-systems-course/
 │   │   ├── manifest.json
 │   │   ├── moe-primer.svg
 │   │   ├── online-attention.svg
+│   │   ├── optimization-choices.svg
 │   │   ├── parallel-mesh.svg
 │   │   ├── pd-placement.svg
 │   │   ├── precision-lifecycle.svg
@@ -212,7 +216,8 @@ llm-compute-systems-course/
 │   ├── 21_serving_scheduler.html
 │   ├── 22_kv_prefix_cache_mechanisms.html
 │   ├── 23_prefill_decode_scheduling.html
-│   └── 24_disaggregated_inference.html
+│   ├── 24_disaggregated_inference.html
+│   └── 32_optimization_decision_systems.html
 ├── BUILD_PLAN.md
 ├── LICENSE
 ├── README.md
