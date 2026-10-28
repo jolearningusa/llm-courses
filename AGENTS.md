@@ -10,7 +10,9 @@ This repository holds LLM course material. Each course lives in its own top-leve
 `.github/workflows/pages.yml` runs `scripts/build_site.py` on every push to `main` and deploys the
 result to GitHub Pages; pull requests only build it. Every top-level directory with a `README.md`
 is published as a course, with no list to maintain: READMEs and other Markdown are rendered,
-`slides/*.html` decks are served unchanged, and lab files get a highlighted view plus the raw file.
+`slides/*.html` decks are served as written plus a small link bar back to the site home and the course page
+(added at build time, so decks need no nav of their own; `check_site.py` fails if a built deck lacks it), and lab
+files get a highlighted view plus the raw file.
 Preview locally with `pip install markdown pygments && python scripts/build_site.py`, then open
 `_site/index.html`. Add new repo-wide directories that are not courses to `SKIP_DIRS` in the script.
 The root `README.md` describes the repository and is not published as a course (only directories are);
