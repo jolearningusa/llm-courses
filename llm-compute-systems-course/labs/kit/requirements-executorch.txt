@@ -1,0 +1,4 @@
+# Isolated Python 3.12 environment; unquantized XNNPACK CPU path.
+# Keep separate from the general PyTorch lab environment.
+executorch==1.0.0
+torch==2.9.1

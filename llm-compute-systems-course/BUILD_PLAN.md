@@ -115,8 +115,8 @@ The units below are implementation milestones, not a promise to combine everythi
 | P10 | Decks 19–20 and L9–L10 | P9 | Merged in #59; local CPU MoE and deterministic checkpoint/resume; distributed extensions unverified |
 | P11 | Decks 21–22 and L11 | P10 | Merged in #60; logical prefix ownership simulation and two-engine comparison worksheet; engines not executed |
 | P12 | Decks 23–24 and L12 | P11 | Merged in #61; virtual-time scheduling replay and analytical KV-transfer budget; split cluster unverified |
-| P13 | Decks 25–26 and L13A/B | P12 | Implemented exact categorical correction and analytical agent-wait policy; engine extensions unverified |
-| P14 | Decks 27–28 and L14 | P13 | Planned |
+| P13 | Decks 25–26 and L13A/B | P12 | Merged in #65; exact categorical correction and analytical agent-wait policy; engine extensions unverified |
+| P14 | Decks 27–28 and L14 | P13 | Implemented actual CPU AOTInductor and ExecuTorch XNNPACK export/load; other targets unverified |
 | P15 | Decks 29–30 and L15; revisit L10 | P14 | Planned |
 | P16 | Capstone deck, package and complete-course pilot | P15 | Planned |
 

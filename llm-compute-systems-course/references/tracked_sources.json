@@ -16,6 +16,22 @@
         "labs/kit/handouts/lab02_pytorch.md"
       ],
       "notes": "Intentional tested CPU pin; upstream updates trigger a compatibility pilot, not a claim that this is the latest release."
+    },
+    {
+      "name": "L14 ExecuTorch CPU lab pin",
+      "version": "1.0.0",
+      "verified": "2026-10-27",
+      "compare": 1,
+      "upstream": {
+        "type": "pypi",
+        "package": "executorch"
+      },
+      "used_in": [
+        "labs/kit/deployment_lab.py",
+        "labs/kit/requirements-executorch.txt",
+        "labs/kit/handouts/lab14_deployment.md"
+      ],
+      "notes": "Intentional tested unquantized XNNPACK CPU pin with torch 2.9.1; not latest. Optional TorchAO native extensions disabled; other delegates require separate validation."
     }
   ]
 }

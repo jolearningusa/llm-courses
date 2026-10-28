@@ -1,0 +1,70 @@
+{
+  "lab": "L14",
+  "provenance": "measured local CPU artifact build/load/execute; small synthetic MLP, not LLM performance",
+  "backend": "aoti",
+  "python": "3.12.14",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "torch": "2.9.1",
+  "input_shape": [
+    3,
+    8
+  ],
+  "contract": "contiguous static CPU float32 shape (3,8); export rejects (4,8); checked loader rejects other shape/dtype/stride",
+  "export_seconds": 0.3605402917601168,
+  "build_seconds": 2.313262917101383,
+  "load_seconds": 0.0906964996829629,
+  "first_execution_seconds": 0.0002371668815612793,
+  "warm_wall_seconds": [
+    1.4166813343763351e-05,
+    1.3709068298339844e-05,
+    1.2875068932771683e-05,
+    1.2124888598918915e-05,
+    1.2834090739488602e-05,
+    1.2625008821487427e-05,
+    1.2082979083061218e-05,
+    1.200009137392044e-05,
+    1.1750031262636185e-05,
+    1.1208932846784592e-05
+  ],
+  "baseline_wall_seconds": {
+    "eager": [
+      8.832663297653198e-06,
+      8.584000170230865e-06,
+      8.082948625087738e-06,
+      7.708091288805008e-06,
+      7.667113095521927e-06,
+      7.916241884231567e-06,
+      8.041970431804657e-06,
+      7.875263690948486e-06,
+      7.666181772947311e-06,
+      7.666181772947311e-06
+    ],
+    "exported": [
+      0.001589374616742134,
+      0.0015332913026213646,
+      0.0014085830189287663,
+      0.0014122077263891697,
+      0.0013906657695770264,
+      0.0012859581038355827,
+      0.0019387081265449524,
+      0.0022066249512135983,
+      0.0013727080076932907,
+      0.0018354160711169243
+    ]
+  },
+  "artifact": "mlp.pt2",
+  "artifact_bytes": 287387,
+  "max_abs_error": 0.0,
+  "archive_entries": [
+    "mlp/data/aotinductor/model/cbn24svwv5zsnzlvnomq4lsyocsyn56z43nt7c43aejpsonlarx4.wrapper.cpp",
+    "mlp/data/aotinductor/model/cykz7uwnxfpons7u6klncuabprg74ebuqlwni3x7hvtw2ffqufi5.kernel.cpp",
+    "mlp/data/aotinductor/model/cbn24svwv5zsnzlvnomq4lsyocsyn56z43nt7c43aejpsonlarx4.wrapper_metadata.json",
+    "mlp/data/aotinductor/model/cykz7uwnxfpons7u6klncuabprg74ebuqlwni3x7hvtw2ffqufi5.kernel_metadata.json",
+    "mlp/data/aotinductor/model/cbn24svwv5zsnzlvnomq4lsyocsyn56z43nt7c43aejpsonlarx4.wrapper.so",
+    "mlp/archive_format",
+    "mlp/archive_version",
+    "mlp/.data/version",
+    "mlp/byteorder",
+    "mlp/.data/serialization_id"
+  ]
+}
