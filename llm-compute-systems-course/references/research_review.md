@@ -27,6 +27,27 @@ Search results and discussion sites helped discover material. Technical claims i
 
 The gap addressed here is the continuous path from framework semantics to kernels, communication, host/OS behavior and whole-job objectives, with both training and inference. This is a curriculum design judgment rather than a claim that no other course covers it.
 
+## Course structure compared with other courses
+
+Checked 2026-10-28 against each course's own schedule page. Groupings marked "inferred" are read from lecture order because the page names no parts.
+
+| Course | Top-level order | What it implies here |
+|---|---|---|
+| [Stanford CS336, Spring 2025](https://cs336.stanford.edu/spring2025/) | Units: basics, systems, scaling laws, data, alignment. The systems lectures run PyTorch/resource accounting → GPUs → kernels/Triton → parallelism (two lectures) → inference | Single-device execution before parallelism, and inference after training parallelism |
+| [Stanford CS349E](https://cs349e.github.io/) | Inference only: transformers, quantization/sparsity, distributed and disaggregated serving, decode, hardware modeling and engines, KV-cache management, kernel languages and optimization, ML compilers, agentic kernel generation | Numerics is taught as its own early topic; no training block |
+| [CMU 15-442/642](https://mlsyscourse.org/) | Foundations (autodiff, frameworks) → single-GPU performance → distributed training (ZeRO, tensor/pipeline) → LLM inference (continuous batching, PagedAttention, speculation) → forward-looking topics (ML compilation, mega-kernels) | The same five-stage spine this course uses |
+| [CMU 11-868 LLM Systems](https://llmsystem.github.io/llmsystem2025spring/) | GPU programming and autodiff → training and distributed systems → model compression and acceleration (quantization, compilers, serving) → cutting-edge topics | Compression/quantization grouped with acceleration, between training and serving |
+| [UCSD CSE 234, Winter 2025](https://haoailab.com/cse234-w25/) | Inferred: foundations (graphs, autodiff) → accelerators, GPUs/CUDA, matmul, Triton/compilation, memory → quantization → parallelization (four lectures) → LLM training and serving | Quantization sits after kernels and before parallelism |
+| [MIT 6.5940, Fall 2024](https://hanlab.mit.edu/courses/2024-fall-65940) | I efficient inference (pruning, quantization, NAS, distillation) → II domain-specific (LLM deployment, long context, diffusion) → III efficient training (distributed, on-device) → IV advanced topics | The outlier: model-compression methods first, systems later. This course keeps quantization (Part III) and leaves pruning, NAS and distillation out of scope |
+| [How To Scale Your Model](https://jax-ml.github.io/scaling-book/) | Preliminaries (rooflines, accelerator, sharded matmuls) → transformers: math, training parallelism, training case study, inference, serving case study → practical tutorials (profiling, programming) | Prediction and accounting first; training before inference |
+
+**Judgment.** The weekly order already matched the common spine (workloads and measurement → one device → many devices for training → serving → integration), so weeks, decks and labs keep their numbers. The earlier five-block division had two boundaries the reference courses draw differently:
+
+1. A single "frameworks, compilers and kernels" block covered weeks 3–7, a third of the course, and included precision. CSE 234 and CMU 11-868 treat quantization as a topic of its own, and CS349E teaches it before kernels. Here decks 13–14 cover both training precision (AMP, Transformer Engine) and serving quantization (PTQ, packed weights), so week 7 is now Part III, numerics and precision, between single-GPU execution and distributed training.
+2. "Serving and deployment" put request serving (scheduling, KV state, disaggregation, speculation) together with packaging one program for a target (`torch.export`, AOTInductor, ExecuTorch). None of the reference courses groups them; deployment continues the compiler path and depends on the quantization part. Week 14 stays where it is (it needs Part III), but it now opens Part VI with the Rubin/vendor dossier, whole-system efficiency and the capstone.
+
+Options considered and not taken: moving deployment next to the compiler (week 3) or the Rubin hardware lecture before kernels (CS336 and CMU 15-442 teach the GPU early) would renumber decks, labs and published URLs. GPU execution basics are already in deck 07, and Rubin works better as an integration case study once collectives and serving have been taught.
+
 ## Paper synthesis: mechanisms and the experiments they imply
 
 | Research thread | Primary anchors | Engineering lesson | Experiment or critique |

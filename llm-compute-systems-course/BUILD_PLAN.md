@@ -33,10 +33,12 @@ All names below are planned files under `slides/`. A lab may support two related
 | Week | Planned deck | Required teaching artifact | Paired practice and evidence |
 |---|---|---|---|
 | Entry | `00_master_compute_systems.html` | Stack map, course paths, hardware tiers and links to released decks | Route students to setup and L0; distinguish released from planned material |
+| **Part I** | **Foundations: workloads and measurement** | | |
 | 1A | `01_workloads_rooflines.html` | Forward/backward/update versus prefill/decode; worked FLOP/byte/capacity budgets | L0A: calculate bottlenecks and test sensitivity to achieved rates |
 | 1B | `02_architecture_workload_primer.html` | Dense/MoE and attention/state comparison; exact versus changed semantics | L0B: MHA/GQA KV budget and resident/active MoE weight accounting |
 | 2A | `03_measurement_profiling.html` | Asynchronous timing, warmup, compilation, peak memory and profiler perturbation | L1A: classify a timeline; compare host and device timing |
 | 2B | `04_host_os_data_paths.html` | CPU/NUMA, page faults, pinning, DMA and GPU starvation diagram | L1B: diagnose an input/transfer/launch bottleneck; supply trace-only alternative |
+| **Part II** | **Single-GPU execution: PyTorch, compilers and kernels** | | |
 | 3A | `05_pytorch_execution_autograd.html` | Storage/strides, dispatcher, saved tensors, backward and optimizer timeline | L2A: trace a block and inspect saved state/gradients |
 | 3B | `06_pytorch_compiler.html` | Capture/guards/FX/Inductor and graph-break versus recompilation example | L2B: eager/compiled, fixed/dynamic shapes, cold/warm comparison |
 | 4A | `07_cuda_execution_memory.html` | Warp/block mapping, coalescing, registers/shared memory and occupancy | L3A: simple correct reduction and declared input constraints |
@@ -45,20 +47,24 @@ All names below are planned files under `slides/`. A lab may support two related
 | 5B | `10_async_kernel_pipelines.html` | Double buffering, TMA, warp specialization and persistent scheduling | L4B: inspect generated/library execution; compare supported CUDA/Triton/CuTe/Tile paths |
 | 6A | `11_attention_execution.html` | Online-softmax equations, tiled dataflow and backward/recompute costs | L5A: exact reference and tiled forward validation |
 | 6B | `12_attention_kernel_codesign.html` | FA1–FA4 mechanism progression, softmax/matmul balance and ragged scheduling | L5B: matched-mask/shape backend comparison and memory/time scaling |
+| **Part III** | **Numerics and precision** | | |
 | 7A | `13_precision_numerics.html` | Range/scales/accumulation/packing and conversion-cost example | L6A: error and byte budgets before timing |
 | 7B | `14_precision_training_serving.html` | AMP, TE, TorchAO, PTQ/QAT; training/serving support distinctions | L6B: one supported recipe with loss/quality and adverse-shape checks |
+| **Part IV** | **Distributed training** | | |
 | 8A | `15_ddp_zero_fsdp.html` | Persistent/transient training state and all-gather/reduce-scatter timeline | L7A: DDP/FSDP2 at fixed effective batch |
 | 8B | `16_collectives_overlap.html` | Collective payload/latency model, topology, buckets and exposed waits | L7B: overlap/placement ablation; NCCL/RCCL and device-initiated comparison |
 | 9A | `17_parallelism_recomputation.html` | TP/PP/sequence/context layouts, microbatch bubbles and activation checkpoints | L8A: choose two feasible layouts under constraints |
 | 9B | `18_training_stack_walkthrough.html` | Configuration → sharding → kernels → collectives in TorchTitan/Megatron | L8B: inspect recorded source/trace; explain each selected implementation |
 | 10A | `19_moe_execution.html` | Routing/permutation/dispatch/GEMM/combine pipeline and skew | L9: uniform versus skewed experts; local and distributed paths |
 | 10B | `20_checkpoint_recovery.html` | Input pipeline, persisted state, asynchronous save and recovery accounting | L10: interruption/resume and useful-throughput report |
+| **Part V** | **Inference serving** | | |
 | 11A | `21_serving_scheduler.html` | Request state machine, iteration batching, admission/cancellation/preemption | L11A: follow a request and release its resources correctly |
 | 11B | `22_kv_prefix_cache_mechanisms.html` | vLLM blocks, SGLang radix paths, llama.cpp slots/RAM/persistence; response-cache distinction | L11B: cold/shared/mismatch/pressure/invalidation cache matrix |
 | 12A | `23_prefill_decode_scheduling.html` | Interference, chunk budgets, queueing and SLO goodput | L12A: scheduling under fixed offered-load distributions |
 | 12B | `24_disaggregated_inference.html` | KV handoff, routing/tiering, transfer-versus-recompute break-even | L12B: matched-resource colocated/split experiment or labeled simulation |
 | 13A | `25_speculative_decoding.html` | Draft/verify/correct and acceptance/overhead calculation | L13A: correctness plus benefit across acceptance/load regimes |
 | 13B | `26_agentos_inference_cache_policy.html` | Model/tool-wait/resume/branch trace, TTL and cache byte-seconds | L13B: retain/offload/recompute and task completion latency; invalidation across updates |
+| **Part VI** | **Deployment and whole-system integration** | | |
 | 14A | `27_export_aotinductor.html` | Export contracts, compiled PT2 archives, producer/loader and cold start | L14A: eager/export/compile/AOT deployment comparison with out-of-contract shape |
 | 14B | `28_executorch_deployment.html` | Target lowering/delegation, `.pte`/`.ptd`, memory planning and supported quantization | L14B: available CPU target first, then optional edge/GPU path |
 | 15A | `29_rubin_vendor_stacks.html` | Rubin topology and hardware-to-NVIDIA-library map; AMD counterparts | L15A: two dataflows and software-support/portability dossier |
