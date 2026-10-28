@@ -19,9 +19,24 @@ The audit compares the computing-systems course with the relevant optimization d
 
 ## Integration guide
 
-Use [optimization techniques](optimization_techniques.md) alongside decks 03–14 for diagnosis and implementation choices, decks 15–21 for serving, placement and agent policy, decks 22–24 for deployment and vendor integration, and decks 25–30 for training state and whole-job efficiency. Deck 32 provides the cross-topic optimization section. Keep modeling background concise; inference is the core and training at scale is the final part (renumbered 2026-10-28).
+Use [optimization techniques](optimization_techniques.md) alongside decks 03–14 for diagnosis and implementation choices, decks 15–21 for serving, placement and agent policy, decks 22–24 for deployment and vendor integration, and decks 25–30 for training state and whole-job efficiency. Deck 32 provides the cross-topic optimization section, and deck 33 compares programming models across vendors and edge targets. Keep modeling background concise; inference is the core and training at scale is the final part (renumbered 2026-10-28).
 
 The practical addition to L4 is a source-comparison worksheet: identify a library baseline and two eligible kernel/compiler choices, explain their layout/synchronization responsibilities, then decide whether a hardware experiment is warranted. Unsupported or unavailable targets remain source-reading exercises. A project proposal must supply a new testable objective beyond wrapping an existing tuner or benchmark UI.
+
+## Course-wide review — 2026-10-28
+
+After deck 33 (PR #71) and the inference-first renumbering (PR #72), every deck, note and handout was searched for version, date and support-status claims, and each claim was checked against its current primary source. Most content teaches mechanisms and was still accurate; the changes below are the stale or newly relevant facts.
+
+| Claim checked | Finding on 2026-10-28 | Action |
+|---|---|---|
+| Operator/kernel, fusion versus graph replay, edge compilers | Not covered before the user's questions | Slides added to decks 05, 06 and 23 (PR #71); deck 33 links from 07, 24 and 32 |
+| PyTorch lab pin 2.9.1 | PyPI is at 2.14.1; the weekly freshness report flags it | Pin kept: a compatibility pilot needs the tested macOS environment, and the PyTorch wheel index is blocked from the authoring sandbox |
+| AOTInductor API (deck 22) | 2.14 docs still document `torch._inductor.aoti_compile_and_package` | Slide notes the 2.14 status |
+| ExecuTorch (deck 23, L11) | Stable docs are 1.5; PyPI 1.5.1; CUDA backend still described as AOTInductor plus Triton | Slide notes the current release; lab pin 1.0.0 kept |
+| TorchAO version (bibliography) | PyPI 0.18.0 | Bibliography updated |
+| vLLM session-aware hint RFC #52113 (deck 21) | Still open, no linked PR | No change |
+| TensorRT-LLM Rubin support (NVIDIA note) | Support matrix still does not name Rubin | No change |
+| PyTorch/XLA, Pallas-to-Triton | PyTorch/XLA deprecated for TorchTPU; Pallas-to-Triton deprecated | Recorded in deck 33; no other course file relied on either |
 
 ## Outstanding validation
 
