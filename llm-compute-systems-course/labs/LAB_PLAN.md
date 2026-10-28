@@ -78,4 +78,4 @@ The [slide and lab build plan](../BUILD_PLAN.md) maps every lecture to its paire
 
 ## Release order
 
-Implement shared measurement/reference utilities and L0–L2 first; then kernel labs L3–L6, distributed training L7–L10, serving/cache L11–L13 and deployment/integration L14–L15. Ship bounded lab kits in separate PRs following [the roadmap](../ROADMAP.md). Each release must have a named tested configuration and clear skip behavior for unavailable hardware.
+Labs follow the six course parts in the [course map](../#course-map): foundations L0–L1, single-GPU execution L2–L5, numerics and precision L6, distributed training L7–L10, inference serving L11–L13, and deployment and integration L14–L15. Implement shared measurement/reference utilities and L0–L2 first, then release in that order. Ship bounded lab kits in separate PRs following [the roadmap](../ROADMAP.md). Each release must have a named tested configuration and clear skip behavior for unavailable hardware.
