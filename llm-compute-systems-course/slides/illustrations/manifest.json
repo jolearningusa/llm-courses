@@ -1,0 +1,227 @@
+[
+  {
+    "prefix": "00",
+    "after": "The execution stack",
+    "slug": "execution-stack",
+    "title": "Where the work runs",
+    "caption": "Choose the layer from evidence: faster kernels cannot remove an exposed host or network wait.",
+    "deck": "00_master_compute_systems.html",
+    "asset": "execution-stack.svg"
+  },
+  {
+    "prefix": "01",
+    "after": "A roofline lower bound",
+    "slug": "roofline",
+    "title": "Compute and bandwidth ceilings",
+    "caption": "Schematic roofline: changing shape or reuse moves a workload; peak rates do not establish achieved performance.",
+    "deck": "01_workloads_rooflines.html",
+    "asset": "roofline.svg"
+  },
+  {
+    "prefix": "02",
+    "after": "MoE dataflow",
+    "slug": "moe-primer",
+    "title": "Active work and resident experts",
+    "caption": "A token activates selected experts; unused experts can still occupy memory or require sharded placement.",
+    "deck": "02_architecture_workload_primer.html",
+    "asset": "moe-primer.svg"
+  },
+  {
+    "prefix": "03",
+    "after": "Host and device clocks",
+    "slug": "timing-boundaries",
+    "title": "Submission is not completion",
+    "caption": "Host submission timing can end while GPU work is still running. Synchronize at the boundary appropriate to the question.",
+    "deck": "03_measurement_profiling.html",
+    "asset": "timing-boundaries.svg"
+  },
+  {
+    "prefix": "04",
+    "after": "The data path",
+    "slug": "host-data-path",
+    "title": "Feed the device without losing ownership",
+    "caption": "Pipeline throughput is limited by the slowest stage; pinning or asynchronous APIs alone do not guarantee overlap.",
+    "deck": "04_host_os_data_paths.html",
+    "asset": "host-data-path.svg"
+  },
+  {
+    "prefix": "05",
+    "after": "Autograd records dependencies",
+    "slug": "autograd-graph",
+    "title": "Saved values connect forward and backward",
+    "caption": "Backward needs the declared saved state. Fusion, views and in-place changes must preserve the autograd contract.",
+    "deck": "05_pytorch_execution_autograd.html",
+    "asset": "autograd-graph.svg"
+  },
+  {
+    "prefix": "06",
+    "after": "A conceptual compiler path",
+    "slug": "compiler-path",
+    "title": "Compilation chooses execution paths",
+    "caption": "Generated kernels and library calls are alternative implementation choices. Shape guards and graph breaks affect the cost.",
+    "deck": "06_pytorch_compiler.html",
+    "asset": "compiler-path.svg"
+  },
+  {
+    "prefix": "07",
+    "after": "Launch hierarchy",
+    "slug": "cuda-hierarchy",
+    "title": "Grid, blocks and storage scopes",
+    "caption": "A block owns shared memory; registers belong to threads. Cross-block synchronization needs an explicit valid mechanism.",
+    "deck": "07_cuda_execution_memory.html",
+    "asset": "cuda-hierarchy.svg"
+  },
+  {
+    "prefix": "08",
+    "after": "Warp-level reductions",
+    "slug": "reduction-tree",
+    "title": "A reduction is a dependency tree",
+    "caption": "Parallel order changes rounding. Masks, synchronization and participation rules remain part of correctness.",
+    "deck": "08_reductions_custom_operators.html",
+    "asset": "reduction-tree.svg"
+  },
+  {
+    "prefix": "09",
+    "after": "A shared-memory tile",
+    "slug": "gemm-tiles",
+    "title": "Reuse tiles before returning to HBM",
+    "caption": "The highlighted K slice contributes to one output tile. Reuse improves intensity but consumes registers and shared memory.",
+    "deck": "09_gemm_tensor_cores.html",
+    "asset": "gemm-tiles.svg"
+  },
+  {
+    "prefix": "10",
+    "after": "Double buffering",
+    "slug": "double-buffer",
+    "title": "Overlap movement and matrix work",
+    "caption": "The next tile must be ready before consumption, and a buffer cannot be overwritten while compute still reads it.",
+    "deck": "10_async_kernel_pipelines.html",
+    "asset": "double-buffer.svg"
+  },
+  {
+    "prefix": "11",
+    "after": "Tiled execution",
+    "slug": "online-attention",
+    "title": "Stream K/V and retain online row state",
+    "caption": "Running maximum, denominator and weighted sum are rescaled together; dense attention arithmetic remains quadratic.",
+    "deck": "11_attention_execution.html",
+    "asset": "online-attention.svg"
+  },
+  {
+    "prefix": "12",
+    "after": "A balanced pipeline",
+    "slug": "attention-pipeline",
+    "title": "A faster matrix stage can expose softmax",
+    "caption": "Hardware co-design balances movement, matrix operations and non-matmul work. Diagram lengths are conceptual.",
+    "deck": "12_attention_kernel_codesign.html",
+    "asset": "attention-pipeline.svg"
+  },
+  {
+    "prefix": "13",
+    "after": "Worked byte budget",
+    "slug": "quantized-bytes",
+    "title": "Packing saves bytes; scales consume some",
+    "caption": "For 1,024 weights, group size 32 and FP32 scales, int4 uses 512 + 128 = 640 array bytes before headers and alignment.",
+    "deck": "13_precision_numerics.html",
+    "asset": "quantized-bytes.svg"
+  },
+  {
+    "prefix": "14",
+    "after": "Post-training quantization",
+    "slug": "precision-lifecycle",
+    "title": "Different precision paths need different evidence",
+    "caption": "AMP, training recipes and post-training quantization operate at different points. Conversion alone does not prove quality or speed.",
+    "deck": "14_precision_training_serving.html",
+    "asset": "precision-lifecycle.svg"
+  },
+  {
+    "prefix": "15",
+    "after": "Fully sharded dataflow",
+    "slug": "fsdp-shards",
+    "title": "Shards become transient full parameters",
+    "caption": "Persistent sharding reduces one budget; gathered layers, activations and prefetch buffers still contribute to peak memory.",
+    "deck": "15_ddp_zero_fsdp.html",
+    "asset": "fsdp-shards.svg"
+  },
+  {
+    "prefix": "16",
+    "after": "All-reduce decomposition",
+    "slug": "collective-ring",
+    "title": "Collective semantics and physical traffic",
+    "caption": "Reduce-scatter followed by all-gather produces an all-reduce result; the library can select another physical algorithm.",
+    "deck": "16_collectives_overlap.html",
+    "asset": "collective-ring.svg"
+  },
+  {
+    "prefix": "17",
+    "after": "An explicit rank mesh",
+    "slug": "parallel-mesh",
+    "title": "A concrete eight-rank layout",
+    "caption": "DP=2, TP=2, PP=2, CP=1 gives eight ranks. This drawing does not establish expert-group legality or physical placement.",
+    "deck": "17_parallelism_recomputation.html",
+    "asset": "parallel-mesh.svg"
+  },
+  {
+    "prefix": "18",
+    "after": "TorchTitan entry chain",
+    "slug": "source-walk",
+    "title": "Trace the decision through code boundaries",
+    "caption": "Pin source revisions, follow inputs and constraints, then distinguish a documented path from an observed runtime dispatch.",
+    "deck": "18_training_stack_walkthrough.html",
+    "asset": "source-walk.svg"
+  },
+  {
+    "prefix": "19",
+    "after": "Worked routing budget",
+    "slug": "expert-skew",
+    "title": "The hottest expert can determine the tail",
+    "caption": "Both cases contain 34 assignments. Skew changes expert shapes and balance, even though the average assignment count is unchanged.",
+    "deck": "19_moe_execution.html",
+    "asset": "expert-skew.svg"
+  },
+  {
+    "prefix": "20",
+    "after": "Recovery validation",
+    "slug": "restart-state",
+    "title": "Recover the same training trajectory",
+    "caption": "The local CPU lab checks losses, parameters and optimizer tensors; omitting RNG restoration is a deliberate failing control.",
+    "deck": "20_checkpoint_recovery.html",
+    "asset": "restart-state.svg"
+  },
+  {
+    "prefix": "21",
+    "after": "Shared prefix ownership",
+    "slug": "shared-blocks",
+    "title": "One cancellation must preserve the other owner",
+    "caption": "Logical sequences can share compatible prefix blocks. References and in-flight work determine when storage is reclaimable.",
+    "deck": "21_serving_scheduler.html",
+    "asset": "shared-blocks.svg"
+  },
+  {
+    "prefix": "22",
+    "after": "Causal history matters",
+    "slug": "prefix-branches",
+    "title": "A matching suffix is not a matching history",
+    "caption": "Identity includes the compatible computation and allowed sharing domain. A semantic answer cache has a different validity rule.",
+    "deck": "22_kv_prefix_cache_mechanisms.html",
+    "asset": "prefix-branches.svg"
+  },
+  {
+    "prefix": "23",
+    "after": "Chunked prefill",
+    "slug": "chunked-prefill",
+    "title": "Bound interruptions to existing decode",
+    "caption": "A smaller prefill chunk creates more decode opportunities but can add overhead and postpone prompt completion. Bars are schematic.",
+    "deck": "23_prefill_decode_scheduling.html",
+    "asset": "chunked-prefill.svg"
+  },
+  {
+    "prefix": "24",
+    "after": "Equal hardware comparison",
+    "slug": "pd-placement",
+    "title": "Compare the same total resources",
+    "caption": "Two colocated workers and one prefill plus one decode worker each use two devices. State movement and queueing can change the result.",
+    "deck": "24_disaggregated_inference.html",
+    "asset": "pd-placement.svg"
+  }
+]
