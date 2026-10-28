@@ -138,3 +138,5 @@ Walk the student path from setup to capstone. Check that each topic has its deck
 ## Additional review units
 
 The 2026-10-27 requests add SVG illustrations, a verified optimization-technique supplement and separate potential-project specifications. Illustration PR #62 is merged. Deck 32/technique-map authoring follows that PR; project specifications follow in another serial PR. These additions do not mark the remaining core units P13–P16 complete.
+
+The optimization supplement/technique audit merged in PR #63. [Twenty potential-project specifications](projects/POTENTIAL_PROJECTS.md) are documented separately from core lab release status; no implementation of those proposals is claimed.

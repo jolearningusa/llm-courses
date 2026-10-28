@@ -157,6 +157,9 @@ llm-compute-systems-course/
 │   ├── pytorch_stack.md
 │   ├── vera_rubin.md
 │   └── workload_primer.md
+├── projects/
+│   ├── POTENTIAL_PROJECTS.md
+│   └── optimization-engine.svg
 ├── references/
 │   ├── bibliography_and_links.md
 │   ├── research_review.md
