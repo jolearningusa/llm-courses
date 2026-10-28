@@ -61,31 +61,31 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 
 | Deck | Scope |
 |---|---|
-| [Efficient LLM Computing Systems](slides/00_master_compute_systems.html) (13 slides) | Course map and released-deck navigation |
-| [Workloads, Rooflines and Capacity](slides/01_workloads_rooflines.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Architecture as a Computing Workload](slides/02_architecture_workload_primer.html) (12 slides) | Topic lecture, worked examples and practical exercises |
-| [Measurement and Profiling](slides/03_measurement_profiling.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Host, OS and Data Paths](slides/04_host_os_data_paths.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [PyTorch Execution and Autograd](slides/05_pytorch_execution_autograd.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [PyTorch Compiler and Specialization](slides/06_pytorch_compiler.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [CUDA Execution and Memory](slides/07_cuda_execution_memory.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Reductions and Custom Operator Contracts](slides/08_reductions_custom_operators.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [GEMM Tiling and Tensor Cores](slides/09_gemm_tensor_cores.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Asynchronous Kernel Pipelines](slides/10_async_kernel_pipelines.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Attention Execution and Online Softmax](slides/11_attention_execution.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Attention Kernel and Hardware Co-design](slides/12_attention_kernel_codesign.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Precision, Scales and Numerical Contracts](slides/13_precision_numerics.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Precision in Training and Serving](slides/14_precision_training_serving.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [DDP, ZeRO and Fully Sharded Training](slides/15_ddp_zero_fsdp.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Collectives, Topology and Exposed Communication](slides/16_collectives_overlap.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Parallel Layouts and Recomputation](slides/17_parallelism_recomputation.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Reading a Production Training Stack](slides/18_training_stack_walkthrough.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [MoE Routing, Dispatch and Grouped Compute](slides/19_moe_execution.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Checkpointing, Input State and Useful Training Work](slides/20_checkpoint_recovery.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Serving Iterations, Admission and State Ownership](slides/21_serving_scheduler.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [KV, Prefix and Response Caches across Inference Stacks](slides/22_kv_prefix_cache_mechanisms.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Prefill, Decode and Latency-Constrained Scheduling](slides/23_prefill_decode_scheduling.html) (16 slides) | Topic lecture, worked examples and practical exercises |
-| [Disaggregated Inference and KV Handoff](slides/24_disaggregated_inference.html) (16 slides) | Topic lecture, worked examples and practical exercises |
+| [Efficient LLM Computing Systems](slides/00_master_compute_systems.html) (14 slides) | Course map and released-deck navigation |
+| [Workloads, Rooflines and Capacity](slides/01_workloads_rooflines.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Architecture as a Computing Workload](slides/02_architecture_workload_primer.html) (13 slides) | Topic lecture, worked examples and practical exercises |
+| [Measurement and Profiling](slides/03_measurement_profiling.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Host, OS and Data Paths](slides/04_host_os_data_paths.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [PyTorch Execution and Autograd](slides/05_pytorch_execution_autograd.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [PyTorch Compiler and Specialization](slides/06_pytorch_compiler.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [CUDA Execution and Memory](slides/07_cuda_execution_memory.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Reductions and Custom Operator Contracts](slides/08_reductions_custom_operators.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [GEMM Tiling and Tensor Cores](slides/09_gemm_tensor_cores.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Asynchronous Kernel Pipelines](slides/10_async_kernel_pipelines.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Attention Execution and Online Softmax](slides/11_attention_execution.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Attention Kernel and Hardware Co-design](slides/12_attention_kernel_codesign.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Precision, Scales and Numerical Contracts](slides/13_precision_numerics.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Precision in Training and Serving](slides/14_precision_training_serving.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [DDP, ZeRO and Fully Sharded Training](slides/15_ddp_zero_fsdp.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Collectives, Topology and Exposed Communication](slides/16_collectives_overlap.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Parallel Layouts and Recomputation](slides/17_parallelism_recomputation.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Reading a Production Training Stack](slides/18_training_stack_walkthrough.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [MoE Routing, Dispatch and Grouped Compute](slides/19_moe_execution.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Checkpointing, Input State and Useful Training Work](slides/20_checkpoint_recovery.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Serving Iterations, Admission and State Ownership](slides/21_serving_scheduler.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [KV, Prefix and Response Caches across Inference Stacks](slides/22_kv_prefix_cache_mechanisms.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Prefill, Decode and Latency-Constrained Scheduling](slides/23_prefill_decode_scheduling.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Disaggregated Inference and KV Handoff](slides/24_disaggregated_inference.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -159,6 +159,35 @@ llm-compute-systems-course/
 │   ├── research_review.md
 │   └── tracked_sources.json
 ├── slides/
+│   ├── illustrations/
+│   │   ├── README.md
+│   │   ├── attention-pipeline.svg
+│   │   ├── autograd-graph.svg
+│   │   ├── build_illustrations.py
+│   │   ├── chunked-prefill.svg
+│   │   ├── collective-ring.svg
+│   │   ├── compiler-path.svg
+│   │   ├── cuda-hierarchy.svg
+│   │   ├── double-buffer.svg
+│   │   ├── execution-stack.svg
+│   │   ├── expert-skew.svg
+│   │   ├── fsdp-shards.svg
+│   │   ├── gemm-tiles.svg
+│   │   ├── host-data-path.svg
+│   │   ├── manifest.json
+│   │   ├── moe-primer.svg
+│   │   ├── online-attention.svg
+│   │   ├── parallel-mesh.svg
+│   │   ├── pd-placement.svg
+│   │   ├── precision-lifecycle.svg
+│   │   ├── prefix-branches.svg
+│   │   ├── quantized-bytes.svg
+│   │   ├── reduction-tree.svg
+│   │   ├── restart-state.svg
+│   │   ├── roofline.svg
+│   │   ├── shared-blocks.svg
+│   │   ├── source-walk.svg
+│   │   └── timing-boundaries.svg
 │   ├── 00_master_compute_systems.html
 │   ├── 01_workloads_rooflines.html
 │   ├── 02_architecture_workload_primer.html
