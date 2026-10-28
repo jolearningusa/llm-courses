@@ -117,8 +117,8 @@ The units below are implementation milestones, not a promise to combine everythi
 | P12 | Decks 23–24 and L12 | P11 | Merged in #61; virtual-time scheduling replay and analytical KV-transfer budget; split cluster unverified |
 | P13 | Decks 25–26 and L13A/B | P12 | Merged in #65; exact categorical correction and analytical agent-wait policy; engine extensions unverified |
 | P14 | Decks 27–28 and L14 | P13 | Merged in #66; actual CPU AOTInductor and ExecuTorch XNNPACK export/load; other targets unverified |
-| P15 | Decks 29–30 and L15; revisit L10 | P14 | Implemented source-grounded Rubin/NVIDIA/AMD dossier and analytical useful-work ledger; vendor hardware unverified |
-| P16 | Capstone deck, package and complete-course pilot | P15 | Planned |
+| P15 | Decks 29–30 and L15; revisit L10 | P14 | Merged in #67; source-grounded Rubin/NVIDIA/AMD dossier and analytical useful-work ledger; vendor hardware unverified |
+| P16 | Capstone deck, package and complete-course pilot | P15 | Core materials authored and author CPU/source walkthrough recorded; student/GPU pilots pending |
 
 A unit with unavailable hardware may ship a clearly labeled analytical/reference path plus unverified GPU exercises, but must not be marked GPU-validated. Continue independent authoring while recording the exact missing validation. Do not publish fabricated results or advertise a runnable accelerated path that has never been checked.
 
@@ -137,6 +137,10 @@ Walk the student path from setup to capstone. Check that each topic has its deck
 
 ## Additional review units
 
-The 2026-10-27 requests add SVG illustrations, a verified optimization-technique supplement and separate potential-project specifications. Illustration PR #62 is merged. Deck 32/technique-map authoring follows that PR; project specifications follow in another serial PR. These additions do not mark the remaining core units P13–P16 complete.
+The 2026-10-27 requests add SVG illustrations, a verified optimization-technique supplement and separate potential-project specifications. Illustration PR #62 is merged. Deck 32/technique-map authoring follows that PR; project specifications merged in PR #64. The subsequent core authoring units and their validation boundaries are recorded in the progress table.
 
 The optimization supplement/technique audit merged in PR #63. [Twenty potential-project specifications](projects/POTENTIAL_PROJECTS.md) are documented separately from core lab release status; no implementation of those proposals is claimed.
+
+## Materials release
+
+All core decks/handouts/reference paths and the supplementary optimization sections are authored. [COURSE_RELEASE.md](COURSE_RELEASE.md) and [VALIDATION.md](VALIDATION.md) define what ran and what still needs target/student pilots. P16 supplies the assessment/reproducibility package and author walkthrough; it does not claim a completed student or GPU pilot.
