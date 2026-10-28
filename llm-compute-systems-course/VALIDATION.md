@@ -4,7 +4,7 @@ Recorded 2026-10-26–27. This is an **author walkthrough and evidence ledger**,
 
 ## Package checks
 
-The complete release has 33 decks, 33 teaching SVGs and 16 lab handouts plus capstone. Repository checks cover source/bibliography consistency, exact README file tree and slide counts, site-relative links, listed decks, browser console/navigation and continuous numbering. Additional author checks cover content bounds, SVG label clipping/overlap, accessible SVG titles/descriptions and idempotent figure regeneration. All illustrated slides were rendered/reviewed; dense/new slides and corrected diagram boundaries were inspected separately.
+The complete release has 34 decks, 34 teaching SVGs and 16 lab handouts plus capstone. Repository checks cover source/bibliography consistency, exact README file tree and slide counts, site-relative links, listed decks, browser console/navigation and continuous numbering. Additional author checks cover content bounds, SVG label clipping/overlap, accessible SVG titles/descriptions and idempotent figure regeneration. All illustrated slides were rendered/reviewed; dense/new slides and corrected diagram boundaries were inspected separately.
 
 A 2026-10-27 availability audit of 160 unique external URLs in course Markdown returned HTTP 200 for every HEAD request. This verifies reachability, not the correctness of every page; research depth is recorded separately in the reference review.
 
