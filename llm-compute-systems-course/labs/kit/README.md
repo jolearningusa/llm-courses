@@ -52,14 +52,14 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 - [L4 — GEMM shapes, tiling and pipelines](handouts/lab04_gemm.md)
 - [L5 — Online attention and matched backend comparison](handouts/lab05_attention.md)
 - [L6 — Precision contracts and measured numerical behavior](handouts/lab06_precision.md)
-- [L7 — Distributed updates and exposed communication](handouts/lab07_distributed.md)
-- [L8 — Parallel layouts, recomputation and source tracing](handouts/lab08_parallelism.md)
+- [L7 — State ownership and inference-cache mechanisms](handouts/lab07_cache.md)
+- [L8 — Replay scheduling and budget disaggregation](handouts/lab08_scheduling.md)
 - [L9 — Route, group and combine expert work](handouts/lab09_moe.md)
-- [L10 — Recover the computation, not only the weights](handouts/lab10_recovery.md)
-- [L11 — State ownership and inference-cache mechanisms](handouts/lab11_cache.md)
-- [L12 — Replay scheduling and budget disaggregation](handouts/lab12_scheduling.md)
-- [L13 — Speculative correction and agent-wait policies](handouts/lab13_agent_policy.md)
-- [L14 — Export, compile, lower and reload real artifacts](handouts/lab14_deployment.md)
+- [L10 — Speculative correction and agent-wait policies](handouts/lab10_agent_policy.md)
+- [L11 — Export, compile, lower and reload real artifacts](handouts/lab11_deployment.md)
+- [L12 — Distributed updates and exposed communication](handouts/lab12_distributed.md)
+- [L13 — Parallel layouts, recomputation and source tracing](handouts/lab13_parallelism.md)
+- [L14 — Recover the computation, not only the weights](handouts/lab14_recovery.md)
 - [L15 — Rubin/AMD dossier and whole-system efficiency](handouts/lab15_vendor_efficiency.md)
 
 ## L5 attention execution
@@ -70,33 +70,37 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 
 [L6](handouts/lab06_precision.md) includes actual packed int4/int8 array storage and a CPU BF16 autocast loss/gradient comparison. These numerical experiments do not establish TorchAO/TE GPU acceleration or LLM task quality.
 
-## L7 distributed training
+## L7 serving and caches
 
-[L7](handouts/lab07_distributed.md) launches two actual CPU Gloo DDP processes and compares three updates against a global-batch reference. A separate ring model is analytical. FSDP2 and accelerator collective/overlap measurements require additional hardware validation.
+[L7](handouts/lab07_cache.md) tests a logical full-block prefix model with identity, shared ownership, pressure and cancellation. It stores no KV tensors. A vLLM/llama.cpp comparison worksheet is provided; no engine run is claimed.
 
-## L8 parallelism
+## L8 scheduling and disaggregation
 
-[L8](handouts/lab08_parallelism.md) separates an analytical eight-rank layout model, actual CPU checkpoint output/gradient checks and pinned TorchTitan/Megatron source inspection. Multi-GPU feasibility and timing remain unverified.
+[L8](handouts/lab08_scheduling.md) replays a finite workload under explicit virtual-time costs and compares chunked/unbounded prefill. The transfer calculator is analytical; it is not a full split-cluster simulator or measured disaggregated deployment.
 
-## L9–L10 MoE and recovery
+## L9 MoE
 
-[L9](handouts/lab09_moe.md) validates local routed expert combine; [L10](handouts/lab10_recovery.md) validates actual CPU checkpoint/resume with a missing-RNG negative control. Neither substitutes for distributed dispatcher or DCP failure testing.
+[L9](handouts/lab09_moe.md) validates local routed expert combine. It does not substitute for a distributed dispatcher.
 
-## L11 serving and caches
+## L10 speculation and agent policy
 
-[L11](handouts/lab11_cache.md) tests a logical full-block prefix model with identity, shared ownership, pressure and cancellation. It stores no KV tensors. A vLLM/llama.cpp comparison worksheet is provided; no engine run is claimed.
+[L10](handouts/lab10_agent_policy.md) validates exact one-step categorical correction and samples a synthetic distribution. Its wait-policy accounting is analytical, with explicit identity and byte-second boundaries; no engine/model throughput is claimed.
 
-## L12 scheduling and disaggregation
+## L11 deployment
 
-[L12](handouts/lab12_scheduling.md) replays a finite workload under explicit virtual-time costs and compares chunked/unbounded prefill. The transfer calculator is analytical; it is not a full split-cluster simulator or measured disaggregated deployment.
+[L11](handouts/lab11_deployment.md) builds and loads actual CPU AOTInductor .pt2 and ExecuTorch .pte artifacts, including fresh-process reload, output checks and shape/stride/dtype guard rejection. ExecuTorch uses a separate pinned environment; CUDA, edge devices and quantized native extensions are not validated.
 
-## L13 speculation and agent policy
+## L12 distributed training
 
-[L13](handouts/lab13_agent_policy.md) validates exact one-step categorical correction and samples a synthetic distribution. Its wait-policy accounting is analytical, with explicit identity and byte-second boundaries; no engine/model throughput is claimed.
+[L12](handouts/lab12_distributed.md) launches two actual CPU Gloo DDP processes and compares three updates against a global-batch reference. A separate ring model is analytical. FSDP2 and accelerator collective/overlap measurements require additional hardware validation.
 
-## L14 deployment
+## L13 parallelism
 
-[L14](handouts/lab14_deployment.md) builds and loads actual CPU AOTInductor .pt2 and ExecuTorch .pte artifacts, including fresh-process reload, output checks and shape/stride/dtype guard rejection. ExecuTorch uses a separate pinned environment; CUDA, edge devices and quantized native extensions are not validated.
+[L13](handouts/lab13_parallelism.md) separates an analytical eight-rank layout model, actual CPU checkpoint output/gradient checks and pinned TorchTitan/Megatron source inspection. Multi-GPU feasibility and timing remain unverified.
+
+## L14 recovery
+
+[L14](handouts/lab14_recovery.md) validates actual CPU checkpoint/resume with a missing-RNG negative control. It does not substitute for DCP failure testing.
 
 ## L15 vendor and whole-system study
 

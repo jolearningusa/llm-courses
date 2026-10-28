@@ -38,7 +38,7 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--checkpoint',action='store_true')
     args=parser.parse_args()
-    result={'lab':'L8','layouts':[plan(8,2,2,2,1,1_000_000_000,16,2e9,1e9,8,2),plan(8,2,1,4,1,1_000_000_000,16,2e9,1e9,8,2)]}
+    result={'lab':'L13','layouts':[plan(8,2,2,2,1,1_000_000_000,16,2e9,1e9,8,2),plan(8,2,1,4,1,1_000_000_000,16,2e9,1e9,8,2)]}
     if args.checkpoint:result['recomputation']=checkpoint_check()
     print(json.dumps(result,indent=2))
 

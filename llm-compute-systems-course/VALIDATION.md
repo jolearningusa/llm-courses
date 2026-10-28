@@ -21,17 +21,17 @@ The pinned PyTorch CPU unit suite passes **48 tests**. GPU tests were not simula
 | L4 | Actual CPU GEMM shape/tiling/group reference and checks | Python grouping is not fused GPU GEMM |
 | L5 | CPU full/online attention outputs, masks, tails and gradients | Python autograd is not fused GPU training-memory validation |
 | L6 | Packed CPU int4/int8 bytes/error checks and CPU BF16 loss/gradient comparison | No LLM quality or accelerated TorchAO/TE recipe |
-| L7 | Actual two-process CPU Gloo DDP, three matched-batch updates and delayed-rank run | No FSDP2 GPU peak/overlap or NCCL/RCCL/fabric measurement |
-| L8 | Analytical layouts, actual CPU checkpoint output/gradient check, pinned training-stack source reading | Production stacks/multi-GPU layouts not executed |
+| L7 | Logical prefix/identity/refcount/eviction/cancel simulation and checks; engine-doc review | Stores no KV tensors; two-engine benchmark not run |
+| L8 | Deterministic arrival replay, output conservation and analytical transfer budget | Constructed costs; no full split-cluster simulation or serving benchmark |
 | L9 | CPU local routing/group/combine reference, skew and empty experts | No distributed dispatcher or fused GPU kernel |
-| L10 | Actual CPU checkpoint file save/load; identical loss/parameter/optimizer replay; missing-RNG negative control | No process-kill/distributed durable save qualification |
-| L11 | Logical prefix/identity/refcount/eviction/cancel simulation and checks; engine-doc review | Stores no KV tensors; two-engine benchmark not run |
-| L12 | Deterministic arrival replay, output conservation and analytical transfer budget | Constructed costs; no full split-cluster simulation or serving benchmark |
-| L13 | Exact one-step categorical marginal/sample check; analytical tool-wait accounting | No autoregressive draft/target model or engine policy execution |
-| L14 | Actual CPU native AOT .pt2 and XNNPACK .pte build/execute, fresh-process reload and guarded-input rejection | Unquantized host only; other devices/runtimes unverified |
+| L10 | Exact one-step categorical marginal/sample check; analytical tool-wait accounting | No autoregressive draft/target model or engine policy execution |
+| L11 | Actual CPU native AOT .pt2 and XNNPACK .pte build/execute, fresh-process reload and guarded-input rejection | Unquantized host only; other devices/runtimes unverified |
+| L12 | Actual two-process CPU Gloo DDP, three matched-batch updates and delayed-rank run | No FSDP2 GPU peak/overlap or NCCL/RCCL/fabric measurement |
+| L13 | Analytical layouts, actual CPU checkpoint output/gradient check, pinned training-stack source reading | Production stacks/multi-GPU layouts not executed |
+| L14 | Actual CPU checkpoint file save/load; identical loss/parameter/optimizer replay; missing-RNG negative control | No process-kill/distributed durable save qualification |
 | L15 | Analytical phase-ledger CLI/checks; primary vendor/source dossier | No Rubin/AMD/power benchmark |
 
-L7 parameter difference from the full-batch reference was at most 1.49e-8 in the author run. L14 fresh reload errors were 0 for AOTInductor and 5.96e-8 for ExecuTorch, with one XNNPACK delegated segment. See the [recorded deployment JSON](labs/kit/examples/l14_aoti_cpu.json) and [ExecuTorch JSON](labs/kit/examples/l14_executorch_cpu.json) for the actual small-fixture timing scope.
+L12 parameter difference from the full-batch reference was at most 1.49e-8 in the author run. L11 fresh reload errors were 0 for AOTInductor and 5.96e-8 for ExecuTorch, with one XNNPACK delegated segment. See the [recorded deployment JSON](labs/kit/examples/l11_aoti_cpu.json) and [ExecuTorch JSON](labs/kit/examples/l11_executorch_cpu.json) for the actual small-fixture timing scope.
 
 ## Environment qualifications
 
@@ -43,8 +43,8 @@ L7 parameter difference from the full-batch reference was at most 1.49e-8 in the
 ## Remaining pilots before full course delivery
 
 1. Run L3–L6 CUDA/library/sanitizer performance paths on a declared supported GPU; inspect numerical and timing/traffic evidence.
-2. Run multi-accelerator FSDP/parallelism/MoE/collective/recovery extensions with fixed training progression and real topology.
-3. Run the two-engine cache matrix, measured disaggregated/speculative/agent-policy extensions and failure accounting.
+2. Run the two-engine cache matrix, measured disaggregated/speculative/agent-policy and distributed MoE extensions and failure accounting.
+3. Run multi-accelerator FSDP/parallelism/collective/recovery extensions with fixed training progression and real topology.
 4. Validate selected AMD/Rubin/edge paths only when target support and access are established.
 5. Conduct a student setup/pacing pilot, record actual task duration and revise estimates. No student-duration record is fabricated here.
 

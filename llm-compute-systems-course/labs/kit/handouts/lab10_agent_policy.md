@@ -1,4 +1,4 @@
-# L13 — Speculative correction and agent-wait policies
+# L10 — Speculative correction and agent-wait policies
 
 **Released:** standard-library categorical sampling experiment and analytical single-wait accounting. **Unverified:** real draft/target decoding, engine cache control and multi-agent performance. Estimated 5–8 hours, student pilot pending.
 

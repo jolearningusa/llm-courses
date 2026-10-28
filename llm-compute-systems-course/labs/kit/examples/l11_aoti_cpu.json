@@ -1,5 +1,5 @@
 {
-  "lab": "L14",
+  "lab": "L11",
   "provenance": "measured local CPU artifact build/load/execute; small synthetic MLP, not LLM performance",
   "backend": "aoti",
   "python": "3.12.14",

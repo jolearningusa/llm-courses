@@ -65,6 +65,6 @@ def main():
     for name,tokens,ident in [('cold',list(range(8)),identity),('warm',list(range(8)),identity),('late_mismatch',list(range(4))+[99,5,6,7],identity),('early_mismatch',[99]+list(range(1,8)),identity),('model_change',list(range(8)),Identity('model-v2'))]:
         rows.append({'case':name,**cache.acquire(name,tokens,ident)})
         cache.release(name)
-    print(json.dumps({'lab':'L11','provenance':'logical token/block simulation; no engine inference or KV tensors','cases':rows,'final':cache.snapshot()},indent=2))
+    print(json.dumps({'lab':'L7','provenance':'logical token/block simulation; no engine inference or KV tensors','cases':rows,'final':cache.snapshot()},indent=2))
 
 if __name__=='__main__':main()

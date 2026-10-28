@@ -1,4 +1,4 @@
-# L11 — State ownership and inference-cache mechanisms
+# L7 — State ownership and inference-cache mechanisms
 
 **Released:** standard-library logical full-block cache simulation. **Source-inspected:** vLLM, SGLang and llama.cpp documentation. **Not executed:** engine inference/two-engine benchmarks. Estimated 5–8 hours, student pilot pending.
 

@@ -63,6 +63,6 @@ def main():
     rng=random.Random(42);counts=[0,0,0];accepted=0
     for _ in range(20000):
         token,ok=sample(p,q,rng);counts[token]+=1;accepted+=ok
-    print(json.dumps({'lab':'L13','provenance':'categorical probability experiment and analytical cache-policy model, not inference benchmark','target':p,'draft':q,'exact_marginal':marginal(p,q),'sample_frequencies':[n/20000 for n in counts],'acceptance':accepted/20000,'expected_tokens_k4_alpha08':expected_tokens(.8,4),'wait_cases':[wait_policy(policy,512*1024**2,wait,.03,.01,.01,.1) for wait in (.02,2.) for policy in ('retain','evict','ttl','offload')]},indent=2))
+    print(json.dumps({'lab':'L10','provenance':'categorical probability experiment and analytical cache-policy model, not inference benchmark','target':p,'draft':q,'exact_marginal':marginal(p,q),'sample_frequencies':[n/20000 for n in counts],'acceptance':accepted/20000,'expected_tokens_k4_alpha08':expected_tokens(.8,4),'wait_cases':[wait_policy(policy,512*1024**2,wait,.03,.01,.01,.1) for wait in (.02,2.) for policy in ('retain','evict','ttl','offload')]},indent=2))
 
 if __name__=='__main__':main()
