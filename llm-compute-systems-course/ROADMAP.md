@@ -1,34 +1,15 @@
-# Course implementation roadmap
+# Course release and follow-up roadmap
 
-This research/outline installment is deliberately reviewable before full slides and lab kits are built. The repository requires one intent per PR and recommends outline → modules → labs for a large course. Complete and merge each installment before starting another branch.
+The core authoring sequence has produced the master, 30 lectures, capstone workshop and L0–L15 kits, plus the optimization-decision supplement, editable SVG illustrations and separate potential-project specifications. The [build plan](BUILD_PLAN.md) records the serial PR milestones; each previous PR merged before the next branch began.
 
-## Prepared in this installment
+## Available materials
 
-- Research synthesis, annotated papers/tutorials/repositories and review-depth limitations.
-- Sixteen-week training/inference systems syllabus and L0–L15 lab specifications.
-- Workload/algorithm primer, PyTorch/compiler/deployment guide, Rubin case study, NVIDIA and AMD stack maps, and AgentOS caching comparison.
-- Shared experiment/report contract, hardware tiers and numerical/performance evaluation policy.
+- [Syllabus](SYLLABUS.md), [deck directory](./#slide-decks), [kit setup](labs/kit/) and [capstone](labs/kit/capstone/CAPSTONE.md).
+- [Optimization-technique map](notes/optimization_techniques.md), [coverage audit](notes/course_component_audit.md) and [20 potential projects](projects/POTENTIAL_PROJECTS.md).
+- [Release guide](COURSE_RELEASE.md), [author validation/evidence ledger](VALIDATION.md), primary references and versioned environment manifests.
 
-## Detailed build plan
+## Follow-up validation work
 
-[BUILD_PLAN.md](BUILD_PLAN.md) specifies each planned deck, paired lab work, required artifacts, dependencies, serial PR units and completion gates. The user authorized continuing one unit at a time on 2026-10-26: merge each green PR, refresh `origin/main`, and only then start the next.
+Accelerated kernel/library, multi-GPU training, real serving-engine, Rubin/AMD and edge paths need the target-specific pilots listed in the validation record. Student setup/pacing also needs a real pilot. These are explicit validation gaps, not empty promised implementation files or claims of measured performance.
 
-## Released foundation
-
-The master overview, workload/roofline lecture and short architecture primer now accompany a standard-library L0 calculator, worked exercises and arithmetic tests. Results are analytical; no GPU benchmark or student-duration pilot is claimed.
-
-## Follow-on installments
-
-1. **Measurement foundation:** opening lecture deck, resource calculator, workload fixtures, environment manifests and L0–L2 executable kit. Pilot CPU and one-GPU paths.
-2. **Kernel lectures and labs:** CUDA execution/reductions, GEMM, attention and precision in bounded PRs. Include correctness, sanitizer and numerical checks on declared devices.
-3. **Training systems:** DDP/FSDP2 and parallelism lectures/kits, MoE communication, checkpoint/recovery. Record multi-GPU evidence and provide trace-only alternatives.
-4. **Inference systems:** request scheduler/KV anatomy, vLLM/llama.cpp/SGLang cache experiments, chunked prefill/disaggregation, speculation and agent waits.
-5. **Deployment:** AOTInductor/ExecuTorch kit with exact producer/loader/runtime contracts and tested compatibility.
-6. **Architecture integration:** Rubin hardware/software lecture and AMD portability comparison with supported paths, source dates and measured/simulated boundaries.
-7. **Pilot/capstone:** calibrate workload sizes and timing, publish reproducibility/quality criteria and release the capstone package.
-
-## Gates before calling a module ready to teach
-
-Its assigned paper design/evaluation sections have been read, relevant upstream implementation inspected at a recorded commit, deck links/numbers checked, and lab instructions timed by a pilot. A lab must run on at least one declared configuration or be explicitly released as an analytical/trace exercise. Add tracked API dependencies to `references/tracked_sources.json` when configurations are pinned, then use the repository freshness checks.
-
-Before launching the course, confirm access to a CUDA GPU and a small multi-GPU allocation; AMD execution requires its own supported environment. Exact model/weight/data selections and compatible environments remain pilot decisions. No Rubin purchase or allocation is required for the analytical case study.
+For each follow-up use one bounded PR from fresh `origin/main`: declare the target, reproduce the reference, validate correctness, collect unprofiled timings plus a focused trace, update the handout/source ledger and only then mark that path tested. Preserve prior evidence and adverse cases. Optional new projects remain separately scoped proposals until selected for implementation.

@@ -2,7 +2,7 @@
 
 A systems engineering course on building and measuring the computing stack for LLM training and inference, from PyTorch and compilers through CUDA kernels, memory, operating systems, interconnects and cluster runtimes, using NVIDIA Vera Rubin as a recurring case study.
 
-**Status: incremental teaching releases in progress, 2026-10-26.** The deck table and lab-kit index identify supplied materials. The build plan records serial PR progress and distinguishes validated CPU paths, analytical exercises, student extensions and hardware validation still needed. No GPU benchmark is claimed without an explicit release record.
+**Status: materials and CPU-reference release, 2026-10-27.** The package contains 33 decks with 33 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 separate project specifications. [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
 
 ## Start here
 
@@ -15,7 +15,9 @@ A systems engineering course on building and measuring the computing stack for L
    Compare the [NVIDIA library map](notes/nvidia_stack.md) with the [AMD ROCm stack](notes/amd_stack.md).
 7. [AgentOS inference and cache mechanisms](notes/agentic_caching.md): vLLM, llama.cpp and SGLang, tool waits and cache policy.
 8. [Lab plan](labs/LAB_PLAN.md) and [experiment report](labs/report_template.md).
-9. [Slide and lab build plan](BUILD_PLAN.md): 32 planned decks, L0–L15 kits, serial PR order and release gates.
+9. [Slide and lab build plan](BUILD_PLAN.md): 32 core decks plus the optimization supplement, L0–L15 kits, serial PR order and release gates.
+
+10. [Release guide](COURSE_RELEASE.md), [validation record](VALIDATION.md), [SVG illustration library](slides/illustrations/) and [capstone](labs/kit/capstone/CAPSTONE.md).
 
 ## Audience and prerequisites
 
@@ -92,6 +94,7 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 | [ExecuTorch Runtime, Delegation and Memory Planning](slides/28_executorch_deployment.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Vera Rubin and NVIDIA/AMD Software Stacks](slides/29_rubin_vendor_stacks.html) (17 slides) | Topic lecture, worked examples and practical exercises |
 | [Whole-System Efficiency and Useful Work](slides/30_whole_system_efficiency.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Capstone Workshop: Evidence to Decision](slides/31_capstone_workshop.html) (11 slides) | Topic lecture, worked examples and practical exercises |
 | [Optimization Decisions and Automated Performance Engineering](slides/32_optimization_decision_systems.html) (23 slides) | Topic lecture, worked examples and practical exercises |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
@@ -106,6 +109,10 @@ Suggested weighting: labs 45%, paper/trace critiques 15%, capstone 40%. Correctn
 llm-compute-systems-course/
 ├── labs/
 │   ├── kit/
+│   │   ├── capstone/
+│   │   │   ├── CAPSTONE.md
+│   │   │   ├── capstone_manifest.example.json
+│   │   │   └── critique_example.md
 │   │   ├── cuda/
 │   │   │   └── rmsnorm.cu
 │   │   ├── examples/
@@ -194,6 +201,7 @@ llm-compute-systems-course/
 │   │   ├── attention-pipeline.svg
 │   │   ├── autograd-graph.svg
 │   │   ├── build_illustrations.py
+│   │   ├── capstone-evidence.svg
 │   │   ├── chunked-prefill.svg
 │   │   ├── collective-ring.svg
 │   │   ├── compiler-path.svg
@@ -253,12 +261,15 @@ llm-compute-systems-course/
 │   ├── 28_executorch_deployment.html
 │   ├── 29_rubin_vendor_stacks.html
 │   ├── 30_whole_system_efficiency.html
+│   ├── 31_capstone_workshop.html
 │   └── 32_optimization_decision_systems.html
 ├── BUILD_PLAN.md
+├── COURSE_RELEASE.md
 ├── LICENSE
 ├── README.md
 ├── ROADMAP.md
-└── SYLLABUS.md
+├── SYLLABUS.md
+└── VALIDATION.md
 ```
 
 ## Source and version policy

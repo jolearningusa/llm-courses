@@ -228,6 +228,13 @@ def build():
         s.text(20,225,'After',24);s.box(200,190,240,70,'compute 30 s',BLUE);s.box(440,190,320,70,'other 40 s',AMBER)
         s.text(250,325,'Same useful tokens; nonoverlapping phase costs; no vendor benchmark',22,MUTED)
 
+
+    if list(SLIDES.glob('31_*.html')):
+        s=figure('31','Proposal to evidence','capstone-evidence','The claim must survive every evidence gate','Keep raw outcomes, adverse cases and rejected candidates. A well-supported rejection is a useful engineering result.','A workload hypothesis passes through a credible baseline, correctness checks and measurement before a retain, revise or reject decision.')
+        s.chain(['Hypothesis','Baseline','Correctness','Measure','Decision'],75)
+        s.box(200,245,700,60,'Raw records + ablation + adverse / held-out cases',AMBER)
+        s.line(550,139,550,245,AMBER,True)
+
     if list(SLIDES.glob('32_*.html')):
         s=figure('32','Three implementation choices','optimization-choices','Choose an implementation, then validate it','Libraries, graph compilation and custom kernels are alternative or composable paths; the target and numerical contract decide eligibility.','An exported workload branches to a library, graph compiler or custom kernel path, then all candidates converge on the same correctness and measurement gate.')
         s.box(20,135,180,65,'Workload|contract',AMBER)

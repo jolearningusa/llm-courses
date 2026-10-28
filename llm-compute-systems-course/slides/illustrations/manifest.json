@@ -279,6 +279,15 @@
     "asset": "amdahl-ledger.svg"
   },
   {
+    "prefix": "31",
+    "after": "Proposal to evidence",
+    "slug": "capstone-evidence",
+    "title": "The claim must survive every evidence gate",
+    "caption": "Keep raw outcomes, adverse cases and rejected candidates. A well-supported rejection is a useful engineering result.",
+    "deck": "31_capstone_workshop.html",
+    "asset": "capstone-evidence.svg"
+  },
+  {
     "prefix": "32",
     "after": "Three implementation choices",
     "slug": "optimization-choices",

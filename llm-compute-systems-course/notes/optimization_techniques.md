@@ -24,8 +24,8 @@ Primary sources: [CUDA documentation](https://docs.nvidia.com/cuda/), [Triton tu
 | Lost work | Consistent snapshot, async staging, restart state and useful-throughput accounting | Checkpointer, optimizer/RNG/data state | Interrupted/replayed trajectory; incomplete snapshot and completion boundary | L10 |
 | Repeated prefix work | Compatible exact-token prefix reuse, locality and eviction policy | vLLM/SGLang/llama.cpp state manager | Ownership/invalidation, pressure, matched tokens; distinct from semantic responses | L11 |
 | Queue/phase interference | Chunked prefill, admission, phase placement, compatible KV handoff | Scheduler, router, connector | Equal resource budget, arrival replay, failures and SLO goodput | L12 |
-| Long tool waits / draft overhead | Lifecycle hints, retain/offload/recompute, adaptive speculation | Agent runtime + serving policy | Task latency, byte-seconds, exact verification, acceptance/load regimes | Planned L13 |
-| Deployment / cold start | Export contracts, AOT packaging, delegation and memory planning | AOTInductor, Torch-TensorRT, ExecuTorch / target SDK | Producer/loader/device/version compatibility; unsupported shape and partition boundaries | Planned L14 |
+| Long tool waits / draft overhead | Lifecycle hints, retain/offload/recompute, adaptive speculation | Agent runtime + serving policy | Task latency, byte-seconds, exact verification, acceptance/load regimes | L13 |
+| Deployment / cold start | Export contracts, AOT packaging, delegation and memory planning | AOTInductor, Torch-TensorRT, ExecuTorch / target SDK | Producer/loader/device/version compatibility; unsupported shape and partition boundaries | L14 |
 | Automated optimization | Diagnose → select layer → bounded search → validate → record / stop | Controller separate from evaluator | Search cost as well as final performance; held-out traces and negative transfer | Supplementary deck 32 |
 
 These candidates are hypotheses until measured. Low aggregate GPU utilization alone does not identify which row applies.

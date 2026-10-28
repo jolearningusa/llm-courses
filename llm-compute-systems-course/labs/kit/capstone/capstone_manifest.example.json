@@ -1,0 +1,20 @@
+{
+  "status": "proposal example; contains no measured results",
+  "path": "serving",
+  "question": "Does bounded prefill chunking improve declared latency goodput under a fixed arrival trace?",
+  "evidence_plan": "Start with L12 analytical replay; real-engine claims require a separate pinned deployment and raw events.",
+  "baseline": "selected engine default scheduler at recorded version",
+  "candidate": "one supported prefill chunk budget",
+  "contract": {
+    "model_tokenizer": "record exact revisions before execution",
+    "precision_sampling": "hold fixed and record",
+    "resources": "same total device count/memory/topology",
+    "arrivals": "separate tuning and held-out trace IDs",
+    "quality": "predeclare task/numerical acceptance",
+    "latency": "predeclare TTFT/TPOT bounds and observation/drain window"
+  },
+  "adverse_case": "short prompts where extra iteration overhead can outweigh reduced interference",
+  "negative_control": "inject a wrong event count and prove accounting rejects it",
+  "search_budget": "predeclare finite trials and target-worker time",
+  "required_records": ["environment", "source/config hashes", "raw events", "correctness", "failures/unfinished", "decision"]
+}

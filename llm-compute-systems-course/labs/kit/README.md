@@ -101,3 +101,7 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 ## L15 vendor and whole-system study
 
 [L15](handouts/lab15_vendor_efficiency.md) uses a source-grounded dossier and analytical disjoint phase ledger. It preserves conflicting published rate scopes and separates dense/sparse precision. No Rubin/AMD or power benchmark is claimed.
+
+## Capstone and release
+
+The [capstone package](capstone/CAPSTONE.md) supplies three engineering paths plus an analytical option, proposal manifest, critique exercise and rubric. [Release validation](../../VALIDATION.md) records author checks separately from student/hardware pilots.
