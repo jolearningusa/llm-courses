@@ -92,7 +92,7 @@ def run(output,backend='aoti'):
                 tick=time.perf_counter();value=call();raw.append(time.perf_counter()-tick)
             torch.testing.assert_close(value,reference)
             baselines[label]=raw
-    return {'lab':'L14','provenance':'measured local CPU artifact build/load/execute; small synthetic MLP, not LLM performance','backend':backend,'python':platform.python_version(),'platform':platform.platform(),'torch':torch.__version__,'input_shape':list(x.shape),'contract':'contiguous static CPU float32 shape (3,8); export rejects (4,8); checked loader rejects other shape/dtype/stride','export_seconds':export_s,'build_seconds':build_s,'load_seconds':load_s,'first_execution_seconds':first_s,'warm_wall_seconds':samples,'baseline_wall_seconds':baselines,'artifact':artifact.name,'artifact_bytes':artifact.stat().st_size,'max_abs_error':(actual-reference).abs().max().item(),**extra}
+    return {'lab':'L11','provenance':'measured local CPU artifact build/load/execute; small synthetic MLP, not LLM performance','backend':backend,'python':platform.python_version(),'platform':platform.platform(),'torch':torch.__version__,'input_shape':list(x.shape),'contract':'contiguous static CPU float32 shape (3,8); export rejects (4,8); checked loader rejects other shape/dtype/stride','export_seconds':export_s,'build_seconds':build_s,'load_seconds':load_s,'first_execution_seconds':first_s,'warm_wall_seconds':samples,'baseline_wall_seconds':baselines,'artifact':artifact.name,'artifact_bytes':artifact.stat().st_size,'max_abs_error':(actual-reference).abs().max().item(),**extra}
 
 def load_existing(output,backend):
     import torch
@@ -113,7 +113,7 @@ def load_existing(output,backend):
     try:checked_forward(call,torch.zeros(4,8))
     except ValueError:pass
     else:raise RuntimeError('loader guard failed')
-    return {'lab':'L14','mode':'load existing artifact without model construction','backend':backend,'torch':torch.__version__,'load_seconds':load_s,'max_abs_error':(actual-expected).abs().max().item(),'bad_shape_rejected':True}
+    return {'lab':'L11','mode':'load existing artifact without model construction','backend':backend,'torch':torch.__version__,'load_seconds':load_s,'max_abs_error':(actual-expected).abs().max().item(),'bad_shape_rejected':True}
 
 
 if __name__=='__main__':

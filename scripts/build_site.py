@@ -74,6 +74,7 @@ img { max-width:100%; }
 @media (prefers-color-scheme: dark) { .notice { background:#272115; color:#e3b341; border-color:#9e6a03; } }
 .materials { display:flex; gap:32px; flex-wrap:wrap; margin:0 0 24px; }
 .materials ul { margin:4px 0 0; padding-left:20px; }
+.materials .group { margin:10px 0 0; font-size:.85em; font-weight:600; color:var(--muted); }
 .toolbar { display:flex; gap:16px; flex-wrap:wrap; margin:0 0 16px; font-size:14px; }
 ul.files { list-style:none; padding:0; } ul.files li { padding:4px 0; border-bottom:1px solid var(--line); }
 .code { overflow-x:auto; background:var(--panel); border:1px solid var(--line); border-radius:6px; }
@@ -300,7 +301,8 @@ def build_course(course: Path, out: Path) -> dict:
         crumbs = [(title, "../" * (depth - 1) + "index.html")]
         (out / name / sub / "index.html").write_text(page(sub.as_posix(), body, depth, crumbs), encoding="utf-8")
 
-    info = {"name": name, "title": title, "summary": first_paragraph(readme), "decks": decks, "labs": labs, "refs": refs,
+    info = {"name": name, "title": title, "summary": first_paragraph(readme), "decks": deck_groups(readme, decks),
+            "labs": labs, "refs": refs,
             "updated": last_updated(course)}
     panel = materials(info, "")
     (out / name / "index.html").write_text(
@@ -310,11 +312,41 @@ def build_course(course: Path, out: Path) -> dict:
     return info
 
 
+def deck_groups(readme: str, decks: list[tuple[str, str]]) -> list[tuple[str | None, list[tuple[str, str]]]]:
+    """Decks in the order of the README's "Slide decks" table, grouped under its bold-only rows
+    (for example "| **Part I · Foundations** | |"). Decks the table does not list follow, by file name."""
+    titles = dict((href, text) for text, href in decks)
+    section = re.search(r"^## Slide decks\n(.*?)(?=^## |\Z)", readme, re.S | re.M)
+    groups: list[tuple[str | None, list[tuple[str, str]]]] = [(None, [])]
+    seen: set[str] = set()
+    for line in (section.group(1) if section else "").splitlines():
+        heading = re.match(r"^\|\s*\*\*(.+?)\*\*\s*\|(\s*\|)*\s*$", line)
+        if heading:
+            groups.append((heading.group(1), []))
+            continue
+        for href in re.findall(r"\]\((slides/[^)#]+\.html)\)", line):
+            if href in titles and href not in seen:
+                seen.add(href)
+                groups[-1][1].append((numbered(titles[href], href), href))
+    rest = [(numbered(text, href), href) for text, href in decks if href not in seen]
+    if rest:
+        groups.append((None if len(groups) == 1 else "Other decks", rest))
+    return [(h, items) for h, items in groups if items]
+
+
+def numbered(text: str, href: str) -> str:
+    """Prefix a deck title with its file number ("07 · CUDA Execution"), when the file name has one."""
+    m = re.match(r"(\d+)_", posixpath.basename(href))
+    return f"{m.group(1)} · {text}" if m else text
+
+
 def materials(c: dict, base: str) -> str:
     """Links to a course's decks, lab folders and reference pages."""
     parts = []
     if c["decks"]:
-        parts.append("<div><strong>Slide decks</strong>" + link_list(c["decks"], base) + "</div>")
+        body = "".join((f'<div class="group">{html.escape(h)}</div>' if h else "") + link_list(items, base)
+                       for h, items in c["decks"])
+        parts.append("<div><strong>Slide decks</strong>" + body + "</div>")
     lab_dirs = sorted({posixpath.dirname(p) for _, p in c["labs"]})
     if lab_dirs:
         parts.append("<div><strong>Labs</strong>" + link_list([(d.split("/")[-1], d + "/") for d in lab_dirs], base) + "</div>")
@@ -368,7 +400,7 @@ def main() -> None:
     build_index(courses, out)
     print(f"Built {len(courses)} course(s) into {out}")
     for c in courses:
-        print(f"  {c['name']}: {len(c['decks'])} deck(s), {len(c['labs'])} lab file(s), {len(c['refs'])} reference page(s)")
+        print(f"  {c['name']}: {sum(len(items) for _, items in c['decks'])} deck(s), {len(c['labs'])} lab file(s), {len(c['refs'])} reference page(s)")
 
 
 if __name__ == "__main__":

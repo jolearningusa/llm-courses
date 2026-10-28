@@ -1,6 +1,6 @@
-# Efficient LLM Computing Systems: Training, Inference & GPU Kernels
+# Efficient LLM Computing Systems: Inference, GPU Kernels & Training
 
-A systems engineering course on building and measuring the computing stack for LLM training and inference, from PyTorch and compilers through CUDA kernels, memory, operating systems, interconnects and cluster runtimes, using NVIDIA Vera Rubin as a recurring case study.
+A systems engineering course on building and measuring the computing stack for LLM inference, from PyTorch and compilers through CUDA kernels, memory, operating systems and serving runtimes to deployed programs, with distributed training at scale as the final part and NVIDIA Vera Rubin as a recurring case study.
 
 **Status: materials and CPU-reference release, 2026-10-27.** The package contains 34 decks with 34 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 separate project specifications. [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
 
@@ -27,18 +27,19 @@ The brief architecture primer is intentional: understand *why* MoE creates all-t
 
 ## Course map
 
-The course has six parts, ordered from the workload and one device out to clusters, serving and the whole job. Week, deck and lab numbers run straight through them.
+The course is inference-first. Parts I–V follow one request's computation from the workload and a single GPU to a serving engine and a deployed program; Part VI, training at scale, comes last and reuses the same kernels, precision formats and measurement discipline. Deck and lab numbers follow the teaching order.
 
 | Part | Weeks | Decks | Labs | Engineering question |
 |---|---|---|---|---|
-| I. Foundations: workloads and measurement | 1–2 | 01–04 | L0–L1 | What work, data movement and memory capacity does this job require, and how do we measure it honestly? |
-| II. Single-GPU execution: PyTorch, compilers and kernels | 3–6 | 05–12 | L2–L5 | How does a tensor program become efficient work on one device? |
-| III. Numerics and precision | 7 | 13–14 | L6 | Which formats, scales and accumulations keep training and serving correct while moving fewer bytes? |
-| IV. Distributed training | 8–10 | 15–20 | L7–L10 | How do we fit, synchronize and recover a training job? |
-| V. Inference serving | 11–13 | 21–26 | L11–L13 | How do we deliver useful tokens under latency, memory and load constraints? |
-| VI. Deployment and whole-system integration | 14–16 | 27–31 | L14–L15, capstone | How do we package a program for a target, and which cross-layer change improves the actual job objective? |
+| I. Foundations: workloads and measurement | 1–2 | 01, 02, 03, 04 | L0–L1 | What work, data movement and memory capacity does this job require, and how do we measure it honestly? |
+| II. Single-GPU execution: PyTorch, compilers and kernels | 3–6 | 05, 06, 07, 33, 08, 09, 10, 11, 12, 32 | L2–L5 | How does a tensor program become efficient work on one device? |
+| III. Numerics and quantization | 7 | 13, 14 | L6 | Which formats, scales and accumulations keep a model correct while moving fewer bytes? |
+| IV. Inference serving | 8–11 | 15, 16, 17, 18, 19, 20, 21 | L7–L10 | How do we deliver useful tokens under latency, memory and load constraints? |
+| V. Deployment and platforms | 11–12 | 22, 23, 24 | L11, L15A | How do we package a program for a target, and what does the target platform provide? |
+| VI. Training at scale | 13–15 | 25, 26, 27, 28, 29, 30 | L12–L14, L6B, L15B | How do we fit, synchronize and recover a training job, and does a component gain improve the whole job? |
+| Capstone | 16 | 31 | Capstone | Which change survives a credible baseline, correctness checks and an adverse case? |
 
-Deck 32 (optimization decisions and automated search) is a supplement used after Part II and revisited after Part V. Deck 33 (programming models beyond CUDA) follows deck 07 and pairs with decks 28–29. The order (foundations, single-device execution, distributed training, inference, integration) follows the same spine as CMU 15-442, Stanford CS336's systems unit, CMU 11-868 and *How To Scale Your Model*; numerics gets its own part because it serves both training and inference. The comparison and sources are in the [research review](references/research_review.md#course-structure-compared-with-other-courses).
+Supplements sit next to the material they extend: deck 33 (programming models beyond CUDA) follows deck 07, and deck 32 (optimization decisions and automated search) follows Part II and is revisited after Part V. The order follows the same spine as CMU 15-442, Stanford CS336's systems unit and *How To Scale Your Model* (single-device execution before scale-out), with inference first as in Stanford CS349E (inference only) and MIT 6.5940 (efficient inference before efficient training). The comparison and sources are in the [research review](references/research_review.md#course-structure-compared-with-other-courses).
 
 Each lab follows **predict → implement → validate correctness → profile → explain → compare end-to-end**. A speedup without a stated baseline, error check and workload is incomplete.
 
@@ -48,10 +49,10 @@ Each lab follows **predict → implement → validate correctness → profile �
 - Write and tune CUDA reductions and tiled matrix operations; explain occupancy, bandwidth, synchronization and numerical constraints.
 - Trace an operation through PyTorch, compiler IR, library/custom kernel dispatch and CUDA execution.
 - Compare eager, compiled and ahead-of-time deployment, including the costs of compilation and shape specialization.
-- Build distributed training experiments with DDP/FSDP2, tensor/pipeline/context/expert parallelism, activation checkpointing and recovery.
 - Explain and measure KV paging, prefix reuse, chunked prefill, speculative decoding and disaggregated serving.
 - Diagnose CPU, NUMA, input, memory-allocation, communication and checkpoint bottlenecks alongside GPU kernels.
 - Distinguish semantics-preserving execution optimizations from numerical approximation or architecture changes.
+- Build distributed training experiments with DDP/FSDP2, tensor/pipeline/context/expert parallelism, activation checkpointing and recovery.
 
 ## Hardware access
 
@@ -66,49 +67,51 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 
 ## Slide decks
 
-| Deck | Scope |
+Decks are listed in teaching order, grouped by part.
+
+| Deck | When |
 |---|---|
-| [Efficient LLM Computing Systems](slides/00_master_compute_systems.html) (15 slides) | Course map and released-deck navigation |
+| [Efficient LLM Computing Systems](slides/00_master_compute_systems.html) (15 slides) | Course map and deck directory |
 | **Part I · Foundations: workloads and measurement (weeks 1–2)** | |
-| [Workloads, Rooflines and Capacity](slides/01_workloads_rooflines.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Architecture as a Computing Workload](slides/02_architecture_workload_primer.html) (13 slides) | Topic lecture, worked examples and practical exercises |
-| [Measurement and Profiling](slides/03_measurement_profiling.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Host, OS and Data Paths](slides/04_host_os_data_paths.html) (17 slides) | Topic lecture, worked examples and practical exercises |
+| [Workloads, Rooflines and Capacity](slides/01_workloads_rooflines.html) (17 slides) | Week 1, lecture A |
+| [Architecture as a Computing Workload](slides/02_architecture_workload_primer.html) (13 slides) | Week 1, lecture B |
+| [Measurement and Profiling](slides/03_measurement_profiling.html) (17 slides) | Week 2, lecture A |
+| [Host, OS and Data Paths](slides/04_host_os_data_paths.html) (17 slides) | Week 2, lecture B |
 | **Part II · Single-GPU execution: PyTorch, compilers and kernels (weeks 3–6)** | |
-| [PyTorch Execution and Autograd](slides/05_pytorch_execution_autograd.html) (18 slides) | Topic lecture, worked examples and practical exercises |
-| [PyTorch Compiler and Specialization](slides/06_pytorch_compiler.html) (18 slides) | Topic lecture, worked examples and practical exercises |
-| [CUDA Execution and Memory](slides/07_cuda_execution_memory.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Reductions and Custom Operator Contracts](slides/08_reductions_custom_operators.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [GEMM Tiling and Tensor Cores](slides/09_gemm_tensor_cores.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Asynchronous Kernel Pipelines](slides/10_async_kernel_pipelines.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Attention Execution and Online Softmax](slides/11_attention_execution.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Attention Kernel and Hardware Co-design](slides/12_attention_kernel_codesign.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| **Part III · Numerics and precision (week 7)** | |
-| [Precision, Scales and Numerical Contracts](slides/13_precision_numerics.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Precision in Training and Serving](slides/14_precision_training_serving.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| **Part IV · Distributed training (weeks 8–10)** | |
-| [DDP, ZeRO and Fully Sharded Training](slides/15_ddp_zero_fsdp.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Collectives, Topology and Exposed Communication](slides/16_collectives_overlap.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Parallel Layouts and Recomputation](slides/17_parallelism_recomputation.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Reading a Production Training Stack](slides/18_training_stack_walkthrough.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [MoE Routing, Dispatch and Grouped Compute](slides/19_moe_execution.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Checkpointing, Input State and Useful Training Work](slides/20_checkpoint_recovery.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| **Part V · Inference serving (weeks 11–13)** | |
-| [Serving Iterations, Admission and State Ownership](slides/21_serving_scheduler.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [KV, Prefix and Response Caches across Inference Stacks](slides/22_kv_prefix_cache_mechanisms.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Prefill, Decode and Latency-Constrained Scheduling](slides/23_prefill_decode_scheduling.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Disaggregated Inference and KV Handoff](slides/24_disaggregated_inference.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Speculative Decoding and Correct Verification](slides/25_speculative_decoding.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [AgentOS Workloads and Cache-Lifecycle Policies](slides/26_agentos_inference_cache_policy.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| **Part VI · Deployment and whole-system integration (weeks 14–16)** | |
-| [Export Contracts and AOTInductor Deployment](slides/27_export_aotinductor.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [ExecuTorch Runtime, Delegation and Memory Planning](slides/28_executorch_deployment.html) (18 slides) | Topic lecture, worked examples and practical exercises |
-| [Vera Rubin and NVIDIA/AMD Software Stacks](slides/29_rubin_vendor_stacks.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Whole-System Efficiency and Useful Work](slides/30_whole_system_efficiency.html) (17 slides) | Topic lecture, worked examples and practical exercises |
-| [Capstone Workshop: Evidence to Decision](slides/31_capstone_workshop.html) (11 slides) | Topic lecture, worked examples and practical exercises |
-| **Supplement** | |
-| [Optimization Decisions and Automated Performance Engineering](slides/32_optimization_decision_systems.html) (23 slides) | Topic lecture, worked examples and practical exercises |
-| [Programming Models beyond CUDA](slides/33_programming_models_beyond_cuda.html) (19 slides) | AMD, Intel, Apple, TPU and Trainium answers to CUDA; Triton, TileLang and Pallas; XLA; new-accelerator bring-up; edge DSP and NPU toolchains |
+| [PyTorch Execution and Autograd](slides/05_pytorch_execution_autograd.html) (18 slides) | Week 3, lecture A |
+| [PyTorch Compiler and Specialization](slides/06_pytorch_compiler.html) (18 slides) | Week 3, lecture B |
+| [CUDA Execution and Memory](slides/07_cuda_execution_memory.html) (17 slides) | Week 4, lecture A |
+| [Programming Models beyond CUDA](slides/33_programming_models_beyond_cuda.html) (19 slides) | Supplement to Part II, after deck 07 |
+| [Reductions and Custom Operator Contracts](slides/08_reductions_custom_operators.html) (17 slides) | Week 4, lecture B |
+| [GEMM Tiling and Tensor Cores](slides/09_gemm_tensor_cores.html) (17 slides) | Week 5, lecture A |
+| [Asynchronous Kernel Pipelines](slides/10_async_kernel_pipelines.html) (17 slides) | Week 5, lecture B |
+| [Attention Execution and Online Softmax](slides/11_attention_execution.html) (17 slides) | Week 6, lecture A |
+| [Attention Kernel and Hardware Co-design](slides/12_attention_kernel_codesign.html) (17 slides) | Week 6, lecture B |
+| [Optimization Decisions and Automated Performance Engineering](slides/32_optimization_decision_systems.html) (23 slides) | Supplement after Part II; revisit after Part V |
+| **Part III · Numerics and quantization (week 7)** | |
+| [Precision, Scales and Numerical Contracts](slides/13_precision_numerics.html) (17 slides) | Week 7, lecture A |
+| [Quantization and Low-Precision Serving](slides/14_quantization_serving.html) (12 slides) | Week 7, lecture B |
+| **Part IV · Inference serving (weeks 8–11)** | |
+| [Serving Iterations, Admission and State Ownership](slides/15_serving_scheduler.html) (17 slides) | Week 8, lecture A |
+| [KV, Prefix and Response Caches across Inference Stacks](slides/16_kv_prefix_cache_mechanisms.html) (17 slides) | Week 8, lecture B |
+| [Prefill, Decode and Latency-Constrained Scheduling](slides/17_prefill_decode_scheduling.html) (17 slides) | Week 9, lecture A |
+| [Disaggregated Inference and KV Handoff](slides/18_disaggregated_inference.html) (17 slides) | Week 9, lecture B |
+| [MoE Routing, Dispatch and Grouped Compute](slides/19_moe_execution.html) (17 slides) | Week 10, lecture A |
+| [Speculative Decoding and Correct Verification](slides/20_speculative_decoding.html) (17 slides) | Week 10, lecture B |
+| [AgentOS Workloads and Cache-Lifecycle Policies](slides/21_agentos_inference_cache_policy.html) (17 slides) | Week 11, lecture A |
+| **Part V · Deployment and platforms (weeks 11–12)** | |
+| [Export Contracts and AOTInductor Deployment](slides/22_export_aotinductor.html) (17 slides) | Week 11, lecture B |
+| [ExecuTorch Runtime, Delegation and Memory Planning](slides/23_executorch_deployment.html) (18 slides) | Week 12, lecture A |
+| [Vera Rubin and NVIDIA/AMD Software Stacks](slides/24_rubin_vendor_stacks.html) (17 slides) | Week 12, lecture B |
+| **Part VI · Training at scale (weeks 13–15)** | |
+| [Training Precision, DDP, ZeRO and Fully Sharded Training](slides/25_ddp_zero_fsdp.html) (22 slides) | Week 13, lecture A |
+| [Collectives, Topology and Exposed Communication](slides/26_collectives_overlap.html) (17 slides) | Week 13, lecture B |
+| [Parallel Layouts and Recomputation](slides/27_parallelism_recomputation.html) (17 slides) | Week 14, lecture A |
+| [Reading a Production Training Stack](slides/28_training_stack_walkthrough.html) (17 slides) | Week 14, lecture B |
+| [Checkpointing, Input State and Useful Training Work](slides/29_checkpoint_recovery.html) (17 slides) | Week 15, lecture A |
+| [Whole-System Efficiency and Useful Work](slides/30_whole_system_efficiency.html) (17 slides) | Week 15, lecture B |
+| **Capstone (week 16)** | |
+| [Capstone Workshop: Evidence to Decision](slides/31_capstone_workshop.html) (11 slides) | Week 16 |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -129,8 +132,8 @@ llm-compute-systems-course/
 │   │   ├── cuda/
 │   │   │   └── rmsnorm.cu
 │   │   ├── examples/
-│   │   │   ├── l14_aoti_cpu.json
-│   │   │   └── l14_executorch_cpu.json
+│   │   │   ├── l11_aoti_cpu.json
+│   │   │   └── l11_executorch_cpu.json
 │   │   ├── handouts/
 │   │   │   ├── lab00_budgets.md
 │   │   │   ├── lab01_measurement.md
@@ -139,14 +142,14 @@ llm-compute-systems-course/
 │   │   │   ├── lab04_gemm.md
 │   │   │   ├── lab05_attention.md
 │   │   │   ├── lab06_precision.md
-│   │   │   ├── lab07_distributed.md
-│   │   │   ├── lab08_parallelism.md
+│   │   │   ├── lab07_cache.md
+│   │   │   ├── lab08_scheduling.md
 │   │   │   ├── lab09_moe.md
-│   │   │   ├── lab10_recovery.md
-│   │   │   ├── lab11_cache.md
-│   │   │   ├── lab12_scheduling.md
-│   │   │   ├── lab13_agent_policy.md
-│   │   │   ├── lab14_deployment.md
+│   │   │   ├── lab10_agent_policy.md
+│   │   │   ├── lab11_deployment.md
+│   │   │   ├── lab12_distributed.md
+│   │   │   ├── lab13_parallelism.md
+│   │   │   ├── lab14_recovery.md
 │   │   │   └── lab15_vendor_efficiency.md
 │   │   ├── tests/
 │   │   │   ├── test_agent_policy.py
@@ -258,22 +261,22 @@ llm-compute-systems-course/
 │   ├── 11_attention_execution.html
 │   ├── 12_attention_kernel_codesign.html
 │   ├── 13_precision_numerics.html
-│   ├── 14_precision_training_serving.html
-│   ├── 15_ddp_zero_fsdp.html
-│   ├── 16_collectives_overlap.html
-│   ├── 17_parallelism_recomputation.html
-│   ├── 18_training_stack_walkthrough.html
+│   ├── 14_quantization_serving.html
+│   ├── 15_serving_scheduler.html
+│   ├── 16_kv_prefix_cache_mechanisms.html
+│   ├── 17_prefill_decode_scheduling.html
+│   ├── 18_disaggregated_inference.html
 │   ├── 19_moe_execution.html
-│   ├── 20_checkpoint_recovery.html
-│   ├── 21_serving_scheduler.html
-│   ├── 22_kv_prefix_cache_mechanisms.html
-│   ├── 23_prefill_decode_scheduling.html
-│   ├── 24_disaggregated_inference.html
-│   ├── 25_speculative_decoding.html
-│   ├── 26_agentos_inference_cache_policy.html
-│   ├── 27_export_aotinductor.html
-│   ├── 28_executorch_deployment.html
-│   ├── 29_rubin_vendor_stacks.html
+│   ├── 20_speculative_decoding.html
+│   ├── 21_agentos_inference_cache_policy.html
+│   ├── 22_export_aotinductor.html
+│   ├── 23_executorch_deployment.html
+│   ├── 24_rubin_vendor_stacks.html
+│   ├── 25_ddp_zero_fsdp.html
+│   ├── 26_collectives_overlap.html
+│   ├── 27_parallelism_recomputation.html
+│   ├── 28_training_stack_walkthrough.html
+│   ├── 29_checkpoint_recovery.html
 │   ├── 30_whole_system_efficiency.html
 │   ├── 31_capstone_workshop.html
 │   ├── 32_optimization_decision_systems.html

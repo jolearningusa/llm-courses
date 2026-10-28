@@ -1,4 +1,4 @@
-# L8 — Parallel layouts, recomputation and source tracing
+# L13 — Parallel layouts, recomputation and source tracing
 
 **Released:** analytical layout calculator, CPU activation-checkpoint correctness experiment and pinned source-reading assignment. **Unverified:** measured multi-accelerator throughput/memory. Estimated 5–8 hours, student pilot pending.
 

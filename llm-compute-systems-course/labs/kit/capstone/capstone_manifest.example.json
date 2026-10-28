@@ -2,7 +2,7 @@
   "status": "proposal example; contains no measured results",
   "path": "serving",
   "question": "Does bounded prefill chunking improve declared latency goodput under a fixed arrival trace?",
-  "evidence_plan": "Start with L12 analytical replay; real-engine claims require a separate pinned deployment and raw events.",
+  "evidence_plan": "Start with L8 analytical replay; real-engine claims require a separate pinned deployment and raw events.",
   "baseline": "selected engine default scheduler at recorded version",
   "candidate": "one supported prefill chunk budget",
   "contract": {

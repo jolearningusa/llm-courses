@@ -1,4 +1,4 @@
-# L10 — Recover the computation, not only the weights
+# L14 — Recover the computation, not only the weights
 
 **Released:** actual CPU file save/load, torch 2.9.1, six deterministic synthetic steps with dropout and AdamW. Distributed durable checkpoints and real process-kill recovery remain unverified. Estimated 4–6 hours, student pilot pending.
 

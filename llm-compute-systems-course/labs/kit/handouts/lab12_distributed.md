@@ -1,4 +1,4 @@
-# L7 — Distributed updates and exposed communication
+# L12 — Distributed updates and exposed communication
 
 **Released:** actual two-process CPU Gloo DDP correctness experiment and analytical ring model. **Unverified extension:** accelerator FSDP2/NCCL/RCCL memory and overlap. Python 3.12 / torch 2.9.1; local process communication is required. Estimated 5–8 hours, student pilot pending.
 

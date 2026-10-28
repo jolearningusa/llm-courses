@@ -131,43 +131,43 @@
     "slug": "precision-lifecycle",
     "title": "Different precision paths need different evidence",
     "caption": "AMP, training recipes and post-training quantization operate at different points. Conversion alone does not prove quality or speed.",
-    "deck": "14_precision_training_serving.html",
+    "deck": "14_quantization_serving.html",
     "asset": "precision-lifecycle.svg"
   },
   {
-    "prefix": "15",
+    "prefix": "25",
     "after": "Fully sharded dataflow",
     "slug": "fsdp-shards",
     "title": "Shards become transient full parameters",
     "caption": "Persistent sharding reduces one budget; gathered layers, activations and prefetch buffers still contribute to peak memory.",
-    "deck": "15_ddp_zero_fsdp.html",
+    "deck": "25_ddp_zero_fsdp.html",
     "asset": "fsdp-shards.svg"
   },
   {
-    "prefix": "16",
+    "prefix": "26",
     "after": "All-reduce decomposition",
     "slug": "collective-ring",
     "title": "Collective semantics and physical traffic",
     "caption": "Reduce-scatter followed by all-gather produces an all-reduce result; the library can select another physical algorithm.",
-    "deck": "16_collectives_overlap.html",
+    "deck": "26_collectives_overlap.html",
     "asset": "collective-ring.svg"
   },
   {
-    "prefix": "17",
+    "prefix": "27",
     "after": "An explicit rank mesh",
     "slug": "parallel-mesh",
     "title": "A concrete eight-rank layout",
     "caption": "DP=2, TP=2, PP=2, CP=1 gives eight ranks. This drawing does not establish expert-group legality or physical placement.",
-    "deck": "17_parallelism_recomputation.html",
+    "deck": "27_parallelism_recomputation.html",
     "asset": "parallel-mesh.svg"
   },
   {
-    "prefix": "18",
+    "prefix": "28",
     "after": "TorchTitan entry chain",
     "slug": "source-walk",
     "title": "Trace the decision through code boundaries",
     "caption": "Pin source revisions, follow inputs and constraints, then distinguish a documented path from an observed runtime dispatch.",
-    "deck": "18_training_stack_walkthrough.html",
+    "deck": "28_training_stack_walkthrough.html",
     "asset": "source-walk.svg"
   },
   {
@@ -180,93 +180,93 @@
     "asset": "expert-skew.svg"
   },
   {
-    "prefix": "20",
+    "prefix": "29",
     "after": "Recovery validation",
     "slug": "restart-state",
     "title": "Recover the same training trajectory",
     "caption": "The local CPU lab checks losses, parameters and optimizer tensors; omitting RNG restoration is a deliberate failing control.",
-    "deck": "20_checkpoint_recovery.html",
+    "deck": "29_checkpoint_recovery.html",
     "asset": "restart-state.svg"
   },
   {
-    "prefix": "21",
+    "prefix": "15",
     "after": "Shared prefix ownership",
     "slug": "shared-blocks",
     "title": "One cancellation must preserve the other owner",
     "caption": "Logical sequences can share compatible prefix blocks. References and in-flight work determine when storage is reclaimable.",
-    "deck": "21_serving_scheduler.html",
+    "deck": "15_serving_scheduler.html",
     "asset": "shared-blocks.svg"
   },
   {
-    "prefix": "22",
+    "prefix": "16",
     "after": "Causal history matters",
     "slug": "prefix-branches",
     "title": "A matching suffix is not a matching history",
     "caption": "Identity includes the compatible computation and allowed sharing domain. A semantic answer cache has a different validity rule.",
-    "deck": "22_kv_prefix_cache_mechanisms.html",
+    "deck": "16_kv_prefix_cache_mechanisms.html",
     "asset": "prefix-branches.svg"
   },
   {
-    "prefix": "23",
+    "prefix": "17",
     "after": "Chunked prefill",
     "slug": "chunked-prefill",
     "title": "Bound interruptions to existing decode",
     "caption": "A smaller prefill chunk creates more decode opportunities but can add overhead and postpone prompt completion. Bars are schematic.",
-    "deck": "23_prefill_decode_scheduling.html",
+    "deck": "17_prefill_decode_scheduling.html",
     "asset": "chunked-prefill.svg"
   },
   {
-    "prefix": "24",
+    "prefix": "18",
     "after": "Equal hardware comparison",
     "slug": "pd-placement",
     "title": "Compare the same total resources",
     "caption": "Two colocated workers and one prefill plus one decode worker each use two devices. State movement and queueing can change the result.",
-    "deck": "24_disaggregated_inference.html",
+    "deck": "18_disaggregated_inference.html",
     "asset": "pd-placement.svg"
   },
   {
-    "prefix": "25",
+    "prefix": "20",
     "after": "Draft, verify, correct",
     "slug": "speculative-correction",
     "title": "Verify the draft before keeping its state",
     "caption": "Keep the accepted prefix; correct the first rejected token and discard later speculative state. The lab validates one categorical step.",
-    "deck": "25_speculative_decoding.html",
+    "deck": "20_speculative_decoding.html",
     "asset": "speculative-correction.svg"
   },
   {
-    "prefix": "26",
+    "prefix": "21",
     "after": "The retained-state decision",
     "slug": "agent-wait",
     "title": "State has a lifetime while the agent waits",
     "caption": "Compare resume work and displaced capacity across a complete task; idle byte-seconds alone do not select a policy.",
-    "deck": "26_agentos_inference_cache_policy.html",
+    "deck": "21_agentos_inference_cache_policy.html",
     "asset": "agent-wait.svg"
   },
   {
-    "prefix": "27",
+    "prefix": "22",
     "after": "The deployment boundary",
     "slug": "aoti-artifact",
     "title": "The producer and loader meet at an artifact",
     "caption": "Record input, target and runtime contracts. Exported graph archives and compiled packages can share a suffix but need different loaders.",
-    "deck": "27_export_aotinductor.html",
+    "deck": "22_export_aotinductor.html",
     "asset": "aoti-artifact.svg"
   },
   {
-    "prefix": "28",
+    "prefix": "23",
     "after": "Delegation is graph partitioning",
     "slug": "executorch-partitions",
     "title": "Delegation does not remove boundary costs",
     "caption": "Count conversion, transfer and fallback between graph partitions. The validated lab uses one unquantized CPU XNNPACK segment.",
-    "deck": "28_executorch_deployment.html",
+    "deck": "23_executorch_deployment.html",
     "asset": "executorch-partitions.svg"
   },
   {
-    "prefix": "29",
+    "prefix": "24",
     "after": "Three communication boundaries",
     "slug": "rubin-data-paths",
     "title": "CPU, scale-up and scale-out are different paths",
     "caption": "Conceptual traffic boundaries, not a complete board/rack layout. Local HBM, coherent links and network transfers have different costs.",
-    "deck": "29_rubin_vendor_stacks.html",
+    "deck": "24_rubin_vendor_stacks.html",
     "asset": "rubin-data-paths.svg"
   },
   {

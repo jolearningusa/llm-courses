@@ -48,5 +48,5 @@ def main():
     parser.add_argument('--workload',type=Path)
     args=parser.parse_args()
     workload=json.loads(args.workload.read_text()) if args.workload else [{'id':'short','arrival_s':0.,'prompt_tokens':8,'output_tokens':8},{'id':'long','arrival_s':0.005,'prompt_tokens':512,'output_tokens':4},{'id':'late','arrival_s':0.02,'prompt_tokens':16,'output_tokens':4}]
-    print(json.dumps({'lab':'L12','runs':[replay(workload,32),replay(workload,10**9)],'transfer_example':{'state_bytes':512*1024**2,'bandwidth_bytes_s':50e9,'overhead_s':0.001,'seconds':transfer_seconds(512*1024**2,50e9,0.001),'provenance':'analytical ideal effective bandwidth assumption'}},indent=2))
+    print(json.dumps({'lab':'L8','runs':[replay(workload,32),replay(workload,10**9)],'transfer_example':{'state_bytes':512*1024**2,'bandwidth_bytes_s':50e9,'overhead_s':0.001,'seconds':transfer_seconds(512*1024**2,50e9,0.001),'provenance':'analytical ideal effective bandwidth assumption'}},indent=2))
 if __name__=='__main__':main()

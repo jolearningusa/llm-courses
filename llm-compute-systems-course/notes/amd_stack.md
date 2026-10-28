@@ -27,7 +27,7 @@ HIP source portability, functional portability and performance portability are s
 
 ## Course integration
 
-In weeks 3–7, run the same tensor workload through PyTorch and the selected kernel path where hardware permits. In week 8, compare collective latency/bandwidth with NCCL/RCCL under documented topologies. In weeks 10–12, compare MoE operator dispatch and serving backends using the same checkpoint and requests when both support them. In week 15, present a portability dossier identifying what was reused, retuned, replaced or unsupported.
+In weeks 3–7, run the same tensor workload through PyTorch and the selected kernel path where hardware permits. In week 13, compare collective latency/bandwidth with NCCL/RCCL under documented topologies. In weeks 8–10, compare MoE operator dispatch and serving backends using the same checkpoint and requests when both support them. In week 12, present a portability dossier identifying what was reused, retuned, replaced or unsupported.
 
 The hands-on AMD track is optional when no AMD hardware is available; the library comparison and code-reading exercise are core content. Without both vendors' hardware, analyze supplied traces or public experiments with their limitations and make no local cross-vendor speed claim.
 

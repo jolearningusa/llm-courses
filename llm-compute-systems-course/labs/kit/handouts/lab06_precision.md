@@ -18,6 +18,8 @@ Derive 640 B for 1,024 int4 weights with group size 32 and FP32 scales. Compare 
 
 ## B. One supported recipe
 
+Part B is the training-precision exercise. It uses the same environment but is done with deck 25 (training precision, DDP and FSDP) in week 13; Parts A and C are due in week 7.
+
 Inspect `autocast_comparison`: identical initial model, data, optimizer and five steps under FP32 or CPU BF16 autocast. Report each loss, output dtype and final gradient difference. Require finite losses/gradients and compare final loss within a predeclared 2% relative threshold for this fixture; investigate rejection rather than silently loosening it. This tiny synthetic regression validates numerical plumbing, not LLM convergence or speed. No timing claim is made. Change input magnitude or shape and explain behavior.
 
 ## C. Target-specific extension

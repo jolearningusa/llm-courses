@@ -51,7 +51,7 @@ def experiment(restore_rng=True):
         remaining=train(resumed,resopt,state['cursor'],6,data)
     error=max((a-b).abs().max().item() for a,b in zip(baseline.parameters(),resumed.parameters()))
     optimizer_error=max((baseopt.state[a][key]-resopt.state[b][key]).abs().max().item() for a,b in zip(baseline.parameters(),resumed.parameters()) for key in ('step','exp_avg','exp_avg_sq'))
-    return {'lab':'L10','provenance':'actual local CPU save/load and deterministic synthetic replay','torch':torch.__version__,'checkpoint_bytes':checkpoint_bytes,'restored_rng':restore_rng,'baseline_losses':baseline_losses,'resumed_losses':first+remaining,'parameter_max_abs_error':error,'optimizer_max_abs_error':optimizer_error,'data_cursor':6}
+    return {'lab':'L14','provenance':'actual local CPU save/load and deterministic synthetic replay','torch':torch.__version__,'checkpoint_bytes':checkpoint_bytes,'restored_rng':restore_rng,'baseline_losses':baseline_losses,'resumed_losses':first+remaining,'parameter_max_abs_error':error,'optimizer_max_abs_error':optimizer_error,'data_cursor':6}
 
 if __name__=='__main__':
     result=experiment()

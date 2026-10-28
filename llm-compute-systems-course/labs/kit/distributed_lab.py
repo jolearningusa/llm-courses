@@ -53,7 +53,7 @@ def worker(rank, world, store, output, delay):
                 torch.testing.assert_close(actual,expected,rtol=1e-5,atol=1e-6)
                 max_error=max(max_error,(actual-expected).abs().max().item())
         if rank==0:
-            Path(output).write_text(json.dumps({'lab':'L7','provenance':'measured local CPU process experiment','torch':torch.__version__,'backend':'gloo','ranks':world,'global_batch':32,'steps':3,'rank1_delay_s':delay,'max_rank_step_wall_seconds':samples,'parameter_max_abs_error':max_error,'timing_scope':'local forward/backward/update plus injected delay; max reduction after timer; barrier outside'},indent=2))
+            Path(output).write_text(json.dumps({'lab':'L12','provenance':'measured local CPU process experiment','torch':torch.__version__,'backend':'gloo','ranks':world,'global_batch':32,'steps':3,'rank1_delay_s':delay,'max_rank_step_wall_seconds':samples,'parameter_max_abs_error':max_error,'timing_scope':'local forward/backward/update plus injected delay; max reduction after timer; barrier outside'},indent=2))
     finally:
         dist.destroy_process_group()
 

@@ -8,26 +8,26 @@ The most practical entry points are P01 (measurement), P02 (bounded serving conf
 
 | ID | Independent project | Initial deliverable | Minimum experimental hardware | Course connection |
 |---|---|---|---|---|
-| P01 | Cross-engine inference benchmark | Matched arrival replay, raw events, comparability ledger | CPU-capable engine first; GPU for target claims | L1, L11–L12 |
-| P02 | Serving configuration autopilot | Budgeted search with SLO/quality constraints | One supported inference GPU | L11–L12 |
-| P03 | Agent lifecycle / KV policy evaluator | Tool-wait replay and retain/offload/recompute comparison | CPU model; real engine/GPU for validation | L11, L13 |
-| P04 | KV handoff and split-serving testbed | Compatible transfer plus equal-resource comparison | Two supported devices and measured link | L12 |
-| P05 | DeepInfer service integration study | Interface audit, bounded service adapter and failure tests | Supported SM100/Ascend setup for real execution | L9, L11–L12 |
-| P06 | Compiler and library path selector | Eager/Inductor/AOT/vendor-path decision report | CPU first; target GPU for vendor claims | L2, L4, L14 |
+| P01 | Cross-engine inference benchmark | Matched arrival replay, raw events, comparability ledger | CPU-capable engine first; GPU for target claims | L1, L7–L8 |
+| P02 | Serving configuration autopilot | Budgeted search with SLO/quality constraints | One supported inference GPU | L7–L8 |
+| P03 | Agent lifecycle / KV policy evaluator | Tool-wait replay and retain/offload/recompute comparison | CPU model; real engine/GPU for validation | L7, L10 |
+| P04 | KV handoff and split-serving testbed | Compatible transfer plus equal-resource comparison | Two supported devices and measured link | L8 |
+| P05 | DeepInfer service integration study | Interface audit, bounded service adapter and failure tests | Supported SM100/Ascend setup for real execution | L9, L7–L8 |
+| P06 | Compiler and library path selector | Eager/Inductor/AOT/vendor-path decision report | CPU first; target GPU for vendor claims | L2, L4, L11 |
 | P07 | Kernel abstraction comparison lab | Same operator in two DSLs plus library baseline | Supported CUDA or ROCm GPU | L3–L5 |
 | P08 | Verified kernel-search agent | Bounded candidate edits, evaluator and rejection archive | One supported GPU | L3–L5, deck 32 |
 | P09 | Inference Evolution Controller | Cross-layer planner with reusable experiment history | One engine/device first | Deck 32; capstone |
 | P10 | Precision and quality gate | Recipe/packing/error/quality/fallback evaluator | CPU numerical path; eligible target for acceleration | L6 |
 | P11 | MoE routing and skew workbench | Route/dispatch/compute/combine breakdown | One GPU; multiple for exchange claims | L4, L9 |
-| P12 | Training layout / overlap explorer | Feasible plans plus fixed-batch update/peak validation | CPU accounting; 2–8 GPUs for measurements | L7–L8 |
-| P13 | Recoverable-training benchmark | Controlled interruption and useful-work accounting | CPU first; cluster extension | L10 |
-| P14 | Export and edge-backend optimizer | Producer/loader/partition/cold-start comparison | One supported CPU/edge target first | L14 |
+| P12 | Training layout / overlap explorer | Feasible plans plus fixed-batch update/peak validation | CPU accounting; 2–8 GPUs for measurements | L12–L13 |
+| P13 | Recoverable-training benchmark | Controlled interruption and useful-work accounting | CPU first; cluster extension | L14 |
+| P14 | Export and edge-backend optimizer | Producer/loader/partition/cold-start comparison | One supported CPU/edge target first | L11 |
 | P15 | NVIDIA/AMD portability dossier | Mechanism/support matrix and revalidated experiment | Target-specific NVIDIA and/or AMD access | L15 |
 | P16 | Host-to-device pipeline optimizer | Measured input/transfer/dispatch intervention | CPU + one GPU for overlap claims | L1 |
-| P17 | Adaptive speculative-decoding evaluator | Correct draft/verify/correct plus load-aware policy | CPU probability model; real draft/target pair on GPU | L13 |
-| P18 | Domain-transfer deployment study | One vision model and target with domain metrics | One supported device; optional second target | Optional extension to L14 |
+| P17 | Adaptive speculative-decoding evaluator | Correct draft/verify/correct plus load-aware policy | CPU probability model; real draft/target pair on GPU | L10 |
+| P18 | Domain-transfer deployment study | One vision model and target with domain metrics | One supported device; optional second target | Optional extension to L11 |
 | P19 | Reproducible optimization workbench | Shared manifests, isolated adapters and result archive | CPU development; target workers optional | Shared infrastructure |
-| P20 | Rollout/trainer resource-balance study | Fixed-budget inference/post-training stage accounting | CPU model; multi-GPU for measured loop | L10, L13, L15 |
+| P20 | Rollout/trainer resource-balance study | Fixed-budget inference/post-training stage accounting | CPU model; multi-GPU for measured loop | L14, L10, L15 |
 
 ## Common specification contract
 

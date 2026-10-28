@@ -1,4 +1,4 @@
-# L14 — Export, compile, lower and reload real artifacts
+# L11 — Export, compile, lower and reload real artifacts
 
 **Validated:** macOS arm64, Python 3.12.14, torch 2.9.1 AOTInductor CPU and a separate ExecuTorch 1.0.0 + torch 2.9.1 XNNPACK CPU environment. **Not validated:** CUDA, TensorRT, native C++-only application, edge device or quantized backend. Estimated 5–8 hours, student pilot pending.
 
@@ -38,4 +38,4 @@ Declare bounded dynamic shapes and re-export, or select one supported alternate 
 
 Submit artifacts/producer-loader manifests, raw JSON, delegate/partition evidence and [report](../../report_template.md). Instructor diagnostic: an export succeeding does not prove target execution, a file suffix does not prove format compatibility, and two CPU packages do not establish GPU or edge performance.
 
-Recorded authoring runs: [AOTInductor CPU JSON](../examples/l14_aoti_cpu.json) and [ExecuTorch CPU JSON](../examples/l14_executorch_cpu.json). They are actual small-fixture host measurements with stated scope, not performance targets or portable benchmark scores.
+Recorded authoring runs: [AOTInductor CPU JSON](../examples/l11_aoti_cpu.json) and [ExecuTorch CPU JSON](../examples/l11_executorch_cpu.json). They are actual small-fixture host measurements with stated scope, not performance targets or portable benchmark scores.

@@ -1,4 +1,4 @@
-# L12 — Replay scheduling and budget disaggregation
+# L8 — Replay scheduling and budget disaggregation
 
 **Released:** standard-library deterministic virtual-time simulation, plus analytical KV-transfer calculator. **Not run:** actual serving or split GPU cluster. Estimated 5–8 hours, student pilot pending.
 
