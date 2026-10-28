@@ -5,7 +5,9 @@ Run after scripts/build_site.py. It reads each HTML page under the site
 directory, follows every relative href and src, and fails if the target file
 does not exist (a link to a directory needs an index.html there). It also
 fails if a course README does not link every deck in its slides/ folder, so
-the course page lists each deck however the README is rendered. Links to
+the course page lists each deck however the README is rendered, or if a built
+deck lacks the link bar back to the site home and its course page (added by
+build_site.py). Links to
 other sites are skipped unless --external is given, which sends a request to
 each one; use that locally, not in CI, because remote sites rate-limit and
 time out. Usage:
@@ -75,6 +77,20 @@ def unlisted_decks() -> list[str]:
     return missing
 
 
+def decks_without_nav(site: Path) -> list[str]:
+    """Built decks that do not link back to the site home and their course page."""
+    missing = []
+    for src in sorted(ROOT.glob("*/slides/*.html")):
+        deck = site / src.relative_to(ROOT)
+        if not deck.is_file():
+            continue  # not a published course
+        text = deck.read_text(encoding="utf-8", errors="replace")
+        nav = re.search(r'<nav id="site-deck-nav"[^>]*>(.*?)</nav>', text, re.S)
+        if not nav or 'href="../../index.html"' not in nav.group(1) or 'href="../index.html"' not in nav.group(1):
+            missing.append(str(deck.relative_to(site)))
+    return missing
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--site", default=str(ROOT / "_site"))
@@ -106,12 +122,16 @@ def main() -> int:
     unlisted = unlisted_decks()
     for line in unlisted:
         print(f"unlisted deck {line}")
+    no_nav = decks_without_nav(site)
+    for line in no_nav:
+        print(f"no home link {line}")
     bad_external = check_external(external) if args.external else []
     for line in bad_external:
         print(f"bad external {line}")
     checked = f"{len(external)} external link(s) checked" if args.external else f"{len(external)} external link(s) skipped"
-    print(f"Checked {len(pages)} page(s): {len(broken)} broken relative link(s); {len(unlisted)} unlisted deck(s); {checked}")
-    return 1 if broken or unlisted or bad_external else 0
+    print(f"Checked {len(pages)} page(s): {len(broken)} broken relative link(s); {len(unlisted)} unlisted deck(s); "
+          f"{len(no_nav)} deck(s) without a home link; {checked}")
+    return 1 if broken or unlisted or no_nav or bad_external else 0
 
 
 if __name__ == "__main__":

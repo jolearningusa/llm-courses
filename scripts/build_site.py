@@ -12,7 +12,7 @@ Output layout (mirrors the repository):
     _site/index.html                    course catalogue
     _site/<course>/index.html           rendered course README
     _site/<course>/**/<name>.html       rendered Markdown files
-    _site/<course>/slides/*.html        slide decks, copied unchanged
+    _site/<course>/slides/*.html        slide decks, with a home/course link bar added
     _site/<course>/**/<file>.html       syntax-highlighted view of a lab file
     _site/<course>/**/<file>            raw copy of every file (for download)
     _site/<course>/<dir>/index.html     directory listing where none exists
@@ -88,6 +88,30 @@ PYGMENTS_CSS = (
     + HtmlFormatter(style="github-dark").get_style_defs(".highlight")
     + "\n}"
 )
+
+
+# Added to every slide deck at build time, so no deck has to carry its own copy and
+# new decks get it too. check_site.py fails if a built deck lacks it. Fixed at the
+# top left, small and translucent, so it stays clear of slide content and of the
+# keyboard hint and slide number that decks draw; hidden when printing.
+DECK_NAV_ID = "site-deck-nav"
+
+
+def deck_nav(course_title: str) -> str:
+    return f"""<nav id="{DECK_NAV_ID}" aria-label="Site"><a href="../../index.html">{SITE_TITLE}</a> / <a href="../index.html" title="{html.escape(course_title)}">Course page</a></nav>
+<style>#{DECK_NAV_ID}{{position:fixed;left:8px;top:6px;z-index:2147483647;font:12px/1.4 system-ui,sans-serif;
+padding:2px 8px;border-radius:4px;background:rgba(0,0,0,.55);color:#ccd;opacity:.6}}
+#{DECK_NAV_ID}:hover,#{DECK_NAV_ID}:focus-within{{opacity:1}}
+#{DECK_NAV_ID} a{{color:#fff;text-decoration:none}}#{DECK_NAV_ID} a:hover{{text-decoration:underline}}
+@media print{{#{DECK_NAV_ID}{{display:none}}}}</style>
+"""
+
+
+def add_deck_nav(deck_html: str, course_title: str) -> str:
+    """Insert the site link bar just before </body> (or at the end if there is none)."""
+    nav = deck_nav(course_title)
+    i = deck_html.lower().rfind("</body>")
+    return deck_html + nav if i < 0 else deck_html[:i] + nav + deck_html[i:]
 
 
 def page(title: str, body: str, depth: int, crumbs: list[tuple[str, str]], source: str | None = None) -> str:
@@ -224,11 +248,12 @@ def build_course(course: Path, out: Path) -> dict:
         depth = len(rel.parts)  # course dir + subdirs below site root
         crumbs = [(title, "../" * (depth - 1) + "index.html")]
         repo_rel = src.relative_to(ROOT).as_posix()
-        shutil.copy2(src, dest)  # raw copy; slide decks are served as-is
+        shutil.copy2(src, dest)  # raw copy of every file
 
         if src.suffix.lower() in (".html", ".htm"):
             if rel.parts[0] == "slides":
                 decks.append((html_title(src), rel.as_posix()))
+                dest.write_text(add_deck_nav(src.read_text(encoding="utf-8"), title), encoding="utf-8")
             continue
         if src.suffix.lower() == ".md":
             text = src.read_text(encoding="utf-8")
