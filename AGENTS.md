@@ -115,7 +115,8 @@ check the primary source, update the bibliography, update `version` and `verifie
 the decks and labs, one PR per change.
 
 The **Slide review** workflow (`.github/workflows/slide_review.yml`, `scripts/check_slide_review.py`) runs
-every other Monday. It asks, in one issue labeled `slide-review`, whether up to four slides should change
-because a cited source moved, a check is past `max_age_days`, or a slide says "as of" an old date. It does
-not edit slides. A **yes** on that issue is the go-ahead for one PR of fewer than five slides; a **no**
-leaves them until the next run.
+every other Monday. It reads the claim written on each slide, fetches that source's current page
+(PyPI, npm, a GitHub release, or the newest spec folder), and asks in one issue labeled `slide-review`
+whether up to four slides should change because the slide and the web disagree, or a slide says "as of"
+an old date. It does not edit slides. A **yes** on that issue is the go-ahead for one PR of fewer than
+five slides; a **no** leaves them until the next run.

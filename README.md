@@ -28,7 +28,7 @@ llm-courses/
 │   ├── check_course.py          # Fails when a course disagrees with itself (bibliography, versions, layout)
 │   ├── check_freshness.py       # Reports upstream changes to tracked sources and broken external links
 │   ├── check_site.py            # Fails on broken relative links in the built site
-│   ├── check_slide_review.py    # Every other Monday: propose at most four slide updates and ask first
+│   ├── check_slide_review.py    # Every other Monday: quote slide claims, check them on the web, ask first
 │   └── check_slides.mjs         # Opens every deck in Chromium: console errors, slide numbering
 ├── .github/
 │   ├── workflows/pages.yml      # Builds and deploys the website on every push to main

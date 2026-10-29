@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Propose slide updates, at most four slides, and ask before anything is edited.
 
-The biweekly Slide review workflow runs this. It does not change slides. It
-looks at each tracked source that a slide cites and at "as of YYYY-MM-DD"
-dates in the decks:
-
-- upstream moved past the version the slide was checked against, so the
-  slide may be wrong or a new behavior belongs on that same slide;
-- the source has not been re-read within max_age_days;
-- a slide says "as of" a date older than max_age_days.
+The biweekly Slide review workflow runs this. It does not change slides.
+For each tracked source that a slide teaches, it reads the claim in the
+slide text (a cite_patterns match, or the recorded version if the slide
+states it) and fetches the current primary source on the web (PyPI, npm,
+a GitHub release, or the newest dated spec folder). A slide is proposed
+when what it says and what the web says now differ. The report quotes the
+slide and includes a short note from that page. "as of YYYY-MM-DD" older
+than max_age_days is proposed too.
 
 At most four slides are proposed (fewer than five). The rest wait for the
 next run. Writes a Markdown report that asks whether to change the slides,
@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import html
 import json
 import os
 import re
@@ -30,7 +31,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from check_course import ROOT, courses, read  # noqa: E402
-from check_freshness import latest, significant  # noqa: E402
+from check_freshness import fetch, latest, significant  # noqa: E402
 
 MAX_SLIDES = 4  # fewer than five slides in one proposal
 AS_OF_RE = re.compile(r"\bas of (\d{4}-\d{2}-\d{2})\b", re.I)
@@ -49,8 +50,86 @@ def slide_text(course: Path, rel: str) -> str:
     return read(path) if path.is_file() else ""
 
 
-def mentions(text: str, version: str | None) -> bool:
-    return bool(version) and version in text
+def slide_plain(raw: str) -> str:
+    """Visible text of a deck, so a claim can be quoted from the slide itself."""
+    text = re.sub(r"(?is)<script[\s\S]*?</script>|<style[\s\S]*?</style>", " ", raw)
+    text = re.sub(r"<[^>]+>", " ", text)
+    return re.sub(r"\s+", " ", html.unescape(text)).strip()
+
+
+def clip(text: str, limit: int = 240) -> str:
+    text = re.sub(r"\s+", " ", text or "").strip()
+    return text if len(text) <= limit else text[: limit - 1].rstrip() + "…"
+
+
+def around(plain: str, start: int, end: int) -> str:
+    return clip(plain[max(0, start - 70): min(len(plain), end + 70)], 220)
+
+
+def live_record(upstream: dict) -> dict:
+    """Current version, the page it came from, and a short note from that page."""
+    kind = upstream["type"]
+    if kind == "pypi":
+        info = fetch(f"https://pypi.org/pypi/{upstream['package']}/json", json_body=True)["info"]
+        version = info["version"]
+        url = info.get("release_url") or f"https://pypi.org/project/{upstream['package']}/{version}/"
+        return {"version": version, "url": url, "note": info.get("summary") or ""}
+    if kind == "npm":
+        data = fetch(f"https://registry.npmjs.org/{upstream['package']}/latest", json_body=True)
+        version = data["version"]
+        url = f"https://www.npmjs.com/package/{upstream['package']}/v/{version}"
+        return {"version": version, "url": url, "note": data.get("description") or ""}
+    if kind == "github_release":
+        rel = fetch(f"https://api.github.com/repos/{upstream['repo']}/releases/latest", json_body=True)
+        return {"version": rel["tag_name"], "url": rel.get("html_url") or "", "note": rel.get("body") or rel.get("name") or ""}
+    if kind == "github_dir":
+        version = latest(upstream)
+        url = f"https://github.com/{upstream['repo']}/tree/HEAD/{upstream['path']}/{version}"
+        return {"version": version, "url": url, "note": f"Newest matching folder under {upstream['path']} is {version}."}
+    raise ValueError(f"unknown upstream type {kind!r}")
+
+
+def stated_claims(plain: str, patterns: list[str]) -> list[tuple[str, str]]:
+    """(version the slide states, surrounding words) for each cite_patterns hit."""
+    found: list[tuple[str, str]] = []
+    seen: set[str] = set()
+    for pattern in patterns:
+        for match in re.compile(pattern).finditer(plain):
+            version = match.group(1) if match.lastindex else match.group(0)
+            if version in seen:
+                continue
+            seen.add(version)
+            found.append((version, around(plain, match.start(), match.end())))
+    return found
+
+
+def version_window(plain: str, version: str) -> str:
+    at = plain.find(version)
+    return around(plain, at, at + len(version)) if at >= 0 else ""
+
+
+def content_reasons(plain: str, item: dict, live: dict) -> list[str]:
+    """Quote the slide, then what the web says now, when those differ."""
+    web = live["version"]
+    where = f"[{web}]({live['url']})" if live.get("url") else f"`{web}`"
+    note = clip(live.get("note") or "")
+    note_bit = f" From that page: {note}" if note else ""
+    label = item["name"]
+    claims = stated_claims(plain, item.get("cite_patterns", []))
+    reasons = []
+    if claims:
+        for stated, quote in claims:
+            if significant(stated, item) == significant(web, item):
+                continue
+            reasons.append(f'Slide says "{quote}". On the web, {label} is now {where}.{note_bit}')
+        return reasons
+    recorded = item.get("version") or ""
+    if recorded and recorded in plain and significant(recorded, item) != significant(web, item):
+        quote = version_window(plain, recorded)
+        return [f'Slide says "{quote}". On the web, {label} is now {where}.{note_bit}']
+    if significant(recorded, item) != significant(web, item):
+        return [f"This slide teaches {label} and does not mention `{web}`. On the web it is now {where}.{note_bit}"]
+    return []
 
 
 def collect(today: dt.date) -> tuple[dict[tuple[str, str], dict], list[str]]:
@@ -74,43 +153,15 @@ def collect(today: dt.date) -> tuple[dict[tuple[str, str], dict], list[str]]:
             slides = slide_paths(item.get("used_in", []))
             if not slides:
                 continue
-            label = item["name"]
-            version = item.get("version")
-            changed_to = None
             try:
-                now = latest(item["upstream"])
+                live = live_record(item["upstream"])
             except Exception as e:  # noqa: BLE001
-                errors.append(f"**{label}** ({course.name}): could not read upstream: {e}")
-                now = None
-            if now is not None and significant(now, item) != significant(version, item):
-                changed_to = now
-            verified = dt.date.fromisoformat(item["verified"])
-            stale = (today - verified).days > max_age
-            if changed_to is None and not stale:
+                errors.append(f"**{item['name']}** ({course.name}): could not read upstream: {e}")
                 continue
-            notes = item.get("notes", "").strip()
             for slide in slides:
-                text = slide_text(course, slide)
-                if changed_to is not None:
-                    already = mentions(text, changed_to)
-                    if already:
-                        reason = (f"{label} upstream is `{changed_to}` (tracked as `{version}`), "
-                                  "and this slide already mentions the new version. Re-read the primary "
-                                  "source and update tracked_sources.json if the slide is right.")
-                    else:
-                        reason = (f"{label} moved from `{version}` to `{changed_to}`. Re-read the primary "
-                                  "source. Correct this slide if a claim changed, or add the new behavior "
-                                  "on this same slide.")
-                    if notes:
-                        reason += f" {notes}"
+                plain = slide_plain(slide_text(course, slide))
+                for reason in content_reasons(plain, item, live):
                     add(course.name, slide, reason, True)
-                elif stale:
-                    age = (today - verified).days
-                    reason = (f"{label} was last checked on {verified} ({age} days ago). "
-                              "Re-read the primary source before keeping this slide as written.")
-                    if notes:
-                        reason += f" {notes}"
-                    add(course.name, slide, reason, False)
 
         for deck in sorted((course / "slides").glob("*.html")):
             dates = [dt.date.fromisoformat(m) for m in AS_OF_RE.findall(read(deck))]
