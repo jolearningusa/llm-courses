@@ -113,3 +113,9 @@ link, and keeps one open issue labeled `freshness` with the report. To update a 
 (from that issue, a new paper or a release), follow [docs/updating-courses.md](docs/updating-courses.md):
 check the primary source, update the bibliography, update `version` and `verified` in the tracked entry, then
 the decks and labs, one PR per change.
+
+The **Slide review** workflow (`.github/workflows/slide_review.yml`, `scripts/check_slide_review.py`) runs
+every other Monday. It asks, in one issue labeled `slide-review`, whether up to four slides should change
+because a cited source moved, a check is past `max_age_days`, or a slide says "as of" an old date. It does
+not edit slides. A **yes** on that issue is the go-ahead for one PR of fewer than five slides; a **no**
+leaves them until the next run.

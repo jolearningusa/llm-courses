@@ -8,6 +8,7 @@ change shape. Three things keep a course honest as it changes:
 | `scripts/check_course.py` | Every PR (`Checks / links`) | An arXiv ID cited outside the bibliography; a tracked fact cited with an old value (for example `MCP 2025-11-25`); a file the README layout does not list, or a listed file that does not exist; a README slide count that differs from the deck; a master deck (`slides/00_*.html`) that does not link every deck; a course missing from the root README table |
 | `scripts/check_slides.mjs`, `scripts/check_site.py` | Every PR | Console errors, broken slide numbering, broken relative links, a deck missing from the course README |
 | `scripts/check_freshness.py` | Weekly (`Freshness` workflow, Mondays), or by hand | A tracked source whose upstream moved past the version the course was checked against; a source not re-verified within `max_age_days`; broken external links |
+| `scripts/check_slide_review.py` | Every other Monday (`Slide review` workflow), or by hand | Slides whose cited source moved, whose check is past `max_age_days`, or which say "as of" an old date. At most four slides are proposed. The issue asks whether to change them; slides are not edited until the answer is yes |
 
 The weekly workflow keeps a single open issue labeled **freshness** with the latest report and closes it
 when everything is current again. Run any check locally with `python scripts/<name>` (see
@@ -66,6 +67,15 @@ deprecation). Work in the usual one-task-one-PR way ([AGENTS.md](../AGENTS.md)):
    ([AGENTS.md](../AGENTS.md)).
 6. When all items in the freshness issue are handled, re-run the **Freshness** workflow
    (Actions → Freshness → Run workflow) to close the issue, or let next Monday's run do it.
+
+## Answering a slide review
+
+The Slide review issue is a question, not a change. It lists at most four slides.
+
+- Reply **yes** to allow one pull request that touches only those slides (and the Mandarin twin of each,
+  which does not count as an extra slide). Follow the steps above, starting from the primary source.
+  Fewer than five slides in that PR.
+- Reply **no** to leave the slides as they are. The next run asks again only if something is still due.
 
 ### Asking Claude to do it
 
