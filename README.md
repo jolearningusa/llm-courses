@@ -28,11 +28,13 @@ llm-courses/
 │   ├── check_course.py          # Fails when a course disagrees with itself (bibliography, versions, layout)
 │   ├── check_freshness.py       # Reports upstream changes to tracked sources and broken external links
 │   ├── check_site.py            # Fails on broken relative links in the built site
+│   ├── check_slide_review.py    # Every other Monday: quote slide claims, check them on the web, ask first
 │   └── check_slides.mjs         # Opens every deck in Chromium: console errors, slide numbering
 ├── .github/
 │   ├── workflows/pages.yml      # Builds and deploys the website on every push to main
 │   ├── workflows/checks.yml     # Consistency, link and slide checks on every pull request
 │   ├── workflows/freshness.yml  # Weekly freshness report, kept in one "freshness" issue
+│   ├── workflows/slide_review.yml # Every other Monday: ask before changing up to four slides
 │   └── pull_request_template.md
 └── <course>/                    # One directory per course, for example llm-agentos-course/
     ├── README.md                # Overview, syllabus, repository layout (required)
