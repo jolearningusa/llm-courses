@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — 可观测性与评测</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · 第 6 模块讲座</div>
+  <h1 style="margin-top:22px">观测与评测 AgentOS</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">日志、追踪、遥测、仪表盘与评测：如何判断一个 harness 是否健康，
+    以及它的质量是在上升还是下降。结合 OpenClaw、Hermes Agent 和 vLLM 中真实的导出器。</p>
+  <p style="margin-top:28px"><span class="pill">追踪</span><span class="pill">指标</span><span class="pill">OpenTelemetry GenAI</span><span class="pill">评测</span><span class="pill">仪表盘</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>动机</small>为什么智能体比普通服务更难监控</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li><b>非确定性</b>：同样的输入，每次运行可能走不同的路径。</li>
+        <li><b>长且分叉</b>：一个任务包含几十次模型调用、工具调用、记忆读取和子智能体。</li>
+        <li><b>失败往往是无声的</b>：智能体说“已预订”，实际什么都没订。对话记录与结果不一致。</li>
+        <li><b>成本也是质量指标</b>：即使答案正确，token、重试和循环也要花钱。</li>
+        <li><b>harness 经常变化</b>：提示词、工具、模型和插件都在变，因此回归不断出现。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>四个问题，四种信号</h3>
+      <table class="dense">
+        <tr><td>发生了什么？</td><td><b>追踪（Traces）</b>：每次运行一棵 span 树</td></tr>
+        <tr><td>具体说了什么？</td><td><b>日志（Logs）</b>与捕获的内容（需主动开启）</td></tr>
+        <tr><td>运行得怎么样？</td><td><b>指标（Metrics）</b>：延迟、token、成本、队列</td></tr>
+        <tr><td>质量好不好？</td><td><b>评测（Evals）</b>：打分的任务，附在追踪上的分数</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="cite">对话记录与结果：Anthropic, "Demystifying evals for AI agents" (Jan 2026)。</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>信号来源</small>AgentOS 的三个层次都会产生遥测</h2>
+  <svg viewBox="0 0 1136 420" width="1136" height="420">
+    <g font-size="18">
+      <rect x="0" y="0" width="1136" height="120" rx="12" fill="#14213a" stroke="#7be0b8"/>
+      <text x="24" y="38" font-size="22" font-weight="700" fill="#7be0b8">智能体 / 任务层</text>
+      <text x="24" y="70">任务成功了吗？每个任务的步数、工具错误、循环、记忆召回、用户反馈。</text>
+      <text x="24" y="98" fill="#9aa6bd">来源：评测打分器、附在追踪上的分数、环境中的结果检查</text>
+      <rect x="0" y="146" width="1136" height="120" rx="12" fill="#14213a" stroke="#6ea8ff"/>
+      <text x="24" y="184" font-size="22" font-weight="700" fill="#6ea8ff">Harness 层（“内核”）</text>
+      <text x="24" y="216">运行、轮次、模型调用、工具执行、上下文组装、队列、会话、成本。</text>
+      <text x="24" y="244" fill="#9aa6bd">来源：harness 钩子和导出器：OpenClaw diagnostics-otel、Hermes Langfuse / OTel 插件</text>
+      <rect x="0" y="292" width="1136" height="120" rx="12" fill="#14213a" stroke="#ffb86b"/>
+      <text x="24" y="330" font-size="22" font-weight="700" fill="#ffb86b">推理引擎层</text>
+      <text x="24" y="362">TTFT、token 间延迟、排队时间、运行 / 等待中的请求、KV 缓存使用、前缀缓存命中。</text>
+      <text x="24" y="390" fill="#9aa6bd">来源：vLLM Prometheus /metrics（实验 5）、托管 API 的 provider usage 字段</text>
+    </g>
+  </svg>
+  <p class="muted" style="font-size:18px;margin-top:8px">一个 trace ID 应当把三层串起来：传输方式允许时，OpenClaw 会在对 provider 的调用上发送 W3C <code>traceparent</code> 头。</p>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>追踪</small>智能体追踪的剖面</h2>
+  <div class="cols" style="grid-template-columns: 1.15fr 0.85fr">
+    <svg viewBox="0 0 640 470" width="580" height="426">
+      <g font-size="16">
+        <rect x="0" y="0" width="630" height="44" rx="6" fill="#1c2a4d" stroke="#7be0b8"/><text x="12" y="28">invoke_agent  （一轮 / 一次运行）</text>
+        <rect x="30" y="56" width="600" height="40" rx="6" fill="#161d2e" stroke="#2a3550"/><text x="42" y="82">上下文组装  （记忆召回、压缩）</text>
+        <rect x="30" y="106" width="600" height="40" rx="6" fill="#161d2e" stroke="#6ea8ff"/><text x="42" y="132">chat {model}  → tokens, finish_reason = tool_calls</text>
+        <rect x="60" y="156" width="570" height="40" rx="6" fill="#161d2e" stroke="#ffb86b"/><text x="72" y="182">execute_tool web_search  → 参数、结果、outcome</text>
+        <rect x="60" y="206" width="570" height="40" rx="6" fill="#161d2e" stroke="#ffb86b"/><text x="72" y="232">execute_tool memory_search</text>
+        <rect x="30" y="256" width="600" height="40" rx="6" fill="#161d2e" stroke="#6ea8ff"/><text x="42" y="282">chat {model}  → finish_reason = tool_calls</text>
+        <rect x="60" y="306" width="570" height="40" rx="6" fill="#161d2e" stroke="#ff7a85"/><text x="72" y="332">等待批准  （用户确认高风险工具）</text>
+        <rect x="60" y="356" width="570" height="40" rx="6" fill="#1c2a4d" stroke="#7be0b8"/><text x="72" y="382">子智能体：invoke_agent researcher  （自己的子树）</text>
+        <rect x="30" y="406" width="600" height="40" rx="6" fill="#161d2e" stroke="#6ea8ff"/><text x="42" y="432">chat {model}  → finish_reason = stop</text>
+      </g>
+    </svg>
+    <div>
+      <ul style="font-size:18px">
+        <li>一次运行是一棵 <b>span 树</b>：智能体 → 模型调用 → 工具调用 → 子智能体。</li>
+        <li>每个 span 带有耗时、token、成本和状态；内容（提示词、工具参数）是可选的。</li>
+        <li>按<b>会话</b>（对话）和<b>任务</b>（评测用例）对运行分组。</li>
+        <li>这棵树是调试的基本单位：通过阅读它找出出错的那一步。</li>
+      </ul>
+      <div class="card" style="margin-top:12px">
+        <h3>Hermes hermes-otel 的 span 名称</h3>
+        <p style="font-size:16px;margin:0"><code>agent</code>, <code>skill.{name}</code>, <code>llm.{model}</code>, <code>api.{model}</code>, <code>tool.{name}</code>, <code>approval.{pattern}</code>, <code>subagent.{role}</code></p>
+      </div>
+    </div>
+  </div>
+  <div class="cite">span 名称：hermes-otel 插件文档 (hermes-agent.nousresearch.com/docs/plugins/hermes_otel)；操作名称：OpenTelemetry GenAI 语义约定。</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>标准</small>面向 GenAI 的 OpenTelemetry 语义约定</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><th>项目</th><th>约定</th></tr>
+        <tr><td>操作</td><td><code>chat</code>, <code>text_completion</code>, <code>generate_content</code>, <code>embeddings</code>, <code>create_agent</code>, <code>invoke_agent</code>, <code>invoke_workflow</code>, <code>execute_tool</code></td></tr>
+        <tr><td>Span 名称</td><td><code>{operation} {target}</code>，例如 <code>chat gpt-4o-mini</code>、<code>execute_tool {gen_ai.tool.name}</code></td></tr>
+        <tr><td>属性</td><td><code>gen_ai.provider.name</code>, <code>gen_ai.request.model</code>, <code>gen_ai.response.model</code>, <code>gen_ai.usage.input_tokens</code> / <code>output_tokens</code>, <code>gen_ai.response.finish_reasons</code>, <code>gen_ai.agent.name</code>, <code>gen_ai.tool.name</code></td></tr>
+        <tr><td>指标</td><td><code>gen_ai.client.operation.duration</code>, <code>gen_ai.client.token.usage</code></td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>需要了解的两点</h3>
+      <ul>
+        <li><b>状态：Development。</b>名称仍可能变化；用 <code>OTEL_SEMCONV_STABILITY_OPT_IN=gen_ai_latest_experimental</code> 选择加入最新版本。</li>
+        <li><b>内容默认关闭。</b>许多插桩通过 <code>OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true</code> 开启。</li>
+        <li>OpenInference（Arize）是 Phoenix 使用的并行约定；Hermes OTel 插件两者都会发出。</li>
+        <li>这些约定已迁移到独立仓库：<code>open-telemetry/semantic-conventions-genai</code>。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">opentelemetry.io/docs/specs/semconv/gen-ai (moved notice); Greptime, "OpenTelemetry GenAI semantic conventions" (May 2026); OpenInference: github.com/Arize-ai/openinference.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>Harness · OpenClaw</small><code style="font-size:30px">diagnostics-otel</code>：通过 OTLP 导出追踪、指标、日志</h2>
+  <div class="cols">
+    <div>
+<pre>{
+  "diagnostics": {
+    "enabled": true,
+    "otel": {
+      "enabled": true,
+      "endpoint": "http://localhost:4318",
+      "protocol": "http/protobuf",
+      "serviceName": "openclaw",
+      "logs": true,
+      "sampleRate": 0.2,
+      "captureContent": false
+    }
+  }
+}</pre>
+      <p class="muted" style="font-size:16px;margin-top:10px">启用后追踪和指标默认开启，日志默认关闭，<code>sampleRate</code> 作用于根 span；仅支持 <code>http/protobuf</code>。</p>
+    </div>
+    <div>
+      <table class="dense">
+        <tr><th>类别</th><th>部分名称</th></tr>
+        <tr><td>Span</td><td><code>openclaw.run</code>, <code>openclaw.model.call</code>, <code>openclaw.tool.execution</code>, <code>openclaw.context.assembled</code>, <code>openclaw.tool.loop</code>, <code>openclaw.session.stuck</code></td></tr>
+        <tr><td>成本</td><td><code>openclaw.tokens</code>, <code>openclaw.cost.usd</code>, <code>openclaw.context.tokens</code></td></tr>
+        <tr><td>延迟</td><td><code>openclaw.run.duration_ms</code>, <code>openclaw.model_call.time_to_first_byte_ms</code>, <code>openclaw.tool.execution.duration_ms</code></td></tr>
+        <tr><td>健康</td><td><code>openclaw.queue.depth</code>, <code>openclaw.queue.wait_ms</code>, <code>openclaw.model.failover</code>, <code>openclaw.memory.pressure</code></td></tr>
+        <tr><td>隐私</td><td>默认不含原始内容；<code>captureContent</code> 子键按类别主动开启；系统提示词需要单独的开关</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/gateway/opentelemetry and its configuration, metrics, spans and privacy sub-pages (openclaw 2026.7 docs).</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>Harness · Hermes Agent</small>两个可观测性插件，两种隐私默认值</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>内置：<code>observability/langfuse</code></h3>
+      <ul>
+        <li>主动启用：<code>hermes plugins enable observability/langfuse</code>。</li>
+        <li>每轮一个根 span（“Hermes turn”），每次 LLM 调用一个 generation（模型、用量、成本、延迟），每次工具调用一个 observation。</li>
+        <li>按 Hermes 会话 ID 对会话分组（子智能体用任务 ID）。</li>
+        <li>失败时放行（fail-open）：缺少密钥或 SDK 时静默变为空操作。</li>
+        <li><code>HERMES_LANGFUSE_SAMPLE_RATE</code>、<code>HERMES_LANGFUSE_MAX_CHARS</code>（12000）。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>社区：<code>hermes-otel</code></h3>
+      <ul>
+        <li>把钩子（<code>pre_llm_call</code>、<code>post_tool_call</code>、<code>subagent_start</code>、……）转换为 span 树。</li>
+        <li>发出 OpenInference 和 <code>gen_ai.*</code> 属性；已用 Phoenix、Langfuse、LangSmith、Jaeger、Tempo、SigNoz、Honeycomb 等测试。</li>
+        <li>配置位于 <code>~/.hermes/hermes_otel.yaml</code>。</li>
+        <li><span class="warn">默认 <code>content_capture: full</code></span>：除非设为 <code>preview</code> 或 <code>off</code>，提示词、响应和工具数据会发往每个后端。</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted" style="font-size:18px;margin-top:16px">对比 OpenClaw，其内容默认关闭。把任何导出器接到共享后端之前，先检查它的内容捕获默认值。</p>
+  <div class="cite">langfuse.com/integrations/other/hermes; hermes-agent.nousresearch.com/docs/plugins/hermes_otel (requires Hermes 0.21+).</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>引擎</small>vLLM 指标：被测量的系统记忆平面</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><th>指标（Prometheus，<code>/metrics</code>）</th><th>含义</th></tr>
+        <tr><td>vllm:time_to_first_token_seconds</td><td>TTFT 直方图</td></tr>
+        <tr><td>vllm:inter_token_latency_seconds</td><td>流式输出 token 之间的间隔</td></tr>
+        <tr><td>vllm:e2e_request_latency_seconds</td><td>端到端请求延迟</td></tr>
+        <tr><td>vllm:request_queue_time_seconds</td><td>等待被调度的时间</td></tr>
+        <tr><td>vllm:num_requests_running</td><td>运行中的请求（另有等待中的）</td></tr>
+        <tr><td>vllm:kv_cache_usage_perc</td><td>正在使用的 KV 块比例</td></tr>
+        <tr><td>vllm:prefix_cache_queries / _hits</td><td>前缀缓存命中率 = hits / queries</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>智能体构建者为什么要关心</h3>
+      <ul>
+        <li>智能体会反复发送很长且大部分相同的提示词。harness 变更后<b>前缀缓存命中率</b>下降，通常意味着提示词前缀不再稳定（例如会话中途编辑了记忆）。</li>
+        <li><b>排队时间</b>上升而模型延迟持平，说明瓶颈在调度器而非模型。</li>
+        <li>KV 使用率接近 1.0 预示着抢占和延迟尖峰。</li>
+      </ul>
+      <p class="muted" style="font-size:16px">实验 5 已经在运行 vLLM；再加上 Prometheus 和 Grafana 即可实时观察这些指标。</p>
+    </div>
+  </div>
+  <div class="cite">docs.vllm.ai/en/stable/design/metrics。总课件第 9 页和第 12–14 页讲解 KV 缓存平面。</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>指标</small>harness 的指标目录</h2>
+  <table class="dense">
+    <tr><th>分组</th><th>指标</th><th>典型告警</th></tr>
+    <tr><td>延迟</td><td>TTFT、每轮耗时、每任务耗时（P50 / P95 / P99）、工具耗时、排队等待</td><td>P95 每轮延迟翻倍</td></tr>
+    <tr><td>成本</td><td>每轮和每任务的输入 / 输出 / 缓存 token、每任务 $、每次调用的上下文 token</td><td>每个成功任务的 $ 上升 30%</td></tr>
+    <tr><td>可靠性</td><td>模型错误、provider 故障切换、工具错误率、重试、超时、被拦截的工具调用</td><td>工具错误率 &gt; 5%</td></tr>
+    <tr><td>行为</td><td>每任务步数、检测到的工具循环、卡住的会话、每会话压缩次数、派生的子智能体数</td><td>任何会话卡住 &gt; 10 分钟</td></tr>
+    <tr><td>记忆</td><td>每轮召回调用数、注入的记忆、注入精确率、记忆库大小</td><td>变更后召回精确率下降</td></tr>
+    <tr><td>质量</td><td>任务成功率（pass@1、pass^k）、抽样追踪上的打分器分数、点赞 / 点踩、升级人工</td><td>回归套件 &lt; 95%</td></tr>
+    <tr><td>公平性</td><td>每智能体 / 每用户吞吐量、Jain 公平性指数（总课件第 20 页）</td><td>某个租户饿死其他租户</td></tr>
+  </table>
+  <div class="cite">成本和行为指标示例对应 OpenClaw 导出的指标（openclaw.tokens、openclaw.cost.usd、openclaw.tool.loop、openclaw.session.stuck）。</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>行为</small>从遥测中检测智能体病态</h2>
+  <div class="cols3">
+    <div class="card">
+      <h3>循环</h3>
+      <p>同一个工具、同样的参数，一遍又一遍。OpenClaw 将 <code>openclaw.tool.loop</code> 同时导出为 span 和指标。</p>
+      <p class="muted">修复：harness 中的循环检测、步数上限、更好的工具错误信息。</p>
+    </div>
+    <div class="card">
+      <h3>卡住的会话</h3>
+      <p>一次运行永远不结束，或在某个工具上无限等待。OpenClaw：<code>openclaw.session.stuck</code>、<code>stuck_age_ms</code>、恢复计数器。</p>
+      <p class="muted">修复：超时、心跳、恢复。</p>
+    </div>
+    <div class="card">
+      <h3>上下文压力</h3>
+      <p>上下文 token 逐渐逼近窗口；每隔几轮就触发一次压缩。关注 <code>openclaw.context.tokens</code> 和压缩次数。</p>
+      <p class="muted">修复：更好的上下文引擎（第 1 模块）、记忆分层（记忆课件）。</p>
+    </div>
+  </div>
+  <div class="cols3" style="margin-top:18px">
+    <div class="card"><h3>重试风暴</h3><p>错误触发重试，重试又触发更多错误；token 激增却没有进展。</p></div>
+    <div class="card"><h3>无声的错误成功</h3><p>最终消息声称成功，环境却不认。只有结果检查才能发现。</p></div>
+    <div class="card"><h3>Provider 漂移</h3><p>同一个 harness，换了新模型版本：延迟、成本或工具调用风格发生变化。跟踪 <code>gen_ai.response.model</code>。</p></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>评测</small>智能体评测的术语</h2>
+  <div class="cols">
+    <div>
+      <table class="dense">
+        <tr><td>任务（Task）</td><td>一个测试用例：输入 + 成功标准</td></tr>
+        <tr><td>试验（Trial）</td><td>对一个任务的一次尝试；应运行多次，输出会有差异</td></tr>
+        <tr><td>打分器（Grader）</td><td>对一次试验的某个方面打分的逻辑</td></tr>
+        <tr><td>对话记录（Transcript）</td><td>一次试验的完整记录：输出、工具调用、推理（即 trace）</td></tr>
+        <tr><td>结果（Outcome）</td><td>试验结束后环境的最终状态</td></tr>
+      </table>
+      <p style="font-size:18px;margin-top:14px">能评<b>结果</b>时就评结果（预订记录在数据库里吗？），并通过<b>对话记录</b>评估智能体是怎么做到的。</p>
+    </div>
+    <table class="dense">
+      <tr><th>打分器</th><th>优势</th><th>劣势</th></tr>
+      <tr><td>基于代码</td><td>快速、便宜、客观、可复现</td><td>脆弱；对开放式输出较弱</td></tr>
+      <tr><td>基于模型</td><td>灵活的评分细则、成对比较、能捕捉细微差别</td><td>非确定性、有成本、需要校准</td></tr>
+      <tr><td>人工</td><td>金标准；用来校准其他打分器</td><td>缓慢且昂贵</td></tr>
+    </table>
+  </div>
+  <div class="cite">Anthropic Engineering, "Demystifying evals for AI agents" (Jan 9, 2026), anthropic.com/engineering/demystifying-evals-for-ai-agents.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>评测</small>可靠性：pass@k 不等于 pass^k</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li><b>pass@k</b>：k 次试验中<i>至少一次</i>成功的概率。随 k 上升。当一次成功就够时很合适（可验证的编码尝试）。</li>
+        <li><b>pass^k</b>：k 次试验<i>全部</i>成功的概率。随 k 下降。对必须保持一致的面向客户的智能体，这才是合适的指标。</li>
+        <li>τ-bench：gpt-4o 级别的函数调用智能体在不到 50% 的任务上成功，而在零售领域 pass^8 低于 25%。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>能力套件与回归套件</h3>
+      <ul>
+        <li><b>能力</b>：它能做什么？从较低的通过率起步，逐步爬升。</li>
+        <li><b>回归</b>：它还能做以前能做的事吗？应保持在接近 100%；每次 harness 变更都要运行。</li>
+        <li>已饱和的能力任务会“毕业”进入回归套件。</li>
+        <li>阅读多次试验的对话记录：分数不佳也可能是打分器有问题。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">Yao, Shinn, Razavi, Narasimhan, τ-bench (arXiv:2406.12045); Anthropic, "Demystifying evals for AI agents".</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>实践中的评测</small>Google ADK 的评测标准</h2>
+  <table class="dense">
+    <tr><th>标准</th><th>检查内容</th><th>打分器</th></tr>
+    <tr><td>tool_trajectory_avg_score</td><td>工具调用序列与预期调用的对比（默认匹配类型 EXACT）</td><td>代码</td></tr>
+    <tr><td>response_match_score</td><td>最终响应与参考答案的 ROUGE-1 重合度</td><td>代码</td></tr>
+    <tr><td>final_response_match_v2</td><td>最终响应与参考答案的语义匹配</td><td>LLM 评审</td></tr>
+    <tr><td>rubric_based_*_v1</td><td>针对最终响应、工具使用或整个多轮轨迹的自定义是/否评分细则</td><td>LLM 评审</td></tr>
+    <tr><td>hallucinations_v1</td><td>响应中的句子是否基于可用上下文</td><td>LLM 评审</td></tr>
+    <tr><td>multi_turn_task_success_v1</td><td>对话是否达成了目标</td><td>LLM 评审（Vertex）</td></tr>
+    <tr><td>tool_call_count_v1, token_usage_v1, invocation_duration_v1</td><td>仅供参考：始终报告，不允许设阈值</td><td>计数器</td></tr>
+  </table>
+  <p class="muted" style="font-size:17px;margin-top:12px">同样的划分适用于任何 harness：轨迹检查、响应检查、评分细则评审，再加上与质量并列报告的成本和延迟。</p>
+  <div class="cite">adk.dev/evaluate/criteria（列出 17 项标准，2026 年 10 月）。总课件第 20 页介绍了 ADK 评测。</div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>评测</small>LLM 作为评审：有用，有偏差，需要校准</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:20px">
+        <li>已知的评审偏差：<b>位置</b>（偏好第一个或第二个答案）、<b>冗长</b>（偏好更长的答案）、<b>自我增强</b>（偏好自己所属模型家族的输出）。</li>
+        <li>缓解办法：交换答案顺序并取平均、使用带是/否检查的评分细则、用不同模型家族的模型作评审、对多次评判采样。</li>
+        <li>在几十个用例上与人工标签对照校准，然后再让评审去评判成千上万个用例。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>把分数附在追踪上</h3>
+      <p>把评审结果作为分数存到它所评判的追踪上（Langfuse、Phoenix 和 LangSmith 都支持）。这样仪表盘就可以按模型、harness 版本、工具或用户切分质量，并能打开任何低分背后的确切对话记录。</p>
+    </div>
+  </div>
+  <div class="cite">Zheng et al., "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena" (arXiv:2306.05685); Anthropic, "Demystifying evals for AI agents".</div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>流程</small>质量闭环：离线与在线</h2>
+  <svg viewBox="0 0 1136 300" width="1136" height="300">
+    <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9aa6bd"/></marker></defs>
+    <g font-size="18" text-anchor="middle">
+      <rect x="0" y="20" width="200" height="80" rx="10" fill="#14213a" stroke="#6ea8ff"/><text x="100" y="56">Harness 变更</text><text x="100" y="80" font-size="15" fill="#9aa6bd">提示词、工具、模型</text>
+      <rect x="234" y="20" width="200" height="80" rx="10" fill="#14213a" stroke="#7be0b8"/><text x="334" y="56">离线评测</text><text x="334" y="80" font-size="15" fill="#9aa6bd">回归 + 能力</text>
+      <rect x="468" y="20" width="200" height="80" rx="10" fill="#14213a" stroke="#7be0b8"/><text x="568" y="56">金丝雀 / A-B</text><text x="568" y="80" font-size="15" fill="#9aa6bd">一小部分流量</text>
+      <rect x="702" y="20" width="200" height="80" rx="10" fill="#14213a" stroke="#ffb86b"/><text x="802" y="56">生产环境</text><text x="802" y="80" font-size="15" fill="#9aa6bd">追踪 + 指标</text>
+      <rect x="936" y="20" width="200" height="80" rx="10" fill="#14213a" stroke="#ff7a85"/><text x="1036" y="56">抽样 + 打分</text><text x="1036" y="80" font-size="15" fill="#9aa6bd">评审、人工、反馈</text>
+      <rect x="468" y="190" width="200" height="80" rx="10" fill="#14213a" stroke="#ff7a85"/><text x="568" y="226">新的评测任务</text><text x="568" y="250" font-size="15" fill="#9aa6bd">来自真实故障</text>
+    </g>
+    <g stroke="#9aa6bd" stroke-width="2" marker-end="url(#ar)" fill="none">
+      <line x1="200" y1="60" x2="232" y2="60"/><line x1="434" y1="60" x2="466" y2="60"/><line x1="668" y1="60" x2="700" y2="60"/><line x1="902" y1="60" x2="934" y2="60"/>
+      <path d="M1036,100 L1036,230 L670,230"/><path d="M468,230 L334,230 L334,102"/>
+    </g>
+  </svg>
+  <ul style="font-size:19px">
+    <li>每个经人工确认的生产故障都会成为一个回归任务，使套件始终贴合现实。</li>
+    <li>Harness²（第 7 模块）自动化了这个闭环的一部分：它提出 harness 修改，在任务上探测它们，并保留有证据支撑的经验教训。</li>
+  </ul>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <h2><small>工具箱</small>追踪与评测平台</h2>
+  <table class="dense">
+    <tr><th>工具</th><th>是什么</th><th>许可证 / 部署方式</th><th>Harness 钩子</th></tr>
+    <tr><td>Langfuse</td><td>追踪、会话、分数、数据集、实验、LLM 作为评审</td><td>MIT SDK；自托管或云端</td><td>Hermes 内置插件；OTLP</td></tr>
+    <tr><td>Arize Phoenix</td><td>基于 OpenInference / OpenTelemetry 的追踪 + 评测</td><td>Elastic License 2.0；自托管</td><td>hermes-otel；OTLP</td></tr>
+    <tr><td>OpenLLMetry</td><td>面向 LLM SDK 的 OpenTelemetry 插桩（Traceloop）</td><td>Apache-2.0</td><td>任何 Python / TS 应用</td></tr>
+    <tr><td>MLflow Tracing</td><td>MLflow 内的追踪 + 评测</td><td>Apache-2.0</td><td>OTLP / SDK</td></tr>
+    <tr><td>LangSmith</td><td>追踪、数据集、评测（LangChain）</td><td>托管（商业）</td><td>hermes-otel；SDK</td></tr>
+    <tr><td>Jaeger, Grafana Tempo, SigNoz, Honeycomb</td><td>通用 OpenTelemetry 追踪后端</td><td>各不相同</td><td>OpenClaw diagnostics-otel；hermes-otel</td></tr>
+    <tr><td>Prometheus + Grafana</td><td>指标存储与仪表盘</td><td>Apache-2.0 / AGPL-3.0</td><td>vLLM <code>/metrics</code>；OTel collector</td></tr>
+  </table>
+  <p class="muted" style="font-size:17px;margin-top:12px">经验法则：先由 harness 发出 OpenTelemetry，再选择后端。切换后端应当只是改一下配置。</p>
+  <div class="cite">各项目 PyPI 元数据中的许可证（arize-phoenix Elastic-2.0、langfuse MIT、traceloop-sdk Apache-2.0、mlflow Apache-2.0），2026 年 10 月核查。</div>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+  <h2><small>仪表盘</small>harness 仪表盘应当展示什么</h2>
+  <svg viewBox="0 0 1136 440" width="1136" height="440">
+    <g font-size="17">
+      <rect x="0" y="0" width="1136" height="40" rx="6" fill="#1c2a4d"/><text x="16" y="27" font-weight="700">筛选：harness 版本 · 模型 · 智能体 · 租户 · 时间范围</text>
+      <g fill="#161d2e" stroke="#2a3550">
+        <rect x="0" y="54" width="272" height="110" rx="8"/><rect x="288" y="54" width="272" height="110" rx="8"/><rect x="576" y="54" width="272" height="110" rx="8"/><rect x="864" y="54" width="272" height="110" rx="8"/>
+        <rect x="0" y="178" width="560" height="120" rx="8"/><rect x="576" y="178" width="560" height="120" rx="8"/>
+        <rect x="0" y="312" width="560" height="120" rx="8"/><rect x="576" y="312" width="560" height="120" rx="8"/>
+      </g>
+      <text x="16" y="86" fill="#7be0b8" font-weight="700">任务成功率</text><text x="16" y="114">pass@1、pass^k，按版本</text><text x="16" y="140" fill="#9aa6bd">来自评测 + 分数</text>
+      <text x="304" y="86" fill="#7be0b8" font-weight="700">每任务成本</text><text x="304" y="114">$ 与 token，缓存占比</text><text x="304" y="140" fill="#9aa6bd">openclaw.cost.usd</text>
+      <text x="592" y="86" fill="#7be0b8" font-weight="700">延迟</text><text x="592" y="114">TTFT、每轮、任务 P95</text><text x="592" y="140" fill="#9aa6bd">vLLM + harness span</text>
+      <text x="880" y="86" fill="#7be0b8" font-weight="700">错误</text><text x="880" y="114">模型、工具、故障切换</text><text x="880" y="140" fill="#9aa6bd">按 provider / 工具</text>
+      <text x="16" y="210" fill="#6ea8ff" font-weight="700">失败最多的工具</text><text x="16" y="240">错误率、重试、耗时、被拦截的调用</text><text x="16" y="268" fill="#9aa6bd">点击进入示例追踪</text>
+      <text x="592" y="210" fill="#6ea8ff" font-weight="700">行为</text><text x="592" y="240">每任务步数、循环、卡住的会话、压缩</text><text x="592" y="268" fill="#9aa6bd">openclaw.tool.loop, session.stuck</text>
+      <text x="16" y="344" fill="#ffb86b" font-weight="700">引擎</text><text x="16" y="374">排队时间、KV 使用、前缀缓存命中率</text><text x="16" y="402" fill="#9aa6bd">vllm:* 指标</text>
+      <text x="592" y="344" fill="#ff7a85" font-weight="700">版本对比</text><text x="592" y="374">harness 变更前 / 后，同一套件</text><text x="592" y="402" fill="#9aa6bd">在每张图上标注部署事件</text>
+    </g>
+  </svg>
+</section>
+
+<!-- 18 -->
+<section class="slide">
+  <h2><small>运维</small>遥测的隐私、采样与成本</h2>
+  <table class="dense">
+    <tr><th>关注点</th><th>做法</th><th>示例开关</th></tr>
+    <tr><td>敏感内容</td><td>默认只捕获元数据；按类别主动开启内容；导出前对密钥和 PII 脱敏</td><td>OpenClaw <code>captureContent.*</code>；hermes-otel <code>content_capture: preview | off</code></td></tr>
+    <tr><td>系统提示词</td><td>视为敏感；仅在需要时导出</td><td>OpenClaw 需要显式设置 <code>captureContent.systemPrompt: true</code></td></tr>
+    <tr><td>数据量</td><td>对根 span 采样；保留 100% 的错误和评测运行</td><td>OpenClaw <code>sampleRate</code>；<code>HERMES_LANGFUSE_SAMPLE_RATE</code></td></tr>
+    <tr><td>负载大小</td><td>截断过长的提示词和工具输出</td><td><code>HERMES_LANGFUSE_MAX_CHARS</code>（12000）</td></tr>
+    <tr><td>基数</td><td>绝不要把会话 ID 或提示词用作指标标签</td><td>OpenClaw 将类似 session-key 的值映射为 <code>unknown</code></td></tr>
+    <tr><td>保留期</td><td>内容保留期短，聚合数据保留期长；遵从删除请求</td><td>后端设置</td></tr>
+    <tr><td>故障隔离</td><td>遥测绝不能拖垮智能体</td><td>Langfuse 插件失败时放行（fail-open）</td></tr>
+  </table>
+  <div class="cite">OpenClaw OpenTelemetry privacy docs; hermes-otel docs; Langfuse Hermes integration docs.</div>
+</section>
+
+<!-- 19 -->
+<section class="slide">
+  <h2><small>实验构想</small>为 harness 插桩并比较两种配置</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>运行本地追踪后端（Phoenix 或 Jaeger）以及 Prometheus + Grafana。</li>
+        <li>在 harness 中启用追踪：OpenClaw <code>diagnostics-otel</code>，或带 <code>hermes-otel</code> 的 Hermes（<code>content_capture: preview</code>）。</li>
+        <li>让 Prometheus 指向实验 5 的 vLLM 服务器的 <code>/metrics</code>。</li>
+        <li>编写 10 个带结果检查的任务；每个运行 4 次（k = 4）。</li>
+        <li>分别用配置 A 和配置 B 运行（例如实验 3 中的两个上下文引擎）。</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>报告</h3>
+      <ul>
+        <li>每种配置的 pass@1 和 pass^4</li>
+        <li>每任务的 token、$ 和 P95 延迟</li>
+        <li>每种配置的前缀缓存命中率</li>
+        <li>一次失败的追踪，指出出错的那一步</li>
+        <li>你会上线哪种配置，以及原因</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 20 -->
+<section class="slide">
+  <h2><small>参考资料</small>延伸阅读</h2>
+  <div class="cols">
+    <ul style="font-size:17px">
+      <li>OpenTelemetry GenAI 语义约定 (github.com/open-telemetry/semantic-conventions-genai)</li>
+      <li>OpenInference (github.com/Arize-ai/openinference)</li>
+      <li>OpenClaw：OpenTelemetry 导出 (docs.openclaw.ai/gateway/opentelemetry)</li>
+      <li>Hermes：hermes-otel 插件；Langfuse 集成</li>
+      <li>vLLM：指标设计 (docs.vllm.ai/en/stable/design/metrics)</li>
+      <li>Google ADK：评测标准 (adk.dev/evaluate/criteria)</li>
+    </ul>
+    <ul style="font-size:17px">
+      <li>Anthropic, Demystifying evals for AI agents (2026)</li>
+      <li>Yao et al., τ-bench, arXiv:2406.12045</li>
+      <li>Zheng et al., Judging LLM-as-a-Judge, arXiv:2306.05685</li>
+      <li>Langfuse、Arize Phoenix、OpenLLMetry、MLflow Tracing 文档</li>
+      <li>完整 URL：<code>references/bibliography_and_links.md</code> §6</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → 翻页 · F 全屏</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

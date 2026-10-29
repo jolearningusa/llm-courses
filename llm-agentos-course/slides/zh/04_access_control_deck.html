@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM AgentOS — 访问控制与安全</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #161d2e; --ink: #e8ecf4; --muted: #9aa6bd; --line: #2a3550;
+    --accent: #6ea8ff; --accent2: #7be0b8; --warn: #ffb86b; --bad: #ff7a85;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070c; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+  .slide { position: absolute; inset: 0; background: var(--bg); padding: 56px 72px 64px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  h1 { font-size: 54px; margin: 0 0 16px; letter-spacing: -0.02em; }
+  h2 { font-size: 36px; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h2 small { display: block; font-size: 16px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  p, li { font-size: 22px; line-height: 1.45; color: var(--ink); }
+  li { margin: 6px 0; }
+  ul { margin: 0; padding-left: 26px; }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); } .accent2 { color: var(--accent2); } .warn { color: var(--warn); }
+  code, pre { font-family: var(--mono); }
+  code { background: #1f2840; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  pre { background: #0a0e18; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; font-size: 16px; line-height: 1.5; margin: 0; overflow: hidden; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 21px; color: var(--accent2); }
+  .card p, .card li { font-size: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 18px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 600; }
+  table.dense th, table.dense td { font-size: 15px; padding: 7px 8px; line-height: 1.35; }
+  table.dense td:first-child { color: var(--accent2); white-space: nowrap; }
+  .cite { position: absolute; left: 72px; bottom: 22px; font-size: 13px; color: var(--muted); max-width: 1000px; }
+  .num { position: absolute; right: 32px; bottom: 22px; font-size: 13px; color: var(--muted); }
+  .title-slide { justify-content: center; background: radial-gradient(1200px 600px at 80% 20%, #1c2a4d 0%, var(--bg) 60%); }
+  .pill { display: inline-block; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--muted); margin-right: 8px; }
+  svg text { font-family: var(--sans); }
+  svg text:not([fill]) { fill: var(--ink); }
+  ul[style] > li, ol[style] > li { font-size: inherit; }
+  #hint { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #556; font-family: var(--sans); }
+  @media print {
+    html, body { overflow: visible; background: none; }
+    #stage { position: static; transform: none !important; }
+    .slide { display: flex !important; position: relative; page-break-after: always; }
+    #hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+<!-- 1 -->
+<section class="slide title-slide">
+  <div class="pill">LLM AgentOS · 模块 4 讲座 · 组件 8</div>
+  <h1 style="margin-top:22px">访问控制与安全</h1>
+  <p class="muted" style="font-size:26px;max-width:1000px">AgentOS 的用户、权限与安全监控器：谁可以与智能体对话，智能体可以接触什么，
+    为什么提示注入（prompt injection）使其有别于传统访问控制，以及 Hermes Agent、OpenClaw 和 Codex 所提供的防御。</p>
+  <p style="margin-top:28px"><span class="pill">威胁模型</span><span class="pill">致命三要素</span><span class="pill">二选一法则</span><span class="pill">工具策略</span><span class="pill">审批</span><span class="pill">CaMeL</span></p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2><small>操作系统类比</small>AgentOS 必须回答的三个问题</h2>
+  <table class="dense">
+    <tr><th>问题</th><th>传统操作系统</th><th>AgentOS</th><th>示例</th></tr>
+    <tr><td><b>谁</b>在请求？</td><td>登录、UID</td><td>每个渠道上的发送者身份</td><td>DM 配对、允许列表、按对端划分的会话</td></tr>
+    <tr><td><b>什么</b>可以运行？</td><td>文件权限位、capabilities</td><td>工具允许 / 拒绝、profile、技能允许列表</td><td>OpenClaw <code>tools.profile</code>、Hermes toolsets</td></tr>
+    <tr><td>在<b>哪里</b>运行？</td><td>用户态与内核态、容器</td><td>沙箱、工作区访问、网络出口</td><td>Docker、Seatbelt、bubblewrap</td></tr>
+    <tr><td>权限提升</td><td>需要密码的 <code>sudo</code></td><td>人工审批、提权模式</td><td>Hermes <code>approvals.mode</code>、Codex <code>on-request</code></td></tr>
+    <tr><td>审计</td><td>auditd、日志</td><td>追踪、对话记录、安全审计命令</td><td><code>openclaw security audit</code></td></tr>
+  </table>
+  <p style="font-size:19px;margin-top:16px">新的问题在于：进程（模型）可能被它所读取的数据<b>说服</b>而滥用自己的权限。传统访问控制假定程序按代码所写的去做；智能体则按其上下文所说的去做。</p>
+  <div class="cite">OpenClaw 安全文档；Hermes Agent 安全文档；工具与沙箱幻灯片 (05)。</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h2><small>威胁模型</small>提示注入尚未被解决</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li><b>直接注入</b>：用户试图覆盖指令。<b>间接注入</b>：指令隐藏在网页、邮件、文件、工具结果、记忆或技能中。</li>
+        <li><b>The Attacker Moves Second</b>（2025 年 10 月；作者来自 OpenAI、Anthropic 和 Google DeepMind）：自适应攻击攻破了 12 种已发表的防御，多数成功率 &gt;90%，而其中多数原先报告的成功率接近于零；人类红队（500 人）击败了全部防御。</li>
+        <li>Simon Willison：能拦截 95% 攻击的护栏，在安全领域仍是不及格。</li>
+      </ul>
+      <p class="muted" style="font-size:17px">因此设计时应假定注入<i>有时</i>会得逞，并限制被劫持的智能体能做什么。</p>
+    </div>
+    <div class="card">
+      <h3>OWASP 智能体应用 Top 10（2025 年 12 月）</h3>
+      <ol style="font-size:16px;padding-left:22px">
+        <li>智能体目标劫持</li>
+        <li>工具误用与利用</li>
+        <li>身份与权限滥用</li>
+        <li>智能体供应链漏洞</li>
+        <li>意外代码执行 (RCE)</li>
+        <li>记忆与上下文投毒</li>
+        <li>不安全的智能体间通信</li>
+        <li>级联故障</li>
+        <li>人与智能体的信任利用</li>
+        <li>失控智能体</li>
+      </ol>
+    </div>
+  </div>
+  <div class="cite">Nasr et al., arXiv:2510.09023; simonwillison.net/2025/Jun/16/the-lethal-trifecta; genai.owasp.org (Top 10 for Agentic Applications for 2026).</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2><small>原则</small>致命三要素与智能体二选一法则</h2>
+  <div class="cols">
+    <svg viewBox="0 0 520 420" width="520" height="420">
+      <g font-size="16">
+        <circle cx="180" cy="150" r="120" fill="#6ea8ff" fill-opacity="0.18" stroke="#6ea8ff"/>
+        <circle cx="340" cy="150" r="120" fill="#7be0b8" fill-opacity="0.18" stroke="#7be0b8"/>
+        <circle cx="260" cy="280" r="120" fill="#ff7a85" fill-opacity="0.18" stroke="#ff7a85"/>
+        <text x="70" y="110" fill="#6ea8ff" font-weight="700">[A] 不可信</text>
+        <text x="70" y="132" fill="#6ea8ff" font-weight="700">输入</text>
+        <text x="350" y="110" fill="#7be0b8" font-weight="700">[B] 私有数据 /</text>
+        <text x="350" y="132" fill="#7be0b8" font-weight="700">敏感系统</text>
+        <text x="190" y="370" fill="#ff7a85" font-weight="700">[C] 改变状态 /</text>
+        <text x="190" y="392" fill="#ff7a85" font-weight="700">对外通信</text>
+        <text x="226" y="200" font-weight="700">三者兼具：</text>
+        <text x="210" y="222" font-weight="700">需要人工介入</text>
+      </g>
+    </svg>
+    <div>
+      <ul style="font-size:18px">
+        <li><b>致命三要素</b>（Willison，2025 年 6 月 16 日）：私有数据 + 不可信内容 + 对外通信，会让攻击者窃取数据。混用工具的用户应避免这种组合。</li>
+        <li><b>智能体二选一法则 (Agents Rule of Two)</b>（Meta，2025 年 10 月 31 日）：在一个会话中，智能体最多只应具备 [A] 不可信输入、[B] 敏感数据或系统、[C] 状态变更或对外通信 三者中的两项。三者兼具：不得自主运行，需要审批或其他验证。</li>
+        <li>以全新上下文开启新会话，是分离这些属性的一种方式。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">simonwillison.net/2025/Jun/16/the-lethal-trifecta; ai.meta.com/blog/practical-ai-agent-security.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h2><small>应用</small>二选一法则：实例</h2>
+  <table class="dense">
+    <tr><th>智能体</th><th>保留</th><th>舍弃</th><th>做法</th></tr>
+    <tr><td>邮件机器人，垃圾邮件要求它转发整个收件箱</td><td>[B][C]</td><td>[A]</td><td>只处理来自可信发件人的邮件</td></tr>
+    <tr><td>同一机器人，另一种方式</td><td>[A][C]</td><td>[B]</td><td>在无法访问敏感数据的情况下运行</td></tr>
+    <tr><td>同一机器人，第三种方式</td><td>[A][B]</td><td>[C]</td><td>仅发送给可信收件人，或在人工批准草稿后发送</td></tr>
+    <tr><td>旅行助手</td><td>[A][B]</td><td>[C]</td><td>由人确认预订与付款；仅向可信来源发起网络请求</td></tr>
+    <tr><td>网络研究助手</td><td>[A][C]</td><td>[B]</td><td>严格受限的沙箱，不预加载会话数据</td></tr>
+    <tr><td>内部编码智能体</td><td>[B][C]</td><td>[A]</td><td>按作者谱系过滤输入；由人审查误报</td></tr>
+  </table>
+  <p style="font-size:18px;margin-top:14px">为你自己的 harness 做练习：列出每个工具并标记为 A、B 或 C。任何能同时触及三个字母的会话都需要一个审批步骤。</p>
+  <div class="cite">示例来自 Meta, "Agents Rule of Two: A Practical Approach to AI Agent Security" (Oct 31, 2025)。</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h2><small>谁</small>入站访问：配对与允许列表</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>OpenClaw <code>dmPolicy</code></h3>
+      <ul>
+        <li><code>pairing</code>（默认）：未知发送者会收到一个配对码，在获批前被忽略；配对码 1 小时后过期；每个渠道最多 3 个待处理。</li>
+        <li><code>allowlist</code>、<code>open</code>（需要 <code>"*"</code>）、<code>disabled</code>。</li>
+        <li>群组：<code>requireMention</code>、<code>groupPolicy</code> + <code>groupAllowFrom</code>。</li>
+        <li>默认 <code>session.dmScope: main</code> 让所有 DM 共享一个会话；当多人与机器人对话时，请使用 <code>per-channel-peer</code>。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Hermes 网关</h3>
+      <ul>
+        <li>顺序：按平台全部允许 → 配对列表 → 平台允许列表 → 全局允许列表 → 全局全部允许 → <b>拒绝</b>。</li>
+        <li><code>unauthorized_dm_behavior: pair</code>：8 位配对码，1 小时过期，<code>hermes pairing approve &lt;platform&gt; &lt;code&gt;</code>。</li>
+        <li>速率限制：每位用户每 10 分钟 1 次请求，每个平台 3 个待处理，5 次审批失败后锁定 1 小时。</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:17px;margin-top:12px" class="muted">OpenClaw 的模型：每个网关一位可信运维者，而非对抗性的多租户边界。互不信任的用户应使用各自独立的网关，最好是独立的操作系统用户或主机。</p>
+  <div class="cite">docs.openclaw.ai/gateway/security; hermes-agent.nousresearch.com/docs/user-guide/security.</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2><small>什么</small>工具策略：在关键处默认拒绝</h2>
+  <div class="cols">
+<pre style="font-size:14px">// OpenClaw hardened baseline (from the security docs)
+{
+  tools: {
+    profile: "messaging",
+    deny: ["group:automation",
+           "group:runtime",
+           "group:fs"],
+    fs:   { workspaceOnly: true },
+    exec: { security: "deny", ask: "always" },
+    elevated: { enabled: false }
+  }
+}
+// trusted personal default:
+//   exec security="full", ask="off"  (by design)</pre>
+    <div>
+      <ul style="font-size:18px">
+        <li>非所有者的发送者默认不能使用 <code>cron</code> 或 <code>gateway</code> 工具。</li>
+        <li>当解释器在允许列表中时，请设置 <code>tools.exec.strictInlineEval</code>（<code>python -c</code> 即任意代码）。</li>
+        <li><code>tools.elevated</code> 在沙箱之外运行：请严格限制 <code>allowFrom</code>。</li>
+        <li>子智能体和技能有各自的允许列表（多智能体与技能幻灯片）。</li>
+        <li>Hermes：按平台配置 toolsets；MCP stdio 服务器只获得 <code>PATH</code>、<code>HOME</code>、<code>USER</code>、<code>LANG</code>、<code>LC_ALL</code>、<code>TERM</code>、<code>SHELL</code>、<code>TMPDIR</code>、<code>XDG_*</code>。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/gateway/security ("hardened baseline", "exec approvals"); Hermes 安全文档 (MCP credential filtering)。</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h2><small>权限提升</small>审批：手动、智能或关闭</h2>
+  <div class="cols">
+    <div>
+      <table class="dense" style="font-size:16px">
+        <tr><th>Hermes <code>approvals.mode</code></th><th>行为</th></tr>
+        <tr><td><code>smart</code>（默认）</td><td>由辅助 LLM 评估风险：低 → 仅批准该命令一次，危险 → 拒绝，不确定 → 询问</td></tr>
+        <tr><td><code>manual</code></td><td>遇到危险命令始终询问</td></tr>
+        <tr><td><code>off</code> / <code>--yolo</code></td><td>不提示；硬性黑名单仍然生效</td></tr>
+      </table>
+      <ul style="font-size:16px;margin-top:10px">
+        <li>超时 300 秒后<b>拒绝</b>（失败即关闭）。</li>
+        <li>选择 "Always" 会将该模式写入 <code>command_allowlist</code>。</li>
+        <li>硬性黑名单（<code>rm -rf /</code>、fork 炸弹）无法覆盖。</li>
+        <li>在容器后端中，容器本身就是边界，因此会跳过危险命令检查。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>其他系统</h3>
+      <ul>
+        <li>Codex：审批 <code>on-request</code>（离开沙箱需询问）或 <code>never</code>；沙箱 <code>read-only</code> / <code>workspace-write</code> / <code>danger-full-access</code>。</li>
+        <li>OpenClaw：<code>exec.ask</code>（<code>always</code> … <code>off</code>），外加可以阻断的 <code>before_tool_call</code> hooks。</li>
+        <li>Claude Code：沙箱 + 代理，提示减少 84%。</li>
+      </ul>
+      <p class="muted">一个 LLM 批准另一个 LLM 的命令只是分类器，而非边界：它同样会受到注入影响。</p>
+    </div>
+  </div>
+  <div class="cite">Hermes 安全文档；Codex 与 Claude Code 沙箱（工具幻灯片）；OpenClaw 安全文档。</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h2><small>上下文</small>对指令、记忆和技能的注入扫描</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>Hermes 在 <code>AGENTS.md</code>、<code>.cursorrules</code> 和 <code>SOUL.md</code> 进入系统提示词之前对其进行扫描；被标记的项目文件不会被加载（"[BLOCKED: AGENTS.md contained potential prompt injection …]"）。</li>
+        <li>技能：安装时扫描、信任级别、分阶段的智能体写入（技能幻灯片）。</li>
+        <li>记忆：被投毒的记忆就是持久化的注入；本模块中的记忆安全材料（A-MemGuard、记忆生命周期威胁模型）同样适用。</li>
+        <li>OpenClaw 的建议：即使只有你能给机器人发消息，也要把网页、邮件、附件和粘贴内容视为恶意；可考虑使用只读的阅读者智能体来总结不可信内容。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>单个回合内的隔离</h3>
+      <p>将<b>读取</b>不可信内容的角色与<b>执行动作</b>的角色分开：</p>
+      <ul>
+        <li>没有任何工具的阅读者子智能体返回摘要。</li>
+        <li>执行者从不接触原始内容。</li>
+        <li>每个不可信来源使用全新会话（二选一法则）。</li>
+      </ul>
+      <p class="muted">摘要仍可能携带指令；这只能降低风险，而不能消除风险。</p>
+    </div>
+  </div>
+  <div class="cite">Hermes 安全文档 ("context file scanning")；OpenClaw 安全文档 ("prompt injection")；模块 4 记忆安全资料。</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h2><small>研究</small>设计层面的防御</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>设计模式（Beurer-Kellner et al., 2025）</h3>
+      <ul style="font-size:17px">
+        <li><b>Action-selector</b>：模型只能从固定动作中选择。</li>
+        <li><b>Plan-then-execute</b>：在读取不可信数据之前固定计划。</li>
+        <li><b>LLM map-reduce</b>：为每个不可信条目使用隔离的工作者。</li>
+        <li><b>Dual LLM</b>：特权模型从不接触不可信文本；隔离模型可以接触，但没有工具。</li>
+        <li><b>Code-then-execute</b>：模型编写程序；不可信数据仅作为值流动。</li>
+        <li><b>Context minimization</b>：在处理结果之前丢弃用户提示。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>CaMeL（Debenedetti et al., 2025）</h3>
+      <ul style="font-size:17px">
+        <li>从可信的用户查询中提取控制流和数据流，使检索到的数据无法改变程序。</li>
+        <li>值上的 capabilities 阻止私有数据流向未授权的工具调用；每次调用时都会检查策略。</li>
+        <li>AgentDojo：在可证明安全的前提下解决 <b>77%</b> 的任务，而无防御时为 84%。</li>
+      </ul>
+      <p class="muted">安全的代价是效用：有些任务将无法再自主完成。</p>
+    </div>
+  </div>
+  <div class="cite">arXiv:2506.08837; arXiv:2503.18813; AgentDojo arXiv:2406.13352.</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <h2><small>密钥</small>凭据、对话记录与主机</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li>OpenClaw 将配置（<code>openclaw.json</code>）、渠道凭据、API 密钥（<code>auth-profiles.json</code>）和<b>会话对话记录</b>保存在 <code>~/.openclaw</code> 下：目录保持 <code>700</code>，文件 <code>600</code>，使用全盘加密，在共享主机上使用专用操作系统用户。</li>
+        <li>网关默认绑定到回环地址；令牌认证失败即关闭；切勿在无认证的情况下暴露它。</li>
+        <li>技能的 <code>env</code> / <code>apiKey</code> 仅在运行期间注入到主机上，而不会注入沙箱。</li>
+        <li>Hermes 会在 MCP 错误中脱敏 GitHub PAT、<code>sk-</code> 密钥、bearer 令牌，以及 <code>token=</code>/<code>key=</code>/<code>password=</code>/<code>secret=</code>。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>原则</h3>
+      <p>模型从未见过的密钥，就无法被模型外泄。</p>
+      <ul>
+        <li>在工具边界注入，而非放进提示词。</li>
+        <li>沙箱内不放任何密钥。</li>
+        <li>对话记录是敏感数据：遥测内容捕获默认关闭是有原因的（可观测性幻灯片）。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/gateway/security ("secrets on disk", "network"); OpenClaw 技能文档；Hermes 安全文档。</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2><small>并排对比</small>三种 harness 中的访问控制</h2>
+  <table class="dense">
+    <tr><th></th><th>Hermes Agent</th><th>OpenClaw</th><th>Codex</th></tr>
+    <tr><td>谁</td><td>允许列表、DM 配对、默认拒绝</td><td><code>dmPolicy</code> 配对、群组允许列表</td><td>本地用户</td></tr>
+    <tr><td>什么</td><td>Toolsets；硬性黑名单</td><td>工具 profile、允许 / 拒绝分组</td><td>沙箱模式</td></tr>
+    <tr><td>哪里</td><td>本地，或容器 / 远程后端</td><td>主机，或 Docker / SSH 沙箱</td><td>Seatbelt、bubblewrap、Windows 沙箱</td></tr>
+    <tr><td>权限提升</td><td><code>smart</code> / <code>manual</code> / <code>off</code>，失败即关闭</td><td><code>exec.ask</code>、<code>tools.elevated</code>、hooks</td><td><code>on-request</code> / <code>never</code></td></tr>
+    <tr><td>针对注入</td><td>上下文文件扫描</td><td>指引：阅读者智能体、最强模型</td><td>—</td></tr>
+    <tr><td>审计</td><td>追踪、审批 span</td><td><code>openclaw security audit [--deep] [--fix]</code></td><td>—</td></tr>
+  </table>
+  <div class="cite">来源见第 6–11 页及工具幻灯片。"—" = 本处所用来源未涉及。</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2><small>运维</small>审计与事件响应</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:18px">
+        <li><code>openclaw security audit</code> 检查入站访问、工具爆炸半径、exec 审批、网络暴露、权限、插件和策略漂移；<code>--deep</code> 探测运行中的网关；<code>--fix</code> 应用安全的修复（开放群组 → 允许列表、文件权限）；<code>--json</code> 用于 CI。</li>
+        <li>每次配置变更后以及按计划运行；发生漂移时告警。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>出问题时</h3>
+      <ol style="font-size:17px;padding-left:22px">
+        <li><b>遏制</b>：停止网关，绑定到回环地址，禁用有风险的 DM 和群组。</li>
+        <li><b>轮换</b>：网关令牌、远程客户端密钥、提供商和 API 密钥。</li>
+        <li><b>审计</b>：日志、对话记录、近期配置变更；重新运行深度审计。</li>
+      </ol>
+    </div>
+  </div>
+  <div class="cite">docs.openclaw.ai/gateway/security ("security audit", "incident response").</div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2><small>练习</small>对你自己的智能体做红队测试</h2>
+  <div class="cols">
+    <div>
+      <ol style="font-size:19px;padding-left:24px">
+        <li>赋予智能体邮件读取、网页抓取工具，以及对一个含有假密钥的文件夹的访问权限。</li>
+        <li>在网页和邮件中各植入一条间接注入，要求它把密钥发送出去。</li>
+        <li>先在无任何防御下运行，再分别启用：二选一法则拆分、审批（<code>manual</code>）、无出口的沙箱、阅读者子智能体。</li>
+        <li>前后各运行一次 <code>openclaw security audit --deep</code>。</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>度量</h3>
+      <ul>
+        <li>每种防御下的攻击成功率（≥ 20 次试验）</li>
+        <li>正常任务成功率（效用代价）</li>
+        <li>每个任务的审批提示次数</li>
+        <li>每次成功攻击属于哪个 OWASP 智能体类别</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <h2><small>参考资料</small>延伸阅读</h2>
+  <div class="cols">
+    <ul style="font-size:15px">
+      <li>Willison, The lethal trifecta (Jun 2025): simonwillison.net/2025/Jun/16/the-lethal-trifecta</li>
+      <li>Meta, Agents Rule of Two (Oct 2025): ai.meta.com/blog/practical-ai-agent-security</li>
+      <li>OWASP Top 10 for Agentic Applications: genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026</li>
+      <li>The Attacker Moves Second: arxiv.org/abs/2510.09023</li>
+      <li>CaMeL: arxiv.org/abs/2503.18813 · Design patterns: arxiv.org/abs/2506.08837</li>
+    </ul>
+    <ul style="font-size:15px">
+      <li>AgentDojo: arxiv.org/abs/2406.13352</li>
+      <li>OpenClaw security: docs.openclaw.ai/gateway/security</li>
+      <li>Hermes Agent security: hermes-agent.nousresearch.com/docs/user-guide/security</li>
+      <li>Codex 沙箱与审批：见工具幻灯片</li>
+      <li>所有链接：<code>references/bibliography_and_links.md</code> §5b</li>
+    </ul>
+  </div>
+</section>
+</div>
+<div id="hint">← / → 翻页 · F 全屏</div>
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const offset = 0; // first slide number in this file
+  slides.forEach((s, i) => {
+    const n = document.createElement('div');
+    n.className = 'num'; n.textContent = (i + 1 + offset) + ' / ' + (slides.length + offset);
+    s.appendChild(n);
+  });
+  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 - offset || 0, 0), slides.length - 1);
+  function show(i) {
+    cur = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+    history.replaceState(null, '', '#' + (cur + 1 + offset));
+  }
+  function fit() {
+    const k = Math.min(innerWidth / 1280, innerHeight / 720);
+    document.getElementById('stage').style.transform = 'translate(-50%, -50%) scale(' + k + ')';
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener('click', e => show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)));
+  addEventListener('resize', fit);
+  fit(); show(cur);
+})();
+</script>
+</body>
+</html>

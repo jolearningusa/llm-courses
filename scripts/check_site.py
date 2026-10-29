@@ -71,22 +71,28 @@ def unlisted_decks() -> list[str]:
     for readme in sorted(ROOT.glob("*/README.md")):
         course = readme.parent
         text = readme.read_text(encoding="utf-8")
-        for deck in sorted((course / "slides").glob("*.html")):
-            if f"](slides/{deck.name})" not in text:
-                missing.append(f"{course.name}/README.md: no link to slides/{deck.name}")
+        slides = course / "slides"
+        if not slides.is_dir():
+            continue
+        for deck in sorted(slides.rglob("*.html")):
+            href = "slides/" + deck.relative_to(slides).as_posix()
+            if f"]({href})" not in text:
+                missing.append(f"{course.name}/README.md: no link to {href}")
     return missing
 
 
 def decks_without_nav(site: Path) -> list[str]:
     """Built decks that do not link back to the site home and their course page."""
     missing = []
-    for src in sorted(ROOT.glob("*/slides/*.html")):
+    for src in sorted(ROOT.glob("*/slides/**/*.html")):
         deck = site / src.relative_to(ROOT)
         if not deck.is_file():
             continue  # not a published course
+        depth = len(src.relative_to(ROOT).parts) - 1  # drop the course directory
+        home, course = "../" * depth + "index.html", "../" * (depth - 1) + "index.html"
         text = deck.read_text(encoding="utf-8", errors="replace")
         nav = re.search(r'<nav id="site-deck-nav"[^>]*>(.*?)</nav>', text, re.S)
-        if not nav or 'href="../../index.html"' not in nav.group(1) or 'href="../index.html"' not in nav.group(1):
+        if not nav or f'href="{home}"' not in nav.group(1) or f'href="{course}"' not in nav.group(1):
             missing.append(str(deck.relative_to(site)))
     return missing
 

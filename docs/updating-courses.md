@@ -61,7 +61,9 @@ deprecation). Work in the usual one-task-one-PR way ([AGENTS.md](../AGENTS.md)):
    could not be run.
 5. **Run the checks** listed in [AGENTS.md](../AGENTS.md) and open a PR whose description names the
    source and what changed. A large change (a new protocol revision, a new deck) gets its own PR; several
-   one-line link fixes can share one.
+   one-line link fixes can share one. If the course has `slides/zh/`, update the Mandarin twin of every
+   English deck this PR changes, and keep `[简体中文](slides/zh/...)` on that deck's README row
+   ([AGENTS.md](../AGENTS.md)).
 6. When all items in the freshness issue are handled, re-run the **Freshness** workflow
    (Actions → Freshness → Run workflow) to close the issue, or let next Monday's run do it.
 
