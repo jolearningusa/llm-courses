@@ -32,6 +32,81 @@
         "labs/kit/handouts/lab11_deployment.md"
       ],
       "notes": "Intentional tested unquantized XNNPACK CPU pin with torch 2.9.1; not latest. Optional TorchAO native extensions disabled; other delegates require separate validation."
+    },
+    {
+      "name": "vLLM (deck 35)",
+      "version": "0.32.0",
+      "verified": "2026-10-30",
+      "compare": 2,
+      "upstream": {
+        "type": "pypi",
+        "package": "vllm"
+      },
+      "used_in": [
+        "slides/35_inference_engines_compared.html",
+        "references/bibliography_and_links.md"
+      ],
+      "notes": "Recheck the feature, parallelism and hardware lists and the GGUF plugin status."
+    },
+    {
+      "name": "SGLang (deck 35)",
+      "version": "0.5.23",
+      "verified": "2026-10-30",
+      "compare": 2,
+      "upstream": {
+        "type": "pypi",
+        "package": "sglang"
+      },
+      "used_in": [
+        "slides/35_inference_engines_compared.html",
+        "references/bibliography_and_links.md"
+      ],
+      "notes": "Recheck the runtime feature and hardware lists in the README."
+    },
+    {
+      "name": "TensorRT-LLM (deck 35)",
+      "version": "1.2.1",
+      "verified": "2026-10-30",
+      "compare": 2,
+      "upstream": {
+        "type": "pypi",
+        "package": "tensorrt-llm"
+      },
+      "used_in": [
+        "slides/35_inference_engines_compared.html",
+        "references/bibliography_and_links.md"
+      ],
+      "notes": "Stable line on PyPI; 1.4.0rc2 was the newest pre-release on 2026-10-30. Recheck trtllm-serve endpoints."
+    },
+    {
+      "name": "mlx-lm (deck 35)",
+      "version": "0.32.2",
+      "verified": "2026-10-30",
+      "compare": 2,
+      "upstream": {
+        "type": "pypi",
+        "package": "mlx-lm"
+      },
+      "used_in": [
+        "slides/35_inference_engines_compared.html",
+        "references/bibliography_and_links.md"
+      ],
+      "notes": "Recheck mlx_lm.server status and quantization options."
+    },
+    {
+      "name": "Ollama (deck 35)",
+      "version": "v0.40.12",
+      "verified": "2026-10-30",
+      "compare": 2,
+      "upstream": {
+        "type": "github_release",
+        "repo": "ollama/ollama"
+      },
+      "used_in": [
+        "slides/35_inference_engines_compared.html",
+        "references/bibliography_and_links.md"
+      ],
+      "notes": "Recheck which backends (llama.cpp, own GGML engine, MLX) the release notes name."
     }
   ]
 }
