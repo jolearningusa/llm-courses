@@ -6,7 +6,7 @@ This is the implementation checklist for the [syllabus](SYLLABUS.md), with one d
 
 ## Deliverables and status
 
-- **32 core planned decks, plus released supplements 32 (optimization decisions) and 33 (programming models beyond CUDA):** a master overview, 30 topic lectures for weeks 1–15, and a capstone workshop. Week 16 uses the workshop and student presentations.
+- **32 core planned decks, plus released supplements 32 (optimization decisions), 33 (programming models beyond CUDA) and 34 (model lowering and hardware co-design):** a master overview, 30 topic lectures for weeks 1–15, and a capstone workshop. Week 16 uses the workshop and student presentations.
 - **16 planned lab kits:** L0–L15, each with a handout, starter/reference material, runnable experiment or explicitly labeled analytical/trace path, validation and reporting instructions.
 - **Shared infrastructure:** workload fixtures, environment manifests, metrics format, benchmark utilities, correctness helpers and release documentation.
 - **Status at plan creation:** technical primers and lab specifications exist; no decks or executable kits have yet been released. Proposed filenames below are targets, not links to existing files. Update the progress table as units land.
