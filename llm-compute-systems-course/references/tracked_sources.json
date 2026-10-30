@@ -107,6 +107,22 @@
         "references/bibliography_and_links.md"
       ],
       "notes": "Recheck which backends (llama.cpp, own GGML engine, MLX) the release notes name."
+    },
+    {
+      "name": "L3T Triton lab pin",
+      "version": "3.9.0",
+      "verified": "2026-10-30",
+      "compare": 2,
+      "upstream": {
+        "type": "pypi",
+        "package": "triton"
+      },
+      "used_in": [
+        "labs/kit/triton_lab.py",
+        "labs/kit/requirements-triton.txt",
+        "labs/kit/handouts/lab03t_triton.md"
+      ],
+      "notes": "Tested in the CPU interpreter (TRITON_INTERPRET=1) with torch 2.15.0 on Linux x86_64; GPU path unverified. Upstream updates trigger a compatibility pilot."
     }
   ]
 }

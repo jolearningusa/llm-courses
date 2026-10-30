@@ -97,6 +97,7 @@ Checked against primary web sources on **2026-10-26**. **Core** means assigned f
 - **Reference — Stanford CS349E, Efficient ML Inference at Scale**. [Course](https://cs349e.github.io/). Hardware, compilers, kernels and disaggregated serving course structure.
 - **Reference — Stanford CS336, Language Modeling from Scratch, Spring 2025**. [Course](https://cs336.stanford.edu/spring2025/). Systems assignment and build/measure teaching style.
 - **Reference — Triton tutorials**. [Official gallery](https://triton-lang.org/main/getting-started/tutorials/index.html). Progressive kernel examples; language/compiler, not Triton Inference Server.
+- **Core for L3T — Triton fused softmax and interpreter** (reviewed 2026-10-30). [Fused-softmax tutorial](https://triton-lang.org/main/getting-started/tutorials/02-fused-softmax.html) (persistent programs looping over rows), [debugging guide](https://triton-lang.org/main/programming-guide/chapter-3/debugging.html) (`TRITON_INTERPRET=1` runs kernels with NumPy on the CPU; no bfloat16 arithmetic or indirect loads), [triton 3.9.0 on PyPI](https://pypi.org/project/triton/3.9.0/).
 - **Reference — GPU MODE**. [Lecture materials](https://github.com/gpu-mode/lectures). Selected talks and code; choose a bounded subset for each lab.
 - **Reference — NVIDIA TileGym tutorials**. [Tutorial repository](https://github.com/NVIDIA/TileGym). Tile kernel tutorials and examples.
 

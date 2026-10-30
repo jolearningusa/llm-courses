@@ -28,6 +28,10 @@ Use a small linear/normalization block for eager and compiled forward/training. 
 
 Implement RMSNorm or stable softmax in CUDA C++, then compare a supported Triton path. Begin with a simple correct version; change coalescing, reduction organization and fusion one at a time. Validate tails and declared stride support; reject unsupported inputs clearly. If used in training, supply and check backward. Acceptance: no sanitizer errors, justified tolerances, measured bytes/time and one profile-supported explanation of register, bandwidth or synchronization cost.
 
+### L3T — The same reductions in Triton (week 4 or 5; CPU interpreter, GPU for timing)
+
+Write row-wise softmax and RMSNorm as Triton kernels and compare them with the L3 CUDA version, the framework operators and an unfused eager softmax. Check tails, strided rows, large logits and low-precision inputs in Triton's CPU interpreter first, then time on a supported GPU and sweep warps and row length. Acceptance: tests that fail when a mask or the max subtraction is removed, effective bandwidth labeled as an ideal-bytes bound, one shape where the library wins, and an explanation of the long-row limit of a one-program-per-row kernel. Extension: inspect the generated IR and write the RMSNorm backward. Source: the Triton fused-softmax tutorial and the interpreter debugging guide.
+
 ### L4 — Engineer GEMM for three regimes (week 5; suitable GPU)
 
 Benchmark a tiled implementation and cuBLASLt baseline on training/prefill, decode and grouped-MoE shapes. Inspect layout, tensor instructions, epilogues and pipeline behavior; compare CUTLASS/CuTe or CUDA Tile as an advanced path. Acceptance: actual compute dtype/accumulation reported, optimized-library baseline included, allocation excluded or explicitly included, and shape-dependent results explained. AMD option: hipBLASLt/CK on supported hardware. A source port without correctness/performance validation is not completion.

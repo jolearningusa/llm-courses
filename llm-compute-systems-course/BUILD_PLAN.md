@@ -84,6 +84,7 @@ Every released lab needs a student handout, explicit prerequisites, starter file
 | L1 | Timing/trace worksheet, timing harness and diagnostic experiment | CPU analysis; GPU measurement | Async timing and profiler overhead separated; any sample trace has provenance |
 | L2 | Small PyTorch forward/training block, compiler experiment and logs | CPU; optional GPU | Outputs/gradients and shape-contract behavior checked; actual backend recorded |
 | L3 | Reduction starter/reference, integration harness and correctness suite | CUDA | Tails/error constraints tested on declared hardware; sanitizer run or prerequisite explicitly noted |
+| L3T | Triton softmax/RMSNorm kernels, interpreter correctness suite and GPU timing harness | CPU interpreter; CUDA/ROCm GPU for timing | Interpreter checks pass; GPU timings recorded with device, runtime and versions |
 | L4 | GEMM shape suite, library baseline and tuning exercises | CUDA; optional AMD | Compute/accumulation/layout and actual kernel dispatch documented |
 | L5 | Exact attention reference, tiled exercise, backend benchmark | CPU reference; GPU performance | Masks/lengths/error checked; quadratic work distinguished from intermediate storage |
 | L6 | Supported precision recipe, quality/loss fixtures and conversion timing | Device-specific | Numerical threshold, calibration/evaluation split and fallback behavior explicit |
