@@ -18,6 +18,7 @@ The pinned PyTorch CPU unit suite passes **48 tests**. GPU tests were not simula
 | L1 | CPU wall-time CLI, raw samples and interval/pipeline checks | No CUDA profiler timeline |
 | L2 | CPU eager/Inductor forward/backward, dynamic shapes and gradient checks | No CUDA/ROCm compiler performance |
 | L3 | CPU reduction references/tails/stability checks; CUDA source supplied | CUDA build/run/sanitizer/custom-op integration unverified |
+| L3T | Triton softmax/RMSNorm kernels in the CPU interpreter: tails, strided rows, large logits, float16/bfloat16, contract rejection (7 tests) | Compiled GPU kernels, timings and bandwidth unverified |
 | L4 | Actual CPU GEMM shape/tiling/group reference and checks | Python grouping is not fused GPU GEMM |
 | L5 | CPU full/online attention outputs, masks, tails and gradients | Python autograd is not fused GPU training-memory validation |
 | L6 | Packed CPU int4/int8 bytes/error checks and CPU BF16 loss/gradient comparison | No LLM quality or accelerated TorchAO/TE recipe |
@@ -38,6 +39,7 @@ L12 parameter difference from the full-batch reference was at most 1.49e-8 in th
 - Standard-library checks/CLIs: author host Python 3.9.6; no target acceleration inferred.
 - PyTorch numerical/framework/AOT checks: macOS arm64, Python 3.12.14, torch 2.9.1; pinned manifests in the kit. Optional NumPy bridge is unused in the baseline environment.
 - ExecuTorch CPU: separate environment, 1.0.0 + torch 2.9.1. Exporter uses bundled `flatc`. Optional TorchAO C++ extensions were disabled and the wheel reported its internal consistency verifier unavailable; numerical and explicit loader-contract checks passed. No native quantized or unavailable-verifier claim is made.
+- Triton (L3T): separate environment, Linux x86_64, Python 3.12.3, torch 2.15.0 and triton 3.9.0 with `TRITON_INTERPRET=1`; the 7 L3T tests and the CLI ran in the interpreter only.
 - No CUDA GPU/compiler, multi-GPU accelerator cluster, AMD target, Rubin system or edge device was available for this release's accelerated extensions.
 
 ## Remaining pilots before full course delivery

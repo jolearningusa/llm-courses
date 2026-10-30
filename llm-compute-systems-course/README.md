@@ -34,7 +34,7 @@ The course is inference-first. Parts I–V follow one request's computation from
 | Part | Weeks | Decks | Labs | Engineering question |
 |---|---|---|---|---|
 | I. Foundations: workloads and measurement | 1–2 | 01, 02, 03, 04 | L0–L1 | What work, data movement and memory capacity does this job require, and how do we measure it honestly? |
-| II. Single-GPU execution: PyTorch, compilers and kernels | 3–6 | 05, 06, 07, 33, 08, 09, 10, 11, 12, 32 | L2–L5 | How does a tensor program become efficient work on one device? |
+| II. Single-GPU execution: PyTorch, compilers and kernels | 3–6 | 05, 06, 07, 33, 08, 09, 10, 11, 12, 32 | L2–L5, L3T | How does a tensor program become efficient work on one device? |
 | III. Numerics and quantization | 7 | 13, 14 | L6 | Which formats, scales and accumulations keep a model correct while moving fewer bytes? |
 | IV. Inference serving | 8–11 | 15, 16, 17, 18, 19, 20, 21 | L7–L10 | How do we deliver useful tokens under latency, memory and load constraints? |
 | V. Deployment and platforms | 11–12 | 22, 23, 24 | L11, L15A | How do we package a program for a target, and what does the target platform provide? |
@@ -146,6 +146,7 @@ llm-compute-systems-course/
 │   │   │   ├── lab01_measurement.md
 │   │   │   ├── lab02_pytorch.md
 │   │   │   ├── lab03_reductions.md
+│   │   │   ├── lab03t_triton.md
 │   │   │   ├── lab04_gemm.md
 │   │   │   ├── lab05_attention.md
 │   │   │   ├── lab06_precision.md
@@ -173,7 +174,8 @@ llm-compute-systems-course/
 │   │   │   ├── test_precision.py
 │   │   │   ├── test_pytorch_lab.py
 │   │   │   ├── test_reductions.py
-│   │   │   └── test_scheduling.py
+│   │   │   ├── test_scheduling.py
+│   │   │   └── test_triton_lab.py
 │   │   ├── README.md
 │   │   ├── agent_policy_lab.py
 │   │   ├── attention_lab.py
@@ -194,9 +196,11 @@ llm-compute-systems-course/
 │   │   ├── requirements-executorch.txt
 │   │   ├── requirements-pytorch-lock.txt
 │   │   ├── requirements-pytorch.txt
+│   │   ├── requirements-triton.txt
 │   │   ├── scheduling_lab.py
 │   │   ├── system_efficiency.py
 │   │   ├── training_source_walkthrough.md
+│   │   ├── triton_lab.py
 │   │   └── vendor_dossier_template.md
 │   ├── LAB_PLAN.md
 │   └── report_template.md

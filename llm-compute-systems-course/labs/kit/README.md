@@ -39,6 +39,10 @@ Validated on macOS arm64, Python 3.12.14 and PyTorch 2.9.1: eager forward/backwa
 
 Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/invalid-input checks ran on the CPU host. `cuda/rmsnorm.cu` is an educational float32 standalone source example: no CUDA compiler, GPU execution or sanitizer run was available here. The integration/backward task is explicitly a student extension, not a supplied training operator.
 
+## L3T Triton kernels
+
+[L3T](handouts/lab03t_triton.md) writes the L3 reductions as Triton kernels. Install `requirements-triton.txt` in a separate Python 3.12 environment (Linux x86_64, torch 2.15.0, triton 3.9.0). `triton_lab.py` and its seven tests ran in Triton's CPU interpreter (`TRITON_INTERPRET=1`) on the authoring host: tails, strided rows, large logits, float16/bfloat16 and contract rejection. The interpreter checks numerics only. The GPU timing path (`triton.testing.do_bench` against eager and library operators) was not run, so no compiled-kernel or bandwidth result is claimed.
+
 ## L4 GEMM and pipeline study
 
 [L4](handouts/lab04_gemm.md) uses `gemm_lab.py` in the pinned PyTorch environment for actual CPU matrix/shape measurements and K-tiling correctness. It includes ragged expert groups with an empty expert. Python tiling/group dispatch is explicitly pedagogical, not an optimized CUDA/ROCm implementation. CUDA/library pipeline benchmarking remains a hardware extension not validated on this host.
@@ -49,6 +53,7 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 - [L1 — Measurement and host data paths](handouts/lab01_measurement.md)
 - [L2 — Follow eager execution into compilation](handouts/lab02_pytorch.md)
 - [L3 — Reductions, CUDA execution and operator contracts](handouts/lab03_reductions.md)
+- [L3T — Fused softmax and RMSNorm in Triton](handouts/lab03t_triton.md)
 - [L4 — GEMM shapes, tiling and pipelines](handouts/lab04_gemm.md)
 - [L5 — Online attention and matched backend comparison](handouts/lab05_attention.md)
 - [L6 — Precision contracts and measured numerical behavior](handouts/lab06_precision.md)

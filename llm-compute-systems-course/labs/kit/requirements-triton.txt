@@ -1,0 +1,4 @@
+# L3T environment: Python 3.12, Linux x86_64. CPU interpreter path (TRITON_INTERPRET=1) tested; GPU path not run by the author.
+torch==2.15.0
+triton==3.9.0
+numpy==2.5.4
