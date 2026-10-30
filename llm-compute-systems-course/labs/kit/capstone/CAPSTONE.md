@@ -2,6 +2,8 @@
 
 Choose **one** training, serving, deployment or bounded optimization-controller question. Reuse the course lab evidence path; the [potential projects](../../../projects/POTENTIAL_PROJECTS.md) are optional proposal sources, not a requirement to implement an entire platform.
 
+The [project appendix](../../../projects/COURSE_APPENDIX.md) adds detailed weekly plans and five research/edge extensions to the original catalogue. Its estimates are starting assumptions; select a scope that fits the actual allocation.
+
 ## Proposal contract
 
 Name a concrete workload and bottleneck hypothesis, the current implementation, one intervention and one adverse condition. Declare numerical/task-quality constraints, hardware/software/input identity, observation window, resources and search budget. Identify the source/trace signature that could falsify the mechanism. Submit a one-page proposal before collecting the final held-out results.

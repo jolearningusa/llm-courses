@@ -1,5 +1,7 @@
 # Potential LLM systems projects — separate specifications
 
+For weekly execution plans, resource budgets, research hypotheses and five further options (P21–P25), see [Appendix A — project ideas and execution plans](COURSE_APPENDIX.md). P01–P20 below retain their original IDs and scopes.
+
 Prepared 2026-10-27. These are **independent project candidates**, not promises to build them all or evidence that their improvements have been measured. They extend the course's [optimization map](../notes/optimization_techniques.md). A project can use a small common evaluator without waiting for a universal framework.
 
 The most practical entry points are P01 (measurement), P02 (bounded serving configuration), P03 (agent/cache policy) and P06 (compiler/backend decisions). P08/P09 add code generation or learning only after the evaluator is reliable. Existing [vLLM auto-tuning](https://github.com/vllm-project/vllm/blob/main/benchmarks/auto_tune/README.md), [TileLang tools](https://www.tilelang.com/tools/index.html), [FlashInfer-Bench](https://bench.flashinfer.ai/) and [agentic-api](https://github.com/vllm-project/agentic-api) are baselines to reuse/compare, not capabilities to claim as new.

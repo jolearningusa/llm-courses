@@ -29,3 +29,7 @@ Rubin hardware descriptions, software capabilities and vendor results carry sour
 Follow the repository's serial PR workflow: fresh `main` → one bounded change → local/CI checks → authorized squash merge → delete branch → refresh `main`. Regenerate SVG placements after rebuilding decks, synchronize actual README counts/tree and master links, then run course/site/slide checks. Dependency or source drift triggers a new compatibility pilot; update [tracked sources](references/tracked_sources.json) with evidence rather than bumping versions blindly.
 
 The [project catalogue](projects/POTENTIAL_PROJECTS.md) is a separate proposal collection. Publishing those specs does not implement, schedule or launch all projects.
+
+## Project appendix
+
+[Appendix A — project ideas and execution plans](projects/COURSE_APPENDIX.md) offers 25 independent engineering, reproduction and research options, with per-project schedules, baseline comparisons, hardware/access gates and acceptance decisions. Use the [research review](references/project_research_review.md) to distinguish prior art from proposed hypotheses. Choose one bounded project; the appendix does not expand the required sixteen-week teaching schedule.
