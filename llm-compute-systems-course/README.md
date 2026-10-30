@@ -84,7 +84,7 @@ Decks are listed in teaching order, grouped by part.
 | [Programming Models beyond CUDA](slides/33_programming_models_beyond_cuda.html) (19 slides) | Supplement to Part II, after deck 07 |
 | [Reductions and Custom Operator Contracts](slides/08_reductions_custom_operators.html) (17 slides) | Week 4, lecture B |
 | [GEMM Tiling and Tensor Cores](slides/09_gemm_tensor_cores.html) (19 slides) | Week 5, lecture A |
-| [Asynchronous Kernel Pipelines](slides/10_async_kernel_pipelines.html) (17 slides) | Week 5, lecture B |
+| [Asynchronous Kernel Pipelines](slides/10_async_kernel_pipelines.html) (20 slides) | Week 5, lecture B |
 | [Attention Execution and Online Softmax](slides/11_attention_execution.html) (17 slides) | Week 6, lecture A |
 | [Attention Kernel and Hardware Co-design](slides/12_attention_kernel_codesign.html) (17 slides) | Week 6, lecture B |
 | [Optimization Decisions and Automated Performance Engineering](slides/32_optimization_decision_systems.html) (23 slides) | Supplement after Part II; revisit after Part V |
