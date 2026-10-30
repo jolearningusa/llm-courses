@@ -81,3 +81,7 @@ Compare FlashAttention, PagedAttention and GQA. For each, draw the dataflow, ide
 ## Supplement: optimization decisions and automated search
 
 Use released deck 32 and [the technique map](notes/optimization_techniques.md) after Part II, then revisit after Part V. The supplement distinguishes platform, library, graph compiler and kernel DSL; compares existing vLLM/TileLang tuning and FlashInfer-Bench; and asks students to measure final performance **and search cost** with held-out workloads. This adds a cross-topic section without replacing the training/inference objectives or implying that every target has been executed.
+
+## Project appendix
+
+[Appendix A — project ideas and execution plans](projects/COURSE_APPENDIX.md) offers 25 independent engineering, reproduction and research options, with per-project schedules, baseline comparisons, hardware/access gates and acceptance decisions. Use the [research review](references/project_research_review.md) to distinguish prior art from proposed hypotheses. Choose one bounded project; the appendix does not expand the required sixteen-week teaching schedule.

@@ -196,3 +196,7 @@ Sources for [deck 35](../slides/35_inference_engines_compared.html). Read on 202
 - **Core — SGLang**. [Repository](https://github.com/sgl-project/sglang) (Apache-2.0; runtime features, hardware list, project adoption claims; 0.5.23 on PyPI, 2026-10-30), [documentation](https://docs.sglang.io/).
 - **Reference — TensorRT-LLM**. [Repository](https://github.com/NVIDIA/TensorRT-LLM) (Apache-2.0; "architected on PyTorch"; 1.2.1 stable and 1.4.0rc2 pre-release on PyPI), [trtllm-serve](https://github.com/NVIDIA/TensorRT-LLM/blob/main/docs/source/commands/trtllm-serve/trtllm-serve.rst) (OpenAI-compatible endpoints, `/metrics`).
 - **Reference — Status of TGI**. [text-generation-inference](https://github.com/huggingface/text-generation-inference) (maintenance mode; recommends vLLM, SGLang, llama.cpp and MLX).
+
+## Project appendix research
+
+The [project research review](project_research_review.md) records versioned primary papers, the sections examined and narrow project questions, reviewed 2026-10-29. It includes KernelBench (arXiv:2502.10517), FlashInfer-Bench (arXiv:2601.00227), KernelEvolve (arXiv:2512.23236), Ansor (arXiv:2006.06762), Mirage (arXiv:2405.05751), the runtime-share study (arXiv:2609.21058), and Cache Engineering for Agents / AKV (arXiv:2610.28577), alongside the serving/cache/precision papers listed above. The [appendix](../projects/COURSE_APPENDIX.md) separates established mechanisms from proposed experiments; paper headline results are not reproduced measurements for the course.

@@ -2,7 +2,7 @@
 
 A systems engineering course on building and measuring the computing stack for LLM inference, from PyTorch and compilers through CUDA kernels, memory, operating systems and serving runtimes to deployed programs, with distributed training at scale as the final part and NVIDIA Vera Rubin as a recurring case study.
 
-**Status: materials and CPU-reference release, 2026-10-27.** The package contains 36 decks with 36 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 separate project specifications. [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
+**Status: materials and CPU-reference release, 2026-10-27.** The package contains 36 decks with 36 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 original project specifications, expanded into [25 detailed project execution plans](projects/COURSE_APPENDIX.md). [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
 
 ## Start here
 
@@ -18,6 +18,8 @@ A systems engineering course on building and measuring the computing stack for L
 9. [Slide and lab build plan](BUILD_PLAN.md): 32 core decks plus four supplements (optimization decisions; programming models beyond CUDA; model lowering and co-design; inference engines compared), L0–L15 kits, serial PR order and release gates.
 
 10. [Release guide](COURSE_RELEASE.md), [validation record](VALIDATION.md), [SVG illustration library](slides/illustrations/) and [capstone](labs/kit/capstone/CAPSTONE.md).
+
+11. [Appendix A — project ideas and execution plans](projects/COURSE_APPENDIX.md): 25 engineering/research options, weekly plans, baselines, hardware gates and deliverables; [paper review](references/project_research_review.md).
 
 ## Audience and prerequisites
 
@@ -197,6 +199,7 @@ llm-compute-systems-course/
 ├── notes/
 │   ├── agentic_caching.md
 │   ├── amd_stack.md
+│   ├── project_appendix_review.md
 │   ├── course_component_audit.md
 │   ├── nvidia_stack.md
 │   ├── optimization_techniques.md
@@ -204,9 +207,11 @@ llm-compute-systems-course/
 │   ├── vera_rubin.md
 │   └── workload_primer.md
 ├── projects/
+│   ├── COURSE_APPENDIX.md
 │   ├── POTENTIAL_PROJECTS.md
 │   └── optimization-engine.svg
 ├── references/
+│   ├── project_research_review.md
 │   ├── bibliography_and_links.md
 │   ├── research_review.md
 │   └── tracked_sources.json
