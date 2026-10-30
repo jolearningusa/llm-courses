@@ -304,5 +304,14 @@
     "caption": "Arrows show kernel-DSL paths only; graph compilers also call vendor libraries and emit their own code. Dashed: an opaque custom call.",
     "deck": "33_programming_models_beyond_cuda.html",
     "asset": "programming-model-layers.svg"
+  },
+  {
+    "prefix": "34",
+    "after": "Lowering: a model becomes an artifact",
+    "slug": "lowering-pipeline",
+    "title": "Partition, then library or generated kernels",
+    "caption": "Anchor operators usually reach a library or BYOC code generator; the remaining operators are generated. Both end in one runtime artifact.",
+    "deck": "34_model_lowering_codesign.html",
+    "asset": "lowering-pipeline.svg"
   }
 ]

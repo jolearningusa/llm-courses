@@ -255,6 +255,14 @@ def build():
         for a,b in [(0,0),(0,1),(1,0),(1,1),(1,2),(2,3),(2,0),(3,0)]:
             s.line(xs[a]+40+b*50,198,xs[b]+40+a*50,262,BLUE,True)
 
+    if list(SLIDES.glob('34_*.html')):
+        s=figure('34','Lowering: a model becomes an artifact','lowering-pipeline','Partition, then library or generated kernels','Anchor operators usually reach a library or BYOC code generator; the remaining operators are generated. Both end in one runtime artifact.','A framework graph becomes a graph IR, is partitioned and fused, then anchor operators go to library or vendor kernels and the rest to generated kernels; both feed a runtime artifact such as an IREE module or TVM library.')
+        s.chain(['Framework graph','Graph IR','Partition + fuse'],40)
+        s.box(150,170,360,64,'Anchor ops: library / BYOC',BLUE);s.box(590,170,360,64,'Long tail: generated kernels',TEAL)
+        s.line(950,104,330,170,MUTED,True);s.line(960,104,770,170,MUTED,True)
+        s.box(240,272,620,58,'Runtime artifact: host schedule + device binaries',AMBER)
+        s.line(330,234,500,272,BLUE,True);s.line(770,234,600,272,TEAL,True)
+
 
 def apply():
     build();manifest=[]

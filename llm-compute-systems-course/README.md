@@ -2,7 +2,7 @@
 
 A systems engineering course on building and measuring the computing stack for LLM inference, from PyTorch and compilers through CUDA kernels, memory, operating systems and serving runtimes to deployed programs, with distributed training at scale as the final part and NVIDIA Vera Rubin as a recurring case study.
 
-**Status: materials and CPU-reference release, 2026-10-27.** The package contains 34 decks with 34 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 separate project specifications. [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
+**Status: materials and CPU-reference release, 2026-10-27.** The package contains 35 decks with 35 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 separate project specifications. [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
 
 ## Start here
 
@@ -15,7 +15,7 @@ A systems engineering course on building and measuring the computing stack for L
    Compare the [NVIDIA library map](notes/nvidia_stack.md) with the [AMD ROCm stack](notes/amd_stack.md).
 7. [AgentOS inference and cache mechanisms](notes/agentic_caching.md): vLLM, llama.cpp and SGLang, tool waits and cache policy.
 8. [Lab plan](labs/LAB_PLAN.md) and [experiment report](labs/report_template.md).
-9. [Slide and lab build plan](BUILD_PLAN.md): 32 core decks plus two supplements (optimization decisions; programming models beyond CUDA), L0–L15 kits, serial PR order and release gates.
+9. [Slide and lab build plan](BUILD_PLAN.md): 32 core decks plus three supplements (optimization decisions; programming models beyond CUDA; model lowering and co-design), L0–L15 kits, serial PR order and release gates.
 
 10. [Release guide](COURSE_RELEASE.md), [validation record](VALIDATION.md), [SVG illustration library](slides/illustrations/) and [capstone](labs/kit/capstone/CAPSTONE.md).
 
@@ -83,14 +83,14 @@ Decks are listed in teaching order, grouped by part.
 | [CUDA Execution and Memory](slides/07_cuda_execution_memory.html) (17 slides) | Week 4, lecture A |
 | [Programming Models beyond CUDA](slides/33_programming_models_beyond_cuda.html) (19 slides) | Supplement to Part II, after deck 07 |
 | [Reductions and Custom Operator Contracts](slides/08_reductions_custom_operators.html) (17 slides) | Week 4, lecture B |
-| [GEMM Tiling and Tensor Cores](slides/09_gemm_tensor_cores.html) (17 slides) | Week 5, lecture A |
+| [GEMM Tiling and Tensor Cores](slides/09_gemm_tensor_cores.html) (19 slides) | Week 5, lecture A |
 | [Asynchronous Kernel Pipelines](slides/10_async_kernel_pipelines.html) (17 slides) | Week 5, lecture B |
 | [Attention Execution and Online Softmax](slides/11_attention_execution.html) (17 slides) | Week 6, lecture A |
 | [Attention Kernel and Hardware Co-design](slides/12_attention_kernel_codesign.html) (17 slides) | Week 6, lecture B |
 | [Optimization Decisions and Automated Performance Engineering](slides/32_optimization_decision_systems.html) (23 slides) | Supplement after Part II; revisit after Part V |
 | **Part III · Numerics and quantization (week 7)** | |
 | [Precision, Scales and Numerical Contracts](slides/13_precision_numerics.html) (17 slides) | Week 7, lecture A |
-| [Quantization and Low-Precision Serving](slides/14_quantization_serving.html) (12 slides) | Week 7, lecture B |
+| [Quantization and Low-Precision Serving](slides/14_quantization_serving.html) (15 slides) | Week 7, lecture B |
 | **Part IV · Inference serving (weeks 8–11)** | |
 | [Serving Iterations, Admission and State Ownership](slides/15_serving_scheduler.html) (17 slides) | Week 8, lecture A |
 | [KV, Prefix and Response Caches across Inference Stacks](slides/16_kv_prefix_cache_mechanisms.html) (17 slides) | Week 8, lecture B |
@@ -102,6 +102,7 @@ Decks are listed in teaching order, grouped by part.
 | **Part V · Deployment and platforms (weeks 11–12)** | |
 | [Export Contracts and AOTInductor Deployment](slides/22_export_aotinductor.html) (17 slides) | Week 11, lecture B |
 | [ExecuTorch Runtime, Delegation and Memory Planning](slides/23_executorch_deployment.html) (18 slides) | Week 12, lecture A |
+| [Model Lowering and Hardware Co-design](slides/34_model_lowering_codesign.html) (13 slides) | Supplement to Part V, after deck 23 |
 | [Vera Rubin and NVIDIA/AMD Software Stacks](slides/24_rubin_vendor_stacks.html) (17 slides) | Week 12, lecture B |
 | **Part VI · Training at scale (weeks 13–15)** | |
 | [Training Precision, DDP, ZeRO and Fully Sharded Training](slides/25_ddp_zero_fsdp.html) (22 slides) | Week 13, lecture A |
@@ -229,6 +230,7 @@ llm-compute-systems-course/
 │   │   ├── fsdp-shards.svg
 │   │   ├── gemm-tiles.svg
 │   │   ├── host-data-path.svg
+│   │   ├── lowering-pipeline.svg
 │   │   ├── manifest.json
 │   │   ├── moe-primer.svg
 │   │   ├── online-attention.svg
@@ -280,7 +282,8 @@ llm-compute-systems-course/
 │   ├── 30_whole_system_efficiency.html
 │   ├── 31_capstone_workshop.html
 │   ├── 32_optimization_decision_systems.html
-│   └── 33_programming_models_beyond_cuda.html
+│   ├── 33_programming_models_beyond_cuda.html
+│   └── 34_model_lowering_codesign.html
 ├── BUILD_PLAN.md
 ├── COURSE_RELEASE.md
 ├── LICENSE
