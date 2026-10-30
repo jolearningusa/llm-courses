@@ -91,3 +91,7 @@ The [slide and lab build plan](../BUILD_PLAN.md) maps every lecture to its paire
 ## Release order
 
 Labs are numbered in teaching order and follow the parts in the [course map](../#course-map): foundations L0–L1, single-GPU execution L2–L5, numerics and quantization L6, inference serving L7–L10, deployment and platforms L11 and L15A, and training at scale L12–L14 and L15B. L6B (training precision) is done with deck 25 in Part VI. Ship bounded lab kits in separate PRs following [the roadmap](../ROADMAP.md). Each release must have a named tested configuration and clear skip behavior for unavailable hardware.
+
+## Optional inference bottleneck diagnosis
+
+The [diagnosis worksheet](kit/inference_bottleneck_worksheet.md) connects L1/L8/L10 with deck 36: identify weight/KV traffic, compute, host gaps, sampling/beam-state work and queues. It is a profiling protocol with a source/analytical path, not a new validated GPU harness.

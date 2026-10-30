@@ -41,3 +41,7 @@ After deck 33 (PR #71) and the inference-first renumbering (PR #72), every deck,
 ## Outstanding validation
 
 CPU reference/numerical tests and analytical simulations have bounded, recorded scopes in their handouts. CUDA reductions, accelerated kernel/library paths, FSDP/cluster experiments, real engine comparisons and edge targets remain unverified on this authoring host. Core P13–P16 materials are authored; student/hardware pilots remain on the build plan. This audit does not turn those into completed experiments.
+
+## Autoregressive bottleneck review — 2026-10-30
+
+Decks 01, 04, 15–21 and 30 already explain individual performance mechanisms. A connected diagnosis was missing: serial output dependence does not establish GPU idle time, low FLOP utilization does not establish host starvation, and vocabulary selection differs from projection, sparse-attention top-k and MoE routing. [Deck 36](../slides/36_inference_bottlenecks.html), [literature review](../references/inference_bottlenecks_review.md) and [worksheet](../labs/kit/inference_bottleneck_worksheet.md) fill that gap. The English/Chinese supplement includes a dependency/batching vector diagram and constructed budgets. P26 extends the appendix to 26 detailed plans; no accelerated experiment was run for this addition.

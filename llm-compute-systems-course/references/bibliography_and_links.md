@@ -200,3 +200,7 @@ Sources for [deck 35](../slides/35_inference_engines_compared.html). Read on 202
 ## Project appendix research
 
 The [project research review](project_research_review.md) records versioned primary papers, the sections examined and narrow project questions, reviewed 2026-10-29. It includes KernelBench (arXiv:2502.10517), FlashInfer-Bench (arXiv:2601.00227), KernelEvolve (arXiv:2512.23236), Ansor (arXiv:2006.06762), Mirage (arXiv:2405.05751), the runtime-share study (arXiv:2609.21058), and Cache Engineering for Agents / AKV (arXiv:2610.28577), alongside the serving/cache/precision papers listed above. The [appendix](../projects/COURSE_APPENDIX.md) separates established mechanisms from proposed experiments; paper headline results are not reproduced measurements for the course.
+
+## Autoregressive decoding and bottleneck diagnosis
+
+Sources for [deck 36](../slides/36_inference_bottlenecks.html), reviewed 2026-10-30. The [annotated review](inference_bottlenecks_review.md) gives examined sections, workload scope and limitations. Primary readings: **Efficiently Scaling Transformer Inference** (arXiv:2211.05102), **Splitwise** (arXiv:2311.18677), **Sarathi-Serve** (arXiv:2403.02310), **Speculative Decoding** (arXiv:2211.17192), **Qrita** (arXiv:2602.01518), and **Guess-Verify-Refine / GVR** (arXiv:2604.22312). Also compare How To Scale Your Model, FlashInfer sorting-free sampling, the Hazy Research Llama-1B megakernel case, NVIDIA CUDA Graph guidance and TensorRT-LLM sampling/beam-search documentation. No new GPU results are claimed.

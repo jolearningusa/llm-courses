@@ -322,5 +322,14 @@
     "caption": "Clients can keep one OpenAI-style API; behind it, local engines optimize one device at batch size near 1 and serving engines optimize many requests per GPU.",
     "deck": "35_inference_engines_compared.html",
     "asset": "engine-design-points.svg"
+  },
+  {
+    "prefix": "36",
+    "after": "Temporal dependence and model state",
+    "slug": "decode-dependency",
+    "title": "Dependent steps, independent sequences",
+    "caption": "A selected token gates the next step of that sequence. Other ready sequences provide independent rows in a batch. Arrows express dependency, not measured duration.",
+    "deck": "36_inference_bottlenecks.html",
+    "asset": "decode-dependency.svg"
   }
 ]

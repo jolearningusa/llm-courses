@@ -1,10 +1,10 @@
 # Appendix A — LLM systems projects and execution plans
 
-Choose one measurable systems question, establish a credible baseline, then implement the smallest change that can answer it. This appendix offers **25 independent projects**, including engineering capstones, reproducibility studies and research hypotheses. P01–P20 retain the IDs in the [original catalogue](POTENTIAL_PROJECTS.md); P21–P25 are extensions. None is a claim of an implemented product or a guaranteed speedup.
+Choose one measurable systems question, establish a credible baseline, then implement the smallest change that can answer it. This appendix offers **26 independent projects**, including engineering capstones, reproducibility studies and research hypotheses. P01–P20 retain the IDs in the [original catalogue](POTENTIAL_PROJECTS.md); P21–P26 are extensions. None is a claim of an implemented product or a guaranteed speedup.
 
 The supplied *LLM Inference System: Project Ideas and Technical Strategy* motivates a coherent longer-term product: an optimizer that profiles a workload, chooses an optimization layer, evaluates candidates and retains validated results. A class project should implement one evidence-producing component or one narrow decision experiment. Python is a convenient first controller; Rust is an optional implementation choice after the interfaces work. Existing compilers, libraries, runtimes and serving engines remain dependencies.
 
-Read the [paper and repository review](../references/project_research_review.md) for prior art and the [deck review](../notes/project_appendix_review.md) for teaching links. Literature reviewed 2026-10-29. Research labels below mean testable hypotheses; novelty requires a new related-work check at project start.
+Read the [paper and repository review](../references/project_research_review.md) for prior art and the [deck review](../notes/project_appendix_review.md) for teaching links. Literature reviewed 2026-10-29; P26 and its bottleneck review added 2026-10-30. Research labels below mean testable hypotheses; novelty requires a new related-work check at project start.
 
 ## A1. Select a project
 
@@ -37,6 +37,7 @@ Read the [paper and repository review](../references/project_research_review.md)
 | [P23](#p23) | Cache-operation identity and restoration · R | CPU state model; eligible AKV/engine target; 8 weeks | Decks 16, 21; L7, L10 |
 | [P24](#p24) | Distributed candidate evaluation · R/E | Two GPUs, homogeneous communicator; 8 weeks | Decks 19, 26; L9, L12 |
 | [P25](#p25) | Heterogeneous edge multi-model scheduling · R/E | One supported edge board; 8 weeks | Decks 04, 23, 34; L11 |
+| [P26](#p26) | GPU selection and decoding control · E/R | One supported GPU; 6 weeks | Deck 36; L1, L8, L10 |
 
 **Recommended starting choices:** P01/P06/P13 establish evidence with modest setup. P03 is the closest AgentOS continuation. P14/P25 fit edge-device experience. P09 is the proposed product's research core, after a working evaluator. P21/P22 are narrower research studies with cleaner ablations. P04/P11/P24 require allocations confirmed before enrollment.
 
@@ -519,6 +520,24 @@ Freeze the model/tokenizer revision, target architecture and memory, driver/runt
 **Evidence.** Deadline success, task/LLM latency, per-model fairness, total memory and sustained degradation. Measure energy per useful task only with an actual power boundary and sampling method; temperature is not an energy meter. Count CPU fallbacks and transfers. Backend node coverage is insufficient to predict joint performance.
 
 **Budget / stop-go.** Proposed 30 board-hours with scheduled access; no additional device purchase. Deliver workload traces, scheduler, supported-placement matrix and sustained-run report. If only one model/target works, narrow to P14 instead. A publishable policy needs stronger prior-art and generalization evidence than a single-board integration win.
+
+<a id="p26"></a>
+### P26 — GPU selection and decoding control
+
+**Question.** When does faster selection materially reduce full decode latency or improve SLO goodput? Keep vocabulary sampling, beam candidate selection and sparse-attention context selection as distinct tracks. The MVP chooses vocabulary sampling; beam search is an optional extension. Read the [bottleneck literature review](../references/inference_bottlenecks_review.md), including Qrita, FlashInfer and GVR, before claiming novelty.
+
+**Execution — 6 weeks.**
+
+1. **Week 1.** Qualify one model/engine/GPU; profile linear layers, attention, output projection, selection and host overhead. Freeze top-k/top-p order, ties and sampling contract.
+2. **Week 2.** Build reference fixtures for peaked/flat distributions, duplicates, masks, large vocabularies and shape tails; validate support/distribution or exact filtered output as appropriate.
+3. **Week 3.** Compare the installed optimized sampler with full-sort and one eligible selection/pivot implementation under equal tuning budgets.
+4. **Week 4.** Test one bounded intervention such as fused filtering or shape-dependent dispatch. Record compilation, temporary bytes, launch count and failed trials.
+5. **Week 5.** Measure held-out batches/vocabularies/contexts and full-request latency/goodput. Include a case where sampling is a small fraction and the optimization loses or barely matters.
+6. **Week 6.** Reproduce winners and report component versus system gains. An optional beam track adds a tiny exhaustive score/ancestry/EOS reference and measures forward/state-management costs separately.
+
+**Baselines and evidence.** Existing optimized engine path plus FlashInfer/Qrita where supported. Compare the same computation/sampling semantics; changing beam width or truncating context is a separate quality experiment. Use the [diagnosis worksheet](../labs/kit/inference_bottleneck_worksheet.md). Five search seeds apply if tuning is part of the research claim.
+
+**Budget / stop-go.** Proposed 20 device-hours after the fit pilot. Deliver kernel/engine adapters, correctness fixtures, raw phase traces, end-to-end results and a decision map. No GPU is a source/analytical study, not measured acceleration. Reproducing an existing method is valid coursework; a research claim needs a new testable tradeoff beyond a wrapper.
 
 ## A5. Suggested routes and release sequence
 

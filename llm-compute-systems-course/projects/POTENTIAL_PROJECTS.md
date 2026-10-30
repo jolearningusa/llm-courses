@@ -1,6 +1,6 @@
 # Potential LLM systems projects — separate specifications
 
-For weekly execution plans, resource budgets, research hypotheses and five further options (P21–P25), see [Appendix A — project ideas and execution plans](COURSE_APPENDIX.md). P01–P20 below retain their original IDs and scopes.
+For weekly execution plans, resource budgets, research hypotheses and six further options (P21–P26), see [Appendix A — project ideas and execution plans](COURSE_APPENDIX.md). P01–P20 below retain their original IDs and scopes.
 
 Prepared 2026-10-27. These are **independent project candidates**, not promises to build them all or evidence that their improvements have been measured. They extend the course's [optimization map](../notes/optimization_techniques.md). A project can use a small common evaluator without waiting for a universal framework.
 

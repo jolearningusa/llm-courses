@@ -49,3 +49,7 @@ L12 parameter difference from the full-batch reference was at most 1.49e-8 in th
 5. Conduct a student setup/pacing pilot, record actual task duration and revise estimates. No student-duration record is fabricated here.
 
 The capstone/source/analytical paths are complete as assessment materials. A student analytical submission remains analytical even if every structural check passes.
+
+## Inference bottleneck supplement — 2026-10-30
+
+Deck 36 adds 18 slides in English and 18 in Simplified Chinese, with an original dependency/batching SVG. The new slides were browser-rendered and inspected; body and SVG label bounds were checked. Course consistency, site links and all 104 repository decks pass their checks. The 11 external URLs in the bottleneck review responded successfully to availability checks. Worked weight/KV arithmetic was independently checked. The optional worksheet and P26 are proposed experiment protocols: no GPU sampler, beam-search, communication or engine performance experiment was executed for this addition. Existing CPU validation remains unchanged.
