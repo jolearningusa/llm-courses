@@ -20,7 +20,7 @@
 - [ ] `python scripts/check_site.py`: relative links resolve; external references checked
 - [ ] Changed lab code runs (or the missing prerequisite is stated)
 - [ ] Course README syllabus and layout match the files
-- [ ] If this PR edits an English deck in a course with `slides/zh/`, the Mandarin twin is updated in this PR and its 简体中文 link stays on the same README row
+- [ ] If this PR adds or edits an English deck in a course with translations (`slides/zh/` or another `slides/<lang>/`), the twin in every language folder is updated in this PR and each translated link stays on the same README row
 
 ## Merge
 

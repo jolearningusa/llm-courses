@@ -84,26 +84,30 @@ python scripts/check_freshness.py                              # optional, needs
 - Lab code that was changed still runs (or the PR says which prerequisite, such as a GPU, was
   missing so it could not run).
 - The course README (syllabus, repository layout) matches the files actually in the course.
-- A course that has `slides/zh/` keeps every Mandarin deck in step with its English twin (see below).
+- A course that has translated decks (`slides/zh/` or another `slides/<lang>/`) keeps every twin in step with its
+  English deck in the same PR (see below).
 
-## Mandarin slide decks
+## Translated slide decks (Mandarin and other languages)
 
-A course that publishes Simplified Chinese puts one twin of each English deck at
-`slides/zh/<same file name>.html`. The English deck stays at `slides/<file>.html`. Both are
-published, so the site URLs differ only by that `zh/` segment, for example
-`.../llm-agentos-course/slides/00_master_agentos_deck.html` and
+A course that publishes a deck in another language puts one twin of each English deck at
+`slides/<lang>/<same file name>.html`, where `<lang>` is a language tag such as `zh` (Simplified
+Chinese, used today by the AgentOS course), `ja` or `pt-BR`. The English deck stays at
+`slides/<file>.html`. All are published, so the site URLs differ only by that `<lang>/` segment, for
+example `.../llm-agentos-course/slides/00_master_agentos_deck.html` and
 `.../llm-agentos-course/slides/zh/00_master_agentos_deck.html`.
 
-On the course README's "Slide decks" row, the Mandarin link sits on the same row as the English
-link, immediately after it: `[简体中文](slides/zh/<file>.html)`. The site's deck list follows that
-row, so the two URLs stay next to each other on the course page and the site home.
+On the course README's "Slide decks" row, each translated link sits on the same row as the English
+link, immediately after it, labeled in that language: `[简体中文](slides/zh/<file>.html)`. The site's
+deck list follows that row, so the URLs stay next to each other on the course page and the site home.
 
-Whenever an English deck is added or edited, the same PR updates `slides/zh/<file>.html` so the
-twin matches the new slide count and the claims that changed (lab numbers, versions, citations).
-`scripts/check_course.py` fails if a twin is missing, the slide counts differ, the README row
-omits the Mandarin link, or (when `origin/main` is in the local history) an English deck changed
-without its twin. `check_slides.mjs` checks numbering inside `slides/zh/` on its own, separate
-from the English decks.
+A translation covers the whole course: once `slides/<lang>/` exists, every English deck needs a twin
+there. Whenever an English deck is added or edited, the same PR updates the twin in **every**
+language folder of that course, so each twin matches the new slide count and the claims that
+changed (lab numbers, versions, citations). Do not merge an English-only slide change into a course
+that has translations. `scripts/check_course.py` fails if a twin is missing, the slide counts differ,
+the README row omits a translated link, or (when `origin/main` is in the local history) an English
+deck changed without its twin in each language. `check_slides.mjs` checks numbering inside each
+`slides/<lang>/` on its own, separate from the English decks.
 
 ## Keeping courses current
 
