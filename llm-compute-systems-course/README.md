@@ -67,53 +67,53 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 
 ## Slide decks
 
-Decks are listed in teaching order, grouped by part.
+Decks are listed in teaching order, grouped by part. Each row links the English deck and, on that same row, the Simplified Chinese deck (`slides/zh/`, same file name).
 
 | Deck | When |
 |---|---|
-| [Efficient LLM Computing Systems](slides/00_master_compute_systems.html) (15 slides) | Course map and deck directory |
+| [Efficient LLM Computing Systems](slides/00_master_compute_systems.html) (15 slides) · [简体中文](slides/zh/00_master_compute_systems.html) | Course map and deck directory |
 | **Part I · Foundations: workloads and measurement (weeks 1–2)** | |
-| [Workloads, Rooflines and Capacity](slides/01_workloads_rooflines.html) (17 slides) | Week 1, lecture A |
-| [Architecture as a Computing Workload](slides/02_architecture_workload_primer.html) (13 slides) | Week 1, lecture B |
-| [Measurement and Profiling](slides/03_measurement_profiling.html) (17 slides) | Week 2, lecture A |
-| [Host, OS and Data Paths](slides/04_host_os_data_paths.html) (17 slides) | Week 2, lecture B |
+| [Workloads, Rooflines and Capacity](slides/01_workloads_rooflines.html) (17 slides) · [简体中文](slides/zh/01_workloads_rooflines.html) | Week 1, lecture A |
+| [Architecture as a Computing Workload](slides/02_architecture_workload_primer.html) (13 slides) · [简体中文](slides/zh/02_architecture_workload_primer.html) | Week 1, lecture B |
+| [Measurement and Profiling](slides/03_measurement_profiling.html) (17 slides) · [简体中文](slides/zh/03_measurement_profiling.html) | Week 2, lecture A |
+| [Host, OS and Data Paths](slides/04_host_os_data_paths.html) (17 slides) · [简体中文](slides/zh/04_host_os_data_paths.html) | Week 2, lecture B |
 | **Part II · Single-GPU execution: PyTorch, compilers and kernels (weeks 3–6)** | |
-| [PyTorch Execution and Autograd](slides/05_pytorch_execution_autograd.html) (18 slides) | Week 3, lecture A |
-| [PyTorch Compiler and Specialization](slides/06_pytorch_compiler.html) (18 slides) | Week 3, lecture B |
-| [CUDA Execution and Memory](slides/07_cuda_execution_memory.html) (17 slides) | Week 4, lecture A |
-| [Programming Models beyond CUDA](slides/33_programming_models_beyond_cuda.html) (19 slides) | Supplement to Part II, after deck 07 |
-| [Reductions and Custom Operator Contracts](slides/08_reductions_custom_operators.html) (17 slides) | Week 4, lecture B |
-| [GEMM Tiling and Tensor Cores](slides/09_gemm_tensor_cores.html) (19 slides) | Week 5, lecture A |
-| [Asynchronous Kernel Pipelines](slides/10_async_kernel_pipelines.html) (20 slides) | Week 5, lecture B |
-| [Attention Execution and Online Softmax](slides/11_attention_execution.html) (17 slides) | Week 6, lecture A |
-| [Attention Kernel and Hardware Co-design](slides/12_attention_kernel_codesign.html) (17 slides) | Week 6, lecture B |
-| [Optimization Decisions and Automated Performance Engineering](slides/32_optimization_decision_systems.html) (23 slides) | Supplement after Part II; revisit after Part V |
+| [PyTorch Execution and Autograd](slides/05_pytorch_execution_autograd.html) (18 slides) · [简体中文](slides/zh/05_pytorch_execution_autograd.html) | Week 3, lecture A |
+| [PyTorch Compiler and Specialization](slides/06_pytorch_compiler.html) (18 slides) · [简体中文](slides/zh/06_pytorch_compiler.html) | Week 3, lecture B |
+| [CUDA Execution and Memory](slides/07_cuda_execution_memory.html) (17 slides) · [简体中文](slides/zh/07_cuda_execution_memory.html) | Week 4, lecture A |
+| [Programming Models beyond CUDA](slides/33_programming_models_beyond_cuda.html) (19 slides) · [简体中文](slides/zh/33_programming_models_beyond_cuda.html) | Supplement to Part II, after deck 07 |
+| [Reductions and Custom Operator Contracts](slides/08_reductions_custom_operators.html) (17 slides) · [简体中文](slides/zh/08_reductions_custom_operators.html) | Week 4, lecture B |
+| [GEMM Tiling and Tensor Cores](slides/09_gemm_tensor_cores.html) (19 slides) · [简体中文](slides/zh/09_gemm_tensor_cores.html) | Week 5, lecture A |
+| [Asynchronous Kernel Pipelines](slides/10_async_kernel_pipelines.html) (20 slides) · [简体中文](slides/zh/10_async_kernel_pipelines.html) | Week 5, lecture B |
+| [Attention Execution and Online Softmax](slides/11_attention_execution.html) (17 slides) · [简体中文](slides/zh/11_attention_execution.html) | Week 6, lecture A |
+| [Attention Kernel and Hardware Co-design](slides/12_attention_kernel_codesign.html) (17 slides) · [简体中文](slides/zh/12_attention_kernel_codesign.html) | Week 6, lecture B |
+| [Optimization Decisions and Automated Performance Engineering](slides/32_optimization_decision_systems.html) (23 slides) · [简体中文](slides/zh/32_optimization_decision_systems.html) | Supplement after Part II; revisit after Part V |
 | **Part III · Numerics and quantization (week 7)** | |
-| [Precision, Scales and Numerical Contracts](slides/13_precision_numerics.html) (17 slides) | Week 7, lecture A |
-| [Quantization and Low-Precision Serving](slides/14_quantization_serving.html) (15 slides) | Week 7, lecture B |
+| [Precision, Scales and Numerical Contracts](slides/13_precision_numerics.html) (17 slides) · [简体中文](slides/zh/13_precision_numerics.html) | Week 7, lecture A |
+| [Quantization and Low-Precision Serving](slides/14_quantization_serving.html) (15 slides) · [简体中文](slides/zh/14_quantization_serving.html) | Week 7, lecture B |
 | **Part IV · Inference serving (weeks 8–11)** | |
-| [Serving Iterations, Admission and State Ownership](slides/15_serving_scheduler.html) (17 slides) | Week 8, lecture A |
-| [KV, Prefix and Response Caches across Inference Stacks](slides/16_kv_prefix_cache_mechanisms.html) (17 slides) | Week 8, lecture B |
-| [Inference Engines Compared: llama.cpp, vLLM and the Rest](slides/35_inference_engines_compared.html) (19 slides) | Supplement to Part IV, after deck 16 |
-| [Prefill, Decode and Latency-Constrained Scheduling](slides/17_prefill_decode_scheduling.html) (17 slides) | Week 9, lecture A |
-| [Disaggregated Inference and KV Handoff](slides/18_disaggregated_inference.html) (17 slides) | Week 9, lecture B |
-| [MoE Routing, Dispatch and Grouped Compute](slides/19_moe_execution.html) (17 slides) | Week 10, lecture A |
-| [Speculative Decoding and Correct Verification](slides/20_speculative_decoding.html) (17 slides) | Week 10, lecture B |
-| [AgentOS Workloads and Cache-Lifecycle Policies](slides/21_agentos_inference_cache_policy.html) (17 slides) | Week 11, lecture A |
+| [Serving Iterations, Admission and State Ownership](slides/15_serving_scheduler.html) (17 slides) · [简体中文](slides/zh/15_serving_scheduler.html) | Week 8, lecture A |
+| [KV, Prefix and Response Caches across Inference Stacks](slides/16_kv_prefix_cache_mechanisms.html) (17 slides) · [简体中文](slides/zh/16_kv_prefix_cache_mechanisms.html) | Week 8, lecture B |
+| [Inference Engines Compared: llama.cpp, vLLM and the Rest](slides/35_inference_engines_compared.html) (19 slides) · [简体中文](slides/zh/35_inference_engines_compared.html) | Supplement to Part IV, after deck 16 |
+| [Prefill, Decode and Latency-Constrained Scheduling](slides/17_prefill_decode_scheduling.html) (17 slides) · [简体中文](slides/zh/17_prefill_decode_scheduling.html) | Week 9, lecture A |
+| [Disaggregated Inference and KV Handoff](slides/18_disaggregated_inference.html) (17 slides) · [简体中文](slides/zh/18_disaggregated_inference.html) | Week 9, lecture B |
+| [MoE Routing, Dispatch and Grouped Compute](slides/19_moe_execution.html) (17 slides) · [简体中文](slides/zh/19_moe_execution.html) | Week 10, lecture A |
+| [Speculative Decoding and Correct Verification](slides/20_speculative_decoding.html) (17 slides) · [简体中文](slides/zh/20_speculative_decoding.html) | Week 10, lecture B |
+| [AgentOS Workloads and Cache-Lifecycle Policies](slides/21_agentos_inference_cache_policy.html) (17 slides) · [简体中文](slides/zh/21_agentos_inference_cache_policy.html) | Week 11, lecture A |
 | **Part V · Deployment and platforms (weeks 11–12)** | |
-| [Export Contracts and AOTInductor Deployment](slides/22_export_aotinductor.html) (17 slides) | Week 11, lecture B |
-| [ExecuTorch Runtime, Delegation and Memory Planning](slides/23_executorch_deployment.html) (18 slides) | Week 12, lecture A |
-| [Model Lowering and Hardware Co-design](slides/34_model_lowering_codesign.html) (13 slides) | Supplement to Part V, after deck 23 |
-| [Vera Rubin and NVIDIA/AMD Software Stacks](slides/24_rubin_vendor_stacks.html) (17 slides) | Week 12, lecture B |
+| [Export Contracts and AOTInductor Deployment](slides/22_export_aotinductor.html) (17 slides) · [简体中文](slides/zh/22_export_aotinductor.html) | Week 11, lecture B |
+| [ExecuTorch Runtime, Delegation and Memory Planning](slides/23_executorch_deployment.html) (18 slides) · [简体中文](slides/zh/23_executorch_deployment.html) | Week 12, lecture A |
+| [Model Lowering and Hardware Co-design](slides/34_model_lowering_codesign.html) (13 slides) · [简体中文](slides/zh/34_model_lowering_codesign.html) | Supplement to Part V, after deck 23 |
+| [Vera Rubin and NVIDIA/AMD Software Stacks](slides/24_rubin_vendor_stacks.html) (17 slides) · [简体中文](slides/zh/24_rubin_vendor_stacks.html) | Week 12, lecture B |
 | **Part VI · Training at scale (weeks 13–15)** | |
-| [Training Precision, DDP, ZeRO and Fully Sharded Training](slides/25_ddp_zero_fsdp.html) (22 slides) | Week 13, lecture A |
-| [Collectives, Topology and Exposed Communication](slides/26_collectives_overlap.html) (17 slides) | Week 13, lecture B |
-| [Parallel Layouts and Recomputation](slides/27_parallelism_recomputation.html) (17 slides) | Week 14, lecture A |
-| [Reading a Production Training Stack](slides/28_training_stack_walkthrough.html) (17 slides) | Week 14, lecture B |
-| [Checkpointing, Input State and Useful Training Work](slides/29_checkpoint_recovery.html) (17 slides) | Week 15, lecture A |
-| [Whole-System Efficiency and Useful Work](slides/30_whole_system_efficiency.html) (17 slides) | Week 15, lecture B |
+| [Training Precision, DDP, ZeRO and Fully Sharded Training](slides/25_ddp_zero_fsdp.html) (22 slides) · [简体中文](slides/zh/25_ddp_zero_fsdp.html) | Week 13, lecture A |
+| [Collectives, Topology and Exposed Communication](slides/26_collectives_overlap.html) (17 slides) · [简体中文](slides/zh/26_collectives_overlap.html) | Week 13, lecture B |
+| [Parallel Layouts and Recomputation](slides/27_parallelism_recomputation.html) (17 slides) · [简体中文](slides/zh/27_parallelism_recomputation.html) | Week 14, lecture A |
+| [Reading a Production Training Stack](slides/28_training_stack_walkthrough.html) (17 slides) · [简体中文](slides/zh/28_training_stack_walkthrough.html) | Week 14, lecture B |
+| [Checkpointing, Input State and Useful Training Work](slides/29_checkpoint_recovery.html) (17 slides) · [简体中文](slides/zh/29_checkpoint_recovery.html) | Week 15, lecture A |
+| [Whole-System Efficiency and Useful Work](slides/30_whole_system_efficiency.html) (17 slides) · [简体中文](slides/zh/30_whole_system_efficiency.html) | Week 15, lecture B |
 | **Capstone (week 16)** | |
-| [Capstone Workshop: Evidence to Decision](slides/31_capstone_workshop.html) (11 slides) | Week 16 |
+| [Capstone Workshop: Evidence to Decision](slides/31_capstone_workshop.html) (11 slides) · [简体中文](slides/zh/31_capstone_workshop.html) | Week 16 |
 
 Planned topics and release dependencies: [build plan](BUILD_PLAN.md).
 
@@ -286,7 +286,44 @@ llm-compute-systems-course/
 │   ├── 32_optimization_decision_systems.html
 │   ├── 33_programming_models_beyond_cuda.html
 │   ├── 34_model_lowering_codesign.html
-│   └── 35_inference_engines_compared.html
+│   ├── 35_inference_engines_compared.html
+│   └── zh/                                    # Simplified Chinese (zh-CN) twin of each deck above; same file name
+│       ├── 00_master_compute_systems.html
+│       ├── 01_workloads_rooflines.html
+│       ├── 02_architecture_workload_primer.html
+│       ├── 03_measurement_profiling.html
+│       ├── 04_host_os_data_paths.html
+│       ├── 05_pytorch_execution_autograd.html
+│       ├── 06_pytorch_compiler.html
+│       ├── 07_cuda_execution_memory.html
+│       ├── 08_reductions_custom_operators.html
+│       ├── 09_gemm_tensor_cores.html
+│       ├── 10_async_kernel_pipelines.html
+│       ├── 11_attention_execution.html
+│       ├── 12_attention_kernel_codesign.html
+│       ├── 13_precision_numerics.html
+│       ├── 14_quantization_serving.html
+│       ├── 15_serving_scheduler.html
+│       ├── 16_kv_prefix_cache_mechanisms.html
+│       ├── 17_prefill_decode_scheduling.html
+│       ├── 18_disaggregated_inference.html
+│       ├── 19_moe_execution.html
+│       ├── 20_speculative_decoding.html
+│       ├── 21_agentos_inference_cache_policy.html
+│       ├── 22_export_aotinductor.html
+│       ├── 23_executorch_deployment.html
+│       ├── 24_rubin_vendor_stacks.html
+│       ├── 25_ddp_zero_fsdp.html
+│       ├── 26_collectives_overlap.html
+│       ├── 27_parallelism_recomputation.html
+│       ├── 28_training_stack_walkthrough.html
+│       ├── 29_checkpoint_recovery.html
+│       ├── 30_whole_system_efficiency.html
+│       ├── 31_capstone_workshop.html
+│       ├── 32_optimization_decision_systems.html
+│       ├── 33_programming_models_beyond_cuda.html
+│       ├── 34_model_lowering_codesign.html
+│       └── 35_inference_engines_compared.html
 ├── BUILD_PLAN.md
 ├── COURSE_RELEASE.md
 ├── LICENSE
