@@ -262,6 +262,12 @@ def build():
         s.line(950,104,330,170,MUTED,True);s.line(960,104,770,170,MUTED,True)
         s.box(240,272,620,58,'Runtime artifact: host schedule + device binaries',AMBER)
         s.line(330,234,500,272,BLUE,True);s.line(770,234,600,272,TEAL,True)
+        s=figure('35','Two design points, one request path','engine-design-points','One API, two families of engines','Clients can keep one OpenAI-style API; behind it, local engines optimize one device at batch size near 1 and serving engines optimize many requests per GPU.','An OpenAI-style HTTP API sits above two families: local engines (llama.cpp, Ollama, MLX) on CPU, Metal and consumer GPUs, and serving engines (vLLM, SGLang, TensorRT-LLM) on data-center GPUs with paged KV and continuous batching.')
+        s.box(300,20,500,58,'OpenAI-style HTTP API',AMBER)
+        s.box(40,130,470,64,'Local: llama.cpp · Ollama · MLX',TEAL);s.box(590,130,470,64,'Serving: vLLM · SGLang · TensorRT-LLM',BLUE)
+        s.line(450,78,275,130,MUTED,True);s.line(650,78,825,130,MUTED,True)
+        s.box(40,250,470,64,'GGUF / MLX quants · offload · batch ≈ 1',TEAL);s.box(590,250,470,64,'Paged KV · continuous batching · TP/EP',BLUE)
+        s.line(275,194,275,250,TEAL,True);s.line(825,194,825,250,BLUE,True)
 
 
 def apply():

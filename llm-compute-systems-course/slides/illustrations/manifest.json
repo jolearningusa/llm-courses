@@ -313,5 +313,14 @@
     "caption": "Anchor operators usually reach a library or BYOC code generator; the remaining operators are generated. Both end in one runtime artifact.",
     "deck": "34_model_lowering_codesign.html",
     "asset": "lowering-pipeline.svg"
+  },
+  {
+    "prefix": "35",
+    "after": "Two design points, one request path",
+    "slug": "engine-design-points",
+    "title": "One API, two families of engines",
+    "caption": "Clients can keep one OpenAI-style API; behind it, local engines optimize one device at batch size near 1 and serving engines optimize many requests per GPU.",
+    "deck": "35_inference_engines_compared.html",
+    "asset": "engine-design-points.svg"
   }
 ]

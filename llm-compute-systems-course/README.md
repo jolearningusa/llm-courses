@@ -2,7 +2,7 @@
 
 A systems engineering course on building and measuring the computing stack for LLM inference, from PyTorch and compilers through CUDA kernels, memory, operating systems and serving runtimes to deployed programs, with distributed training at scale as the final part and NVIDIA Vera Rubin as a recurring case study.
 
-**Status: materials and CPU-reference release, 2026-10-27.** The package contains 35 decks with 35 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 separate project specifications. [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
+**Status: materials and CPU-reference release, 2026-10-27.** The package contains 36 decks with 36 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 separate project specifications. [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
 
 ## Start here
 
@@ -15,7 +15,7 @@ A systems engineering course on building and measuring the computing stack for L
    Compare the [NVIDIA library map](notes/nvidia_stack.md) with the [AMD ROCm stack](notes/amd_stack.md).
 7. [AgentOS inference and cache mechanisms](notes/agentic_caching.md): vLLM, llama.cpp and SGLang, tool waits and cache policy.
 8. [Lab plan](labs/LAB_PLAN.md) and [experiment report](labs/report_template.md).
-9. [Slide and lab build plan](BUILD_PLAN.md): 32 core decks plus three supplements (optimization decisions; programming models beyond CUDA; model lowering and co-design), L0–L15 kits, serial PR order and release gates.
+9. [Slide and lab build plan](BUILD_PLAN.md): 32 core decks plus four supplements (optimization decisions; programming models beyond CUDA; model lowering and co-design; inference engines compared), L0–L15 kits, serial PR order and release gates.
 
 10. [Release guide](COURSE_RELEASE.md), [validation record](VALIDATION.md), [SVG illustration library](slides/illustrations/) and [capstone](labs/kit/capstone/CAPSTONE.md).
 
@@ -94,6 +94,7 @@ Decks are listed in teaching order, grouped by part.
 | **Part IV · Inference serving (weeks 8–11)** | |
 | [Serving Iterations, Admission and State Ownership](slides/15_serving_scheduler.html) (17 slides) | Week 8, lecture A |
 | [KV, Prefix and Response Caches across Inference Stacks](slides/16_kv_prefix_cache_mechanisms.html) (17 slides) | Week 8, lecture B |
+| [Inference Engines Compared: llama.cpp, vLLM and the Rest](slides/35_inference_engines_compared.html) (19 slides) | Supplement to Part IV, after deck 16 |
 | [Prefill, Decode and Latency-Constrained Scheduling](slides/17_prefill_decode_scheduling.html) (17 slides) | Week 9, lecture A |
 | [Disaggregated Inference and KV Handoff](slides/18_disaggregated_inference.html) (17 slides) | Week 9, lecture B |
 | [MoE Routing, Dispatch and Grouped Compute](slides/19_moe_execution.html) (17 slides) | Week 10, lecture A |
@@ -224,6 +225,7 @@ llm-compute-systems-course/
 │   │   ├── compiler-path.svg
 │   │   ├── cuda-hierarchy.svg
 │   │   ├── double-buffer.svg
+│   │   ├── engine-design-points.svg
 │   │   ├── execution-stack.svg
 │   │   ├── executorch-partitions.svg
 │   │   ├── expert-skew.svg
@@ -283,7 +285,8 @@ llm-compute-systems-course/
 │   ├── 31_capstone_workshop.html
 │   ├── 32_optimization_decision_systems.html
 │   ├── 33_programming_models_beyond_cuda.html
-│   └── 34_model_lowering_codesign.html
+│   ├── 34_model_lowering_codesign.html
+│   └── 35_inference_engines_compared.html
 ├── BUILD_PLAN.md
 ├── COURSE_RELEASE.md
 ├── LICENSE
