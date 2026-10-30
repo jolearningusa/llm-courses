@@ -6,7 +6,7 @@ This is the implementation checklist for the [syllabus](SYLLABUS.md), with one d
 
 ## Deliverables and status
 
-- **32 core planned decks, plus released supplements 32 (optimization decisions), 33 (programming models beyond CUDA), 34 (model lowering and hardware co-design) and 35 (inference engines compared):** a master overview, 30 topic lectures for weeks 1–15, and a capstone workshop. Week 16 uses the workshop and student presentations.
+- **32 core planned decks, plus released supplements 32 (optimization decisions), 33 (programming models beyond CUDA), 34 (model lowering and hardware co-design) 35 (inference engines compared) and 36 (autoregressive decoding and inference bottlenecks):** a master overview, 30 topic lectures for weeks 1–15, and a capstone workshop. Week 16 uses the workshop and student presentations.
 - **16 planned lab kits:** L0–L15, each with a handout, starter/reference material, runnable experiment or explicitly labeled analytical/trace path, validation and reporting instructions.
 - **Shared infrastructure:** workload fixtures, environment manifests, metrics format, benchmark utilities, correctness helpers and release documentation.
 - **Status at plan creation:** technical primers and lab specifications exist; no decks or executable kits have yet been released. Proposed filenames below are targets, not links to existing files. Update the progress table as units land.
@@ -151,3 +151,7 @@ The optimization supplement/technique audit merged in PR #63. [Twenty potential-
 ## Materials release
 
 All core decks/handouts/reference paths and the supplementary optimization sections are authored. [COURSE_RELEASE.md](COURSE_RELEASE.md) and [VALIDATION.md](VALIDATION.md) define what ran and what still needs target/student pilots. P16 supplies the assessment/reproducibility package and author walkthrough; it does not claim a completed student or GPU pilot.
+
+## Supplement 36 — 2026-10-30
+
+Released: [18-slide English deck](slides/36_inference_bottlenecks.html), Chinese twin, original dependency SVG, literature review and optional diagnosis worksheet. Place after deck 17, revisit after 19–21. [P26](projects/COURSE_APPENDIX.md#p26) gives a selection/decoding-control execution plan. Browser/layout/site checks qualify the materials; GPU profiling and student pacing are pending.

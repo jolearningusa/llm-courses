@@ -109,3 +109,7 @@ Read [L3](handouts/lab03_reductions.md). `reductions.py` and its numerical/inval
 ## Capstone and release
 
 The [capstone package](capstone/CAPSTONE.md) supplies three engineering paths plus an analytical option, proposal manifest, critique exercise and rubric. [Release validation](../../VALIDATION.md) records author checks separately from student/hardware pilots.
+
+## Optional inference bottleneck diagnosis
+
+The [diagnosis worksheet](inference_bottleneck_worksheet.md) connects L1/L8/L10 with deck 36: identify weight/KV traffic, compute, host gaps, sampling/beam-state work and queues. It is a profiling protocol with a source/analytical path, not a new validated GPU harness.

@@ -2,7 +2,7 @@
 
 A systems engineering course on building and measuring the computing stack for LLM inference, from PyTorch and compilers through CUDA kernels, memory, operating systems and serving runtimes to deployed programs, with distributed training at scale as the final part and NVIDIA Vera Rubin as a recurring case study.
 
-**Status: materials and CPU-reference release, 2026-10-27.** The package contains 36 decks with 36 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 original project specifications, expanded into [25 detailed project execution plans](projects/COURSE_APPENDIX.md). [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
+**Status: materials and CPU-reference release, 2026-10-27.** The package contains 37 decks with 37 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 original project specifications, expanded into [26 detailed project execution plans](projects/COURSE_APPENDIX.md). [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
 
 ## Start here
 
@@ -15,11 +15,11 @@ A systems engineering course on building and measuring the computing stack for L
    Compare the [NVIDIA library map](notes/nvidia_stack.md) with the [AMD ROCm stack](notes/amd_stack.md).
 7. [AgentOS inference and cache mechanisms](notes/agentic_caching.md): vLLM, llama.cpp and SGLang, tool waits and cache policy.
 8. [Lab plan](labs/LAB_PLAN.md) and [experiment report](labs/report_template.md).
-9. [Slide and lab build plan](BUILD_PLAN.md): 32 core decks plus four supplements (optimization decisions; programming models beyond CUDA; model lowering and co-design; inference engines compared), L0–L15 kits, serial PR order and release gates.
+9. [Slide and lab build plan](BUILD_PLAN.md): 32 core decks plus five supplements (optimization decisions; programming models beyond CUDA; model lowering and co-design; inference engines compared; inference bottleneck diagnosis), L0–L15 kits, serial PR order and release gates.
 
 10. [Release guide](COURSE_RELEASE.md), [validation record](VALIDATION.md), [SVG illustration library](slides/illustrations/) and [capstone](labs/kit/capstone/CAPSTONE.md).
 
-11. [Appendix A — project ideas and execution plans](projects/COURSE_APPENDIX.md): 25 engineering/research options, weekly plans, baselines, hardware gates and deliverables; [paper review](references/project_research_review.md).
+11. [Appendix A — project ideas and execution plans](projects/COURSE_APPENDIX.md): 26 engineering/research options, weekly plans, baselines, hardware gates and deliverables; [paper review](references/project_research_review.md).
 
 ## Audience and prerequisites
 
@@ -44,6 +44,8 @@ The course is inference-first. Parts I–V follow one request's computation from
 Supplements sit next to the material they extend: deck 33 (programming models beyond CUDA) follows deck 07, and deck 32 (optimization decisions and automated search) follows Part II and is revisited after Part V. The order follows the same spine as CMU 15-442, Stanford CS336's systems unit and *How To Scale Your Model* (single-device execution before scale-out), with inference first as in Stanford CS349E (inference only) and MIT 6.5940 (efficient inference before efficient training). The comparison and sources are in the [research review](references/research_review.md#course-structure-compared-with-other-courses).
 
 Each lab follows **predict → implement → validate correctness → profile → explain → compare end-to-end**. A speedup without a stated baseline, error check and workload is incomplete.
+
+[Deck 36](slides/36_inference_bottlenecks.html) connects autoregressive dependencies to weight/KV traffic, utilization, sampling/beam search and service bottlenecks. Its [primary-source review](references/inference_bottlenecks_review.md) and [diagnosis worksheet](labs/kit/inference_bottleneck_worksheet.md) supply the evidence path.
 
 ## Learning outcomes
 
@@ -98,6 +100,7 @@ Decks are listed in teaching order, grouped by part. Each row links the English 
 | [KV, Prefix and Response Caches across Inference Stacks](slides/16_kv_prefix_cache_mechanisms.html) (17 slides) · [简体中文](slides/zh/16_kv_prefix_cache_mechanisms.html) | Week 8, lecture B |
 | [Inference Engines Compared: llama.cpp, vLLM and the Rest](slides/35_inference_engines_compared.html) (19 slides) · [简体中文](slides/zh/35_inference_engines_compared.html) | Supplement to Part IV, after deck 16 |
 | [Prefill, Decode and Latency-Constrained Scheduling](slides/17_prefill_decode_scheduling.html) (17 slides) · [简体中文](slides/zh/17_prefill_decode_scheduling.html) | Week 9, lecture A |
+| [Autoregressive Decoding and Inference Bottlenecks](slides/36_inference_bottlenecks.html) (18 slides) · [简体中文](slides/zh/36_inference_bottlenecks.html) | Supplement to Part IV, after deck 17; revisit after 19–21 |
 | [Disaggregated Inference and KV Handoff](slides/18_disaggregated_inference.html) (17 slides) · [简体中文](slides/zh/18_disaggregated_inference.html) | Week 9, lecture B |
 | [MoE Routing, Dispatch and Grouped Compute](slides/19_moe_execution.html) (17 slides) · [简体中文](slides/zh/19_moe_execution.html) | Week 10, lecture A |
 | [Speculative Decoding and Correct Verification](slides/20_speculative_decoding.html) (17 slides) · [简体中文](slides/zh/20_speculative_decoding.html) | Week 10, lecture B |
@@ -179,6 +182,7 @@ llm-compute-systems-course/
 │   │   ├── deployment_lab.py
 │   │   ├── distributed_lab.py
 │   │   ├── gemm_lab.py
+│   │   ├── inference_bottleneck_worksheet.md
 │   │   ├── measurement.py
 │   │   ├── moe_lab.py
 │   │   ├── parallelism_lab.py
@@ -211,6 +215,7 @@ llm-compute-systems-course/
 │   ├── POTENTIAL_PROJECTS.md
 │   └── optimization-engine.svg
 ├── references/
+│   ├── inference_bottlenecks_review.md
 │   ├── project_research_review.md
 │   ├── bibliography_and_links.md
 │   ├── research_review.md
@@ -229,6 +234,7 @@ llm-compute-systems-course/
 │   │   ├── collective-ring.svg
 │   │   ├── compiler-path.svg
 │   │   ├── cuda-hierarchy.svg
+│   │   ├── decode-dependency.svg
 │   │   ├── double-buffer.svg
 │   │   ├── engine-design-points.svg
 │   │   ├── execution-stack.svg
@@ -292,6 +298,7 @@ llm-compute-systems-course/
 │   ├── 33_programming_models_beyond_cuda.html
 │   ├── 34_model_lowering_codesign.html
 │   ├── 35_inference_engines_compared.html
+│   ├── 36_inference_bottlenecks.html
 │   └── zh/                                    # Simplified Chinese (zh-CN) twin of each deck above; same file name
 │       ├── 00_master_compute_systems.html
 │       ├── 01_workloads_rooflines.html
@@ -328,7 +335,8 @@ llm-compute-systems-course/
 │       ├── 32_optimization_decision_systems.html
 │       ├── 33_programming_models_beyond_cuda.html
 │       ├── 34_model_lowering_codesign.html
-│       └── 35_inference_engines_compared.html
+│       ├── 35_inference_engines_compared.html
+│       └── 36_inference_bottlenecks.html
 ├── BUILD_PLAN.md
 ├── COURSE_RELEASE.md
 ├── LICENSE

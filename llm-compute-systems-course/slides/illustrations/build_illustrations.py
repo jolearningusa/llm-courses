@@ -270,6 +270,17 @@ def build():
         s.line(275,194,275,250,TEAL,True);s.line(825,194,825,250,BLUE,True)
 
 
+
+    if list(SLIDES.glob('36_*.html')):
+        s=figure('36','Temporal dependence and model state','decode-dependency','Dependent steps, independent sequences','A selected token gates the next step of that sequence. Other ready sequences provide independent rows in a batch. Arrows express dependency, not measured duration.','The top row connects a forward step, next-token selection and the next forward step. Three independent sequence rows below can supply parallel work to a batch.')
+        s.text(30,30,'One sequence: dependent steps',22,AMBER)
+        for x,label in [(30,'Forward with x_t'),(400,'Select x_(t+1)'),(770,'Forward with x_(t+1)')]:s.box(x,52,300,64,label,BLUE)
+        s.line(335,84,395,84,MUTED,True);s.line(705,84,765,84,MUTED,True)
+        s.text(30,180,'Other ready sequences: independent rows',22,TEAL)
+        for x,label in [(30,'Sequence A: token t+1'),(400,'Sequence B: token u+1'),(770,'Sequence C: token v+1')]:s.box(x,205,300,64,label,TEAL)
+        s.text(550,322,'Batching supplies parallel work; it preserves each dependency',22,MUTED,anchor='middle')
+
+
 def apply():
     build();manifest=[]
     for entry in FIGURES:

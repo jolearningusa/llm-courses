@@ -1,6 +1,6 @@
 # Course materials release — 2026-10-27
 
-The authored package contains **36 HTML decks** (master, 30 core lectures, capstone and four supplements: optimization decisions, programming models beyond CUDA, model lowering and hardware co-design, and inference engines compared), **36 editable SVG teaching figures**, **L0–L15 handouts/reference kits**, a capstone assessment package, source notes/bibliography and **20 separate potential-project specifications**. Every deck contains a companion vector illustration; standalone figures and their generator/placement manifest are supplied.
+The authored package contains **37 HTML decks per language** (master, 30 core lectures, capstone and five supplements: optimization decisions, programming models beyond CUDA, model lowering and hardware co-design, inference engines compared, and inference bottleneck diagnosis), **37 editable SVG teaching figures**, **L0–L15 handouts/reference kits**, a capstone assessment package, source notes/bibliography and **20 original potential-project specifications plus 26 detailed appendix plans**. Every deck contains a companion vector illustration; standalone figures and their generator/placement manifest are supplied.
 
 This is a materials and CPU-reference release. It is **not** a claim that all accelerated labs, vendor targets or student pacing have been piloted. See the [validation record](VALIDATION.md) for tested paths and pending work.
 
@@ -32,4 +32,8 @@ The [project catalogue](projects/POTENTIAL_PROJECTS.md) is a separate proposal c
 
 ## Project appendix
 
-[Appendix A — project ideas and execution plans](projects/COURSE_APPENDIX.md) offers 25 independent engineering, reproduction and research options, with per-project schedules, baseline comparisons, hardware/access gates and acceptance decisions. Use the [research review](references/project_research_review.md) to distinguish prior art from proposed hypotheses. Choose one bounded project; the appendix does not expand the required sixteen-week teaching schedule.
+[Appendix A — project ideas and execution plans](projects/COURSE_APPENDIX.md) offers 26 independent engineering, reproduction and research options, with per-project schedules, baseline comparisons, hardware/access gates and acceptance decisions. Use the [research review](references/project_research_review.md) to distinguish prior art from proposed hypotheses. Choose one bounded project; the appendix does not expand the required sixteen-week teaching schedule.
+
+## Inference bottleneck supplement — 2026-10-30
+
+[Deck 36](slides/36_inference_bottlenecks.html) and its [Chinese twin](slides/zh/36_inference_bottlenecks.html) add 18 slides each, a dependency/batching SVG, a [primary-source review](references/inference_bottlenecks_review.md), a [diagnosis worksheet](labs/kit/inference_bottleneck_worksheet.md) and [P26](projects/COURSE_APPENDIX.md#p26). This is source-grounded teaching material and constructed arithmetic, not a GPU benchmark release.

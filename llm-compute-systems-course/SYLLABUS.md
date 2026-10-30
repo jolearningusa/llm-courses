@@ -84,4 +84,8 @@ Use released deck 32 and [the technique map](notes/optimization_techniques.md) a
 
 ## Project appendix
 
-[Appendix A — project ideas and execution plans](projects/COURSE_APPENDIX.md) offers 25 independent engineering, reproduction and research options, with per-project schedules, baseline comparisons, hardware/access gates and acceptance decisions. Use the [research review](references/project_research_review.md) to distinguish prior art from proposed hypotheses. Choose one bounded project; the appendix does not expand the required sixteen-week teaching schedule.
+[Appendix A — project ideas and execution plans](projects/COURSE_APPENDIX.md) offers 26 independent engineering, reproduction and research options, with per-project schedules, baseline comparisons, hardware/access gates and acceptance decisions. Use the [research review](references/project_research_review.md) to distinguish prior art from proposed hypotheses. Choose one bounded project; the appendix does not expand the required sixteen-week teaching schedule.
+
+## Autoregressive bottleneck diagnosis supplement
+
+Use [deck 36](slides/36_inference_bottlenecks.html) after deck 17 and revisit after decks 19–21. Distinguish token dependencies from GPU idle gaps, then identify weight/KV traffic, compute, capacity, host, selection and communication limits. The [worksheet](labs/kit/inference_bottleneck_worksheet.md) extends L1/L8/L10 as an optional profiling assignment; the source/analytical path remains available without GPU access.
