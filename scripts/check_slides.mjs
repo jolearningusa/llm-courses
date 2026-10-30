@@ -5,7 +5,7 @@
 // Each deck draws "N / TOTAL" on its slides. Within a deck the numbers must
 // step by one, and every slide must show the same TOTAL. A deck that starts
 // above 1 continues another deck in the same directory (a master deck split over
-// several files, or the same split under slides/zh/), so some deck there must
+// several files, or the same split under slides/zh/ or another slides/<lang>/), so some deck there must
 // end on the slide just before it.
 // A TOTAL that disagrees between such parts is reported as a warning.
 //

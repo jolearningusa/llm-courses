@@ -11,12 +11,12 @@ Runs on the source tree (no build, no network) and fails on:
   list, or a file in that tree that does not exist;
 - a slide count in the README ("17 slides", "slides 22–31") that does not match
   the number of .slide elements in the deck;
-- a master deck (slides/00_*.html, including slides/zh/) that does not link every other deck
+- a master deck (slides/00_*.html, including each slides/<lang>/) that does not link every other deck
   in its own directory;
 - a course directory missing from the course table in the root README;
-- a course with slides/zh/ whose Mandarin deck is missing, has a different slide count from
-  the English deck, is not linked on that deck's README row, or was left unchanged while the
-  English deck changed since origin/main.
+- a course with a translation folder (slides/<lang>/, such as slides/zh/) whose translated deck
+  is missing, has a different slide count from the English deck, is not linked on that deck's
+  README row, or was left unchanged while the English deck changed since origin/main.
 
 Usage:
 
@@ -192,46 +192,53 @@ def files_changed_since_main() -> set[str] | None:
     return set(out.splitlines())
 
 
-def check_translations(course: Path) -> list[str]:
-    """Mandarin twins under slides/zh/ stay paired with the English decks."""
-    zh_dir = course / "slides" / "zh"
-    if not zh_dir.is_dir():
+# A translation folder is a language tag directly under slides/: zh, ja, pt-BR, zh-Hant.
+LANG_DIR_RE = re.compile(r"^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$")
+
+
+def translation_dirs(course: Path) -> list[Path]:
+    slides = course / "slides"
+    if not slides.is_dir():
         return []
+    return sorted(d for d in slides.iterdir() if d.is_dir() and LANG_DIR_RE.match(d.name))
+
+
+def check_translations(course: Path) -> list[str]:
+    """Translated twins under slides/<lang>/ (such as slides/zh/) stay paired with the English decks."""
     problems = []
     en_decks = sorted((course / "slides").glob("*.html"))
     en_names = {p.name for p in en_decks}
-    for en in en_decks:
-        twin = zh_dir / en.name
-        if not twin.is_file():
-            problems.append(f"{en.relative_to(ROOT)}: missing Mandarin deck {twin.relative_to(ROOT).as_posix()}")
-            continue
-        en_n, zh_n = slide_count(en), slide_count(twin)
-        if en_n != zh_n:
-            problems.append(f"{twin.relative_to(ROOT)}: has {zh_n} slides; {en.relative_to(ROOT)} has {en_n}")
-    for twin in sorted(zh_dir.glob("*.html")):
-        if twin.name not in en_names:
-            problems.append(f"{twin.relative_to(ROOT)}: no English deck slides/{twin.name}")
-
     readme = read(course / "README.md")
     section = re.search(r"^## Slide decks\n(.*?)(?=^## |\Z)", readme, re.S | re.M)
-    linked: dict[str, str] = {}
-    for line in (section.group(1) if section else "").splitlines():
-        for href in re.findall(r"\]\((slides/(?!zh/)[^)#]+\.html)\)", line):
-            linked[href] = line
-    for en in en_decks:
-        href = f"slides/{en.name}"
-        twin_href = f"slides/zh/{en.name}"
-        line = linked.get(href)
-        if line is None or f"]({twin_href})" not in line:
-            problems.append(f"{course.name}/README.md: put ]({twin_href}) on the same Slide decks row as ]({href})")
-
+    rows = (section.group(1) if section else "").splitlines()
     changed = files_changed_since_main()
-    if changed is not None:
+    for lang_dir in translation_dirs(course):
+        lang = lang_dir.name
         for en in en_decks:
-            rel = en.relative_to(ROOT).as_posix()
-            twin = f"{course.name}/slides/zh/{en.name}"
-            if rel in changed and twin not in changed:
-                problems.append(f"{rel}: English deck changed without updating {twin} in the same change")
+            twin = lang_dir / en.name
+            if not twin.is_file():
+                problems.append(f"{en.relative_to(ROOT)}: missing {lang} deck {twin.relative_to(ROOT).as_posix()}")
+                continue
+            en_n, tr_n = slide_count(en), slide_count(twin)
+            if en_n != tr_n:
+                problems.append(f"{twin.relative_to(ROOT)}: has {tr_n} slides; {en.relative_to(ROOT)} has {en_n}")
+        for twin in sorted(lang_dir.glob("*.html")):
+            if twin.name not in en_names:
+                problems.append(f"{twin.relative_to(ROOT)}: no English deck slides/{twin.name}")
+
+        for en in en_decks:
+            href = f"slides/{en.name}"
+            twin_href = f"slides/{lang}/{en.name}"
+            line = next((r for r in rows if f"]({href})" in r), None)
+            if line is None or f"]({twin_href})" not in line:
+                problems.append(f"{course.name}/README.md: put ]({twin_href}) on the same Slide decks row as ]({href})")
+
+        if changed is not None:
+            for en in en_decks:
+                rel = en.relative_to(ROOT).as_posix()
+                twin = f"{course.name}/slides/{lang}/{en.name}"
+                if rel in changed and twin not in changed:
+                    problems.append(f"{rel}: English deck changed without updating {twin} in the same change")
     return problems
 
 

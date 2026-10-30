@@ -62,8 +62,9 @@ deprecation). Work in the usual one-task-one-PR way ([AGENTS.md](../AGENTS.md)):
    could not be run.
 5. **Run the checks** listed in [AGENTS.md](../AGENTS.md) and open a PR whose description names the
    source and what changed. A large change (a new protocol revision, a new deck) gets its own PR; several
-   one-line link fixes can share one. If the course has `slides/zh/`, update the Mandarin twin of every
-   English deck this PR changes, and keep `[简体中文](slides/zh/...)` on that deck's README row
+   one-line link fixes can share one. If the course has translated decks (`slides/zh/` or another
+   `slides/<lang>/`), update the twin in every language folder for each English deck this PR changes,
+   and keep each translated link (such as `[简体中文](slides/zh/...)`) on that deck's README row
    ([AGENTS.md](../AGENTS.md)).
 6. When all items in the freshness issue are handled, re-run the **Freshness** workflow
    (Actions → Freshness → Run workflow) to close the issue, or let next Monday's run do it.
@@ -72,8 +73,8 @@ deprecation). Work in the usual one-task-one-PR way ([AGENTS.md](../AGENTS.md)):
 
 The Slide review issue is a question, not a change. It lists at most four slides. Each reason quotes the words on the slide and the current page on the web (version, link, and a short note from that page).
 
-- Reply **yes** to allow one pull request that touches only those slides (and the Mandarin twin of each,
-  which does not count as an extra slide). Follow the steps above, starting from the primary source.
+- Reply **yes** to allow one pull request that touches only those slides (and the translated twins of each,
+  which do not count as extra slides). Follow the steps above, starting from the primary source.
   Fewer than five slides in that PR.
 - Reply **no** to leave the slides as they are. The next run asks again only if something is still due.
 
