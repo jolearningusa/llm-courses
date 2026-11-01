@@ -1,0 +1,50 @@
+# Inference accelerator architectures: evidence and teaching scope
+
+Reviewed **2026-11-01** for [deck 40](../slides/40_inference_accelerator_architectures.html) and its [Chinese twin](../slides/zh/40_inference_accelerator_architectures.html). This is a source review and analytical teaching supplement. No accelerator, compiler backend or cross-vendor benchmark was executed.
+
+## Architecture is a workload decision
+
+“Non-GPU inference chips are winning” is not a universal measured conclusion. A regular tensor datapath can trade generality for local reuse and simpler control. A contemporary GPU already combines flexible SIMT execution with specialized matrix hardware; caches and scheduling can help irregular workloads. Deployment choices also depend on software support, procurement and utilization.
+
+- [Jouppi et al., *In-Datacenter Performance Analysis of a Tensor Processing Unit*, ISCA 2017, arXiv:1704.04760](https://research.google/pubs/in-datacenter-performance-analysis-of-a-tensor-processing-unit/): inference motivation and control/memory tradeoffs. Its comparisons use contemporary Haswell/K80 systems, not today's GPUs; historical speedups are deliberately not presented as current evidence.
+- [NVIDIA CUDA SIMT guide](https://docs.nvidia.com/cuda/cuda-programming-guide/02-basics/writing-cuda-kernels.html) and [tile guide](https://docs.nvidia.com/cuda/cuda-programming-guide/02-basics/writing-tile-kernels.html): thread execution versus tile operations and matrix hardware. A tile DSL does not imply a non-GPU architecture.
+- [Google's Ironwood introduction](https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/ironwood-tpu-age-of-inference/): inference-oriented product motivation. [TPU7x documentation](https://docs.cloud.google.com/tpu/docs/tpu7x) also covers training. The deck asserts a change in optimization objectives, not an unsupported percentage shift in worldwide spending.
+- [BIS announcement, January 15, 2025](https://www.bis.gov/press-release/commerce-strengthens-restrictions-advanced-computing-semiconductors-enhance-foundry-due-diligence-prevent): historical evidence that advanced-chip controls affect supply choices. The slide gives that date; it is not a current product-specific export eligibility assessment.
+- [TensorRT quantization schemes](https://docs.nvidia.com/deeplearning/tensorrt/latest/inference-library/quantized-types-schemes.html): INT8, FP8 and INT4 have different scaling, representation and supported paths. Its INT4 weight-only restriction is a software example, not a universal limitation of all silicon. Reduced storage does not guarantee proportional end-to-end speedup.
+
+## Systolic dataflow and the constructed examples
+
+Read [Google's first-TPU tutorial](https://cloud.google.com/blog/products/ai-machine-learning/an-in-depth-look-at-googles-first-tensor-processing-unit-tpu) for operand movement and [Sze et al., *Efficient Processing of Deep Neural Networks: A Tutorial and Survey*, arXiv:1703.09039, §V-B](https://arxiv.org/html/1703.09039v2) for stationary-dataflow taxonomy. The latter studies DNN data movement, not an LLM chip leaderboard.
+
+The original figure is a 3×3 output-stationary teaching array: A travels right, B down, and each output accumulator stays at its PE. The highlighted diagonal is **only the k=0 wavefront at tick 2**; other concurrently possible k streams are omitted. The adjacent 2×2/K=2 table assumes skewed inputs, unit-hop timing and `t=k+i+j`, with zero-based indices. It is a constructed dependency schedule, not a device timing claim. Weight-stationary keeps weights local during a selected loop interval; output-stationary retains output partial sums. Actual designs can combine tiling/dataflows.
+
+The ideal GEMM byte expression assumes each input read once, output written once and no spilling/rereading; `sA`, `sB`, `sC` are bytes per element. The 1/256 example is row occupancy in a deliberately fixed toy tile, not overall MAC utilization or a prediction for Ironwood. Local reuse cannot remove weight/KV capacity requirements or communication.
+
+## Verified chip facts and exclusions
+
+| Device / source | Facts used in the slides | Interpretation |
+|---|---|---|
+| [Google TPU7x / Ironwood](https://docs.cloud.google.com/tpu/docs/tpu7x), system architecture table | Per chip: 2,307 BF16 TFLOP/s; 4,614 FP8 TFLOP/s; 192 GiB HBM; 1,200 GB/s bidirectional ICI. Full pod: 9,216 chips. | Peak specifications, not delivered inference throughput. HBM bandwidth is rounded to about 7.4 TB/s: the same page gives 7,380 GB/s in its table and about 7.37 TB/s in prose. GiB and GB are not silently interchanged. |
+| [Google TPU architecture](https://docs.cloud.google.com/tpu/docs/system-architecture-tpu-vm) | TensorCore includes MXU, vector and scalar units. | Google terminology; it is not NVIDIA's Tensor Core implementation. |
+| [Huawei AI Core architecture, CANN 8.0](https://www.hiascend.com/doc_center/source/en/canncommercial/800/opdevg/tbeaicpudevg/atlasopdev_10_0008.html) | Cube, Vector and Scalar resources; data movement and independently executing pipelines. | A documented abstraction, not a claim that all Ascend generations share a floorplan, core count or ISA. No unverified Ascend throughput/memory number is included. |
+| [Alibaba PAI deployment documentation](https://www.alibabacloud.com/help/en/pai/use-cases/one-click-deploy-deepseek) | PPU-810E is a deployment selection. | Confirms the product/software path; no 810E capacity or throughput is inferred. |
+| [Alibaba Cloud May 2026 press release](https://www.alibabacloud.com/en/press-room/alibaba-announces-comprehensive-full-stack-ai?_p_lc=1) | M890: 144 GB memory, 800 GB/s inter-chip link. | Memory capacity and inter-chip bandwidth are different quantities. |
+| [Alibaba Cloud September 2026 press release](https://www.alibabacloud.com/en/press-room/alibaba-unveils-roadmap-on-full-stack-ai-strategy) | V900: 216 GB memory, 1,200 GB/s inter-chip link; planned Q1 2027 production/commercial release. | Announcement and forecast, not proof of November availability. |
+| [Alibaba's full-stack keynote](https://www.alibabacloud.com/blog/603595) | Zhenwu is described as its GPU family. | Do not classify all non-NVIDIA accelerators as non-GPU or assume a disclosed systolic/SIMT implementation. |
+
+M890/810E and V900/M890 each have a vendor 3× performance statement. Workload, precision, baseline configuration and power normalization are not established by the selected announcements; the deck labels the statements and does not multiply them into an independently verified 9× claim. No fabrication process, TDP, measured tokens/s, die area or Zhenwu PE layout is invented.
+
+### User-provided leads examined
+
+- [TechNode, January 30, 2026: 810E](https://technode.com/2026/01/30/alibabas-t-head-unveils-self-developed-ai-chip-zhenwu-810e/): reports 96 GB HBM2e and 700 GB/s inter-chip bandwidth. These numerical claims and the H20/A100 comparisons are **excluded from the deck**, because this review did not establish an accessible primary specification for them.
+- [TrendForce, May 21, 2026: M890 and roadmap](https://www.trendforce.com/news/2026/05/21/news-alibaba-t-head-unveils-zhenwu-m890-with-3x-performance-vs-prior-gen-new-ai-chips-planned-for-3q273q28/): examined as a lead; official May/September pages are used for technical facts. Its Q3 2027 V900 roadmap is superseded by the later official Q1 2027 plan.
+- [TechNode, September 22, 2026: V900](https://technode.com/2026/09/22/t-head-unveils-zhenwu-v900-ai-chip-in-alibabas-push-to-expand-its-ai-infrastructure-stack/): corroborates the announcement/forecast distinction. The deck cites Alibaba's own September release instead.
+
+## DSLs, code scope and SAIL
+
+- [Triton GEMM tutorial](https://triton-lang.org/main/getting-started/tutorials/03-matrix-multiplication.html): pointer tiles, `tl.load`, FP32 accumulator, `tl.dot` and output conversion/store. Read the full tutorial for loops, masks, indexing, launch and tuning.
+- [TileLang paper, arXiv:2504.17577, §§3–4](https://arxiv.org/html/2504.17577v2): explicit memory placement and layout composition. [Pinned language guide](https://github.com/tile-ai/tilelang/blob/e8225d7f5e8457c1360386e0603bc8196dcff095/docs/programming_guides/language_basics.md) and [GEMM example](https://github.com/tile-ai/tilelang/blob/e8225d7f5e8457c1360386e0603bc8196dcff095/examples/gemm/example_gemm.py), revision `e8225d7f5e8457c1360386e0603bc8196dcff095`, were inspected for `T.alloc_shared`, `T.alloc_fragment`, `T.copy` and `T.gemm`. The shared-memory synchronization pass does not remove explicit wait obligations for manual `T.async_copy`. Automatic layout/sync is not a proof of arbitrary user code.
+- The paired slide is deliberately a **single K-tile schematic** with valid full tiles: FP16 input/output, FP32 accumulation. `A_tile`, `B_tile`, `C_tile` mean correctly formed global tensor slices/regions; Triton pointer blocks have already been formed. Imports, decorators, launch, full reduction loops, masks and shape handling are omitted. Snippets are not copy-and-run programs and were not compiled or benchmarked. The comparison illustrates what the source exposes, not superiority or backend support for every named chip.
+- [Alibaba's July 20 SAIL announcement](https://home.alibabagroup.com/en-US/document-2016703577908576256) describes its open-source release, software layers and developer resources. The official May release also names SAIL. This review did not establish a pinned public SAIL SDK repository/license matrix or a Triton/TileLang integration; none is claimed. An announcement of open source is insufficient to choose an installable toolchain for a specific card.
+
+The controlled experiment is a proposed exercise. It requires an available supported target and independent correctness/quality checks before timing. No lab implementation or new hardware result is added by this deck.

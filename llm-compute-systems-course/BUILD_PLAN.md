@@ -160,3 +160,7 @@ Released: [18-slide English deck](slides/36_inference_bottlenecks.html), Chinese
 ## AI-assisted development and verification — 2026-10-31
 
 Three supplementary lectures: [37](slides/37_ai_assisted_development.html) (bounded development loop), [38](slides/38_verification_contracts.html) (layer-specific contracts) and [39](slides/39_qualification_release.html) (target qualification/release), with Chinese twins and editable diagrams. Place after deck 32 and revisit after deployment. The [CPU lab](labs/kit/handouts/lab_ai_verification.md) checks numerical mutants and queue-event ownership; it does not execute GPU code or flash firmware. The [source review](references/ai_development_verification.md) records evidence boundaries. Timing/pacing is provisional; core semester requirements are unchanged.
+
+## Supplement 40 — 2026-11-01
+
+[Inference accelerator architectures and co-design](slides/40_inference_accelerator_architectures.html): 22-slide English/Chinese twins, original systolic wavefront SVG and primary-source evidence review. Place after deck 24 in Part V. Covers specialization, precision, stationary dataflows, Ironwood, Ascend, Zhenwu, Triton/TileLang and SAIL. Illustrative fragments and analytical schedules are not executed accelerator results.

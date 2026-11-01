@@ -2,7 +2,7 @@
 
 A systems engineering course on building and measuring the computing stack for LLM inference, from PyTorch and compilers through CUDA kernels, memory, operating systems and serving runtimes to deployed programs, with distributed training at scale as the final part and NVIDIA Vera Rubin as a recurring case study.
 
-**Status: materials and CPU-reference release, 2026-10-27.** The package contains 40 decks with 40 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 original project specifications, expanded into [26 detailed project execution plans](projects/COURSE_APPENDIX.md). [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
+**Status: materials and CPU-reference release, 2026-10-27.** The package contains 41 decks with 41 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 original project specifications, expanded into [26 detailed project execution plans](projects/COURSE_APPENDIX.md). [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
 
 ## Start here
 
@@ -114,6 +114,7 @@ Decks are listed in teaching order, grouped by part. Each row links the English 
 | [ExecuTorch Runtime, Delegation and Memory Planning](slides/23_executorch_deployment.html) (18 slides) · [简体中文](slides/zh/23_executorch_deployment.html) | Week 12, lecture A |
 | [Model Lowering and Hardware Co-design](slides/34_model_lowering_codesign.html) (13 slides) · [简体中文](slides/zh/34_model_lowering_codesign.html) | Supplement to Part V, after deck 23 |
 | [Vera Rubin and NVIDIA/AMD Software Stacks](slides/24_rubin_vendor_stacks.html) (17 slides) · [简体中文](slides/zh/24_rubin_vendor_stacks.html) | Week 12, lecture B |
+| [40 · Inference Accelerator Architectures and Co-design](slides/40_inference_accelerator_architectures.html) (22 slides) · [简体中文](slides/zh/40_inference_accelerator_architectures.html) | Supplement to Part V, after deck 24 |
 | **Part VI · Training at scale (weeks 13–15)** | |
 | [Training Precision, DDP, ZeRO and Fully Sharded Training](slides/25_ddp_zero_fsdp.html) (22 slides) · [简体中文](slides/zh/25_ddp_zero_fsdp.html) | Week 13, lecture A |
 | [Collectives, Topology and Exposed Communication](slides/26_collectives_overlap.html) (17 slides) · [简体中文](slides/zh/26_collectives_overlap.html) | Week 13, lecture B |
@@ -230,6 +231,7 @@ llm-compute-systems-course/
 │   ├── POTENTIAL_PROJECTS.md
 │   └── optimization-engine.svg
 ├── references/
+│   ├── accelerator_architectures_review.md
 │   ├── ai_development_verification.md
 │   ├── bibliography_and_links.md
 │   ├── inference_bottlenecks_review.md
@@ -279,6 +281,7 @@ llm-compute-systems-course/
 │   │   ├── shared-blocks.svg
 │   │   ├── source-walk.svg
 │   │   ├── speculative-correction.svg
+│   │   ├── systolic-pe-grid.svg
 │   │   ├── timing-boundaries.svg
 │   │   └── verification-contracts.svg
 │   ├── zh/
@@ -321,7 +324,8 @@ llm-compute-systems-course/
 │   │   ├── 36_inference_bottlenecks.html
 │   │   ├── 37_ai_assisted_development.html
 │   │   ├── 38_verification_contracts.html
-│   │   └── 39_qualification_release.html
+│   │   ├── 39_qualification_release.html
+│   │   └── 40_inference_accelerator_architectures.html
 │   ├── 00_master_compute_systems.html
 │   ├── 01_workloads_rooflines.html
 │   ├── 02_architecture_workload_primer.html
@@ -361,7 +365,8 @@ llm-compute-systems-course/
 │   ├── 36_inference_bottlenecks.html
 │   ├── 37_ai_assisted_development.html
 │   ├── 38_verification_contracts.html
-│   └── 39_qualification_release.html
+│   ├── 39_qualification_release.html
+│   └── 40_inference_accelerator_architectures.html
 ├── BUILD_PLAN.md
 ├── COURSE_RELEASE.md
 ├── LICENSE
