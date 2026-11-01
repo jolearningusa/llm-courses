@@ -3,7 +3,7 @@
 ## Serial release sequence
 
 1. **Blueprint:** syllabus, source map, validation boundaries and concrete virtual-device lab contract. No runnable code is claimed.
-2. **Teaching and functional reference:** eight bilingual decks (master, six topic units, capstone), one editable conceptual SVG per deck; deterministic virtual accelerator, executable scenarios, bounded ordering explorer, reproducibility tests and eight student handouts.
+2. **Teaching and functional reference:** eight bilingual decks (master, six topic units, capstone), four editable mechanism diagrams per deck (32 concepts, English/Chinese SVG assets); deterministic virtual accelerator, executable scenarios, bounded ordering explorer, reproducibility tests and eight student handouts.
 3. **Target qualification:** a separately scoped future project after actual hardware/SDK access. This is not required to use the functional release and is not scheduled by publishing this plan.
 
 Follow the repository workflow: fresh main → one branch/PR → required checks → authorized squash merge → delete branch → refresh main before the next unit. User approval on 2026-10-31 authorizes this course and the existing-course supplement.

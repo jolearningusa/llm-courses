@@ -1,6 +1,6 @@
 # Primary sources and reading scope
 
-Reviewed 2026-10-31. These sources define responsibilities and test methodology; they do not certify the course's virtual model or establish a universal accelerator ABI. Kernel/docs main branches move: record a release/revision for any target adapter.
+Reviewed 2026-10-31; diagram sources rechecked 2026-11-01. These sources define responsibilities and test methodology; they do not certify the course's virtual model or establish a universal accelerator ABI. Kernel/docs main branches move: record a release/revision for any target adapter.
 
 | Source | Reading goal and boundary |
 |---|---|
@@ -22,3 +22,7 @@ Reviewed 2026-10-31. These sources define responsibilities and test methodology;
 An assistant may propose a bounded patch, input generator or test. Independent contracts and held-out/negative controls decide acceptance. Keep failed proposals, source/environment identity and the cost of finding a candidate. Do not let the proposer silently relax tests to manufacture a pass.
 
 Use exact checks for protocol/ABI/integer behavior when specified; numerical tolerances and task-quality gates for floating-point or approximate paths. HIL automation need not begin with a large farm. Software observability helps testability but does not replace silicon DFT. Functional simulation, FPGA prototypes and final-silicon power/PVT characterization are distinct evidence paths.
+
+## Mechanism diagrams
+
+See the [figure-source inventory](figure_sources.md) for direct links to the inspected Linux, IREE, OpenTitan and Zephyr illustrations and all 32 bilingual diagram locations. The [IREE C API runtime component diagrams](https://iree.dev/reference/bindings/c-api/#runtime-api) and [OpenTitan OTBN DV testbench](https://opentitan.org/book/hw/ip/otbn/dv/index.html#block-diagram) supplement the existing HAL/methodology readings. All distributed illustrations are original teaching schematics with explicit scope, not copied vendor figures.
