@@ -2,7 +2,7 @@
 
 Read the architecture papers behind today's language, vision, diffusion and speech models one at a time: why each change was proposed, what it changed in the model, and what later models kept.
 
-**Status, 2026-11-01: Parts I and II published.** The course map, the six Part I paper decks (the 2017 Transformer, GPT-1/2, BERT, T5, GPT-3 with the Kaplan scaling laws, Chinchilla), the five Part II decks on how the context is constructed (subword tokenization, RoPE, ALiBi, Position Interpolation and YaRN, chat templates and long contexts), labs L0 to L4, the syllabus and the full bibliography (70 sources, each checked on its arXiv or vendor page) are in place. Parts III to IX follow part by part, in the order of the [syllabus](SYLLABUS.md). Decks are in English first; Simplified Chinese twins follow once the English decks are complete.
+**Status, 2026-11-01: Parts I to IV published.** The course map, the six Part I paper decks (the 2017 Transformer, GPT-1/2, BERT, T5, GPT-3 with the Kaplan scaling laws, Chinchilla), the five Part II decks on how the context is constructed (subword tokenization, RoPE, ALiBi, Position Interpolation and YaRN, chat templates and long contexts), the seven Part III and IV decks on attention variants and the modern block (MQA, GQA, FlashAttention, sliding windows and attention sinks, MLA, Pre-LN and RMSNorm, SwiGLU), labs L0 to L6, the syllabus and the full bibliography (70 sources, each checked on its arXiv or vendor page) are in place. Parts V to IX follow part by part, in the order of the [syllabus](SYLLABUS.md). Decks are in English first; Simplified Chinese twins follow once the English decks are complete.
 
 ## Start here
 
@@ -27,7 +27,7 @@ Every paper deck follows the same five steps: the problem, the architectural cha
 
 ## Audience and prerequisites
 
-Engineers and students who use LLMs and want to read a model's technical report or `config.json` and understand every choice in it. You need Python, NumPy or PyTorch, linear algebra and basic probability. All labs run on a laptop CPU with tiny models.
+Engineers and students who use LLMs and want to read a model's technical report or `config.json` and understand every choice in it. You need Python, NumPy, linear algebra and basic probability; lab L6 also uses PyTorch. All labs run on a laptop CPU with tiny models.
 
 Kernels, KV-cache paging, MoE execution and serving are taught in [Efficient LLM Computing Systems](../llm-compute-systems-course/). How agents fill and manage the context window is taught in [LLM AgentOS](../llm-agentos-course/). This course links to both instead of repeating them.
 
@@ -49,8 +49,17 @@ Kernels, KV-cache paging, MoE execution and serving are taught in [Efficient LLM
 | [09 ALiBi](slides/09_alibi.html) (9 slides) | Week 4: a linear distance bias instead of position embeddings; lab L3 |
 | [10 Position Interpolation and YaRN](slides/10_pi_yarn.html) (9 slides) | Week 4: extending a RoPE model's window after pre-training; lab L3 |
 | [11 From conversation to tokens](slides/11_conversation_to_tokens.html) (10 slides) | Week 5: chat templates, packing masks, context windows, lost in the middle; lab L4 |
+| **Part III. Attention variants and the KV cache** | |
+| [12 Multi-query attention](slides/12_mqa.html) (9 slides) | Week 5: memory-bound decoding, one shared key and value head; lab L5 |
+| [13 Grouped-query attention](slides/13_gqa.html) (9 slides) | Week 6: groups of query heads, uptraining from multi-head checkpoints; lab L5 |
+| [14 FlashAttention](slides/14_flashattention.html) (9 slides) | Week 6: exact tiled attention and what it made trainable; lab L5 |
+| [15 Sliding windows and attention sinks](slides/15_sliding_window_sinks.html) (10 slides) | Week 6: Mistral 7B's window, StreamingLLM's sinks; lab L5 |
+| [16 Multi-head latent attention](slides/16_mla.html) (10 slides) | Week 6: a latent KV cache, absorbed projections, decoupled RoPE; lab L5 |
+| **Part IV. The modern block** | |
+| [17 Pre-LN and RMSNorm](slides/17_preln_rmsnorm.html) (10 slides) | Week 7: where the norm goes, why warm-up was needed, dropping the mean; lab L6 |
+| [18 GLU variants and SwiGLU](slides/18_glu_variants.html) (9 slides) | Week 7: gated FFNs at equal parameters; lab L6 |
 
-Decks 12 to 43 are listed in the [syllabus](SYLLABUS.md) and are added to this table as each part is published.
+Decks 19 to 43 are listed in the [syllabus](SYLLABUS.md) and are added to this table as each part is published.
 
 ## Repository layout
 
@@ -88,6 +97,15 @@ llm-transformer-architecture-course/
 │   │   ├── README.md
 │   │   ├── chat.py                  # Llama 3 and Qwen2.5 templates, loss and packing masks
 │   │   └── test_chat.py
+│   ├── L5_attention_variants/
+│   │   ├── README.md
+│   │   ├── attention.py             # MHA, GQA, MQA, MLA with a KV cache; windows; blockwise attention
+│   │   └── test_attention.py
+│   ├── L6_block_variants/
+│   │   ├── README.md
+│   │   ├── model.py                 # Small PyTorch LM with switchable norm, placement, FFN and KV heads
+│   │   ├── test_model.py
+│   │   └── train.py                 # Trains the variants on the same data, budget and seeds
 │   └── README.md                    # Lab index
 ├── references/
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-01
@@ -103,7 +121,14 @@ llm-transformer-architecture-course/
 │   ├── 08_rope.html
 │   ├── 09_alibi.html
 │   ├── 10_pi_yarn.html
-│   └── 11_conversation_to_tokens.html
+│   ├── 11_conversation_to_tokens.html
+│   ├── 12_mqa.html
+│   ├── 13_gqa.html
+│   ├── 14_flashattention.html
+│   ├── 15_sliding_window_sinks.html
+│   ├── 16_mla.html
+│   ├── 17_preln_rmsnorm.html
+│   └── 18_glu_variants.html
 ├── LICENSE                          # Apache-2.0
 ├── README.md                        # This file
 └── SYLLABUS.md                      # Parts, weekly plan, labs and assessment

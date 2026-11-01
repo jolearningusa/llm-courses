@@ -84,8 +84,8 @@ All labs run on a laptop CPU with NumPy or PyTorch and tiny models. Each lab che
 | L2 | Train a byte-level BPE tokenizer and measure tokens per character across languages | Round-trip decoding is lossless |
 | L3 | Implement sinusoidal, RoPE and ALiBi; apply Position Interpolation and YaRN's per-frequency scaling | RoPE attention scores depend only on relative position; interpolated angles stay in the trained range |
 | L4 | Render a chat template by hand and build packing masks | Equal to the published Llama 3 and Qwen2.5 formats; no attention across packed documents |
-| L5 | MHA, MQA, GQA and MLA in one module with a KV cache | Cached decoding equals full recomputation; KV bytes match the formula |
-| L6 | Train small character-level models and compare post-LN, pre-LN, RMSNorm, SwiGLU and GQA | Fixed seeds and budget; report loss curves with spread |
+| L5 | MHA, MQA, GQA and MLA with a KV cache, plus window masks and blockwise attention | Cached decoding equals full recomputation; KV bytes match the formula; blockwise equals direct attention |
+| L6 | Train small character-level models and compare post-LN, pre-LN, RMSNorm, SwiGLU, GQA and MQA | Fixed seeds and budget; report final loss with spread across seeds, and loss curves |
 | L7 | A top-k MoE layer with a load-balancing loss | Expert utilization plot; balanced routing lowers the loss term |
 | L8 | ViT patch embedding and a CLIP-style contrastive loss on toy data | Loss reaches the value expected for perfect pairing |
 | L9 | Residual vector quantization of an audio signal | Reconstruction error falls as codebooks are added |
