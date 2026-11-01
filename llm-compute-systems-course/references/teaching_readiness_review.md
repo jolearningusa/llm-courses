@@ -85,3 +85,7 @@ Every item must update the `slides/zh/` twins in the same PR (enforced by `check
 ## Open decision before P0
 
 Who delivers the lectures? Self-delivery needs waymarker notes (2–3 sentences per page: what to say first, what to draw on the board, which number students compute themselves); delegated delivery or recording needs self-contained full scripts — an order of magnitude more work, best batched part by part. This review was produced with a 16-week graduate/engineering-course delivery in mind.
+
+## Implementation response — 2026-11-01
+
+See the [response and remaining batches](teaching_readiness_response.md) for the 01–04 teaching pilot, presenter controls, supplemental schedule and remaining work. It also corrects the deck-40 page-count interpretation and distinguishes pre-existing placement/questions from the absence of a consistent teaching pattern. The metrics above are the historical pre-pilot audit, not measurements of the revised decks.

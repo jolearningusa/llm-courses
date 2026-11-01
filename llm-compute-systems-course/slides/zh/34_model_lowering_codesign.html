@@ -2,4 +2,127 @@
   --iree-hal-target-device=local \
   --iree-hal-local-target-device-backends=llvm-cpu \
   --iree-llvmcpu-target-triple=x86_64-pc-linux-elf \
-  -o model.vmfb</pre><ul class="small"><li>稳定的编译器后端：<code>llvm-cpu</code>、<code>vmvx</code>、<code>vulkan-spirv</code>、<code>rocm</code>、<code>cuda</code>、<code>metal-spirv</code>；<code>webgpu-spirv</code> 为实验性。</li><li>运行时 HAL 设备（<code>local-sync</code>、<code>local-task</code>、<code>cuda</code>、<code>hip</code>、<code>vulkan</code>、<code>metal</code>）负责运行模块；新驱动可以通过 <code>IREE_EXTERNAL_HAL_DRIVERS</code> 放在主仓库之外。</li><li>裸机：用静态库和头文件代替 <code>.vmfb</code> 文件，单线程，无文件 I/O。</li></ul></div><div class="cite"><a href="https://iree.dev/guides/deployment-configurations/">IREE deployment configurations</a> · <a href="https://iree.dev/guides/deployment-configurations/bare-metal">IREE bare-metal guide</a></div><div class="num">6 / 13</div><aside class="notes"></aside></section><section class="slide" id="s7"><h2>TVM：Relax、TensorIR 与 BYOC</h2><div class="content"><ul class="small"><li>IRModule 包含 Relax 函数（图）和 TensorIR 函数（循环）。各 pass 对 Relax 算子进行融合、合法化并下沉为 TensorIR，再翻译为 LLVM、CUDA C 或其他目标。</li><li><strong>BYOC</strong>（外部库分派）：<code>FuseOpsByPattern</code> 把匹配的子图包装成组合函数；<code>MergeCompositeFunctions</code> 可选地将其分组；<code>RunCodegen</code> 调用各后端的代码生成器。已注册的后端包括 cuBLAS、CUTLASS 和 cuDNN。</li><li>未被认领的算子经过 <code>LegalizeOps</code> 和 <code>FuseOps</code> 正常编译，因此只支持部分算子的芯片也能运行整个模型。</li><li><strong>MetaSchedule</strong> 在目标设备或模拟器上搜索循环调度。它只适用于静态形状的工作负载。</li></ul></div><div class="cite"><a href="https://tvm.apache.org/docs/arch/index.html">TVM design and architecture</a> · <a href="https://tvm.apache.org/docs/arch/external_library_dispatch.html">TVM external library dispatch (BYOC)</a> · <a href="https://tvm.apache.org/docs/deep_dive/tensor_ir/tutorials/meta_schedule.html">MetaSchedule tutorial</a></div><div class="num">7 / 13</div><aside class="notes"></aside></section><section class="slide" id="s8"><h2>OpenXLA：实现 PJRT，接收 StableHLO</h2><div class="content"><p>PJRT 插件在稳定的 C API 之后实现设备缓冲区、编译和执行，使 JAX 等框架无需修改即可接入芯片。</p><ul class="small"><li>Google 把 JAX 的 CUDA 后端打包为 PJRT 插件；Apple 的 Metal 插件和 Intel 的 GPU 后端使用相同的接口。</li><li>Tenstorrent 的 <code>tt-xla</code> 实现了一个 PJRT 设备，并把 StableHLO 图交给自家的 MLIR 编译器（tt-mlir）。</li><li>插件所有者仍需编写从 StableHLO 往下的编译器；PJRT 是运行时约定，而不是代码生成器。</li></ul></div><div class="cite"><a href="https://openxla.org/xla/pjrt/pjrt_integration">PJRT integration</a> · <a href="https://opensource.googleblog.com/2024/03/pjrt-plugin-to-accelerate-machine-learning.html">PJRT plugins (Google, 2024-03)</a> · <a href="https://github.com/tenstorrent/tt-xla">tt-xla</a> · <a href="33_programming_models_beyond_cuda.html">第 33 讲</a></div><div class="num">8 / 13</div><aside class="notes"></aside></section><section class="slide" id="s9"><h2>哪个栈适合哪种芯片？</h2><div class="content"><table class="dense"><thead><tr><th>目标</th><th>典型切入点</th><th>原因</th></tr></thead><tbody><tr><td>算子集固定、带厂商图编译器的 NPU 或 DSP</td><td>划分并委托：TVM BYOC、ExecuTorch 委托、ONNX Runtime 执行提供程序</td><td>受支持的子图由厂商编译器负责；其余部分在主机上运行</td></tr><tr><td>带 LLVM 后端的可编程向量或分块 ISA</td><td>IREE 或 MLIR 代码生成；类 GPU 设备可用 Triton 后端</td><td>分块、向量化和缓冲区化都是可复用的 pass</td></tr><tr><td>面向 JAX 和 PyTorch 的数据中心加速器</td><td>PJRT 插件加厂商内核，PyTorch eager 使用 PrivateUse1</td><td>框架看到的是一个设备；编译器由厂商负责</td></tr></tbody></table><p class="note">这些是根据有文档的集成路线给出的起点，而非排名。不少厂商支持不止一种。</p></div><div class="cite"><a href="https://tvm.apache.org/docs/arch/external_library_dispatch.html">TVM external library dispatch (BYOC)</a> · <a href="https://iree.dev/guides/deployment-configurations/">IREE deployment configurations</a> · <a href="https://openxla.org/xla/pjrt/pjrt_integration">PJRT integration</a> · <a href="23_executorch_deployment.html">第 23 讲</a> · <a href="33_programming_models_beyond_cuda.html">第 33 讲</a></div><div class="num">9 / 13</div><aside class="notes"></aside></section><section class="slide" id="s10"><h2>新芯片：工作顺序</h2><div class="content"><table class="dense"><thead><tr><th>阶段</th><th>构建内容</th><th>出口测试</th></tr></thead><tbody><tr><td>1. 跑起来</td><td>驱动、分配器、DMA、队列、事件</td><td>让一个缓冲区经过一个简单内核往返</td></tr><tr><td>2. 一个锚点内核</td><td>带片上分块双缓冲的 GEMM</td><td>在预填充和解码形状下接近实测屋顶线</td></tr><tr><td>3. 整个模型</td><td>内存规划、异步分派、层间无主机同步</td><td>端到端模型在数值上与参考结果一致</td></tr><tr><td>4. 编译器集成</td><td>模式改写为融合内核；按形状选择内核或自动调优</td><td>未修改的框架代码能运行；没有悄无声息的 CPU 回退</td></tr><tr><td>5. 长尾</td><td>为归一化、RoPE、softmax、采样生成内核</td><td>性能剖析显示时间花在屋顶线预测的地方</td></tr></tbody></table><p class="note">速度来自第 2–3 阶段；覆盖面来自第 4–5 阶段。在你自己的工作负载上测量算子时间占比：Anthony 等人报告在其设置中，GEMM 在中型模型上占延迟的 68%，在大型模型上占 95%。</p></div><div class="cite"><a href="https://arxiv.org/abs/2401.14489">Anthony et al., arXiv:2401.14489</a> · <a href="33_programming_models_beyond_cuda.html">第 33 讲</a> · <a href="10_async_kernel_pipelines.html">第 10 讲</a></div><div class="num">10 / 13</div><aside class="notes"></aside></section><section class="slide" id="s11"><h2>核查生成的回答</h2><div class="content"><table class="dense"><thead><tr><th>聊天机器人回答中的说法</th><th>资料实际怎么说</th></tr></thead><tbody><tr><td>“NVFP4 使用原生 32 元素块”</td><td>NVFP4 的块为 16 个元素，带 E4M3 缩放和 FP32 张量缩放；OCP MX 格式使用 32 个元素和 E8M0 缩放</td></tr><tr><td>“脉动阵列大小为 16×16 到 64×64”</td><td>TPU MXU 为 128×128，自 v6e 起为 256×256；要逐个目标核实</td></tr><tr><td>“更小的 KV 位宽会使 DRAM 流量按平方下降”</td><td>KV 字节数与位宽成线性关系</td></tr><tr><td>“压缩后的 KV 缓存可以常驻 L2”</td><td>长上下文 KV 远大于 L2；它存放在 HBM 中并以流式读取</td></tr><tr><td>“编译器生成所有内核”</td><td>编译器负责划分和融合；锚点算子通常调用库或 BYOC 代码</td></tr><tr><td>“3×3 用 Winograd，其他用隐式 GEMM”</td><td>这是合理的经验法则，但 Winograd 需要步长为 1，且在大分块和低精度下会损失精度；库会通过实测来选择</td></tr></tbody></table></div><div class="cite"><a href="https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference">Introducing NVFP4</a> · <a href="https://docs.cloud.google.com/tpu/docs/system-architecture">Cloud TPU architecture</a> · <a href="https://tvm.apache.org/docs/arch/external_library_dispatch.html">TVM external library dispatch (BYOC)</a> · <a href="https://arxiv.org/abs/1509.09308">arXiv:1509.09308</a></div><div class="num">11 / 13</div><aside class="notes"></aside></section><section class="slide" id="s12"><h2>练习：协同设计审查</h2><div class="content"><ol class="small"><li>选取一个解码器配置（隐藏层大小、注意力头数、KV 头数、FFN 大小、词表）和两个目标，例如数据中心 GPU 和手机 NPU。</li><li>对每个 GEMM，分别记录预填充和解码时的 M、N、K，以及它们是否为目标偏好对齐值的倍数。</li><li>为每个目标选择一种权重格式和一种 KV 格式。说明由谁应用缩放：硬件、融合内核，还是单独的转换步骤。</li><li>根据“哪个栈适合哪种芯片？”为每个目标选一条下沉路线，并说明你要实现的集成点。</li><li>列出能证明或否定每个选择的三项测量。</li></ol><p><a href="../../labs/kit/vendor_dossier_template.html">厂商资料模板</a></p></div><div class="cite"></div><div class="num">12 / 13</div><aside class="notes"></aside></section><section class="slide" id="s13"><h2>验证边界与阅读材料</h2><div class="content"><p>所述内容来自 2026-10-30 审阅的项目文档和论文；标志、后端列表和状态标签会随版本变化。本讲没有运行任何 IREE、TVM 或 PJRT 流水线，也不做跨技术栈的速度声明。</p><p><a href="../../references/bibliography_and_links.html#model-lowering-and-hardware-co-design-reviewed-2026-10-30">本讲的注释来源</a> · <a href="09_gemm_tensor_cores.html">第 09 讲</a> · <a href="14_quantization_serving.html">第 14 讲</a> · <a href="23_executorch_deployment.html">第 23 讲</a> · <a href="33_programming_models_beyond_cuda.html">第 33 讲</a></p></div><div class="cite"></div><div class="num">13 / 13</div><aside class="notes"></aside></section></div><div id="hint">← / → · Home / End · F fullscreen</div><script>const slides=[...document.querySelectorAll('.slide')];let current=0;function show(n){current=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>{s.classList.toggle('active',i===current);s.setAttribute('aria-hidden',i!==current)});location.hash='slide-'+(current+1)}function resize(){document.getElementById('stage').style.transform='translate(-50%,-50%) scale('+Math.min(innerWidth/1280,innerHeight/720)+')'}addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(current+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(current-1)}if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1);if(e.key.toLowerCase()==='f'){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>{})}});addEventListener('resize',resize);resize();const n=Number(location.hash.replace('#slide-',''));show(Number.isFinite(n)&&n>0?n-1:0);</script></body></html>
+  -o model.vmfb</pre><ul class="small"><li>稳定的编译器后端：<code>llvm-cpu</code>、<code>vmvx</code>、<code>vulkan-spirv</code>、<code>rocm</code>、<code>cuda</code>、<code>metal-spirv</code>；<code>webgpu-spirv</code> 为实验性。</li><li>运行时 HAL 设备（<code>local-sync</code>、<code>local-task</code>、<code>cuda</code>、<code>hip</code>、<code>vulkan</code>、<code>metal</code>）负责运行模块；新驱动可以通过 <code>IREE_EXTERNAL_HAL_DRIVERS</code> 放在主仓库之外。</li><li>裸机：用静态库和头文件代替 <code>.vmfb</code> 文件，单线程，无文件 I/O。</li></ul></div><div class="cite"><a href="https://iree.dev/guides/deployment-configurations/">IREE deployment configurations</a> · <a href="https://iree.dev/guides/deployment-configurations/bare-metal">IREE bare-metal guide</a></div><div class="num">6 / 13</div><aside class="notes"></aside></section><section class="slide" id="s7"><h2>TVM：Relax、TensorIR 与 BYOC</h2><div class="content"><ul class="small"><li>IRModule 包含 Relax 函数（图）和 TensorIR 函数（循环）。各 pass 对 Relax 算子进行融合、合法化并下沉为 TensorIR，再翻译为 LLVM、CUDA C 或其他目标。</li><li><strong>BYOC</strong>（外部库分派）：<code>FuseOpsByPattern</code> 把匹配的子图包装成组合函数；<code>MergeCompositeFunctions</code> 可选地将其分组；<code>RunCodegen</code> 调用各后端的代码生成器。已注册的后端包括 cuBLAS、CUTLASS 和 cuDNN。</li><li>未被认领的算子经过 <code>LegalizeOps</code> 和 <code>FuseOps</code> 正常编译，因此只支持部分算子的芯片也能运行整个模型。</li><li><strong>MetaSchedule</strong> 在目标设备或模拟器上搜索循环调度。它只适用于静态形状的工作负载。</li></ul></div><div class="cite"><a href="https://tvm.apache.org/docs/arch/index.html">TVM design and architecture</a> · <a href="https://tvm.apache.org/docs/arch/external_library_dispatch.html">TVM external library dispatch (BYOC)</a> · <a href="https://tvm.apache.org/docs/deep_dive/tensor_ir/tutorials/meta_schedule.html">MetaSchedule tutorial</a></div><div class="num">7 / 13</div><aside class="notes"></aside></section><section class="slide" id="s8"><h2>OpenXLA：实现 PJRT，接收 StableHLO</h2><div class="content"><p>PJRT 插件在稳定的 C API 之后实现设备缓冲区、编译和执行，使 JAX 等框架无需修改即可接入芯片。</p><ul class="small"><li>Google 把 JAX 的 CUDA 后端打包为 PJRT 插件；Apple 的 Metal 插件和 Intel 的 GPU 后端使用相同的接口。</li><li>Tenstorrent 的 <code>tt-xla</code> 实现了一个 PJRT 设备，并把 StableHLO 图交给自家的 MLIR 编译器（tt-mlir）。</li><li>插件所有者仍需编写从 StableHLO 往下的编译器；PJRT 是运行时约定，而不是代码生成器。</li></ul></div><div class="cite"><a href="https://openxla.org/xla/pjrt/pjrt_integration">PJRT integration</a> · <a href="https://opensource.googleblog.com/2024/03/pjrt-plugin-to-accelerate-machine-learning.html">PJRT plugins (Google, 2024-03)</a> · <a href="https://github.com/tenstorrent/tt-xla">tt-xla</a> · <a href="33_programming_models_beyond_cuda.html">第 33 讲</a></div><div class="num">8 / 13</div><aside class="notes"></aside></section><section class="slide" id="s9"><h2>哪个栈适合哪种芯片？</h2><div class="content"><table class="dense"><thead><tr><th>目标</th><th>典型切入点</th><th>原因</th></tr></thead><tbody><tr><td>算子集固定、带厂商图编译器的 NPU 或 DSP</td><td>划分并委托：TVM BYOC、ExecuTorch 委托、ONNX Runtime 执行提供程序</td><td>受支持的子图由厂商编译器负责；其余部分在主机上运行</td></tr><tr><td>带 LLVM 后端的可编程向量或分块 ISA</td><td>IREE 或 MLIR 代码生成；类 GPU 设备可用 Triton 后端</td><td>分块、向量化和缓冲区化都是可复用的 pass</td></tr><tr><td>面向 JAX 和 PyTorch 的数据中心加速器</td><td>PJRT 插件加厂商内核，PyTorch eager 使用 PrivateUse1</td><td>框架看到的是一个设备；编译器由厂商负责</td></tr></tbody></table><p class="note">这些是根据有文档的集成路线给出的起点，而非排名。不少厂商支持不止一种。</p></div><div class="cite"><a href="https://tvm.apache.org/docs/arch/external_library_dispatch.html">TVM external library dispatch (BYOC)</a> · <a href="https://iree.dev/guides/deployment-configurations/">IREE deployment configurations</a> · <a href="https://openxla.org/xla/pjrt/pjrt_integration">PJRT integration</a> · <a href="23_executorch_deployment.html">第 23 讲</a> · <a href="33_programming_models_beyond_cuda.html">第 33 讲</a></div><div class="num">9 / 13</div><aside class="notes"></aside></section><section class="slide" id="s10"><h2>新芯片：工作顺序</h2><div class="content"><table class="dense"><thead><tr><th>阶段</th><th>构建内容</th><th>出口测试</th></tr></thead><tbody><tr><td>1. 跑起来</td><td>驱动、分配器、DMA、队列、事件</td><td>让一个缓冲区经过一个简单内核往返</td></tr><tr><td>2. 一个锚点内核</td><td>带片上分块双缓冲的 GEMM</td><td>在预填充和解码形状下接近实测屋顶线</td></tr><tr><td>3. 整个模型</td><td>内存规划、异步分派、层间无主机同步</td><td>端到端模型在数值上与参考结果一致</td></tr><tr><td>4. 编译器集成</td><td>模式改写为融合内核；按形状选择内核或自动调优</td><td>未修改的框架代码能运行；没有悄无声息的 CPU 回退</td></tr><tr><td>5. 长尾</td><td>为归一化、RoPE、softmax、采样生成内核</td><td>性能剖析显示时间花在屋顶线预测的地方</td></tr></tbody></table><p class="note">速度来自第 2–3 阶段；覆盖面来自第 4–5 阶段。在你自己的工作负载上测量算子时间占比：Anthony 等人报告在其设置中，GEMM 在中型模型上占延迟的 68%，在大型模型上占 95%。</p></div><div class="cite"><a href="https://arxiv.org/abs/2401.14489">Anthony et al., arXiv:2401.14489</a> · <a href="33_programming_models_beyond_cuda.html">第 33 讲</a> · <a href="10_async_kernel_pipelines.html">第 10 讲</a></div><div class="num">10 / 13</div><aside class="notes"></aside></section><section class="slide" id="s11"><h2>核查生成的回答</h2><div class="content"><table class="dense"><thead><tr><th>聊天机器人回答中的说法</th><th>资料实际怎么说</th></tr></thead><tbody><tr><td>“NVFP4 使用原生 32 元素块”</td><td>NVFP4 的块为 16 个元素，带 E4M3 缩放和 FP32 张量缩放；OCP MX 格式使用 32 个元素和 E8M0 缩放</td></tr><tr><td>“脉动阵列大小为 16×16 到 64×64”</td><td>TPU MXU 为 128×128，自 v6e 起为 256×256；要逐个目标核实</td></tr><tr><td>“更小的 KV 位宽会使 DRAM 流量按平方下降”</td><td>KV 字节数与位宽成线性关系</td></tr><tr><td>“压缩后的 KV 缓存可以常驻 L2”</td><td>长上下文 KV 远大于 L2；它存放在 HBM 中并以流式读取</td></tr><tr><td>“编译器生成所有内核”</td><td>编译器负责划分和融合；锚点算子通常调用库或 BYOC 代码</td></tr><tr><td>“3×3 用 Winograd，其他用隐式 GEMM”</td><td>这是合理的经验法则，但 Winograd 需要步长为 1，且在大分块和低精度下会损失精度；库会通过实测来选择</td></tr></tbody></table></div><div class="cite"><a href="https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference">Introducing NVFP4</a> · <a href="https://docs.cloud.google.com/tpu/docs/system-architecture">Cloud TPU architecture</a> · <a href="https://tvm.apache.org/docs/arch/external_library_dispatch.html">TVM external library dispatch (BYOC)</a> · <a href="https://arxiv.org/abs/1509.09308">arXiv:1509.09308</a></div><div class="num">11 / 13</div><aside class="notes"></aside></section><section class="slide" id="s12"><h2>练习：协同设计审查</h2><div class="content"><ol class="small"><li>选取一个解码器配置（隐藏层大小、注意力头数、KV 头数、FFN 大小、词表）和两个目标，例如数据中心 GPU 和手机 NPU。</li><li>对每个 GEMM，分别记录预填充和解码时的 M、N、K，以及它们是否为目标偏好对齐值的倍数。</li><li>为每个目标选择一种权重格式和一种 KV 格式。说明由谁应用缩放：硬件、融合内核，还是单独的转换步骤。</li><li>根据“哪个栈适合哪种芯片？”为每个目标选一条下沉路线，并说明你要实现的集成点。</li><li>列出能证明或否定每个选择的三项测量。</li></ol><p><a href="../../labs/kit/vendor_dossier_template.html">厂商资料模板</a></p></div><div class="cite"></div><div class="num">12 / 13</div><aside class="notes"></aside></section><section class="slide" id="s13"><h2>验证边界与阅读材料</h2><div class="content"><p>所述内容来自 2026-10-30 审阅的项目文档和论文；标志、后端列表和状态标签会随版本变化。本讲没有运行任何 IREE、TVM 或 PJRT 流水线，也不做跨技术栈的速度声明。</p><p><a href="../../references/bibliography_and_links.html#model-lowering-and-hardware-co-design-reviewed-2026-10-30">本讲的注释来源</a> · <a href="09_gemm_tensor_cores.html">第 09 讲</a> · <a href="14_quantization_serving.html">第 14 讲</a> · <a href="23_executorch_deployment.html">第 23 讲</a> · <a href="33_programming_models_beyond_cuda.html">第 33 讲</a></p></div><div class="cite"></div><div class="num">13 / 13</div><aside class="notes"></aside></section></div><div id="hint">← / → · Home / End · F fullscreen</div><script>const slides=[...document.querySelectorAll('.slide')];let current=0;function show(n){current=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>{s.classList.toggle('active',i===current);s.setAttribute('aria-hidden',i!==current)});location.hash='slide-'+(current+1)}function resize(){document.getElementById('stage').style.transform='translate(-50%,-50%) scale('+Math.min(innerWidth/1280,innerHeight/720)+')'}addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(current+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(current-1)}if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1);if(e.key.toLowerCase()==='f'){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>{})}});addEventListener('resize',resize);resize();const n=Number(location.hash.replace('#slide-',''));show(Number.isFinite(n)&&n>0?n-1:0);</script><script id="course-presenter">/* Offline teaching controls. Embedded by build_presenter_mode.py; no network or storage. */
+(() => {
+  const zh = document.documentElement.lang.startsWith('zh');
+  const words = zh ? {
+    notes:'讲者备注', presenter:'讲者窗口', missing:'本页暂无讲者备注。请结合本讲来源与实验手册备课。',
+    prev:'上一页', next:'下一页', start:'开始', pause:'暂停', reset:'重置',
+    help:'S：备注 · P：讲者窗口 · ←/→：翻页。投影窗口默认不显示备注。',
+    blocked:'讲者窗口未能打开；请允许弹出窗口，或按 S 使用本页备注。',
+    elapsed:'授课计时', nextTitle:'下一页', end:'本讲结束'
+  } : {
+    notes:'Speaker notes', presenter:'Presenter window', missing:'No speaker notes for this slide yet. Prepare with the lecture sources and lab handout.',
+    prev:'Previous', next:'Next', start:'Start', pause:'Pause', reset:'Reset',
+    help:'S: notes · P: presenter · ←/→: navigate. Notes stay hidden on the projection window by default.',
+    blocked:'Presenter window blocked. Allow popups, or press S for notes in this window.',
+    elapsed:'Lecture timer', nextTitle:'Next slide', end:'End of lecture'
+  };
+  const style = document.createElement('style');
+  style.id = 'course-presenter-style';
+  style.textContent = `
+    #course-notes-panel{display:none;position:fixed;inset:60% 0 0;z-index:100;background:#f4f6fa;color:#152238;padding:16px 28px;overflow:auto;border-top:3px solid #4a719f;font:18px/1.5 system-ui}
+    #course-notes-panel h3{font-size:22px;margin:8px 0}#course-notes-panel p{font-size:18px;line-height:1.5;margin:8px 0}
+    .course-presenter-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.course-presenter-tools button{font:16px system-ui;padding:6px 12px;cursor:pointer}
+    .course-presenter-tools time{font:20px ui-monospace,monospace;min-width:70px}.course-presenter-tools small{font-size:14px}
+    @media print{#course-notes-panel{display:none!important}}`;
+  document.head.append(style);
+  const panel = document.createElement('section');
+  panel.id = 'course-notes-panel';
+  panel.setAttribute('aria-label', words.notes);
+  document.body.append(panel);
+  let visible = false, popup = null, elapsed = 0, started = 0, running = false;
+  const stage = document.getElementById('stage');
+  const slides = [...document.querySelectorAll('.slide')];
+  if (!stage || !slides.length) return;
+  const index = () => Math.max(0, slides.findIndex(s => s.classList.contains('active')));
+  const clock = () => elapsed + (running ? performance.now() - started : 0);
+  const stamp = () => {
+    const seconds = Math.floor(clock() / 1000);
+    return String(Math.floor(seconds / 60)).padStart(2,'0') + ':' + String(seconds % 60).padStart(2,'0');
+  };
+  const move = delta => { if (typeof show === 'function') show(index() + delta); };
+  function makeView(doc, mount) {
+    const bar = doc.createElement('div'); bar.className = 'course-presenter-tools';
+    const button = (label, action) => {
+      const b = doc.createElement('button'); b.type = 'button'; b.textContent = label;
+      b.addEventListener('click', action); bar.append(b); return b;
+    };
+    const prev = button(words.prev, () => move(-1));
+    const next = button(words.next, () => move(1));
+    const time = doc.createElement('time'); time.setAttribute('aria-label',words.elapsed); bar.append(time);
+    const toggle = button(words.start, () => {
+      if (running) { elapsed = clock(); running = false; }
+      else { started = performance.now(); running = true; }
+      render();
+    });
+    button(words.reset, () => { elapsed = 0; started = performance.now(); render(); });
+    const help = doc.createElement('small'); help.textContent = words.help; bar.append(help);
+    const title = doc.createElement('h3');
+    const body = doc.createElement('div'); body.className = 'course-note-content';
+    const upcoming = doc.createElement('p');
+    mount.append(bar,title,body,upcoming);
+    return {prev,next,time,toggle,title,body,upcoming,slide:-1};
+  }
+  const inline = makeView(document,panel);
+  let external = null;
+  function update(view) {
+    const i = index(), slide = slides[i];
+    view.time.textContent = stamp();
+    view.toggle.textContent = running ? words.pause : words.start;
+    view.prev.disabled = i === 0; view.next.disabled = i === slides.length - 1;
+    if (view.slide === i) return;
+    view.slide = i;
+    view.title.textContent = `${i+1} / ${slides.length} · ${slide.querySelector('h1,h2')?.textContent || ''}`;
+    const note = slide.querySelector('aside.notes');
+    view.body.replaceChildren();
+    if (note && note.textContent.trim()) {
+      // Clone authored, repository-owned notes; do not fetch or execute external content.
+      for (const child of note.childNodes) view.body.append(child.cloneNode(true));
+    } else {
+      const p = view.body.ownerDocument.createElement('p'); p.textContent = words.missing; view.body.append(p);
+    }
+    view.upcoming.textContent = words.nextTitle + ': ' + (slides[i+1]?.querySelector('h1,h2')?.textContent || words.end);
+  }
+  function render() {
+    update(inline);
+    if (popup && !popup.closed && external) update(external);
+  }
+  function fit() {
+    if (!visible) { stage.style.top = '50%'; if (typeof resize === 'function') resize(); return; }
+    stage.style.top = '30%';
+    stage.style.transform = `translate(-50%,-50%) scale(${Math.min(innerWidth/1280,innerHeight*0.6/720)})`;
+  }
+  function toggleNotes() {
+    visible = !visible; panel.style.display = visible ? 'block' : 'none'; render(); fit();
+  }
+  function openPresenter() {
+    if (popup && !popup.closed) { popup.focus(); return; }
+    popup = window.open('', 'llm-course-presenter', 'width=960,height=800');
+    if (!popup) { if (!visible) toggleNotes(); inline.upcoming.textContent = words.blocked; return; }
+    const doc = popup.document;
+    doc.open(); doc.write('<!doctype html><html><head><meta charset="utf-8"><title></title></head><body></body></html>'); doc.close();
+    doc.documentElement.lang = document.documentElement.lang;
+    doc.title = words.presenter + ' · ' + document.title;
+    const css = doc.createElement('style');
+    css.textContent = 'body{margin:24px;background:#f4f6fa;color:#152238;font:20px/1.6 system-ui}h3{font-size:26px}p,li{font-size:20px}.course-presenter-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.course-presenter-tools button{font:16px system-ui;padding:8px;cursor:pointer}.course-presenter-tools time{font:24px monospace}.course-presenter-tools small{width:100%;font-size:15px}a{color:#24548c}';
+    doc.head.append(css); external = makeView(doc,doc.body);
+    popup.addEventListener('keydown', e => {
+      if (['ArrowRight','PageDown'].includes(e.key)) {e.preventDefault();move(1);}
+      if (['ArrowLeft','PageUp'].includes(e.key)) {e.preventDefault();move(-1);}
+    });
+    render();
+  }
+  addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey || e.altKey || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || e.target.isContentEditable) return;
+    if (e.key.toLowerCase() === 's') {e.preventDefault();toggleNotes();}
+    if (e.key.toLowerCase() === 'p') {e.preventDefault();openPresenter();}
+  });
+  addEventListener('resize',fit);
+  new MutationObserver(render).observe(stage,{subtree:true,attributes:true,attributeFilter:['class']});
+  setInterval(render,1000);
+  const hint = document.getElementById('hint');
+  if (hint) hint.textContent += zh ? ' · S 备注 · P 讲者窗口' : ' · S notes · P presenter';
+  render();
+})();
+</script></body></html>

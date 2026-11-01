@@ -75,6 +75,14 @@ Each lab follows **predict → implement → validate correctness → profile �
 
 The course does not depend on a Rubin GPU. Use the available device for measurements and Rubin for source-grounded analysis. Release each executable lab with its own tested environment; do not assume all projects share compatible latest versions.
 
+## Teaching controls and foundation pilot
+
+All English/Chinese decks stay self-contained offline. Press **S** to show/hide notes in the current window, or **P** to open a separate speaker window with navigation and a start/pause/reset timer. Keep the audience window in its normal mode when projecting; opening the separate window does not reveal notes there. Popup blocking falls back to the inline notes panel. Arrow keys, Home/End and fullscreen keep their existing behavior. Timer state belongs to the open page and resets on reload.
+
+Decks **01–04** supply bilingual instructor waymarkers on every slide, a prediction before its worked answer, a source page, prerequisite/support links and a final recap/open question/next lecture. Remaining decks explicitly show a missing-notes message rather than implying a finished script. These notes support instructor preparation; a timed classroom pilot and full recording scripts remain pending. See the [review response and remaining work](references/teaching_readiness_response.md).
+
+Presenter source: `slides/presenter_mode.js`; regenerate embedded copies with `python3 llm-compute-systems-course/slides/build_presenter_mode.py`. Figure regeneration preserves existing English figure notes.
+
 ## Slide decks
 
 Decks are listed in teaching order, grouped by part. Each row links the English deck and, on that same row, the Simplified Chinese deck (`slides/zh/`, same file name).
@@ -83,10 +91,10 @@ Decks are listed in teaching order, grouped by part. Each row links the English 
 |---|---|
 | [Efficient LLM Computing Systems](slides/00_master_compute_systems.html) (15 slides) · [简体中文](slides/zh/00_master_compute_systems.html) | Course map and deck directory |
 | **Part I · Foundations: workloads and measurement (weeks 1–2)** | |
-| [Workloads, Rooflines and Capacity](slides/01_workloads_rooflines.html) (17 slides) · [简体中文](slides/zh/01_workloads_rooflines.html) | Week 1, lecture A |
-| [Architecture as a Computing Workload](slides/02_architecture_workload_primer.html) (13 slides) · [简体中文](slides/zh/02_architecture_workload_primer.html) | Week 1, lecture B |
-| [Measurement and Profiling](slides/03_measurement_profiling.html) (17 slides) · [简体中文](slides/zh/03_measurement_profiling.html) | Week 2, lecture A |
-| [Host, OS and Data Paths](slides/04_host_os_data_paths.html) (17 slides) · [简体中文](slides/zh/04_host_os_data_paths.html) | Week 2, lecture B |
+| [Workloads, Rooflines and Capacity](slides/01_workloads_rooflines.html) (20 slides) · [简体中文](slides/zh/01_workloads_rooflines.html) | Week 1, lecture A |
+| [Architecture as a Computing Workload](slides/02_architecture_workload_primer.html) (16 slides) · [简体中文](slides/zh/02_architecture_workload_primer.html) | Week 1, lecture B |
+| [Measurement and Profiling](slides/03_measurement_profiling.html) (20 slides) · [简体中文](slides/zh/03_measurement_profiling.html) | Week 2, lecture A |
+| [Host, OS and Data Paths](slides/04_host_os_data_paths.html) (20 slides) · [简体中文](slides/zh/04_host_os_data_paths.html) | Week 2, lecture B |
 | **Part II · Single-GPU execution: PyTorch, compilers and kernels (weeks 3–6)** | |
 | [PyTorch Execution and Autograd](slides/05_pytorch_execution_autograd.html) (18 slides) · [简体中文](slides/zh/05_pytorch_execution_autograd.html) | Week 3, lecture A |
 | [PyTorch Compiler and Specialization](slides/06_pytorch_compiler.html) (18 slides) · [简体中文](slides/zh/06_pytorch_compiler.html) | Week 3, lecture B |
@@ -239,6 +247,7 @@ llm-compute-systems-course/
 │   ├── inference_bottlenecks_review.md
 │   ├── project_research_review.md
 │   ├── research_review.md
+│   ├── teaching_readiness_response.md
 │   ├── teaching_readiness_review.md
 │   └── tracked_sources.json
 ├── slides/
@@ -369,7 +378,9 @@ llm-compute-systems-course/
 │   ├── 37_ai_assisted_development.html
 │   ├── 38_verification_contracts.html
 │   ├── 39_qualification_release.html
-│   └── 40_inference_accelerator_architectures.html
+│   ├── 40_inference_accelerator_architectures.html
+│   ├── build_presenter_mode.py
+│   └── presenter_mode.js
 ├── BUILD_PLAN.md
 ├── COURSE_RELEASE.md
 ├── LICENSE
