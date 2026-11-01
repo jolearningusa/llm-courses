@@ -1,7 +1,6 @@
 # Labs
 
-CPU-only labs, each checked against a reference value or a definition. They are published with the part
-of the course they belong to; the [syllabus](../SYLLABUS.md) lists all ten.
+CPU-only labs, each checked against a reference value or a definition. The [syllabus](../SYLLABUS.md) lists all ten.
 
 | Lab | Topic | Decks | Needs |
 |---|---|---|---|
@@ -13,5 +12,7 @@ of the course they belong to; the [syllabus](../SYLLABUS.md) lists all ten.
 | [L5](L5_attention_variants/) | MHA, MQA, GQA and MLA with a KV cache; windows, sinks and blockwise attention | 12–16 | Python 3.10+, NumPy |
 | [L6](L6_block_variants/) | Train small models with Post-LN, Pre-LN, RMSNorm, SwiGLU, GQA and MQA | 12, 13, 17, 18 | Python 3.10+, PyTorch 2 (CPU) |
 | [L7](L7_moe/) | Top-k MoE with capacity, shared experts, the Switch loss and loss-free balancing | 19–22 | Python 3.10+, NumPy |
+| [L8](L8_vit_clip/) | ViT patch embedding, position interpolation and a CLIP-style contrastive loss | 34–36 | Python 3.10+, NumPy |
+| [L9](L9_rvq/) | Residual vector quantization of an audio signal | 41–42 | Python 3.10+, NumPy |
 
 Run every lab's checks from the lab directory with `python -m unittest`.

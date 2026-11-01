@@ -2,7 +2,7 @@
 
 Read the architecture papers behind today's language, vision, diffusion and speech models one at a time: why each change was proposed, what it changed in the model, and what later models kept.
 
-**Status, 2026-11-01: Parts I to VII published.** The course map, the six Part I paper decks (the 2017 Transformer, GPT-1/2, BERT, T5, GPT-3 with the Kaplan scaling laws, Chinchilla), the five Part II decks on how the context is constructed (subword tokenization, RoPE, ALiBi, Position Interpolation and YaRN, chat templates and long contexts), the seven Part III and IV decks on attention variants and the modern block (MQA, GQA, FlashAttention, sliding windows and attention sinks, MLA, Pre-LN and RMSNorm, SwiGLU), the four Part V decks on mixture of experts (sparsely-gated MoE and GShard, Switch, Mixtral, DeepSeekMoE with loss-free balancing), the five Part VI decks on newer efficiency designs (Mamba and Mamba-2, Jamba, Gated DeltaNet and Qwen3-Next, native and DeepSeek sparse attention, multi-token prediction), the six Part VII decks on popular model families (LLaMA and Llama 2, Llama 3 and 4, Qwen2.5 and Qwen3, DeepSeek-V3 and R1, Gemma 1 to 3, Phi-3, OLMo, Kimi K2 and gpt-oss), labs L0 to L7, the syllabus and the full bibliography (70 sources, each checked on its arXiv or vendor page) are in place. Parts VIII and IX follow part by part, in the order of the [syllabus](SYLLABUS.md). Decks are in English first; Simplified Chinese twins follow once the English decks are complete.
+**Status, 2026-11-01: all English decks and labs published.** The course map, the six Part I paper decks (the 2017 Transformer, GPT-1/2, BERT, T5, GPT-3 with the Kaplan scaling laws, Chinchilla), the five Part II decks on how the context is constructed (subword tokenization, RoPE, ALiBi, Position Interpolation and YaRN, chat templates and long contexts), the seven Part III and IV decks on attention variants and the modern block (MQA, GQA, FlashAttention, sliding windows and attention sinks, MLA, Pre-LN and RMSNorm, SwiGLU), the four Part V decks on mixture of experts (sparsely-gated MoE and GShard, Switch, Mixtral, DeepSeekMoE with loss-free balancing), the five Part VI decks on newer efficiency designs (Mamba and Mamba-2, Jamba, Gated DeltaNet and Qwen3-Next, native and DeepSeek sparse attention, multi-token prediction), the six Part VII decks on popular model families (LLaMA and Llama 2, Llama 3 and 4, Qwen2.5 and Qwen3, DeepSeek-V3 and R1, Gemma 1 to 3, Phi-3, OLMo, Kimi K2 and gpt-oss), the four Part VIII decks on multimodal models (ViT, CLIP, Flamingo and LLaVA, Chameleon), the five Part IX decks on diffusion and speech (DDPM and latent diffusion, DiT, Whisper, SoundStream and EnCodec, AudioLM and VALL-E), the capstone deck, labs L0 to L9, the syllabus and the full bibliography (70 sources, each checked on its arXiv or vendor page) are in place. Simplified Chinese twins of the decks follow in a separate update.
 
 ## Start here
 
@@ -76,8 +76,18 @@ Kernels, KV-cache paging, MoE execution and serving are taught in [Efficient LLM
 | [31 DeepSeek-V3 and R1](slides/31_deepseek_v3_r1.html) (10 slides) | Week 12: MLA, loss-free MoE, MTP and FP8 at 671B; reasoning from rule-based RL |
 | [32 Gemma 1, 2 and 3](slides/32_gemma.html) (9 slides) | Week 12: local and global layers, soft-capping to QK-norm, distillation, a vision encoder |
 | [33 Phi-3, OLMo, Kimi K2 and gpt-oss](slides/33_phi_olmo_kimi_gptoss.html) (9 slides) | Week 12: data quality, full openness, MuonClip at 1T, an MXFP4 reasoning MoE; paper critique 2 |
-
-Decks 34 to 43 are listed in the [syllabus](SYLLABUS.md) and are added to this table as each part is published.
+| **Part VIII. Multimodal models** | |
+| [34 Vision Transformer (ViT)](slides/34_vit.html) (8 slides) | Week 13: patches as tokens, data against inductive bias; lab L8 |
+| [35 CLIP](slides/35_clip.html) (8 slides) | Week 13: the symmetric contrastive loss, zero-shot classification from prompts; lab L8 |
+| [36 Flamingo and LLaVA](slides/36_flamingo_llava.html) (8 slides) | Week 13: gated cross-attention into a frozen LM, one projection and synthetic instructions; lab L8 |
+| [37 Chameleon](slides/37_chameleon.html) (8 slides) | Week 13: early fusion with image tokens, keeping mixed-modal training stable |
+| **Part IX. Transformers beyond text** | |
+| [38 DDPM and latent diffusion](slides/38_diffusion.html) (9 slides) | Week 14: the noise-prediction loss, diffusion in an autoencoder's latent, cross-attention conditioning |
+| [39 Diffusion Transformer (DiT)](slides/39_dit.html) (9 slides) | Week 14: latent patches, adaLN-Zero, quality that follows Gflops |
+| [40 Whisper](slides/40_whisper.html) (8 slides) | Week 14: 680,000 hours of weak supervision, tasks as special tokens |
+| [41 SoundStream and EnCodec](slides/41_neural_codecs.html) (8 slides) | Week 14: neural codecs, residual vector quantization, audio tokens; lab L9 |
+| [42 AudioLM and VALL-E](slides/42_audiolm_valle.html) (8 slides) | Week 14: semantic and acoustic tokens, TTS as codec language modeling; lab L9 |
+| [43 Capstone: design a model](slides/43_capstone.html) (8 slides) | Week 15: the brief, a worked parameter and KV-cache budget, grading |
 
 ## Repository layout
 
@@ -128,6 +138,14 @@ llm-transformer-architecture-course/
 │   │   ├── README.md
 │   │   ├── moe.py                   # Top-k MoE, capacity, shared experts, Switch loss, loss-free bias
 │   │   └── test_moe.py
+│   ├── L8_vit_clip/
+│   │   ├── README.md
+│   │   ├── test_vit_clip.py
+│   │   └── vit_clip.py              # ViT patch embedding, position interpolation, CLIP loss and toy training
+│   ├── L9_rvq/
+│   │   ├── README.md
+│   │   ├── rvq.py                   # Residual vector quantization of a toy audio signal
+│   │   └── test_rvq.py
 │   └── README.md                    # Lab index
 ├── references/
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-01
@@ -165,7 +183,17 @@ llm-transformer-architecture-course/
 │   ├── 30_qwen.html
 │   ├── 31_deepseek_v3_r1.html
 │   ├── 32_gemma.html
-│   └── 33_phi_olmo_kimi_gptoss.html
+│   ├── 33_phi_olmo_kimi_gptoss.html
+│   ├── 34_vit.html
+│   ├── 35_clip.html
+│   ├── 36_flamingo_llava.html
+│   ├── 37_chameleon.html
+│   ├── 38_diffusion.html
+│   ├── 39_dit.html
+│   ├── 40_whisper.html
+│   ├── 41_neural_codecs.html
+│   ├── 42_audiolm_valle.html
+│   └── 43_capstone.html
 ├── LICENSE                          # Apache-2.0
 ├── README.md                        # This file
 └── SYLLABUS.md                      # Parts, weekly plan, labs and assessment
