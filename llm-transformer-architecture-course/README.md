@@ -2,7 +2,7 @@
 
 Read the architecture papers behind today's language, vision, diffusion and speech models one at a time: why each change was proposed, what it changed in the model, and what later models kept.
 
-**Status, 2026-11-01: Parts I to IV published.** The course map, the six Part I paper decks (the 2017 Transformer, GPT-1/2, BERT, T5, GPT-3 with the Kaplan scaling laws, Chinchilla), the five Part II decks on how the context is constructed (subword tokenization, RoPE, ALiBi, Position Interpolation and YaRN, chat templates and long contexts), the seven Part III and IV decks on attention variants and the modern block (MQA, GQA, FlashAttention, sliding windows and attention sinks, MLA, Pre-LN and RMSNorm, SwiGLU), labs L0 to L6, the syllabus and the full bibliography (70 sources, each checked on its arXiv or vendor page) are in place. Parts V to IX follow part by part, in the order of the [syllabus](SYLLABUS.md). Decks are in English first; Simplified Chinese twins follow once the English decks are complete.
+**Status, 2026-11-01: Parts I to V published.** The course map, the six Part I paper decks (the 2017 Transformer, GPT-1/2, BERT, T5, GPT-3 with the Kaplan scaling laws, Chinchilla), the five Part II decks on how the context is constructed (subword tokenization, RoPE, ALiBi, Position Interpolation and YaRN, chat templates and long contexts), the seven Part III and IV decks on attention variants and the modern block (MQA, GQA, FlashAttention, sliding windows and attention sinks, MLA, Pre-LN and RMSNorm, SwiGLU), the four Part V decks on mixture of experts (sparsely-gated MoE and GShard, Switch, Mixtral, DeepSeekMoE with loss-free balancing), labs L0 to L7, the syllabus and the full bibliography (70 sources, each checked on its arXiv or vendor page) are in place. Parts VI to IX follow part by part, in the order of the [syllabus](SYLLABUS.md). Decks are in English first; Simplified Chinese twins follow once the English decks are complete.
 
 ## Start here
 
@@ -58,8 +58,13 @@ Kernels, KV-cache paging, MoE execution and serving are taught in [Efficient LLM
 | **Part IV. The modern block** | |
 | [17 Pre-LN and RMSNorm](slides/17_preln_rmsnorm.html) (10 slides) | Week 7: where the norm goes, why warm-up was needed, dropping the mean; lab L6 |
 | [18 GLU variants and SwiGLU](slides/18_glu_variants.html) (9 slides) | Week 7: gated FFNs at equal parameters; lab L6 |
+| **Part V. Mixture of experts** | |
+| [19 Sparsely-gated MoE and GShard](slides/19_sparse_moe_gshard.html) (10 slides) | Week 8: routers, top-k gating, balance losses, MoE in the Transformer; lab L7 |
+| [20 Switch Transformer](slides/20_switch.html) (10 slides) | Week 8: top-1 routing, expert capacity, stable sparse training; lab L7 |
+| [21 Mixtral](slides/21_mixtral.html) (9 slides) | Week 8: a decoder-only MoE, total and active parameters, what the router learns; lab L7 |
+| [22 DeepSeekMoE and loss-free balancing](slides/22_deepseekmoe.html) (10 slides) | Week 8: fine-grained and shared experts, bias-based balancing; lab L7 |
 
-Decks 19 to 43 are listed in the [syllabus](SYLLABUS.md) and are added to this table as each part is published.
+Decks 23 to 43 are listed in the [syllabus](SYLLABUS.md) and are added to this table as each part is published.
 
 ## Repository layout
 
@@ -106,6 +111,10 @@ llm-transformer-architecture-course/
 │   │   ├── model.py                 # Small PyTorch LM with switchable norm, placement, FFN and KV heads
 │   │   ├── test_model.py
 │   │   └── train.py                 # Trains the variants on the same data, budget and seeds
+│   ├── L7_moe/
+│   │   ├── README.md
+│   │   ├── moe.py                   # Top-k MoE, capacity, shared experts, Switch loss, loss-free bias
+│   │   └── test_moe.py
 │   └── README.md                    # Lab index
 ├── references/
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-01
@@ -128,7 +137,11 @@ llm-transformer-architecture-course/
 │   ├── 15_sliding_window_sinks.html
 │   ├── 16_mla.html
 │   ├── 17_preln_rmsnorm.html
-│   └── 18_glu_variants.html
+│   ├── 18_glu_variants.html
+│   ├── 19_sparse_moe_gshard.html
+│   ├── 20_switch.html
+│   ├── 21_mixtral.html
+│   └── 22_deepseekmoe.html
 ├── LICENSE                          # Apache-2.0
 ├── README.md                        # This file
 └── SYLLABUS.md                      # Parts, weekly plan, labs and assessment
