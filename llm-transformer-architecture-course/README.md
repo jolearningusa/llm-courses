@@ -2,7 +2,7 @@
 
 Read the architecture papers behind today's language, vision, diffusion and speech models one at a time: why each change was proposed, what it changed in the model, and what later models kept.
 
-**Status, 2026-11-01: Part I published.** The course map, the six Part I paper decks (the 2017 Transformer, GPT-1/2, BERT, T5, GPT-3 with the Kaplan scaling laws, Chinchilla), labs L0 and L1, the syllabus and the full bibliography (70 sources, each checked on its arXiv or vendor page) are in place. Parts II to IX follow part by part, in the order of the [syllabus](SYLLABUS.md). Decks are in English first; Simplified Chinese twins follow once the English decks are complete.
+**Status, 2026-11-01: Parts I and II published.** The course map, the six Part I paper decks (the 2017 Transformer, GPT-1/2, BERT, T5, GPT-3 with the Kaplan scaling laws, Chinchilla), the five Part II decks on how the context is constructed (subword tokenization, RoPE, ALiBi, Position Interpolation and YaRN, chat templates and long contexts), labs L0 to L4, the syllabus and the full bibliography (70 sources, each checked on its arXiv or vendor page) are in place. Parts III to IX follow part by part, in the order of the [syllabus](SYLLABUS.md). Decks are in English first; Simplified Chinese twins follow once the English decks are complete.
 
 ## Start here
 
@@ -43,8 +43,14 @@ Kernels, KV-cache paging, MoE execution and serving are taught in [Efficient LLM
 | [04 T5](slides/04_t5.html) (10 slides) | Week 2: encoder-decoder, text-to-text, span corruption, BART |
 | [05 GPT-3 and the Kaplan scaling laws](slides/05_gpt3_scaling_laws.html) (10 slides) | Week 3: power laws, in-context learning; lab L0 |
 | [06 Chinchilla](slides/06_chinchilla.html) (9 slides) | Week 3: compute-optimal parameters and tokens; lab L0 |
+| **Part II. How the context is constructed** | |
+| [07 Subword tokenization](slides/07_subword_tokenization.html) (9 slides) | Week 3: BPE, byte-level BPE, Unigram and SentencePiece, vocabulary size; lab L2 |
+| [08 RoPE](slides/08_rope.html) (9 slides) | Week 4: rotary position embedding, relative position from rotation; lab L3 |
+| [09 ALiBi](slides/09_alibi.html) (9 slides) | Week 4: a linear distance bias instead of position embeddings; lab L3 |
+| [10 Position Interpolation and YaRN](slides/10_pi_yarn.html) (9 slides) | Week 4: extending a RoPE model's window after pre-training; lab L3 |
+| [11 From conversation to tokens](slides/11_conversation_to_tokens.html) (10 slides) | Week 5: chat templates, packing masks, context windows, lost in the middle; lab L4 |
 
-Decks 07 to 43 are listed in the [syllabus](SYLLABUS.md) and are added to this table as each part is published.
+Decks 12 to 43 are listed in the [syllabus](SYLLABUS.md) and are added to this table as each part is published.
 
 ## Repository layout
 
@@ -65,6 +71,23 @@ llm-transformer-architecture-course/
 │   │   ├── README.md
 │   │   ├── test_transformer.py
 │   │   └── transformer.py           # One NumPy block as encoder, decoder and encoder-decoder
+│   ├── L2_bpe/
+│   │   ├── corpus/                  # One passage in four languages
+│   │   │   ├── de.txt
+│   │   │   ├── en.txt
+│   │   │   ├── es.txt
+│   │   │   └── zh.txt
+│   │   ├── README.md
+│   │   ├── bpe.py                   # Byte-level BPE: train, encode, decode
+│   │   └── test_bpe.py
+│   ├── L3_positions/
+│   │   ├── README.md
+│   │   ├── positions.py             # Sinusoidal, RoPE, ALiBi, Position Interpolation, YaRN
+│   │   └── test_positions.py
+│   ├── L4_chat_templates/
+│   │   ├── README.md
+│   │   ├── chat.py                  # Llama 3 and Qwen2.5 templates, loss and packing masks
+│   │   └── test_chat.py
 │   └── README.md                    # Lab index
 ├── references/
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-01
@@ -75,7 +98,12 @@ llm-transformer-architecture-course/
 │   ├── 03_bert.html
 │   ├── 04_t5.html
 │   ├── 05_gpt3_scaling_laws.html
-│   └── 06_chinchilla.html
+│   ├── 06_chinchilla.html
+│   ├── 07_subword_tokenization.html
+│   ├── 08_rope.html
+│   ├── 09_alibi.html
+│   ├── 10_pi_yarn.html
+│   └── 11_conversation_to_tokens.html
 ├── LICENSE                          # Apache-2.0
 ├── README.md                        # This file
 └── SYLLABUS.md                      # Parts, weekly plan, labs and assessment

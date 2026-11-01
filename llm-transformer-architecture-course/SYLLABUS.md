@@ -82,8 +82,8 @@ All labs run on a laptop CPU with NumPy or PyTorch and tiny models. Each lab che
 | L0 | Compute parameter count and KV-cache bytes per token from Hugging Face `config.json` files | Matches the parameter count of each released checkpoint |
 | L1 | A tiny transformer from scratch that runs as encoder, decoder and encoder-decoder from one block | Causal mask leaks no future tokens; attention matches a one-query-at-a-time loop |
 | L2 | Train a byte-level BPE tokenizer and measure tokens per character across languages | Round-trip decoding is lossless |
-| L3 | Implement sinusoidal, RoPE and ALiBi; test past the training length; apply Position Interpolation | RoPE attention scores depend only on relative position |
-| L4 | Render a chat template by hand and build packing masks | Byte-identical to the tokenizer's own template |
+| L3 | Implement sinusoidal, RoPE and ALiBi; apply Position Interpolation and YaRN's per-frequency scaling | RoPE attention scores depend only on relative position; interpolated angles stay in the trained range |
+| L4 | Render a chat template by hand and build packing masks | Equal to the published Llama 3 and Qwen2.5 formats; no attention across packed documents |
 | L5 | MHA, MQA, GQA and MLA in one module with a KV cache | Cached decoding equals full recomputation; KV bytes match the formula |
 | L6 | Train small character-level models and compare post-LN, pre-LN, RMSNorm, SwiGLU and GQA | Fixed seeds and budget; report loss curves with spread |
 | L7 | A top-k MoE layer with a load-balancing loss | Expert utilization plot; balanced routing lowers the loss term |
