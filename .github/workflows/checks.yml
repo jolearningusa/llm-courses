@@ -52,3 +52,5 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Check slide decks
         run: node scripts/check_slides.mjs
+      - name: Check offline presenter controls
+        run: node scripts/check_presenter.mjs

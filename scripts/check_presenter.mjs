@@ -16,9 +16,11 @@ const watch = page => {
 };
 try {
   let deckCount=0;
+  const presenterSource=readFileSync(join(slides,'presenter_mode.js'),'utf8');
   for (const dir of [slides,join(slides,'zh')]) for (const file of readdirSync(dir).filter(x=>x.endsWith('.html'))) {
     const text=readFileSync(join(dir,file),'utf8');
     assert.equal((text.match(/<script id="course-presenter">/g)||[]).length,1,file);
+    assert.equal(text.match(/<script id="course-presenter">([\s\S]*?)<\/script>/)[1],presenterSource,file+' has stale presenter code');
     deckCount++;
   }
   for (const zh of [false,true]) {
