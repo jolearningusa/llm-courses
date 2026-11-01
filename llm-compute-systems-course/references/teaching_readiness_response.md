@@ -6,7 +6,7 @@ Prepared 2026-11-01 in response to the [review](teaching_readiness_review.md) me
 
 | Finding | Implemented response | Limit / remaining work |
 |---|---|---|
-| F1: no spoken layer | Every slide in decks 01–04 has English/Chinese instructor waymarkers: explanations, board calculations, misconceptions and questions. | 76 populated notes per language after adding the teaching pages. These are preparation notes, not full verbatim recording scripts; the other 37 decks still need topic-specific notes. |
+| F1: no spoken layer | Every slide in decks 01–04 has English/Chinese instructor waymarkers: explanations, board calculations, misconceptions and questions. | 76 populated notes per language after adding the teaching pages. These are preparation notes, not full verbatim recording scripts; the original pilot left 37 decks without notes; the subsequent supplement pass below leaves 34. |
 | F1: notes inaccessible | All 82 compute-course deck files embed offline S/P controls, a separate presenter window, synchronized current/next titles, and start/pause/reset timer. | Popup fallback and inline mode are supplied. No claim of physical dual-display or classroom testing. Timer resets with page reload. |
 | F2: no closure | Each foundation lecture ends with three takeaways, an open question and a linked next lecture. Existing lab handoffs remain. | Extend after an instructor pilots the pattern. |
 | F4: supplemental scheduling | The syllabus now maps all supplements 32–40 to insertion points and explicitly describes excerpt/replacement/extra-session choices. | Durations are estimates. Full supplement coverage requires additional time or declared lost core coverage. |
@@ -30,3 +30,23 @@ The historical headline baseline of 41 English decks / 690 slides agrees with th
 5. **Course-wide closure/checkpoints (F2/F7).** Extend the validated opening/prerequisite, prediction, recap and next-lecture pattern. Do not add generic filler questions solely to satisfy a count.
 
 Each batch should be one short-lived branch and one PR from refreshed main, with English/Chinese changes, checks and visual review. These are implementation recommendations, not scheduled background work or a claim that later batches are complete.
+
+## Dense supplement pass — 2026-11-01
+
+F6 material edits are implemented for decks 34/35/40. They now contain 15/21/23 slides, standard-size lecture text, bilingual optional reference handouts, prediction checkpoints and closing takeaways/open questions. Each of the 59 supplement slides per language has instructor notes, bringing the populated total to 135 across the seven revised decks. Longer reference tables are meant for reading, not projection. The four-row heartbeat worked schedule is retained; comparison tables have at most three data rows. No additional mandatory semester sessions were added.
+
+The edit removes popularity/release catalogues rather than moving a fragile leaderboard into another classroom page. It also corrects overbroad claims: BYOC partitioning does not automatically supply unsupported operators, llama.cpp's documented experimental tensor split precludes an absolute “no tensor-parallel path” claim, and unified memory does not eliminate all movement or bandwidth limits. Engine comparisons with unmatched quantization/quality are labeled configuration comparisons. Primary project references were rechecked; no engine/compiler/accelerator experiment was executed.
+
+This addresses the density/structure portion of F6, but actual speaking duration and comprehension remain unvalidated. The next implementation priority is F3's mechanism figures (start with decks 10 and 17), followed by lecture-specific sources and notes for remaining parts. Do not mark course-wide F1/F2/F5/F7 complete: 34 decks still lack authored notes and the classroom pilot is pending.
+
+### Density measurements for this pass
+
+Counts use the same parser before/after: English alphanumeric tokens in the visible slide body, including tables/code, excluding title, citation, numbering, hidden notes and SVG labels. These differ in scope from the original review's counts and are not speaking-time estimates. Baseline is the post-#90 main checkout.
+
+| Deck | Pages before → after | Body tokens before → after | Maximum body tokens on one page before → after |
+|---|---|---|---|
+| 34 | 13 → 15 | 1,204 → 519 | 143 → 41 |
+| 35 | 19 → 21 | 2,115 → 679 | 146 → 41 |
+| 40 | 22 → 23 | 1,267 → 983 | 86 → 86 |
+
+The unchanged maximum in 40 belongs to the worked heartbeat schedule; it was retained for its stepwise mechanism. The pass targets catalogues/comparison/code annotations rather than imposing an arbitrary token cap. All six revised decks were rendered and checked for bounds; standard body/code is 23px, tables 21px. Presenter notes and long optional handouts do not enter the projected-word metric.

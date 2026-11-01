@@ -214,3 +214,7 @@ Sources for [deck 40](../slides/40_inference_accelerator_architectures.html). Th
 - **Core — Chips**: Google's TPU7x table and TPU architecture guide; Huawei's CANN AI Core documentation; Alibaba's May M890 and September V900 press releases and PAI 810E deployment documentation. Hardware peaks, vendor claims and release forecasts are separate.
 - **Core — Tile DSLs**: TileLang, *A Composable Tiled Programming Model for AI Systems*, arXiv:2504.17577, §§3–4; pinned TileLang language guide and GEMM example; Triton's official GEMM tutorial. Single-tile excerpts illustrate source-level memory scopes, not measured performance.
 - **Reference — Deployment constraints**: NVIDIA CUDA SIMT/tile and TensorRT quantization guides; Alibaba's July SAIL announcement; dated January 2025 BIS semiconductor-control announcement. All direct links and precise reading scope are in the evidence review.
+
+## Teaching/reference split for supplements (2026-11-01)
+
+The optional [lowering](../notes/lowering_codesign_reference.md), [engine](../notes/inference_engines_reference.md) and [accelerator](../notes/accelerator_codesign_reference.md) handouts preserve source links and worksheets outside the projected lecture path. Rechecked IREE/TVM/PJRT integration, llama-server split/cache options, GGUF format/plugin limitations, MLX-LM server scope, and current project READMEs. The source-based edit supplies no new executed performance results; no installed version is implied by a moving documentation page.
