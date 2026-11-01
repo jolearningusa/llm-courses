@@ -75,7 +75,7 @@ Each paper deck follows five steps: the **problem** the authors faced, the archi
 
 ## Labs
 
-All labs run on a laptop CPU with NumPy or PyTorch and tiny models. Each lab checks its output against a reference implementation or a value computed by hand. They are published with the part they belong to.
+All labs run on a laptop CPU with NumPy or PyTorch and tiny models. Each lab checks its output against a reference implementation or a value computed by hand.
 
 | Lab | Task | Check |
 |---|---|---|
