@@ -32,6 +32,13 @@ try {
     await page.keyboard.press('s');assert.equal(await panel.isVisible(),true);
     assert.match(await panel.locator('.course-note-content').innerText(),zh?/板书/:/Draw work/);
     const initial=await panel.locator('h3').innerText();
+    await panel.getByRole('button',{name:zh?'开始':'Start',exact:true}).focus();
+    await page.keyboard.press('Space');
+    assert.equal(await panel.getByRole('button',{name:zh?'暂停':'Pause',exact:true}).isVisible(),true);
+    assert.equal(await panel.locator('h3').innerText(),initial,'Space on a button must not advance the slide');
+    await page.keyboard.press('Space');
+    assert.equal(await panel.getByRole('button',{name:zh?'开始':'Start',exact:true}).isVisible(),true);
+    await panel.getByRole('button',{name:zh?'重置':'Reset',exact:true}).click();
     await page.keyboard.press('ArrowRight');await page.waitForTimeout(50);
     assert.notEqual(await panel.locator('h3').innerText(),initial);
     await page.keyboard.press('s');assert.equal(await panel.isVisible(),false);

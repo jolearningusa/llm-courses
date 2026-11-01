@@ -110,6 +110,10 @@ x.T: shape (8, 4), strides (1, 8)</pre><p>The transpose can describe the same st
     });
     render();
   }
+  // Keep native button activation from also triggering the deck's Space-to-next handler.
+  addEventListener('keydown', e => {
+    if (panel.contains(e.target) && e.target.closest('button') && [' ', 'Enter'].includes(e.key)) e.stopPropagation();
+  }, true);
   addEventListener('keydown', e => {
     if (e.ctrlKey || e.metaKey || e.altKey || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || e.target.isContentEditable) return;
     if (e.key.toLowerCase() === 's') {e.preventDefault();toggleNotes();}
