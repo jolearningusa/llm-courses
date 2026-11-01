@@ -2,7 +2,7 @@
 
 A systems engineering course on building and measuring the computing stack for LLM inference, from PyTorch and compilers through CUDA kernels, memory, operating systems and serving runtimes to deployed programs, with distributed training at scale as the final part and NVIDIA Vera Rubin as a recurring case study.
 
-**Status: materials and CPU-reference release, 2026-10-27.** The package contains 41 decks with 41 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 original project specifications, expanded into [26 detailed project execution plans](projects/COURSE_APPENDIX.md). [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
+**Status: materials and CPU-reference release, 2026-10-27.** The package contains 41 decks with 164 original mechanism diagrams (328 localized editable SVG assets), L0–L15 handouts/reference kits, a capstone and 20 original project specifications, expanded into [26 detailed project execution plans](projects/COURSE_APPENDIX.md). The [visual source guide](references/figure_sources.md) maps four diagrams per lecture to their readings. [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
 
 ## Start here
 
@@ -261,6 +261,7 @@ llm-compute-systems-course/
 │   ├── accelerator_architectures_review.md
 │   ├── ai_development_verification.md
 │   ├── bibliography_and_links.md
+│   ├── figure_sources.md
 │   ├── inference_bottlenecks_review.md
 │   ├── project_research_review.md
 │   ├── research_review.md
@@ -269,6 +270,171 @@ llm-compute-systems-course/
 │   └── tracked_sources.json
 ├── slides/
 │   ├── illustrations/
+│   │   ├── zh/
+│   │   │   ├── agent-wait.svg
+│   │   │   ├── ai-evaluator-loop.svg
+│   │   │   ├── amdahl-ledger.svg
+│   │   │   ├── aoti-artifact.svg
+│   │   │   ├── attention-pipeline.svg
+│   │   │   ├── autograd-graph.svg
+│   │   │   ├── capstone-evidence.svg
+│   │   │   ├── chunked-prefill.svg
+│   │   │   ├── collective-ring.svg
+│   │   │   ├── compiler-path.svg
+│   │   │   ├── cuda-hierarchy.svg
+│   │   │   ├── decode-dependency.svg
+│   │   │   ├── double-buffer.svg
+│   │   │   ├── engine-design-points.svg
+│   │   │   ├── execution-stack.svg
+│   │   │   ├── executorch-partitions.svg
+│   │   │   ├── expert-skew.svg
+│   │   │   ├── fsdp-shards.svg
+│   │   │   ├── gemm-tiles.svg
+│   │   │   ├── host-data-path.svg
+│   │   │   ├── lowering-pipeline.svg
+│   │   │   ├── mechanism-00-04.svg
+│   │   │   ├── mechanism-00-05.svg
+│   │   │   ├── mechanism-00-07.svg
+│   │   │   ├── mechanism-01-05.svg
+│   │   │   ├── mechanism-01-13.svg
+│   │   │   ├── mechanism-01-16.svg
+│   │   │   ├── mechanism-02-02.svg
+│   │   │   ├── mechanism-02-07.svg
+│   │   │   ├── mechanism-02-08.svg
+│   │   │   ├── mechanism-03-02.svg
+│   │   │   ├── mechanism-03-06.svg
+│   │   │   ├── mechanism-03-10.svg
+│   │   │   ├── mechanism-04-08.svg
+│   │   │   ├── mechanism-04-09.svg
+│   │   │   ├── mechanism-04-14.svg
+│   │   │   ├── mechanism-05-05.svg
+│   │   │   ├── mechanism-05-09.svg
+│   │   │   ├── mechanism-05-11.svg
+│   │   │   ├── mechanism-06-05.svg
+│   │   │   ├── mechanism-06-06.svg
+│   │   │   ├── mechanism-06-09.svg
+│   │   │   ├── mechanism-07-05.svg
+│   │   │   ├── mechanism-07-06.svg
+│   │   │   ├── mechanism-07-10.svg
+│   │   │   ├── mechanism-08-02.svg
+│   │   │   ├── mechanism-08-04.svg
+│   │   │   ├── mechanism-08-10.svg
+│   │   │   ├── mechanism-09-03.svg
+│   │   │   ├── mechanism-09-07.svg
+│   │   │   ├── mechanism-09-14.svg
+│   │   │   ├── mechanism-10-02.svg
+│   │   │   ├── mechanism-10-03.svg
+│   │   │   ├── mechanism-10-14.svg
+│   │   │   ├── mechanism-11-03.svg
+│   │   │   ├── mechanism-11-06.svg
+│   │   │   ├── mechanism-11-09.svg
+│   │   │   ├── mechanism-12-03.svg
+│   │   │   ├── mechanism-12-08.svg
+│   │   │   ├── mechanism-12-10.svg
+│   │   │   ├── mechanism-13-03.svg
+│   │   │   ├── mechanism-13-04.svg
+│   │   │   ├── mechanism-13-10.svg
+│   │   │   ├── mechanism-14-03.svg
+│   │   │   ├── mechanism-14-10.svg
+│   │   │   ├── mechanism-14-12.svg
+│   │   │   ├── mechanism-15-02.svg
+│   │   │   ├── mechanism-15-03.svg
+│   │   │   ├── mechanism-15-08.svg
+│   │   │   ├── mechanism-16-02.svg
+│   │   │   ├── mechanism-16-03.svg
+│   │   │   ├── mechanism-16-12.svg
+│   │   │   ├── mechanism-17-03.svg
+│   │   │   ├── mechanism-17-06.svg
+│   │   │   ├── mechanism-17-11.svg
+│   │   │   ├── mechanism-18-02.svg
+│   │   │   ├── mechanism-18-12.svg
+│   │   │   ├── mechanism-18-14.svg
+│   │   │   ├── mechanism-19-04.svg
+│   │   │   ├── mechanism-19-08.svg
+│   │   │   ├── mechanism-19-09.svg
+│   │   │   ├── mechanism-20-05.svg
+│   │   │   ├── mechanism-20-06.svg
+│   │   │   ├── mechanism-20-09.svg
+│   │   │   ├── mechanism-21-05.svg
+│   │   │   ├── mechanism-21-08.svg
+│   │   │   ├── mechanism-21-12.svg
+│   │   │   ├── mechanism-22-04.svg
+│   │   │   ├── mechanism-22-06.svg
+│   │   │   ├── mechanism-22-11.svg
+│   │   │   ├── mechanism-23-03.svg
+│   │   │   ├── mechanism-23-09.svg
+│   │   │   ├── mechanism-23-10.svg
+│   │   │   ├── mechanism-24-05.svg
+│   │   │   ├── mechanism-24-08.svg
+│   │   │   ├── mechanism-24-09.svg
+│   │   │   ├── mechanism-25-11.svg
+│   │   │   ├── mechanism-25-14.svg
+│   │   │   ├── mechanism-25-16.svg
+│   │   │   ├── mechanism-26-05.svg
+│   │   │   ├── mechanism-26-07.svg
+│   │   │   ├── mechanism-26-09.svg
+│   │   │   ├── mechanism-27-04.svg
+│   │   │   ├── mechanism-27-05.svg
+│   │   │   ├── mechanism-27-10.svg
+│   │   │   ├── mechanism-28-07.svg
+│   │   │   ├── mechanism-28-08.svg
+│   │   │   ├── mechanism-28-11.svg
+│   │   │   ├── mechanism-29-05.svg
+│   │   │   ├── mechanism-29-06.svg
+│   │   │   ├── mechanism-29-07.svg
+│   │   │   ├── mechanism-30-02.svg
+│   │   │   ├── mechanism-30-06.svg
+│   │   │   ├── mechanism-30-12.svg
+│   │   │   ├── mechanism-31-05.svg
+│   │   │   ├── mechanism-31-06.svg
+│   │   │   ├── mechanism-31-07.svg
+│   │   │   ├── mechanism-32-09.svg
+│   │   │   ├── mechanism-32-16.svg
+│   │   │   ├── mechanism-32-20.svg
+│   │   │   ├── mechanism-33-02.svg
+│   │   │   ├── mechanism-33-06.svg
+│   │   │   ├── mechanism-33-15.svg
+│   │   │   ├── mechanism-34-06.svg
+│   │   │   ├── mechanism-34-07.svg
+│   │   │   ├── mechanism-34-08.svg
+│   │   │   ├── mechanism-35-06.svg
+│   │   │   ├── mechanism-35-12.svg
+│   │   │   ├── mechanism-35-13.svg
+│   │   │   ├── mechanism-36-04.svg
+│   │   │   ├── mechanism-36-10.svg
+│   │   │   ├── mechanism-36-11.svg
+│   │   │   ├── mechanism-37-05.svg
+│   │   │   ├── mechanism-37-08.svg
+│   │   │   ├── mechanism-37-09.svg
+│   │   │   ├── mechanism-38-05.svg
+│   │   │   ├── mechanism-38-08.svg
+│   │   │   ├── mechanism-38-11.svg
+│   │   │   ├── mechanism-39-07.svg
+│   │   │   ├── mechanism-39-08.svg
+│   │   │   ├── mechanism-39-10.svg
+│   │   │   ├── mechanism-40-09.svg
+│   │   │   ├── mechanism-40-12.svg
+│   │   │   ├── mechanism-40-17.svg
+│   │   │   ├── moe-primer.svg
+│   │   │   ├── online-attention.svg
+│   │   │   ├── optimization-choices.svg
+│   │   │   ├── parallel-mesh.svg
+│   │   │   ├── pd-placement.svg
+│   │   │   ├── precision-lifecycle.svg
+│   │   │   ├── prefix-branches.svg
+│   │   │   ├── programming-model-layers.svg
+│   │   │   ├── quantized-bytes.svg
+│   │   │   ├── reduction-tree.svg
+│   │   │   ├── release-gates.svg
+│   │   │   ├── restart-state.svg
+│   │   │   ├── roofline.svg
+│   │   │   ├── rubin-data-paths.svg
+│   │   │   ├── shared-blocks.svg
+│   │   │   ├── source-walk.svg
+│   │   │   ├── speculative-correction.svg
+│   │   │   ├── systolic-pe-grid.svg
+│   │   │   ├── timing-boundaries.svg
+│   │   │   └── verification-contracts.svg
 │   │   ├── README.md
 │   │   ├── agent-wait.svg
 │   │   ├── ai-evaluator-loop.svg
@@ -293,6 +459,129 @@ llm-compute-systems-course/
 │   │   ├── host-data-path.svg
 │   │   ├── lowering-pipeline.svg
 │   │   ├── manifest.json
+│   │   ├── mechanism-00-04.svg
+│   │   ├── mechanism-00-05.svg
+│   │   ├── mechanism-00-07.svg
+│   │   ├── mechanism-01-05.svg
+│   │   ├── mechanism-01-13.svg
+│   │   ├── mechanism-01-16.svg
+│   │   ├── mechanism-02-02.svg
+│   │   ├── mechanism-02-07.svg
+│   │   ├── mechanism-02-08.svg
+│   │   ├── mechanism-03-02.svg
+│   │   ├── mechanism-03-06.svg
+│   │   ├── mechanism-03-10.svg
+│   │   ├── mechanism-04-08.svg
+│   │   ├── mechanism-04-09.svg
+│   │   ├── mechanism-04-14.svg
+│   │   ├── mechanism-05-05.svg
+│   │   ├── mechanism-05-09.svg
+│   │   ├── mechanism-05-11.svg
+│   │   ├── mechanism-06-05.svg
+│   │   ├── mechanism-06-06.svg
+│   │   ├── mechanism-06-09.svg
+│   │   ├── mechanism-07-05.svg
+│   │   ├── mechanism-07-06.svg
+│   │   ├── mechanism-07-10.svg
+│   │   ├── mechanism-08-02.svg
+│   │   ├── mechanism-08-04.svg
+│   │   ├── mechanism-08-10.svg
+│   │   ├── mechanism-09-03.svg
+│   │   ├── mechanism-09-07.svg
+│   │   ├── mechanism-09-14.svg
+│   │   ├── mechanism-10-02.svg
+│   │   ├── mechanism-10-03.svg
+│   │   ├── mechanism-10-14.svg
+│   │   ├── mechanism-11-03.svg
+│   │   ├── mechanism-11-06.svg
+│   │   ├── mechanism-11-09.svg
+│   │   ├── mechanism-12-03.svg
+│   │   ├── mechanism-12-08.svg
+│   │   ├── mechanism-12-10.svg
+│   │   ├── mechanism-13-03.svg
+│   │   ├── mechanism-13-04.svg
+│   │   ├── mechanism-13-10.svg
+│   │   ├── mechanism-14-03.svg
+│   │   ├── mechanism-14-10.svg
+│   │   ├── mechanism-14-12.svg
+│   │   ├── mechanism-15-02.svg
+│   │   ├── mechanism-15-03.svg
+│   │   ├── mechanism-15-08.svg
+│   │   ├── mechanism-16-02.svg
+│   │   ├── mechanism-16-03.svg
+│   │   ├── mechanism-16-12.svg
+│   │   ├── mechanism-17-03.svg
+│   │   ├── mechanism-17-06.svg
+│   │   ├── mechanism-17-11.svg
+│   │   ├── mechanism-18-02.svg
+│   │   ├── mechanism-18-12.svg
+│   │   ├── mechanism-18-14.svg
+│   │   ├── mechanism-19-04.svg
+│   │   ├── mechanism-19-08.svg
+│   │   ├── mechanism-19-09.svg
+│   │   ├── mechanism-20-05.svg
+│   │   ├── mechanism-20-06.svg
+│   │   ├── mechanism-20-09.svg
+│   │   ├── mechanism-21-05.svg
+│   │   ├── mechanism-21-08.svg
+│   │   ├── mechanism-21-12.svg
+│   │   ├── mechanism-22-04.svg
+│   │   ├── mechanism-22-06.svg
+│   │   ├── mechanism-22-11.svg
+│   │   ├── mechanism-23-03.svg
+│   │   ├── mechanism-23-09.svg
+│   │   ├── mechanism-23-10.svg
+│   │   ├── mechanism-24-05.svg
+│   │   ├── mechanism-24-08.svg
+│   │   ├── mechanism-24-09.svg
+│   │   ├── mechanism-25-11.svg
+│   │   ├── mechanism-25-14.svg
+│   │   ├── mechanism-25-16.svg
+│   │   ├── mechanism-26-05.svg
+│   │   ├── mechanism-26-07.svg
+│   │   ├── mechanism-26-09.svg
+│   │   ├── mechanism-27-04.svg
+│   │   ├── mechanism-27-05.svg
+│   │   ├── mechanism-27-10.svg
+│   │   ├── mechanism-28-07.svg
+│   │   ├── mechanism-28-08.svg
+│   │   ├── mechanism-28-11.svg
+│   │   ├── mechanism-29-05.svg
+│   │   ├── mechanism-29-06.svg
+│   │   ├── mechanism-29-07.svg
+│   │   ├── mechanism-30-02.svg
+│   │   ├── mechanism-30-06.svg
+│   │   ├── mechanism-30-12.svg
+│   │   ├── mechanism-31-05.svg
+│   │   ├── mechanism-31-06.svg
+│   │   ├── mechanism-31-07.svg
+│   │   ├── mechanism-32-09.svg
+│   │   ├── mechanism-32-16.svg
+│   │   ├── mechanism-32-20.svg
+│   │   ├── mechanism-33-02.svg
+│   │   ├── mechanism-33-06.svg
+│   │   ├── mechanism-33-15.svg
+│   │   ├── mechanism-34-06.svg
+│   │   ├── mechanism-34-07.svg
+│   │   ├── mechanism-34-08.svg
+│   │   ├── mechanism-35-06.svg
+│   │   ├── mechanism-35-12.svg
+│   │   ├── mechanism-35-13.svg
+│   │   ├── mechanism-36-04.svg
+│   │   ├── mechanism-36-10.svg
+│   │   ├── mechanism-36-11.svg
+│   │   ├── mechanism-37-05.svg
+│   │   ├── mechanism-37-08.svg
+│   │   ├── mechanism-37-09.svg
+│   │   ├── mechanism-38-05.svg
+│   │   ├── mechanism-38-08.svg
+│   │   ├── mechanism-38-11.svg
+│   │   ├── mechanism-39-07.svg
+│   │   ├── mechanism-39-08.svg
+│   │   ├── mechanism-39-10.svg
+│   │   ├── mechanism-40-09.svg
+│   │   ├── mechanism-40-12.svg
+│   │   ├── mechanism-40-17.svg
 │   │   ├── moe-primer.svg
 │   │   ├── online-attention.svg
 │   │   ├── optimization-choices.svg
@@ -312,7 +601,9 @@ llm-compute-systems-course/
 │   │   ├── speculative-correction.svg
 │   │   ├── systolic-pe-grid.svg
 │   │   ├── timing-boundaries.svg
-│   │   └── verification-contracts.svg
+│   │   ├── verification-contracts.svg
+│   │   ├── visual_explanations.py
+│   │   └── visual_specs.json
 │   ├── zh/
 │   │   ├── 00_master_compute_systems.html
 │   │   ├── 01_workloads_rooflines.html
