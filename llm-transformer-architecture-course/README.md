@@ -2,7 +2,7 @@
 
 Read the architecture papers behind today's language, vision, diffusion and speech models one at a time: why each change was proposed, what it changed in the model, and what later models kept.
 
-**Status, 2026-11-01: Parts I to VI published.** The course map, the six Part I paper decks (the 2017 Transformer, GPT-1/2, BERT, T5, GPT-3 with the Kaplan scaling laws, Chinchilla), the five Part II decks on how the context is constructed (subword tokenization, RoPE, ALiBi, Position Interpolation and YaRN, chat templates and long contexts), the seven Part III and IV decks on attention variants and the modern block (MQA, GQA, FlashAttention, sliding windows and attention sinks, MLA, Pre-LN and RMSNorm, SwiGLU), the four Part V decks on mixture of experts (sparsely-gated MoE and GShard, Switch, Mixtral, DeepSeekMoE with loss-free balancing), the five Part VI decks on newer efficiency designs (Mamba and Mamba-2, Jamba, Gated DeltaNet and Qwen3-Next, native and DeepSeek sparse attention, multi-token prediction), labs L0 to L7, the syllabus and the full bibliography (70 sources, each checked on its arXiv or vendor page) are in place. Parts VII to IX follow part by part, in the order of the [syllabus](SYLLABUS.md). Decks are in English first; Simplified Chinese twins follow once the English decks are complete.
+**Status, 2026-11-01: Parts I to VII published.** The course map, the six Part I paper decks (the 2017 Transformer, GPT-1/2, BERT, T5, GPT-3 with the Kaplan scaling laws, Chinchilla), the five Part II decks on how the context is constructed (subword tokenization, RoPE, ALiBi, Position Interpolation and YaRN, chat templates and long contexts), the seven Part III and IV decks on attention variants and the modern block (MQA, GQA, FlashAttention, sliding windows and attention sinks, MLA, Pre-LN and RMSNorm, SwiGLU), the four Part V decks on mixture of experts (sparsely-gated MoE and GShard, Switch, Mixtral, DeepSeekMoE with loss-free balancing), the five Part VI decks on newer efficiency designs (Mamba and Mamba-2, Jamba, Gated DeltaNet and Qwen3-Next, native and DeepSeek sparse attention, multi-token prediction), the six Part VII decks on popular model families (LLaMA and Llama 2, Llama 3 and 4, Qwen2.5 and Qwen3, DeepSeek-V3 and R1, Gemma 1 to 3, Phi-3, OLMo, Kimi K2 and gpt-oss), labs L0 to L7, the syllabus and the full bibliography (70 sources, each checked on its arXiv or vendor page) are in place. Parts VIII and IX follow part by part, in the order of the [syllabus](SYLLABUS.md). Decks are in English first; Simplified Chinese twins follow once the English decks are complete.
 
 ## Start here
 
@@ -69,8 +69,15 @@ Kernels, KV-cache paging, MoE execution and serving are taught in [Efficient LLM
 | [25 Gated DeltaNet and Qwen3-Next](slides/25_gated_deltanet.html) (9 slides) | Week 10: the gated delta rule, a 3:1 linear-attention hybrid in production |
 | [26 Native Sparse Attention and DeepSeek Sparse Attention](slides/26_sparse_attention.html) (10 slides) | Week 10: trainable sparse attention, block selection and a lightning indexer |
 | [27 Multi-token prediction](slides/27_multi_token_prediction.html) (9 slides) | Week 10: predicting several tokens ahead, self-speculative decoding |
+| **Part VII. Popular model families** | |
+| [28 LLaMA and Llama 2](slides/28_llama_1_2.html) (9 slides) | Week 11: inference-optimal over-training, the RMSNorm-SwiGLU-RoPE block, GQA and Llama 2-Chat; lab L0 |
+| [29 Llama 3 and Llama 4](slides/29_llama_3_4.html) (9 slides) | Week 11: 15T tokens, a 128K vocabulary, a downstream scaling law, then MoE and early fusion; lab L0 |
+| [30 Qwen2.5 and Qwen3](slides/30_qwen.html) (9 slides) | Week 11: long-context stages, QK-Norm, fine-grained MoE, thinking and non-thinking modes; lab L0 |
+| [31 DeepSeek-V3 and R1](slides/31_deepseek_v3_r1.html) (10 slides) | Week 12: MLA, loss-free MoE, MTP and FP8 at 671B; reasoning from rule-based RL |
+| [32 Gemma 1, 2 and 3](slides/32_gemma.html) (9 slides) | Week 12: local and global layers, soft-capping to QK-norm, distillation, a vision encoder |
+| [33 Phi-3, OLMo, Kimi K2 and gpt-oss](slides/33_phi_olmo_kimi_gptoss.html) (9 slides) | Week 12: data quality, full openness, MuonClip at 1T, an MXFP4 reasoning MoE; paper critique 2 |
 
-Decks 28 to 43 are listed in the [syllabus](SYLLABUS.md) and are added to this table as each part is published.
+Decks 34 to 43 are listed in the [syllabus](SYLLABUS.md) and are added to this table as each part is published.
 
 ## Repository layout
 
@@ -152,7 +159,13 @@ llm-transformer-architecture-course/
 │   ├── 24_jamba.html
 │   ├── 25_gated_deltanet.html
 │   ├── 26_sparse_attention.html
-│   └── 27_multi_token_prediction.html
+│   ├── 27_multi_token_prediction.html
+│   ├── 28_llama_1_2.html
+│   ├── 29_llama_3_4.html
+│   ├── 30_qwen.html
+│   ├── 31_deepseek_v3_r1.html
+│   ├── 32_gemma.html
+│   └── 33_phi_olmo_kimi_gptoss.html
 ├── LICENSE                          # Apache-2.0
 ├── README.md                        # This file
 └── SYLLABUS.md                      # Parts, weekly plan, labs and assessment
