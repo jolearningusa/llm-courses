@@ -281,6 +281,19 @@ def build():
         s.text(550,322,'Batching supplies parallel work; it preserves each dependency',22,MUTED,anchor='middle')
 
 
+
+    if list(SLIDES.glob('37_*.html')):
+        s=figure('37','A bounded development loop','ai-evaluator-loop','Propose changes; evaluate independently','Conceptual responsibility boundaries; each gate needs its own evidence. Not a measured result.','A sequence of named development or verification responsibilities; arrows show the teaching order, not a performance measurement.')
+        s.chain(['Contract', 'Proposer', 'Evaluator', 'Archive'],110)
+
+    if list(SLIDES.glob('38_*.html')):
+        s=figure('38','Four different acceptance contracts','verification-contracts','Different claims need different evidence','Conceptual responsibility boundaries; each gate needs its own evidence. Not a measured result.','A sequence of named development or verification responsibilities; arrows show the teaching order, not a performance measurement.')
+        s.chain(['Protocol', 'Numerics', 'Quality', 'Physical'],110)
+
+    if list(SLIDES.glob('39_*.html')):
+        s=figure('39','Promotion is another state machine','release-gates','Preserve identity through promotion','Conceptual responsibility boundaries; each gate needs its own evidence. Not a measured result.','A sequence of named development or verification responsibilities; arrows show the teaching order, not a performance measurement.')
+        s.chain(['Build', 'Qualify', 'Stage', 'Observe / rollback'],110)
+
 def apply():
     build();manifest=[]
     for entry in FIGURES:

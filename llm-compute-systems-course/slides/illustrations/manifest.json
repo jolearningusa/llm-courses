@@ -331,5 +331,32 @@
     "caption": "A selected token gates the next step of that sequence. Other ready sequences provide independent rows in a batch. Arrows express dependency, not measured duration.",
     "deck": "36_inference_bottlenecks.html",
     "asset": "decode-dependency.svg"
+  },
+  {
+    "prefix": "37",
+    "after": "A bounded development loop",
+    "slug": "ai-evaluator-loop",
+    "title": "Propose changes; evaluate independently",
+    "caption": "Conceptual responsibility boundaries; each gate needs its own evidence. Not a measured result.",
+    "deck": "37_ai_assisted_development.html",
+    "asset": "ai-evaluator-loop.svg"
+  },
+  {
+    "prefix": "38",
+    "after": "Four different acceptance contracts",
+    "slug": "verification-contracts",
+    "title": "Different claims need different evidence",
+    "caption": "Conceptual responsibility boundaries; each gate needs its own evidence. Not a measured result.",
+    "deck": "38_verification_contracts.html",
+    "asset": "verification-contracts.svg"
+  },
+  {
+    "prefix": "39",
+    "after": "Promotion is another state machine",
+    "slug": "release-gates",
+    "title": "Preserve identity through promotion",
+    "caption": "Conceptual responsibility boundaries; each gate needs its own evidence. Not a measured result.",
+    "deck": "39_qualification_release.html",
+    "asset": "release-gates.svg"
   }
 ]

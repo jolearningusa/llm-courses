@@ -55,3 +55,7 @@ The capstone/source/analytical paths are complete as assessment materials. A stu
 ## Inference bottleneck supplement — 2026-10-30
 
 Deck 36 adds 18 slides in English and 18 in Simplified Chinese, with an original dependency/batching SVG. The new slides were browser-rendered and inspected; body and SVG label bounds were checked. Course consistency, site links and all 104 repository decks pass their checks. The 11 external URLs in the bottleneck review responded successfully to availability checks. Worked weight/KV arithmetic was independently checked. The optional worksheet and P26 are proposed experiment protocols: no GPU sampler, beam-search, communication or engine performance experiment was executed for this addition. Existing CPU validation remains unchanged.
+
+## AI-assisted verification unit — 2026-10-31
+
+Executed the standard-library evaluator and eight tests: correct/reordered numerical implementations accepted, three numerical mutants rejected, ownership/generation controls checked. Authored event traces are not concurrent device execution. GPU sanitizers, formal tools, HIL, power/thermal and firmware flashing were not run. The new bilingual decks and diagrams undergo browser/layout/site checks; student pacing remains unpiloted.

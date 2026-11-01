@@ -118,3 +118,7 @@ The [capstone package](capstone/CAPSTONE.md) supplies three engineering paths pl
 ## Optional inference bottleneck diagnosis
 
 The [diagnosis worksheet](inference_bottleneck_worksheet.md) connects L1/L8/L10 with deck 36: identify weight/KV traffic, compute, host gaps, sampling/beam-state work and queues. It is a profiling protocol with a source/analytical path, not a new validated GPU harness.
+
+## AI-assisted verification lab
+
+[CPU numerical and queue-trace exercise](handouts/lab_ai_verification.md) supports decks 37–39. Run `verification_lab.py` and its dedicated standard-library tests. Optional CUDA sanitizer and physical-target extensions remain unverified.

@@ -2,7 +2,7 @@
 
 A systems engineering course on building and measuring the computing stack for LLM inference, from PyTorch and compilers through CUDA kernels, memory, operating systems and serving runtimes to deployed programs, with distributed training at scale as the final part and NVIDIA Vera Rubin as a recurring case study.
 
-**Status: materials and CPU-reference release, 2026-10-27.** The package contains 37 decks with 37 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 original project specifications, expanded into [26 detailed project execution plans](projects/COURSE_APPENDIX.md). [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
+**Status: materials and CPU-reference release, 2026-10-27.** The package contains 40 decks with 40 editable SVG teaching illustrations, L0–L15 handouts/reference kits, a capstone and 20 original project specifications, expanded into [26 detailed project execution plans](projects/COURSE_APPENDIX.md). [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
 
 ## Start here
 
@@ -15,7 +15,7 @@ A systems engineering course on building and measuring the computing stack for L
    Compare the [NVIDIA library map](notes/nvidia_stack.md) with the [AMD ROCm stack](notes/amd_stack.md).
 7. [AgentOS inference and cache mechanisms](notes/agentic_caching.md): vLLM, llama.cpp and SGLang, tool waits and cache policy.
 8. [Lab plan](labs/LAB_PLAN.md) and [experiment report](labs/report_template.md).
-9. [Slide and lab build plan](BUILD_PLAN.md): 32 core decks plus five supplements (optimization decisions; programming models beyond CUDA; model lowering and co-design; inference engines compared; inference bottleneck diagnosis), L0–L15 kits, serial PR order and release gates.
+9. [Slide and lab build plan](BUILD_PLAN.md): 32 core decks plus eight supplements (optimization decisions; programming models beyond CUDA; model lowering and co-design; inference engines compared; inference bottleneck diagnosis; AI-assisted development and verification, decks 37–39), L0–L15 kits, serial PR order and release gates.
 
 10. [Release guide](COURSE_RELEASE.md), [validation record](VALIDATION.md), [SVG illustration library](slides/illustrations/) and [capstone](labs/kit/capstone/CAPSTONE.md).
 
@@ -46,6 +46,8 @@ Supplements sit next to the material they extend: deck 33 (programming models be
 Each lab follows **predict → implement → validate correctness → profile → explain → compare end-to-end**. A speedup without a stated baseline, error check and workload is incomplete.
 
 [Deck 36](slides/36_inference_bottlenecks.html) connects autoregressive dependencies to weight/KV traffic, utilization, sampling/beam search and service bottlenecks. Its [primary-source review](references/inference_bottlenecks_review.md) and [diagnosis worksheet](labs/kit/inference_bottleneck_worksheet.md) supply the evidence path.
+
+[AI-assisted development and verification](references/ai_development_verification.md) adds three lectures (37–39) and an [executed CPU lab](labs/kit/handouts/lab_ai_verification.md), connecting candidate generation to independent validation and release gates.
 
 ## Learning outcomes
 
@@ -117,6 +119,10 @@ Decks are listed in teaching order, grouped by part. Each row links the English 
 | [Reading a Production Training Stack](slides/28_training_stack_walkthrough.html) (17 slides) · [简体中文](slides/zh/28_training_stack_walkthrough.html) | Week 14, lecture B |
 | [Checkpointing, Input State and Useful Training Work](slides/29_checkpoint_recovery.html) (17 slides) · [简体中文](slides/zh/29_checkpoint_recovery.html) | Week 15, lecture A |
 | [Whole-System Efficiency and Useful Work](slides/30_whole_system_efficiency.html) (17 slides) · [简体中文](slides/zh/30_whole_system_efficiency.html) | Week 15, lecture B |
+| **AI-assisted development and verification unit** | |
+| [37 · AI-assisted development](slides/37_ai_assisted_development.html) (11 slides) · [简体中文](slides/zh/37_ai_assisted_development.html) | AI-assisted development/verification unit; after deck 32 |
+| [38 · Verification contracts](slides/38_verification_contracts.html) (11 slides) · [简体中文](slides/zh/38_verification_contracts.html) | AI-assisted development/verification unit; after deck 32 |
+| [39 · Qualification and release](slides/39_qualification_release.html) (11 slides) · [简体中文](slides/zh/39_qualification_release.html) | AI-assisted development/verification unit; after deck 32 |
 | **Capstone (week 16)** | |
 | [Capstone Workshop: Evidence to Decision](slides/31_capstone_workshop.html) (11 slides) · [简体中文](slides/zh/31_capstone_workshop.html) | Week 16 |
 
@@ -158,7 +164,8 @@ llm-compute-systems-course/
 │   │   │   ├── lab12_distributed.md
 │   │   │   ├── lab13_parallelism.md
 │   │   │   ├── lab14_recovery.md
-│   │   │   └── lab15_vendor_efficiency.md
+│   │   │   ├── lab15_vendor_efficiency.md
+│   │   │   └── lab_ai_verification.md
 │   │   ├── tests/
 │   │   │   ├── test_agent_policy.py
 │   │   │   ├── test_attention.py
@@ -175,7 +182,8 @@ llm-compute-systems-course/
 │   │   │   ├── test_pytorch_lab.py
 │   │   │   ├── test_reductions.py
 │   │   │   ├── test_scheduling.py
-│   │   │   └── test_triton_lab.py
+│   │   │   ├── test_triton_lab.py
+│   │   │   └── test_verification.py
 │   │   ├── README.md
 │   │   ├── agent_policy_lab.py
 │   │   ├── attention_lab.py
@@ -201,16 +209,17 @@ llm-compute-systems-course/
 │   │   ├── system_efficiency.py
 │   │   ├── training_source_walkthrough.md
 │   │   ├── triton_lab.py
-│   │   └── vendor_dossier_template.md
+│   │   ├── vendor_dossier_template.md
+│   │   └── verification_lab.py
 │   ├── LAB_PLAN.md
 │   └── report_template.md
 ├── notes/
 │   ├── agentic_caching.md
 │   ├── amd_stack.md
-│   ├── project_appendix_review.md
 │   ├── course_component_audit.md
 │   ├── nvidia_stack.md
 │   ├── optimization_techniques.md
+│   ├── project_appendix_review.md
 │   ├── pytorch_stack.md
 │   ├── vera_rubin.md
 │   └── workload_primer.md
@@ -219,15 +228,17 @@ llm-compute-systems-course/
 │   ├── POTENTIAL_PROJECTS.md
 │   └── optimization-engine.svg
 ├── references/
+│   ├── ai_development_verification.md
+│   ├── bibliography_and_links.md
 │   ├── inference_bottlenecks_review.md
 │   ├── project_research_review.md
-│   ├── bibliography_and_links.md
 │   ├── research_review.md
 │   └── tracked_sources.json
 ├── slides/
 │   ├── illustrations/
 │   │   ├── README.md
 │   │   ├── agent-wait.svg
+│   │   ├── ai-evaluator-loop.svg
 │   │   ├── amdahl-ledger.svg
 │   │   ├── aoti-artifact.svg
 │   │   ├── attention-pipeline.svg
@@ -259,13 +270,56 @@ llm-compute-systems-course/
 │   │   ├── programming-model-layers.svg
 │   │   ├── quantized-bytes.svg
 │   │   ├── reduction-tree.svg
+│   │   ├── release-gates.svg
 │   │   ├── restart-state.svg
 │   │   ├── roofline.svg
 │   │   ├── rubin-data-paths.svg
 │   │   ├── shared-blocks.svg
 │   │   ├── source-walk.svg
 │   │   ├── speculative-correction.svg
-│   │   └── timing-boundaries.svg
+│   │   ├── timing-boundaries.svg
+│   │   └── verification-contracts.svg
+│   ├── zh/
+│   │   ├── 00_master_compute_systems.html
+│   │   ├── 01_workloads_rooflines.html
+│   │   ├── 02_architecture_workload_primer.html
+│   │   ├── 03_measurement_profiling.html
+│   │   ├── 04_host_os_data_paths.html
+│   │   ├── 05_pytorch_execution_autograd.html
+│   │   ├── 06_pytorch_compiler.html
+│   │   ├── 07_cuda_execution_memory.html
+│   │   ├── 08_reductions_custom_operators.html
+│   │   ├── 09_gemm_tensor_cores.html
+│   │   ├── 10_async_kernel_pipelines.html
+│   │   ├── 11_attention_execution.html
+│   │   ├── 12_attention_kernel_codesign.html
+│   │   ├── 13_precision_numerics.html
+│   │   ├── 14_quantization_serving.html
+│   │   ├── 15_serving_scheduler.html
+│   │   ├── 16_kv_prefix_cache_mechanisms.html
+│   │   ├── 17_prefill_decode_scheduling.html
+│   │   ├── 18_disaggregated_inference.html
+│   │   ├── 19_moe_execution.html
+│   │   ├── 20_speculative_decoding.html
+│   │   ├── 21_agentos_inference_cache_policy.html
+│   │   ├── 22_export_aotinductor.html
+│   │   ├── 23_executorch_deployment.html
+│   │   ├── 24_rubin_vendor_stacks.html
+│   │   ├── 25_ddp_zero_fsdp.html
+│   │   ├── 26_collectives_overlap.html
+│   │   ├── 27_parallelism_recomputation.html
+│   │   ├── 28_training_stack_walkthrough.html
+│   │   ├── 29_checkpoint_recovery.html
+│   │   ├── 30_whole_system_efficiency.html
+│   │   ├── 31_capstone_workshop.html
+│   │   ├── 32_optimization_decision_systems.html
+│   │   ├── 33_programming_models_beyond_cuda.html
+│   │   ├── 34_model_lowering_codesign.html
+│   │   ├── 35_inference_engines_compared.html
+│   │   ├── 36_inference_bottlenecks.html
+│   │   ├── 37_ai_assisted_development.html
+│   │   ├── 38_verification_contracts.html
+│   │   └── 39_qualification_release.html
 │   ├── 00_master_compute_systems.html
 │   ├── 01_workloads_rooflines.html
 │   ├── 02_architecture_workload_primer.html
@@ -303,44 +357,9 @@ llm-compute-systems-course/
 │   ├── 34_model_lowering_codesign.html
 │   ├── 35_inference_engines_compared.html
 │   ├── 36_inference_bottlenecks.html
-│   └── zh/                                    # Simplified Chinese (zh-CN) twin of each deck above; same file name
-│       ├── 00_master_compute_systems.html
-│       ├── 01_workloads_rooflines.html
-│       ├── 02_architecture_workload_primer.html
-│       ├── 03_measurement_profiling.html
-│       ├── 04_host_os_data_paths.html
-│       ├── 05_pytorch_execution_autograd.html
-│       ├── 06_pytorch_compiler.html
-│       ├── 07_cuda_execution_memory.html
-│       ├── 08_reductions_custom_operators.html
-│       ├── 09_gemm_tensor_cores.html
-│       ├── 10_async_kernel_pipelines.html
-│       ├── 11_attention_execution.html
-│       ├── 12_attention_kernel_codesign.html
-│       ├── 13_precision_numerics.html
-│       ├── 14_quantization_serving.html
-│       ├── 15_serving_scheduler.html
-│       ├── 16_kv_prefix_cache_mechanisms.html
-│       ├── 17_prefill_decode_scheduling.html
-│       ├── 18_disaggregated_inference.html
-│       ├── 19_moe_execution.html
-│       ├── 20_speculative_decoding.html
-│       ├── 21_agentos_inference_cache_policy.html
-│       ├── 22_export_aotinductor.html
-│       ├── 23_executorch_deployment.html
-│       ├── 24_rubin_vendor_stacks.html
-│       ├── 25_ddp_zero_fsdp.html
-│       ├── 26_collectives_overlap.html
-│       ├── 27_parallelism_recomputation.html
-│       ├── 28_training_stack_walkthrough.html
-│       ├── 29_checkpoint_recovery.html
-│       ├── 30_whole_system_efficiency.html
-│       ├── 31_capstone_workshop.html
-│       ├── 32_optimization_decision_systems.html
-│       ├── 33_programming_models_beyond_cuda.html
-│       ├── 34_model_lowering_codesign.html
-│       ├── 35_inference_engines_compared.html
-│       └── 36_inference_bottlenecks.html
+│   ├── 37_ai_assisted_development.html
+│   ├── 38_verification_contracts.html
+│   └── 39_qualification_release.html
 ├── BUILD_PLAN.md
 ├── COURSE_RELEASE.md
 ├── LICENSE
