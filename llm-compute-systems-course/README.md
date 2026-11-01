@@ -21,6 +21,8 @@ A systems engineering course on building and measuring the computing stack for L
 
 11. [Appendix A — project ideas and execution plans](projects/COURSE_APPENDIX.md): 26 engineering/research options, weekly plans, baselines, hardware gates and deliverables; [paper review](references/project_research_review.md).
 
+12. [Teaching readiness review](references/teaching_readiness_review.md): a page-level audit of all decks for lecture delivery — speaker-note, recap-page, citation, figure and density gaps, with a suggested order of work.
+
 The [AI accelerator software companion course](../ai-accelerator-software-course/) continues into command ABI, firmware lifecycle, driver/runtime ownership and failure/release verification, using an executable virtual-device lab.
 
 ## Audience and prerequisites
@@ -235,6 +237,7 @@ llm-compute-systems-course/
 │   ├── inference_bottlenecks_review.md
 │   ├── project_research_review.md
 │   ├── research_review.md
+│   ├── teaching_readiness_review.md
 │   └── tracked_sources.json
 ├── slides/
 │   ├── illustrations/
