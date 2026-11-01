@@ -21,6 +21,8 @@ A systems engineering course on building and measuring the computing stack for L
 
 11. [Appendix A — project ideas and execution plans](projects/COURSE_APPENDIX.md): 26 engineering/research options, weekly plans, baselines, hardware gates and deliverables; [paper review](references/project_research_review.md).
 
+The [AI accelerator software companion course](../ai-accelerator-software-course/) continues into command ABI, firmware lifecycle, driver/runtime ownership and failure/release verification, using an executable virtual-device lab.
+
 ## Audience and prerequisites
 
 Systems engineers and graduate students comfortable with Python, basic C/C++, linear algebra, processes/threads, virtual memory and elementary distributed systems. Prior CUDA experience is helpful but not required. Students should read tensor shapes and a forward/backward pass; designing architectures, selecting pretraining data and optimizing model quality are outside the central syllabus.

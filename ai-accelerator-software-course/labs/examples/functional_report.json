@@ -1,0 +1,562 @@
+{
+  "checks": {
+    "bounded_control": "passed",
+    "invariants": "passed",
+    "scenarios": "passed"
+  },
+  "execution": "cpu-functional-model",
+  "exploration": [
+    {
+      "counterexample": null,
+      "depth_bound": 6,
+      "scope": "abstract ownership invariant",
+      "states": 5,
+      "unsafe_policy": false
+    },
+    {
+      "counterexample": [
+        "submit",
+        "release"
+      ],
+      "depth_bound": 6,
+      "scope": "abstract ownership invariant",
+      "states": 5,
+      "unsafe_policy": true
+    }
+  ],
+  "functional_gate": {
+    "accepted": true,
+    "reason": "functional evidence only"
+  },
+  "fuzz": [
+    {
+      "accepted": 69,
+      "actions": {
+        "alloc": 22,
+        "boot": 20,
+        "cancel": 24,
+        "free": 19,
+        "poll": 25,
+        "reap": 18,
+        "reset": 22,
+        "submit": 29,
+        "tick": 21
+      },
+      "invariant_checks": 200,
+      "rejected": 131,
+      "seed": 0,
+      "steps": 200
+    },
+    {
+      "accepted": 78,
+      "actions": {
+        "alloc": 27,
+        "boot": 27,
+        "cancel": 22,
+        "free": 23,
+        "poll": 19,
+        "reap": 21,
+        "reset": 23,
+        "submit": 21,
+        "tick": 17
+      },
+      "invariant_checks": 200,
+      "rejected": 122,
+      "seed": 1,
+      "steps": 200
+    },
+    {
+      "accepted": 82,
+      "actions": {
+        "alloc": 25,
+        "boot": 29,
+        "cancel": 25,
+        "free": 15,
+        "poll": 20,
+        "reap": 21,
+        "reset": 25,
+        "submit": 16,
+        "tick": 24
+      },
+      "invariant_checks": 200,
+      "rejected": 118,
+      "seed": 2,
+      "steps": 200
+    },
+    {
+      "accepted": 70,
+      "actions": {
+        "alloc": 28,
+        "boot": 24,
+        "cancel": 26,
+        "free": 22,
+        "poll": 23,
+        "reap": 24,
+        "reset": 16,
+        "submit": 18,
+        "tick": 19
+      },
+      "invariant_checks": 200,
+      "rejected": 130,
+      "seed": 3,
+      "steps": 200
+    },
+    {
+      "accepted": 74,
+      "actions": {
+        "alloc": 24,
+        "boot": 15,
+        "cancel": 20,
+        "free": 24,
+        "poll": 25,
+        "reap": 32,
+        "reset": 23,
+        "submit": 20,
+        "tick": 17
+      },
+      "invariant_checks": 200,
+      "rejected": 126,
+      "seed": 4,
+      "steps": 200
+    },
+    {
+      "accepted": 87,
+      "actions": {
+        "alloc": 18,
+        "boot": 20,
+        "cancel": 29,
+        "free": 17,
+        "poll": 16,
+        "reap": 28,
+        "reset": 23,
+        "submit": 15,
+        "tick": 34
+      },
+      "invariant_checks": 200,
+      "rejected": 113,
+      "seed": 5,
+      "steps": 200
+    },
+    {
+      "accepted": 84,
+      "actions": {
+        "alloc": 20,
+        "boot": 24,
+        "cancel": 21,
+        "free": 21,
+        "poll": 20,
+        "reap": 23,
+        "reset": 31,
+        "submit": 20,
+        "tick": 20
+      },
+      "invariant_checks": 200,
+      "rejected": 116,
+      "seed": 6,
+      "steps": 200
+    },
+    {
+      "accepted": 82,
+      "actions": {
+        "alloc": 26,
+        "boot": 27,
+        "cancel": 23,
+        "free": 23,
+        "poll": 15,
+        "reap": 15,
+        "reset": 20,
+        "submit": 27,
+        "tick": 24
+      },
+      "invariant_checks": 200,
+      "rejected": 118,
+      "seed": 7,
+      "steps": 200
+    },
+    {
+      "accepted": 61,
+      "actions": {
+        "alloc": 17,
+        "boot": 24,
+        "cancel": 24,
+        "free": 28,
+        "poll": 25,
+        "reap": 16,
+        "reset": 20,
+        "submit": 28,
+        "tick": 18
+      },
+      "invariant_checks": 200,
+      "rejected": 139,
+      "seed": 8,
+      "steps": 200
+    },
+    {
+      "accepted": 73,
+      "actions": {
+        "alloc": 29,
+        "boot": 27,
+        "cancel": 14,
+        "free": 18,
+        "poll": 21,
+        "reap": 20,
+        "reset": 19,
+        "submit": 26,
+        "tick": 26
+      },
+      "invariant_checks": 200,
+      "rejected": 127,
+      "seed": 9,
+      "steps": 200
+    }
+  ],
+  "hardware_gate": {
+    "accepted": false,
+    "reason": "real target not qualified by CPU model"
+  },
+  "power_thermal": "not_run",
+  "python": "3.9.6",
+  "real_hardware": "not_run",
+  "scenarios": [
+    {
+      "name": "copy",
+      "passed": true,
+      "registers": {
+        "allocated_bytes": 8,
+        "generation": 0,
+        "queued": 0,
+        "running": null,
+        "stale_completions": 0,
+        "status": "READY",
+        "tick": 3
+      },
+      "trace": [
+        {
+          "event": "boot_ready",
+          "generation": 0,
+          "image": "tutorial-fw-v1",
+          "tick": 0
+        },
+        {
+          "buffer": 1,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "buffer": 2,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "submit",
+          "generation": 0,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "start",
+          "generation": 0,
+          "tick": 1
+        },
+        {
+          "cookie": 1,
+          "event": "output_visible",
+          "generation": 0,
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "completion",
+          "generation": 0,
+          "irq": true,
+          "status": "done",
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "reap",
+          "generation": 0,
+          "status": "done",
+          "tick": 3
+        }
+      ]
+    },
+    {
+      "name": "add_one",
+      "passed": true,
+      "registers": {
+        "allocated_bytes": 8,
+        "generation": 0,
+        "queued": 0,
+        "running": null,
+        "stale_completions": 0,
+        "status": "READY",
+        "tick": 3
+      },
+      "trace": [
+        {
+          "event": "boot_ready",
+          "generation": 0,
+          "image": "tutorial-fw-v1",
+          "tick": 0
+        },
+        {
+          "buffer": 1,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "buffer": 2,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "submit",
+          "generation": 0,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "start",
+          "generation": 0,
+          "tick": 1
+        },
+        {
+          "cookie": 1,
+          "event": "output_visible",
+          "generation": 0,
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "completion",
+          "generation": 0,
+          "irq": true,
+          "status": "done",
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "reap",
+          "generation": 0,
+          "status": "done",
+          "tick": 3
+        }
+      ]
+    },
+    {
+      "name": "lost_irq",
+      "passed": true,
+      "registers": {
+        "allocated_bytes": 8,
+        "generation": 0,
+        "queued": 0,
+        "running": null,
+        "stale_completions": 0,
+        "status": "READY",
+        "tick": 4
+      },
+      "trace": [
+        {
+          "event": "boot_ready",
+          "generation": 0,
+          "image": "tutorial-fw-v1",
+          "tick": 0
+        },
+        {
+          "buffer": 1,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "buffer": 2,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "submit",
+          "generation": 0,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "start",
+          "generation": 0,
+          "tick": 1
+        },
+        {
+          "cookie": 1,
+          "event": "output_visible",
+          "generation": 0,
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "completion",
+          "generation": 0,
+          "irq": false,
+          "status": "done",
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "reap",
+          "generation": 0,
+          "status": "done",
+          "tick": 4
+        }
+      ]
+    },
+    {
+      "name": "dma_error",
+      "passed": true,
+      "registers": {
+        "allocated_bytes": 8,
+        "generation": 0,
+        "queued": 0,
+        "running": null,
+        "stale_completions": 0,
+        "status": "READY",
+        "tick": 3
+      },
+      "trace": [
+        {
+          "event": "boot_ready",
+          "generation": 0,
+          "image": "tutorial-fw-v1",
+          "tick": 0
+        },
+        {
+          "buffer": 1,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "buffer": 2,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "submit",
+          "generation": 0,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "start",
+          "generation": 0,
+          "tick": 1
+        },
+        {
+          "cookie": 1,
+          "event": "completion",
+          "generation": 0,
+          "irq": true,
+          "status": "error",
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "reap",
+          "generation": 0,
+          "status": "error",
+          "tick": 3
+        }
+      ]
+    },
+    {
+      "name": "watchdog_reset_stale_completion",
+      "passed": true,
+      "registers": {
+        "allocated_bytes": 8,
+        "generation": 1,
+        "queued": 0,
+        "running": null,
+        "stale_completions": 1,
+        "status": "READY",
+        "tick": 7
+      },
+      "trace": [
+        {
+          "event": "boot_ready",
+          "generation": 0,
+          "image": "tutorial-fw-v1",
+          "tick": 0
+        },
+        {
+          "buffer": 1,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "buffer": 2,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "submit",
+          "generation": 0,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "start",
+          "generation": 0,
+          "tick": 1
+        },
+        {
+          "event": "watchdog_fault",
+          "generation": 0,
+          "tick": 6
+        },
+        {
+          "event": "quiesced_reset",
+          "generation": 1,
+          "tick": 7
+        },
+        {
+          "event": "stale_completion_rejected",
+          "generation": 1,
+          "tick": 7
+        },
+        {
+          "event": "boot_ready",
+          "generation": 1,
+          "image": "tutorial-fw-v1",
+          "tick": 7
+        }
+      ]
+    }
+  ],
+  "schema": 1,
+  "source_sha256": {
+    "experiments.py": "de2c30eab0f48c800ea31dcc933c839686820a14b5b252462ea4c06081deb280",
+    "virtual_accelerator.py": "07711dd696bc2bef82f26c7447036f714b111914edc8efbe54f4a6f873975047"
+  },
+  "time_unit": "model_tick"
+}
