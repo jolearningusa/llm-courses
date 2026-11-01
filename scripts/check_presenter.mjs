@@ -68,6 +68,10 @@ try {
   await context.addInitScript(()=>{window.open=()=>null;});
   const page=await context.newPage();watch(page);
   await page.goto(pathToFileURL(join(slides,'40_inference_accelerator_architectures.html')).href);
+  // Explicit missing-note fixture: this deck can now have authored notes.
+  await page.evaluate(()=>document.querySelectorAll('aside.notes').forEach(note=>note.remove()));
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('Home');
   await page.keyboard.press('p');
   assert.equal(await page.locator('#course-notes-panel').isVisible(),true);
   assert.match(await page.locator('.course-note-content').innerText(),/No speaker notes/);

@@ -79,9 +79,19 @@ The course does not depend on a Rubin GPU. Use the available device for measurem
 
 All English/Chinese decks stay self-contained offline. Press **S** to show/hide notes in the current window, or **P** to open a separate speaker window with navigation and a start/pause/reset timer. Keep the audience window in its normal mode when projecting; opening the separate window does not reveal notes there. Popup blocking falls back to the inline notes panel. Arrow keys, Home/End and fullscreen keep their existing behavior. Timer state belongs to the open page and resets on reload.
 
-Decks **01–04** supply bilingual instructor waymarkers on every slide, a prediction before its worked answer, a source page, prerequisite/support links and a final recap/open question/next lecture. Remaining decks explicitly show a missing-notes message rather than implying a finished script. These notes support instructor preparation; a timed classroom pilot and full recording scripts remain pending. See the [review response and remaining work](references/teaching_readiness_response.md).
+Decks **01–04** supply bilingual instructor waymarkers on every slide, a prediction before its worked answer, a source page, prerequisite/support links and a final recap/open question/next lecture. Decks 34/35/40 now extend this pattern with concise lecture pages and bilingual reference handouts; the other decks explicitly show a missing-notes message rather than implying a finished script. These notes support instructor preparation; a timed classroom pilot and full recording scripts remain pending. See the [review response and remaining work](references/teaching_readiness_response.md).
 
 Presenter source: `slides/presenter_mode.js`; regenerate embedded copies with `python3 llm-compute-systems-course/slides/build_presenter_mode.py`. Figure regeneration preserves existing English figure notes.
+
+## Supplement lecture and reference paths
+
+Decks 34, 35 and 40 keep comparison tables to three data rows, use standard 23px body/code and 21px table text, and include a prediction, speaker notes and a final recap. Detailed matrices, flags, specifications and expanded code belong to the linked optional handouts:
+
+- [34 · Lowering/co-design reference and worksheet](notes/lowering_codesign_reference.md) · [简体中文](notes/zh/lowering_codesign_reference.md)
+- [35 · Engine comparison reference and worksheet](notes/inference_engines_reference.md) · [简体中文](notes/zh/inference_engines_reference.md)
+- [40 · Accelerator specifications and code](notes/accelerator_codesign_reference.md) · [简体中文](notes/zh/accelerator_codesign_reference.md)
+
+Use the syllabus's selected-excerpt schedule. Full reference coverage is optional reading; shorter slide text does not prove that an entire deck fits a shorter session. Deck 40's four-row heartbeat table is retained because its four sequential ticks are the worked mechanism, rather than a catalogue.
 
 ## Slide decks
 
@@ -112,7 +122,7 @@ Decks are listed in teaching order, grouped by part. Each row links the English 
 | **Part IV · Inference serving (weeks 8–11)** | |
 | [Serving Iterations, Admission and State Ownership](slides/15_serving_scheduler.html) (17 slides) · [简体中文](slides/zh/15_serving_scheduler.html) | Week 8, lecture A |
 | [KV, Prefix and Response Caches across Inference Stacks](slides/16_kv_prefix_cache_mechanisms.html) (17 slides) · [简体中文](slides/zh/16_kv_prefix_cache_mechanisms.html) | Week 8, lecture B |
-| [Inference Engines Compared: llama.cpp, vLLM and the Rest](slides/35_inference_engines_compared.html) (19 slides) · [简体中文](slides/zh/35_inference_engines_compared.html) | Supplement to Part IV, after deck 16 |
+| [Inference Engines Compared: llama.cpp, vLLM and the Rest](slides/35_inference_engines_compared.html) (21 slides) · [简体中文](slides/zh/35_inference_engines_compared.html) | Supplement to Part IV, after deck 16 |
 | [Prefill, Decode and Latency-Constrained Scheduling](slides/17_prefill_decode_scheduling.html) (17 slides) · [简体中文](slides/zh/17_prefill_decode_scheduling.html) | Week 9, lecture A |
 | [Autoregressive Decoding and Inference Bottlenecks](slides/36_inference_bottlenecks.html) (18 slides) · [简体中文](slides/zh/36_inference_bottlenecks.html) | Supplement to Part IV, after deck 17; revisit after 19–21 |
 | [Disaggregated Inference and KV Handoff](slides/18_disaggregated_inference.html) (17 slides) · [简体中文](slides/zh/18_disaggregated_inference.html) | Week 9, lecture B |
@@ -122,9 +132,9 @@ Decks are listed in teaching order, grouped by part. Each row links the English 
 | **Part V · Deployment and platforms (weeks 11–12)** | |
 | [Export Contracts and AOTInductor Deployment](slides/22_export_aotinductor.html) (17 slides) · [简体中文](slides/zh/22_export_aotinductor.html) | Week 11, lecture B |
 | [ExecuTorch Runtime, Delegation and Memory Planning](slides/23_executorch_deployment.html) (18 slides) · [简体中文](slides/zh/23_executorch_deployment.html) | Week 12, lecture A |
-| [Model Lowering and Hardware Co-design](slides/34_model_lowering_codesign.html) (13 slides) · [简体中文](slides/zh/34_model_lowering_codesign.html) | Supplement to Part V, after deck 23 |
+| [Model Lowering and Hardware Co-design](slides/34_model_lowering_codesign.html) (15 slides) · [简体中文](slides/zh/34_model_lowering_codesign.html) | Supplement to Part V, after deck 23 |
 | [Vera Rubin and NVIDIA/AMD Software Stacks](slides/24_rubin_vendor_stacks.html) (17 slides) · [简体中文](slides/zh/24_rubin_vendor_stacks.html) | Week 12, lecture B |
-| [40 · Inference Accelerator Architectures and Co-design](slides/40_inference_accelerator_architectures.html) (22 slides) · [简体中文](slides/zh/40_inference_accelerator_architectures.html) | Supplement to Part V, after deck 24 |
+| [40 · Inference Accelerator Architectures and Co-design](slides/40_inference_accelerator_architectures.html) (23 slides) · [简体中文](slides/zh/40_inference_accelerator_architectures.html) | Supplement to Part V, after deck 24 |
 | **Part VI · Training at scale (weeks 13–15)** | |
 | [Training Precision, DDP, ZeRO and Fully Sharded Training](slides/25_ddp_zero_fsdp.html) (22 slides) · [简体中文](slides/zh/25_ddp_zero_fsdp.html) | Week 13, lecture A |
 | [Collectives, Topology and Exposed Communication](slides/26_collectives_overlap.html) (17 slides) · [简体中文](slides/zh/26_collectives_overlap.html) | Week 13, lecture B |
@@ -227,9 +237,16 @@ llm-compute-systems-course/
 │   ├── LAB_PLAN.md
 │   └── report_template.md
 ├── notes/
+│   ├── zh/
+│   │   ├── accelerator_codesign_reference.md
+│   │   ├── inference_engines_reference.md
+│   │   └── lowering_codesign_reference.md
+│   ├── accelerator_codesign_reference.md
 │   ├── agentic_caching.md
 │   ├── amd_stack.md
 │   ├── course_component_audit.md
+│   ├── inference_engines_reference.md
+│   ├── lowering_codesign_reference.md
 │   ├── nvidia_stack.md
 │   ├── optimization_techniques.md
 │   ├── project_appendix_review.md

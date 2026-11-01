@@ -164,3 +164,7 @@ Three supplementary lectures: [37](slides/37_ai_assisted_development.html) (boun
 ## Supplement 40 — 2026-11-01
 
 [Inference accelerator architectures and co-design](slides/40_inference_accelerator_architectures.html): 22-slide English/Chinese twins, original systolic wavefront SVG and primary-source evidence review. Place after deck 24 in Part V. Covers specialization, precision, stationary dataflows, Ironwood, Ascend, Zhenwu, Triton/TileLang and SAIL. Illustrative fragments and analytical schedules are not executed accelerator results.
+
+## Teaching-readiness density pass — 2026-11-01
+
+Decks 34/35/40 now separate lecture and optional reference paths (15/21/23 slides). Long matrices, flags and expanded code move to bilingual `notes/*_reference.md` handouts. Comparison tables use at most three data rows; the four-tick systolic worked schedule remains intact. Each supplement adds prediction/recap and instructor notes. Source review and visual/browser checks qualify the material; classroom pacing still requires rehearsal.
