@@ -2,7 +2,7 @@
 
 Build and verify the software boundary between an AI framework and an accelerator: command ABI, queues, DMA, interrupts, device lifecycle, host ownership, failure recovery and release evidence. AI assistance is used for bounded implementation and testing tasks; an independent contract and evaluator decide acceptance.
 
-**Functional-reference release, 2026-10-31.** Eight decks in English and Simplified Chinese (80 slides per language), eight editable diagrams, L0–L7 handouts and an executable standard-library virtual accelerator are supplied. Twenty-four regression tests, five scenarios, seeded state exercising and a bounded ownership explorer validate their stated functional scopes. Real-device, firmware-binary, driver, HIL and physical qualification remain target-dependent.
+**Functional-reference release, 2026-10-31; visual revision, 2026-11-01.** Eight decks in English and Simplified Chinese (80 slides per language), 32 original mechanism diagrams (64 localized editable SVGs), L0–L7 handouts and an executable standard-library virtual accelerator are supplied. Twenty-four regression tests, five scenarios, seeded state exercising and a bounded ownership explorer validate their stated functional scopes. Real-device, firmware-binary, driver, HIL and physical qualification remain target-dependent.
 
 ## Start here
 
@@ -10,6 +10,7 @@ Build and verify the software boundary between an AI framework and an accelerato
 - [Build plan](BUILD_PLAN.md): release gates and implementation order.
 - [Primary sources](references/bibliography_and_links.md): Linux DMA/memory ordering, IREE HAL, verification tooling and hardware-test references.
 - [Lab kit and commands](labs/), [teaching ABI](labs/ABI.md), [AI task boundaries](labs/AI_PROMPTS.md) and [target evidence template](labs/TARGET_EVIDENCE.md).
+- [Visual reading guide and figure sources](references/figure_sources.md): attributed mechanisms, diagram scope and regeneration. Press **S** for detailed notes or **P** for a presenter window.
 - [Validation boundaries](VALIDATION.md): functional model, real target and physical evidence remain separate.
 
 This follows the [efficient LLM computing systems course](../llm-compute-systems-course/), especially its AI-assisted development/verification unit. That course optimizes computation and serving. This one studies the software that safely submits, executes and recovers accelerator work. It is not a GPU ISA, RTL-design or semiconductor signoff course.
@@ -68,17 +69,75 @@ ai-accelerator-software-course/
 │   ├── experiments.py
 │   └── virtual_accelerator.py
 ├── references/
-│   └── bibliography_and_links.md
+│   ├── bibliography_and_links.md
+│   └── figure_sources.md
 ├── slides/
 │   ├── illustrations/
+│   │   ├── zh/
+│   │   │   ├── accelerator-00-independent.svg
+│   │   │   ├── accelerator-00-scope.svg
+│   │   │   ├── accelerator-00-spine.svg
+│   │   │   ├── accelerator-00.svg
+│   │   │   ├── accelerator-01-addresses.svg
+│   │   │   ├── accelerator-01-admission.svg
+│   │   │   ├── accelerator-01-packet.svg
+│   │   │   ├── accelerator-01.svg
+│   │   │   ├── accelerator-02-fifo.svg
+│   │   │   ├── accelerator-02-lostirq.svg
+│   │   │   ├── accelerator-02-visibility.svg
+│   │   │   ├── accelerator-02.svg
+│   │   │   ├── accelerator-03-generation.svg
+│   │   │   ├── accelerator-03-quiesce.svg
+│   │   │   ├── accelerator-03-watchdog.svg
+│   │   │   ├── accelerator-03.svg
+│   │   │   ├── accelerator-04-cancel.svg
+│   │   │   ├── accelerator-04-pins.svg
+│   │   │   ├── accelerator-04-reap.svg
+│   │   │   ├── accelerator-04.svg
+│   │   │   ├── accelerator-05-bounded.svg
+│   │   │   ├── accelerator-05-controls.svg
+│   │   │   ├── accelerator-05-faults.svg
+│   │   │   ├── accelerator-05.svg
+│   │   │   ├── accelerator-06-energy.svg
+│   │   │   ├── accelerator-06-hil.svg
+│   │   │   ├── accelerator-06-rollback.svg
+│   │   │   ├── accelerator-06.svg
+│   │   │   ├── accelerator-07-baseline.svg
+│   │   │   ├── accelerator-07-boundedpatch.svg
+│   │   │   ├── accelerator-07-dossier.svg
+│   │   │   └── accelerator-07.svg
 │   │   ├── README.md
+│   │   ├── accelerator-00-independent.svg
+│   │   ├── accelerator-00-scope.svg
+│   │   ├── accelerator-00-spine.svg
 │   │   ├── accelerator-00.svg
+│   │   ├── accelerator-01-addresses.svg
+│   │   ├── accelerator-01-admission.svg
+│   │   ├── accelerator-01-packet.svg
 │   │   ├── accelerator-01.svg
+│   │   ├── accelerator-02-fifo.svg
+│   │   ├── accelerator-02-lostirq.svg
+│   │   ├── accelerator-02-visibility.svg
 │   │   ├── accelerator-02.svg
+│   │   ├── accelerator-03-generation.svg
+│   │   ├── accelerator-03-quiesce.svg
+│   │   ├── accelerator-03-watchdog.svg
 │   │   ├── accelerator-03.svg
+│   │   ├── accelerator-04-cancel.svg
+│   │   ├── accelerator-04-pins.svg
+│   │   ├── accelerator-04-reap.svg
 │   │   ├── accelerator-04.svg
+│   │   ├── accelerator-05-bounded.svg
+│   │   ├── accelerator-05-controls.svg
+│   │   ├── accelerator-05-faults.svg
 │   │   ├── accelerator-05.svg
+│   │   ├── accelerator-06-energy.svg
+│   │   ├── accelerator-06-hil.svg
+│   │   ├── accelerator-06-rollback.svg
 │   │   ├── accelerator-06.svg
+│   │   ├── accelerator-07-baseline.svg
+│   │   ├── accelerator-07-boundedpatch.svg
+│   │   ├── accelerator-07-dossier.svg
 │   │   ├── accelerator-07.svg
 │   │   ├── build_illustrations.py
 │   │   └── figure_specs.json

@@ -38,3 +38,11 @@ No real DMA, MMIO, IRQ controller, kernel driver, firmware binary, FPGA/RTL, san
 - Example report source hashes match the shipped implementation. Functional reports are teaching evidence, not authenticated release attestations.
 
 The documented lab commands run from the course's `labs/` directory. The 24-test suite passed from that directory; a repository-root discovery attempt without the lab import path was not a supported invocation.
+
+## Mechanism-figure revision — 2026-11-01
+
+All eight decks retain ten slides in each language. Four pages per deck now use original mechanism schematics: 32 concepts, 64 localized SVG assets, embedded in 16 standalone HTML decks. Detailed original explanations are retained in offline speaker notes. The repository's existing presenter controls now work in this course too; the browser presenter check verifies all 98 embedded copies across both systems courses and exercises the companion's bilingual notes, navigation and presenter popup.
+
+The [source inventory](references/figure_sources.md) identifies each upstream diagram/section and each destination slide. Inspected the official IREE runtime component diagrams, Linux DMA address-space illustration, OpenTitan OTBN testbench SVG and Zephyr fixture SVG with their documentation. Artwork is original and simplified; no upstream image assets are redistributed. Model state/ABI figures refer to the course-owned lab, not vendor hardware.
+
+Rendered all 160 slides at 1280×720 and inspected all 64 bilingual mechanism pages in contact sheets, with full-size checks for dense labels and timing diagrams. Corrected connector/text crossings and dim labels. Layout bounds passed. Regeneration was checked by hashing all 80 HTML/SVG outputs before and after a second run; no output changed. Course consistency, full 128-deck browser checks and site links passed. No lab implementation or recorded functional report changed. No target/hardware measurements were performed; the power plot is schematic.

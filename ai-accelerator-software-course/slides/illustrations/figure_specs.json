@@ -1,146 +1,487 @@
-[
-  {
-    "prefix": "00",
-    "anchor": "One execution stack, explicit boundaries",
-    "anchor_cn": "一条执行栈，明确的边界",
-    "name": "00_accelerator_software.html",
-    "labels": [
-      "Framework",
-      "Runtime",
-      "Driver boundary",
-      "Device model"
-    ],
-    "cnlabels": [
-      "框架",
-      "Runtime",
-      "Driver 边界",
-      "设备模型"
-    ]
+{
+  "reviewed": "2026-11-01",
+  "sources": {
+    "iree": {
+      "label": "IREE C API runtime diagrams / HAL",
+      "url": "https://iree.dev/reference/bindings/c-api/#runtime-api",
+      "figure_url": "https://iree.dev/reference/bindings/c-api/#low-level-concepts",
+      "type": "Original conceptual diagram informed by IREE component diagrams; generic firmware and course roles are additions."
+    },
+    "dma": {
+      "label": "Linux DMA mapping guide",
+      "url": "https://docs.kernel.org/core-api/dma-api-howto.html#cpu-and-dma-addresses",
+      "figure_url": "https://docs.kernel.org/core-api/dma-api-howto.html#cpu-and-dma-addresses",
+      "type": "Original simplified diagram informed by the Linux address-space illustration; no traced artwork."
+    },
+    "barriers": {
+      "label": "Linux memory-barrier guide",
+      "url": "https://docs.kernel.org/core-api/wrappers/memory-barriers.html",
+      "type": "Original pedagogical ordering diagram informed by the documented memory model; no universal barrier recipe."
+    },
+    "otbn": {
+      "label": "OpenTitan OTBN testbench architecture",
+      "url": "https://opentitan.org/book/hw/ip/otbn/dv/index.html#block-diagram",
+      "figure_url": "https://opentitan.org/book/hw/ip/otbn/dv/doc/tb.svg",
+      "type": "Original simplified testbench informed by OTBN DV; not a reproduction of its architecture or signoff flow."
+    },
+    "twister": {
+      "label": "Zephyr Twister device fixtures",
+      "url": "https://docs.zephyrproject.org/latest/develop/twister/index.html#fixtures",
+      "figure_url": "https://docs.zephyrproject.org/latest/_images/fixtures.svg",
+      "type": "Original teaching schematic informed by Twister fixtures and evidence separation; not an accelerator SDK."
+    },
+    "telemetry": {
+      "label": "NVIDIA SMI telemetry definitions",
+      "url": "https://docs.nvidia.com/deploy/nvidia-smi/",
+      "type": "Original measurement schematic; no samples or performance values reproduced."
+    },
+    "fault": {
+      "label": "Linux fault-injection methodology + course ABI",
+      "url": "https://docs.kernel.org/fault-injection/fault-injection.html",
+      "type": "Original diagram of the course-owned injected faults; Linux documentation supplies methodology, not these modeled IRQ semantics."
+    },
+    "abi": {
+      "label": "Course-owned ABI v1",
+      "path": "labs/ABI.html",
+      "type": "Original diagram of the executable course model; not an external vendor ABI."
+    },
+    "prompts": {
+      "label": "Course AI task boundaries",
+      "path": "labs/AI_PROMPTS.html",
+      "type": "Original course experiment design; not an external benchmark result."
+    },
+    "explorer": {
+      "label": "Course bounded-state explorer",
+      "path": "labs/handouts/lab05_state_exploration.html",
+      "type": "Original diagram of the course abstract ownership model; not a weak-memory or silicon proof."
+    },
+    "target": {
+      "label": "Course target-evidence contract",
+      "path": "labs/TARGET_EVIDENCE.html",
+      "type": "Original proposed qualification protocol; hardware execution remains not-run."
+    },
+    "capstone": {
+      "label": "Course capstone contract",
+      "path": "labs/handouts/lab07_capstone.html",
+      "type": "Original course assessment and artifact design."
+    }
   },
-  {
-    "prefix": "01",
-    "anchor": "A command crosses several contracts",
-    "anchor_cn": "命令跨越多个合同",
-    "name": "01_interfaces.html",
-    "labels": [
-      "Semantics",
-      "Runtime contract",
-      "Packet ABI",
-      "Execution"
-    ],
-    "cnlabels": [
-      "语义",
-      "Runtime 合同",
-      "命令 ABI",
-      "执行"
-    ]
-  },
-  {
-    "prefix": "02",
-    "anchor": "The ownership timeline",
-    "anchor_cn": "所有权时间线",
-    "name": "02_queues_dma.html",
-    "labels": [
-      "Host writes",
-      "Submit / pin",
-      "Device finishes",
-      "Observe / reap"
-    ],
-    "cnlabels": [
-      "主机写入",
-      "提交 / 固定",
-      "设备完成",
-      "观察 / 收取"
-    ]
-  },
-  {
-    "prefix": "03",
-    "anchor": "Firmware state transitions",
-    "anchor_cn": "固件状态转换",
-    "name": "03_firmware_lifecycle.html",
-    "labels": [
-      "RESET",
-      "READY",
-      "FAULT",
-      "Quiesce / reset"
-    ],
-    "cnlabels": [
-      "RESET",
-      "READY",
-      "FAULT",
-      "静止化 / reset"
-    ]
-  },
-  {
-    "prefix": "04",
-    "anchor": "Three actors share one contract",
-    "anchor_cn": "三个参与者共享一个合同",
-    "name": "04_runtime_lifetimes.html",
-    "labels": [
-      "Runtime intent",
-      "Submit / pin",
-      "Execute / report",
-      "Observe / reclaim"
-    ],
-    "cnlabels": [
-      "Runtime 意图",
-      "提交 / 固定",
-      "执行 / 报告",
-      "观察 / 回收"
-    ]
-  },
-  {
-    "prefix": "05",
-    "anchor": "Several evidence methods complement each other",
-    "anchor_cn": "多种证据方法互补",
-    "name": "05_verification.html",
-    "labels": [
-      "Fixtures",
-      "Fault tests",
-      "Bounded model",
-      "Target tools"
-    ],
-    "cnlabels": [
-      "用例",
-      "故障测试",
-      "有界模型",
-      "目标工具"
-    ]
-  },
-  {
-    "prefix": "06",
-    "anchor": "Promotion needs an evidence matrix",
-    "anchor_cn": "晋级需要证据矩阵",
-    "name": "06_qualification.html",
-    "labels": [
-      "Build",
-      "Functional",
-      "Target",
-      "Observe / rollback"
-    ],
-    "cnlabels": [
-      "构建",
-      "功能",
-      "目标",
-      "观察 / 回滚"
-    ]
-  },
-  {
-    "prefix": "07",
-    "anchor": "The capstone evidence chain",
-    "anchor_cn": "综合项目证据链",
-    "name": "07_capstone.html",
-    "labels": [
-      "Contract",
-      "Change",
-      "Independent tests",
-      "Decision"
-    ],
-    "cnlabels": [
-      "合同",
-      "修改",
-      "独立测试",
-      "决策"
-    ]
-  }
-]
+  "figures": [
+    {
+      "prefix": "00",
+      "name": "00_accelerator_software.html",
+      "slug": "accelerator-00",
+      "kind": "stack",
+      "anchor": "One execution stack, explicit boundaries — diagram",
+      "anchor_cn": "一条执行栈，明确的边界示意图",
+      "title": "Host and device execution boundaries",
+      "title_cn": "主机与设备的执行边界",
+      "caption": "Follow command submission down and completion back up.",
+      "caption_cn": "沿图向下跟踪提交，再向上跟踪完成。",
+      "source": "iree"
+    },
+    {
+      "prefix": "00",
+      "name": "00_accelerator_software.html",
+      "slug": "accelerator-00-spine",
+      "kind": "spine",
+      "anchor": "The functional experiment spine",
+      "anchor_cn": "功能实验主线",
+      "title": "One command through the virtual device",
+      "title_cn": "一条命令经过虚拟设备",
+      "caption": "Copy and modulo-256 add-one operate on modeled bytes.",
+      "caption_cn": "复制与模 256 加一只操作模型中的字节。",
+      "source": "abi"
+    },
+    {
+      "prefix": "00",
+      "name": "00_accelerator_software.html",
+      "slug": "accelerator-00-scope",
+      "kind": "scope",
+      "anchor": "Evidence paths",
+      "anchor_cn": "证据路径",
+      "title": "Four evidence scopes",
+      "title_cn": "四种证据范围",
+      "caption": "Choose the evidence path that can answer the claim.",
+      "caption_cn": "先确定声明，再选择能够回答它的证据路径。",
+      "source": "twister"
+    },
+    {
+      "prefix": "00",
+      "name": "00_accelerator_software.html",
+      "slug": "accelerator-00-independent",
+      "kind": "independent",
+      "anchor": "AI assistance is bounded",
+      "anchor_cn": "AI 辅助有明确边界",
+      "title": "Independent proposal and acceptance",
+      "title_cn": "提议与验收分别负责",
+      "caption": "The proposer cannot rewrite the frozen contract.",
+      "caption_cn": "候选实现的提议者不能修改已冻结的验收契约。",
+      "source": "prompts"
+    },
+    {
+      "prefix": "01",
+      "name": "01_interfaces.html",
+      "slug": "accelerator-01",
+      "kind": "contracts",
+      "anchor": "A command crosses several contracts — diagram",
+      "anchor_cn": "命令跨越多个合同示意图",
+      "title": "Tensor semantics and command contracts",
+      "title_cn": "张量语义与命令契约",
+      "caption": "Each boundary preserves a different part of the meaning.",
+      "caption_cn": "每一层都要保留对应的语义与约束。",
+      "source": "iree"
+    },
+    {
+      "prefix": "01",
+      "name": "01_interfaces.html",
+      "slug": "accelerator-01-addresses",
+      "kind": "addresses",
+      "anchor": "Handles are not DMA addresses",
+      "anchor_cn": "句柄不是 DMA 地址",
+      "title": "Two address paths to one RAM buffer",
+      "title_cn": "两条地址路径访问同一块 RAM",
+      "caption": "An integer lab handle is neither a CPU pointer nor a DMA address.",
+      "caption_cn": "实验中的整数句柄既不是 CPU 指针，也不是 DMA 地址。",
+      "source": "dma"
+    },
+    {
+      "prefix": "01",
+      "name": "01_interfaces.html",
+      "slug": "accelerator-01-packet",
+      "kind": "packet",
+      "anchor": "A concrete binary descriptor",
+      "anchor_cn": "一个具体的二进制描述符",
+      "title": "The 24-byte teaching descriptor",
+      "title_cn": "24 字节教学描述符",
+      "caption": "Little-endian ABI v1. Field widths are drawn to scale.",
+      "caption_cn": "小端序 ABI v1；图中各字段按字节宽度绘制。",
+      "source": "abi"
+    },
+    {
+      "prefix": "01",
+      "name": "01_interfaces.html",
+      "slug": "accelerator-01-admission",
+      "kind": "admission",
+      "anchor": "Validate before consuming resources",
+      "anchor_cn": "消耗资源之前验证",
+      "title": "Validation before resource commitment",
+      "title_cn": "资源占用之前的验证",
+      "caption": "Every rejection preserves the original queue and pin ledger.",
+      "caption_cn": "任何拒绝路径都应保留原来的队列与固定资源记录。",
+      "source": "abi"
+    },
+    {
+      "prefix": "02",
+      "name": "02_queues_dma.html",
+      "slug": "accelerator-02",
+      "kind": "ownership",
+      "anchor": "The ownership timeline — diagram",
+      "anchor_cn": "所有权时间线示意图",
+      "title": "Ownership across submission and reap",
+      "title_cn": "从提交到收取完成的所有权",
+      "caption": "Device done, host observed and safe reuse are distinct events.",
+      "caption_cn": "设备完成、主机观察到完成、安全复用是三个事件。",
+      "source": "abi"
+    },
+    {
+      "prefix": "02",
+      "name": "02_queues_dma.html",
+      "slug": "accelerator-02-fifo",
+      "kind": "fifo",
+      "anchor": "One FIFO worker, bounded slots",
+      "anchor_cn": "一个 FIFO worker，有界槽位",
+      "title": "FIFO service and outstanding slots",
+      "title_cn": "FIFO 执行与未收取槽位",
+      "caption": "A completed command keeps its slot until reap.",
+      "caption_cn": "已完成的命令仍占用槽位，直到收取完成。",
+      "source": "abi"
+    },
+    {
+      "prefix": "02",
+      "name": "02_queues_dma.html",
+      "slug": "accelerator-02-visibility",
+      "kind": "visibility",
+      "anchor": "Ordering and visibility are separate ideas",
+      "anchor_cn": "顺序与可见性是不同概念",
+      "title": "Output visibility before completion",
+      "title_cn": "输出可见性先于完成发布",
+      "caption": "The CPU model is atomic; a real target needs its documented ordering rules.",
+      "caption_cn": "CPU 模型采用原子写入；真机需遵守平台的内存序规则。",
+      "source": "barriers"
+    },
+    {
+      "prefix": "02",
+      "name": "02_queues_dma.html",
+      "slug": "accelerator-02-lostirq",
+      "kind": "lostirq",
+      "anchor": "Lost interrupt versus incomplete work",
+      "anchor_cn": "中断丢失与工作未完成",
+      "title": "Completed work with a lost interrupt",
+      "title_cn": "工作已完成，但中断丢失",
+      "caption": "Polling can recover notification; timeout alone releases nothing.",
+      "caption_cn": "轮询可以补查完成；仅发生超时不会释放资源。",
+      "source": "abi"
+    },
+    {
+      "prefix": "03",
+      "name": "03_firmware_lifecycle.html",
+      "slug": "accelerator-03",
+      "kind": "firmware",
+      "anchor": "Firmware state transitions — diagram",
+      "anchor_cn": "固件状态转换示意图",
+      "title": "Firmware states and guarded transitions",
+      "title_cn": "固件状态与受条件约束的迁移",
+      "caption": "Only a supported boot enters READY. Recovery returns through RESET.",
+      "caption_cn": "只有受支持的启动才能进入 READY；恢复需经过 RESET。",
+      "source": "abi"
+    },
+    {
+      "prefix": "03",
+      "name": "03_firmware_lifecycle.html",
+      "slug": "accelerator-03-watchdog",
+      "kind": "watchdog",
+      "anchor": "Watchdog behavior",
+      "anchor_cn": "Watchdog 行为",
+      "title": "A hung command keeps its buffers",
+      "title_cn": "挂起命令继续持有缓冲区",
+      "caption": "Watchdog expiry enters FAULT; pins survive until recovery.",
+      "caption_cn": "看门狗到期后进入 FAULT；恢复之前继续固定缓冲区。",
+      "source": "abi"
+    },
+    {
+      "prefix": "03",
+      "name": "03_firmware_lifecycle.html",
+      "slug": "accelerator-03-quiesce",
+      "kind": "quiesce",
+      "anchor": "Reset must first establish quiescence",
+      "anchor_cn": "Reset 首先要建立静止状态",
+      "title": "Quiescence before memory reclamation",
+      "title_cn": "确认设备静止后再回收内存",
+      "caption": "Atomic quiesce/reset is a teaching-model assumption.",
+      "caption_cn": "原子静止化与复位是教学模型的假设。",
+      "source": "dma"
+    },
+    {
+      "prefix": "03",
+      "name": "03_firmware_lifecycle.html",
+      "slug": "accelerator-03-generation",
+      "kind": "generation",
+      "anchor": "Reject stale completions",
+      "anchor_cn": "拒绝旧完成事件",
+      "title": "Same cookie, different generation",
+      "title_cn": "相同 cookie，不同代次",
+      "caption": "Generation rejects old events; it cannot stop physical DMA writes.",
+      "caption_cn": "代次能拒绝旧事件，却不能停止实际的 DMA 写入。",
+      "source": "abi"
+    },
+    {
+      "prefix": "04",
+      "name": "04_runtime_lifetimes.html",
+      "slug": "accelerator-04",
+      "kind": "actors",
+      "anchor": "Three actors share one contract — diagram",
+      "anchor_cn": "三个参与者共享一个合同示意图",
+      "title": "Runtime, driver interface and device",
+      "title_cn": "Runtime、驱动接口与设备",
+      "caption": "The Python model combines these roles; a real driver must implement their contracts.",
+      "caption_cn": "Python 模型合并了这些职责；真实驱动需实现对应契约。",
+      "source": "iree"
+    },
+    {
+      "prefix": "04",
+      "name": "04_runtime_lifetimes.html",
+      "slug": "accelerator-04-pins",
+      "kind": "pins",
+      "anchor": "Pinned ownership survives enqueue",
+      "anchor_cn": "固定所有权在入队后继续存在",
+      "title": "Exclusive buffer ownership",
+      "title_cn": "缓冲区的独占所有权",
+      "caption": "Both source and destination remain pinned until safe reap or quiesced reset.",
+      "caption_cn": "源与目标缓冲区都要固定到安全收取完成或静止复位。",
+      "source": "abi"
+    },
+    {
+      "prefix": "04",
+      "name": "04_runtime_lifetimes.html",
+      "slug": "accelerator-04-cancel",
+      "kind": "cancel",
+      "anchor": "Cancellation is not one operation",
+      "anchor_cn": "取消不是一种统一操作",
+      "title": "Cancellation depends on command state",
+      "title_cn": "取消操作取决于命令状态",
+      "caption": "In-flight cancellation is deliberately unsupported in this model.",
+      "caption_cn": "本模型明确不支持取消已在执行中的命令。",
+      "source": "abi"
+    },
+    {
+      "prefix": "04",
+      "name": "04_runtime_lifetimes.html",
+      "slug": "accelerator-04-reap",
+      "kind": "reap",
+      "anchor": "Reap is part of the interface",
+      "anchor_cn": "收取完成也是接口的一部分",
+      "title": "Completion, observation and reclamation",
+      "title_cn": "完成、观察与资源回收",
+      "caption": "Reap releases the slot and pins exactly once.",
+      "caption_cn": "收取完成只释放一次槽位与固定资源。",
+      "source": "abi"
+    },
+    {
+      "prefix": "05",
+      "name": "05_verification.html",
+      "slug": "accelerator-05",
+      "kind": "testbench",
+      "anchor": "Several evidence methods complement each other — diagram",
+      "anchor_cn": "多种证据方法互补示意图",
+      "title": "Stimulus, reference and independent checks",
+      "title_cn": "激励、参考模型与独立检查",
+      "caption": "Conceptual testbench inspired by OpenTitan OTBN DV; no RTL target is implemented here.",
+      "caption_cn": "参考 OpenTitan OTBN 验证结构；本课没有实现 RTL 目标。",
+      "source": "otbn"
+    },
+    {
+      "prefix": "05",
+      "name": "05_verification.html",
+      "slug": "accelerator-05-controls",
+      "kind": "controls",
+      "anchor": "Test the oracle itself",
+      "anchor_cn": "验证判定器本身",
+      "title": "Controls that test the evaluator",
+      "title_cn": "用对照检查验收器",
+      "caption": "A useful evaluator accepts legal changes and rejects broken ones.",
+      "caption_cn": "有效的验收器既能接受合法变更，也能拒绝错误实现。",
+      "source": "prompts"
+    },
+    {
+      "prefix": "05",
+      "name": "05_verification.html",
+      "slug": "accelerator-05-faults",
+      "kind": "faults",
+      "anchor": "Inject failures at named boundaries",
+      "anchor_cn": "在明确边界注入故障",
+      "title": "Faults at different execution boundaries",
+      "title_cn": "在不同执行边界注入故障",
+      "caption": "The injection point determines the required recovery evidence.",
+      "caption_cn": "注入位置决定必须收集哪一种恢复证据。",
+      "source": "fault"
+    },
+    {
+      "prefix": "05",
+      "name": "05_verification.html",
+      "slug": "accelerator-05-bounded",
+      "kind": "bounded",
+      "anchor": "The bounded ownership model",
+      "anchor_cn": "有界所有权模型",
+      "title": "The two-action ownership counterexample",
+      "title_cn": "两步即可触发的所有权反例",
+      "caption": "Depth one misses submit + release; state the search bound.",
+      "caption_cn": "深度一无法发现“提交后释放”；需要说明搜索边界。",
+      "source": "explorer"
+    },
+    {
+      "prefix": "06",
+      "name": "06_qualification.html",
+      "slug": "accelerator-06",
+      "kind": "matrix",
+      "anchor": "Promotion needs an evidence matrix — diagram",
+      "anchor_cn": "晋级需要证据矩阵示意图",
+      "title": "Functional pass and missing target evidence",
+      "title_cn": "功能通过与目标证据缺失",
+      "caption": "Use separate status cells for identity, functional, device and physical evidence.",
+      "caption_cn": "分别记录身份、功能、设备与物理证据的状态。",
+      "source": "target"
+    },
+    {
+      "prefix": "06",
+      "name": "06_qualification.html",
+      "slug": "accelerator-06-hil",
+      "kind": "hil",
+      "anchor": "One recoverable test board first",
+      "anchor_cn": "先从一台可恢复测试板开始",
+      "title": "One board, a runner and a recovery path",
+      "title_cn": "一块板卡、执行器与恢复路径",
+      "caption": "Fixture matching follows the Twister example; accelerator deployment remains vendor-specific.",
+      "caption_cn": "参考 Twister 匹配测试夹具；加速器部署仍取决于厂商。",
+      "source": "twister"
+    },
+    {
+      "prefix": "06",
+      "name": "06_qualification.html",
+      "slug": "accelerator-06-energy",
+      "kind": "energy",
+      "anchor": "Physical observations need instrumentation",
+      "anchor_cn": "物理观察需要仪器",
+      "title": "Power boundary and measurement window",
+      "title_cn": "功率边界与测量窗口",
+      "caption": "Schematic P(t), not measured data. Match completed work and sensor scope.",
+      "caption_cn": "P(t) 为示意曲线，并非实测数据；要对齐完成工作与传感器范围。",
+      "source": "telemetry"
+    },
+    {
+      "prefix": "06",
+      "name": "06_qualification.html",
+      "slug": "accelerator-06-rollback",
+      "kind": "rollback",
+      "anchor": "Rollback has a state contract",
+      "anchor_cn": "回滚也有状态合同",
+      "title": "A safe rollback boundary",
+      "title_cn": "安全回滚的边界",
+      "caption": "Old device access must stop before memory or artifacts are replaced.",
+      "caption_cn": "替换内存或产物之前，必须确认旧设备访问已停止。",
+      "source": "target"
+    },
+    {
+      "prefix": "07",
+      "name": "07_capstone.html",
+      "slug": "accelerator-07",
+      "kind": "capstone",
+      "anchor": "The capstone evidence chain — diagram",
+      "anchor_cn": "综合项目证据链示意图",
+      "title": "The capstone decision and its evidence",
+      "title_cn": "综合项目决策与对应证据",
+      "caption": "Every claim points to a contract, raw evidence and a reproducible artifact.",
+      "caption_cn": "每个声明都要关联契约、原始证据与可复现产物。",
+      "source": "capstone"
+    },
+    {
+      "prefix": "07",
+      "name": "07_capstone.html",
+      "slug": "accelerator-07-boundedpatch",
+      "kind": "boundedpatch",
+      "anchor": "Choose a bounded problem",
+      "anchor_cn": "选择有边界的问题",
+      "title": "A bounded patch inside the stack",
+      "title_cn": "执行栈中的一个有界修改",
+      "caption": "Choose one boundary and name the guarantees you will preserve.",
+      "caption_cn": "选择一个边界，并说明需要保留哪些保证。",
+      "source": "prompts"
+    },
+    {
+      "prefix": "07",
+      "name": "07_capstone.html",
+      "slug": "accelerator-07-baseline",
+      "kind": "baseline",
+      "anchor": "A credible baseline and controls",
+      "anchor_cn": "可信基线与对照",
+      "title": "A shared evaluator for baseline and candidate",
+      "title_cn": "基线与候选共用一个验收器",
+      "caption": "Freeze held-out inputs and retain the rejected control.",
+      "caption_cn": "冻结留出输入，并保留被拒绝的错误对照。",
+      "source": "capstone"
+    },
+    {
+      "prefix": "07",
+      "name": "07_capstone.html",
+      "slug": "accelerator-07-dossier",
+      "kind": "dossier",
+      "anchor": "The artifact package",
+      "anchor_cn": "交付包",
+      "title": "The reproducible artifact package",
+      "title_cn": "可复现的交付包",
+      "caption": "A manifest connects code, tests, raw results and the release decision.",
+      "caption_cn": "清单把代码、测试、原始结果与发布决策连接起来。",
+      "source": "capstone"
+    }
+  ]
+}

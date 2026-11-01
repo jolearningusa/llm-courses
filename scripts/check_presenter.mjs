@@ -17,7 +17,8 @@ const watch = page => {
 try {
   let deckCount=0;
   const presenterSource=readFileSync(join(slides,'presenter_mode.js'),'utf8');
-  for (const dir of [slides,join(slides,'zh')]) for (const file of readdirSync(dir).filter(x=>x.endsWith('.html'))) {
+  const companion = join(root,'ai-accelerator-software-course','slides');
+  for (const dir of [slides,join(slides,'zh'),companion,join(companion,'zh')]) for (const file of readdirSync(dir).filter(x=>x.endsWith('.html'))) {
     const text=readFileSync(join(dir,file),'utf8');
     assert.equal((text.match(/<script id="course-presenter">/g)||[]).length,1,file);
     assert.equal(text.match(/<script id="course-presenter">([\s\S]*?)<\/script>/)[1],presenterSource,file+' has stale presenter code');
@@ -62,6 +63,26 @@ try {
     await page.setViewportSize({width:960,height:540});
     await page.waitForFunction(()=>document.getElementById('stage').getBoundingClientRect().bottom<=325);
     const rect=await page.locator('#stage').boundingBox();assert(rect.y+rect.height<=325);
+    await context.close();
+  }
+  // Diagram-heavy companion decks keep their original explanations in offline notes.
+  for (const zh of [false,true]) {
+    const context=await browser.newContext({viewport:{width:1280,height:720}});
+    const page=await context.newPage();watch(page);
+    await page.goto(pathToFileURL(join(companion,zh?'zh':'','02_queues_dma.html')).href);
+    await page.keyboard.press('ArrowRight');await page.keyboard.press('ArrowRight');
+    assert.equal(await page.locator('.slide.active svg[role="img"]').count(),1);
+    assert.equal(await page.locator('#course-notes-panel').isVisible(),false);
+    await page.keyboard.press('s');
+    assert.equal(await page.locator('#course-notes-panel').isVisible(),true);
+    assert.match(await page.locator('.course-note-content').innerText(),zh?/读图顺序/:/Read the actors/);
+    await page.keyboard.press('ArrowRight');
+    assert.match(await page.locator('.course-note-content').innerText(),zh?/已完成但尚未收取|完成.*收取|槽位/:/Completed-but-unreaped/);
+    await page.keyboard.press('s');
+    const popupPromise=page.waitForEvent('popup');await page.keyboard.press('p');
+    const popup=await popupPromise;watch(popup);await popup.waitForSelector('h3');
+    assert.match(await popup.locator('h3').innerText(),/^4 \/ 10/);
+    assert.equal(await page.locator('#course-notes-panel').isVisible(),false);
     await context.close();
   }
   const context=await browser.newContext();
