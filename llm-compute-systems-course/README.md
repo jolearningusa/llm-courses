@@ -51,7 +51,7 @@ Each lab follows **predict → implement → validate correctness → profile �
 
 [Deck 36](slides/36_inference_bottlenecks.html) connects autoregressive dependencies to weight/KV traffic, utilization, sampling/beam search and service bottlenecks. Its [primary-source review](references/inference_bottlenecks_review.md) and [diagnosis worksheet](labs/kit/inference_bottleneck_worksheet.md) supply the evidence path.
 
-[AI-assisted development and verification](references/ai_development_verification.md) adds three lectures (37–39) and an [executed CPU lab](labs/kit/handouts/lab_ai_verification.md), connecting candidate generation to independent validation and release gates.
+[AI-assisted development and verification](references/ai_development_verification.md) adds three lectures (37–39) and an [executed CPU lab](labs/kit/handouts/lab_ai_verification.md), connecting candidate generation to independent validation and release gates. Decks 38–39 include numerical/graph/fault test design and a [firmware/runtime qualification worksheet](labs/kit/handouts/lab_ai_verification.md#d-design-a-firmwareruntime-qualification-campaign), with explicit telemetry and HIL evidence boundaries.
 
 ## Learning outcomes
 
@@ -144,8 +144,8 @@ Decks are listed in teaching order, grouped by part. Each row links the English 
 | [Whole-System Efficiency and Useful Work](slides/30_whole_system_efficiency.html) (17 slides) · [简体中文](slides/zh/30_whole_system_efficiency.html) | Week 15, lecture B |
 | **AI-assisted development and verification unit** | |
 | [37 · AI-assisted development](slides/37_ai_assisted_development.html) (11 slides) · [简体中文](slides/zh/37_ai_assisted_development.html) | AI-assisted development/verification unit; after deck 32 |
-| [38 · Verification contracts](slides/38_verification_contracts.html) (11 slides) · [简体中文](slides/zh/38_verification_contracts.html) | AI-assisted development/verification unit; after deck 32 |
-| [39 · Qualification and release](slides/39_qualification_release.html) (11 slides) · [简体中文](slides/zh/39_qualification_release.html) | AI-assisted development/verification unit; after deck 32 |
+| [38 · Verification contracts](slides/38_verification_contracts.html) (14 slides) · [简体中文](slides/zh/38_verification_contracts.html) | AI-assisted development/verification unit; after deck 32 |
+| [39 · Qualification and release](slides/39_qualification_release.html) (14 slides) · [简体中文](slides/zh/39_qualification_release.html) | AI-assisted development/verification unit; after deck 32 |
 | **Capstone (week 16)** | |
 | [Capstone Workshop: Evidence to Decision](slides/31_capstone_workshop.html) (11 slides) · [简体中文](slides/zh/31_capstone_workshop.html) | Week 16 |
 
