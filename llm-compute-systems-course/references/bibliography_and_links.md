@@ -205,3 +205,12 @@ The [project research review](project_research_review.md) records versioned prim
 ## Autoregressive decoding and bottleneck diagnosis
 
 Sources for [deck 36](../slides/36_inference_bottlenecks.html), reviewed 2026-10-30. The [annotated review](inference_bottlenecks_review.md) gives examined sections, workload scope and limitations. Primary readings: **Efficiently Scaling Transformer Inference** (arXiv:2211.05102), **Splitwise** (arXiv:2311.18677), **Sarathi-Serve** (arXiv:2403.02310), **Speculative Decoding** (arXiv:2211.17192), **Qrita** (arXiv:2602.01518), and **Guess-Verify-Refine / GVR** (arXiv:2604.22312). Also compare How To Scale Your Model, FlashInfer sorting-free sampling, the Hazy Research Llama-1B megakernel case, NVIDIA CUDA Graph guidance and TensorRT-LLM sampling/beam-search documentation. No new GPU results are claimed.
+
+## Inference accelerator architectures and co-design (reviewed 2026-11-01)
+
+Sources for [deck 40](../slides/40_inference_accelerator_architectures.html). The [annotated evidence review](accelerator_architectures_review.md) records every specification, primary links, user-provided media leads, roadmap changes and code boundaries.
+
+- **Core — Systolic arrays and dataflow**: Jouppi et al., *In-Datacenter Performance Analysis of a Tensor Processing Unit*, arXiv:1704.04760; Sze et al., *Efficient Processing of Deep Neural Networks: A Tutorial and Survey*, arXiv:1703.09039, §V-B. Read Google's array tutorial alongside the stationary-dataflow taxonomy. Historical TPU-v1 performance is not a current GPU comparison.
+- **Core — Chips**: Google's TPU7x table and TPU architecture guide; Huawei's CANN AI Core documentation; Alibaba's May M890 and September V900 press releases and PAI 810E deployment documentation. Hardware peaks, vendor claims and release forecasts are separate.
+- **Core — Tile DSLs**: TileLang, *A Composable Tiled Programming Model for AI Systems*, arXiv:2504.17577, §§3–4; pinned TileLang language guide and GEMM example; Triton's official GEMM tutorial. Single-tile excerpts illustrate source-level memory scopes, not measured performance.
+- **Reference — Deployment constraints**: NVIDIA CUDA SIMT/tile and TensorRT quantization guides; Alibaba's July SAIL announcement; dated January 2025 BIS semiconductor-control announcement. All direct links and precise reading scope are in the evidence review.

@@ -358,5 +358,14 @@
     "caption": "Conceptual responsibility boundaries; each gate needs its own evidence. Not a measured result.",
     "deck": "39_qualification_release.html",
     "asset": "release-gates.svg"
+  },
+  {
+    "prefix": "40",
+    "after": "A systolic PE grid",
+    "slug": "systolic-pe-grid",
+    "title": "A wavefront through an output-stationary array",
+    "caption": "A moves right and B moves down; each C partial sum stays local. Highlighted cells show only the k=0 wavefront at teaching tick 2; other k streams are omitted. Not a chip floorplan or measured timing.",
+    "deck": "40_inference_accelerator_architectures.html",
+    "asset": "systolic-pe-grid.svg"
   }
 ]

@@ -294,6 +294,28 @@ def build():
         s=figure('39','Promotion is another state machine','release-gates','Preserve identity through promotion','Conceptual responsibility boundaries; each gate needs its own evidence. Not a measured result.','A sequence of named development or verification responsibilities; arrows show the teaching order, not a performance measurement.')
         s.chain(['Build', 'Qualify', 'Stage', 'Observe / rollback'],110)
 
+
+    if list(SLIDES.glob('40_*.html')):
+        s=figure('40','A systolic PE grid','systolic-pe-grid','A wavefront through an output-stationary array','A moves right and B moves down; each C partial sum stays local. Highlighted cells show only the k=0 wavefront at teaching tick 2; other k streams are omitted. Not a chip floorplan or measured timing.','An original three-by-three PE grid. Activations enter from the left and weights from the top. Neighbor links advance operands one hop per teaching tick; output partial sums remain in the processing elements.')
+        for i in range(3):
+            y=70+i*85
+            s.text(38,y+32,'A row '+str(i),22,TEAL)
+            s.line(135,y+25,235,y+25,TEAL,True)
+            for j in range(3):
+                x=240+j*150
+                s.box(x,y,110,50,'C'+str(i)+str(j)+'|local sum',AMBER if i+j==2 else BLUE)
+                if j<2:s.line(x+114,y+25,x+145,y+25,TEAL,True)
+                if i<2:s.line(x+55,y+54,x+55,y+80,BLUE,True)
+        for j in range(3):
+            x=295+j*150
+            s.text(x,30,'B col '+str(j),22,BLUE,anchor='middle')
+            s.line(x,38,x,65,BLUE,True)
+        s.text(750,95,'k = 0, tick = 2',25,AMBER)
+        s.text(750,145,'PE: c += a × b',24,INK)
+        s.text(750,195,'A →   B ↓',25,TEAL)
+        s.text(750,245,'C stays in the PE',23,MUTED)
+
+
 def apply():
     build();manifest=[]
     for entry in FIGURES:
