@@ -89,3 +89,7 @@ Use released deck 32 and [the technique map](notes/optimization_techniques.md) a
 ## Autoregressive bottleneck diagnosis supplement
 
 Use [deck 36](slides/36_inference_bottlenecks.html) after deck 17 and revisit after decks 19–21. Distinguish token dependencies from GPU idle gaps, then identify weight/KV traffic, compute, capacity, host, selection and communication limits. The [worksheet](labs/kit/inference_bottleneck_worksheet.md) extends L1/L8/L10 as an optional profiling assignment; the source/analytical path remains available without GPU access.
+
+## AI-assisted development and verification — 2026-10-31
+
+Three supplementary lectures: [37](slides/37_ai_assisted_development.html) (bounded development loop), [38](slides/38_verification_contracts.html) (layer-specific contracts) and [39](slides/39_qualification_release.html) (target qualification/release), with Chinese twins and editable diagrams. Place after deck 32 and revisit after deployment. The [CPU lab](labs/kit/handouts/lab_ai_verification.md) checks numerical mutants and queue-event ownership; it does not execute GPU code or flash firmware. The [source review](references/ai_development_verification.md) records evidence boundaries. Timing/pacing is provisional; core semester requirements are unchanged.

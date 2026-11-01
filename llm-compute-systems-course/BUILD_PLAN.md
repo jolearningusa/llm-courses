@@ -156,3 +156,7 @@ All core decks/handouts/reference paths and the supplementary optimization secti
 ## Supplement 36 — 2026-10-30
 
 Released: [18-slide English deck](slides/36_inference_bottlenecks.html), Chinese twin, original dependency SVG, literature review and optional diagnosis worksheet. Place after deck 17, revisit after 19–21. [P26](projects/COURSE_APPENDIX.md#p26) gives a selection/decoding-control execution plan. Browser/layout/site checks qualify the materials; GPU profiling and student pacing are pending.
+
+## AI-assisted development and verification — 2026-10-31
+
+Three supplementary lectures: [37](slides/37_ai_assisted_development.html) (bounded development loop), [38](slides/38_verification_contracts.html) (layer-specific contracts) and [39](slides/39_qualification_release.html) (target qualification/release), with Chinese twins and editable diagrams. Place after deck 32 and revisit after deployment. The [CPU lab](labs/kit/handouts/lab_ai_verification.md) checks numerical mutants and queue-event ownership; it does not execute GPU code or flash firmware. The [source review](references/ai_development_verification.md) records evidence boundaries. Timing/pacing is provisional; core semester requirements are unchanged.
