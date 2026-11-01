@@ -1,0 +1,146 @@
+[
+  {
+    "prefix": "00",
+    "anchor": "One execution stack, explicit boundaries",
+    "anchor_cn": "一条执行栈，明确的边界",
+    "name": "00_accelerator_software.html",
+    "labels": [
+      "Framework",
+      "Runtime",
+      "Driver boundary",
+      "Device model"
+    ],
+    "cnlabels": [
+      "框架",
+      "Runtime",
+      "Driver 边界",
+      "设备模型"
+    ]
+  },
+  {
+    "prefix": "01",
+    "anchor": "A command crosses several contracts",
+    "anchor_cn": "命令跨越多个合同",
+    "name": "01_interfaces.html",
+    "labels": [
+      "Semantics",
+      "Runtime contract",
+      "Packet ABI",
+      "Execution"
+    ],
+    "cnlabels": [
+      "语义",
+      "Runtime 合同",
+      "命令 ABI",
+      "执行"
+    ]
+  },
+  {
+    "prefix": "02",
+    "anchor": "The ownership timeline",
+    "anchor_cn": "所有权时间线",
+    "name": "02_queues_dma.html",
+    "labels": [
+      "Host writes",
+      "Submit / pin",
+      "Device finishes",
+      "Observe / reap"
+    ],
+    "cnlabels": [
+      "主机写入",
+      "提交 / 固定",
+      "设备完成",
+      "观察 / 收取"
+    ]
+  },
+  {
+    "prefix": "03",
+    "anchor": "Firmware state transitions",
+    "anchor_cn": "固件状态转换",
+    "name": "03_firmware_lifecycle.html",
+    "labels": [
+      "RESET",
+      "READY",
+      "FAULT",
+      "Quiesce / reset"
+    ],
+    "cnlabels": [
+      "RESET",
+      "READY",
+      "FAULT",
+      "静止化 / reset"
+    ]
+  },
+  {
+    "prefix": "04",
+    "anchor": "Three actors share one contract",
+    "anchor_cn": "三个参与者共享一个合同",
+    "name": "04_runtime_lifetimes.html",
+    "labels": [
+      "Runtime intent",
+      "Submit / pin",
+      "Execute / report",
+      "Observe / reclaim"
+    ],
+    "cnlabels": [
+      "Runtime 意图",
+      "提交 / 固定",
+      "执行 / 报告",
+      "观察 / 回收"
+    ]
+  },
+  {
+    "prefix": "05",
+    "anchor": "Several evidence methods complement each other",
+    "anchor_cn": "多种证据方法互补",
+    "name": "05_verification.html",
+    "labels": [
+      "Fixtures",
+      "Fault tests",
+      "Bounded model",
+      "Target tools"
+    ],
+    "cnlabels": [
+      "用例",
+      "故障测试",
+      "有界模型",
+      "目标工具"
+    ]
+  },
+  {
+    "prefix": "06",
+    "anchor": "Promotion needs an evidence matrix",
+    "anchor_cn": "晋级需要证据矩阵",
+    "name": "06_qualification.html",
+    "labels": [
+      "Build",
+      "Functional",
+      "Target",
+      "Observe / rollback"
+    ],
+    "cnlabels": [
+      "构建",
+      "功能",
+      "目标",
+      "观察 / 回滚"
+    ]
+  },
+  {
+    "prefix": "07",
+    "anchor": "The capstone evidence chain",
+    "anchor_cn": "综合项目证据链",
+    "name": "07_capstone.html",
+    "labels": [
+      "Contract",
+      "Change",
+      "Independent tests",
+      "Decision"
+    ],
+    "cnlabels": [
+      "合同",
+      "修改",
+      "独立测试",
+      "决策"
+    ]
+  }
+]

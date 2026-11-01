@@ -22,3 +22,7 @@ Follow the repository workflow: fresh main → one branch/PR → required checks
 ## Physical-target scope
 
 The functional model has no real registers, IOMMU, cache coherency, interrupt controller, ISA or thermal behavior. Real target work requires a documented adapter and instrumentation. Clock/power/temperature values must come from actual telemetry or instruments; emulator ticks and TDP are not measured energy. Use a designated test device and recovery plan, never silently replace those prerequisites with fabricated data.
+
+## Functional release status — 2026-10-31
+
+Blueprint merged in #85. Eight bilingual decks, editable diagrams, reference model, experiments, 24 regression tests and L0–L7 handouts are authored. CPU commands/scenarios, seeded invariant checks and bounded controls were executed. No physical-target stage is scheduled or claimed complete.
