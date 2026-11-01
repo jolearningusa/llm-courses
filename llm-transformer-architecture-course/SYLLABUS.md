@@ -79,8 +79,8 @@ All labs run on a laptop CPU with NumPy or PyTorch and tiny models. Each lab che
 
 | Lab | Task | Check |
 |---|---|---|
-| L0 | Compute parameter count and KV-cache bytes per token from Hugging Face `config.json` files | Matches the parameter count each model card reports |
-| L1 | A tiny transformer from scratch that runs as encoder, decoder and encoder-decoder from one block | Causal mask leaks no future tokens; outputs match `torch.nn.functional.scaled_dot_product_attention` |
+| L0 | Compute parameter count and KV-cache bytes per token from Hugging Face `config.json` files | Matches the parameter count of each released checkpoint |
+| L1 | A tiny transformer from scratch that runs as encoder, decoder and encoder-decoder from one block | Causal mask leaks no future tokens; attention matches a one-query-at-a-time loop |
 | L2 | Train a byte-level BPE tokenizer and measure tokens per character across languages | Round-trip decoding is lossless |
 | L3 | Implement sinusoidal, RoPE and ALiBi; test past the training length; apply Position Interpolation | RoPE attention scores depend only on relative position |
 | L4 | Render a chat template by hand and build packing masks | Byte-identical to the tokenizer's own template |
