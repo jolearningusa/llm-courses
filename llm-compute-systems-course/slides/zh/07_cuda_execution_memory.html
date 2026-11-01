@@ -3,4 +3,131 @@ thread t → columns t, t + blockDim.x, …</pre><p>所有线程都参与行归�
 barrier
 for stride = block_size/2 down to 1:
     if thread &lt; stride: add neighbor
-    barrier</pre><p>这个示意的归约树假设线程块大小是选定的 2 的幂。</p></div><div class="cite"></div><div class="num">8 / 17</div><aside class="notes"></aside></section><section class="slide" id="s9"><h2>屏障的正确性</h2><div class="content"><p>屏障只作用于一个协作范围。它不是跨所有线程块或设备的通用排序原语。写明生产者/消费者关系和内存序要求。</p></div><div class="cite"></div><div class="num">9 / 17</div><aside class="notes"></aside></section><section class="slide" id="s10"><h2>寄存器与占用率</h2><div class="content"><p>更多存活的值可能增加寄存器需求，限制驻留的工作。更高的占用率本身不是目标：驻留线程块更少但复用友好的内核可能仍然更快。</p></div><div class="cite"></div><div class="num">10 / 17</div><aside class="notes"></aside></section><section class="slide" id="s11"><h2>每行一个线程块会限制可用的工作</h2><div class="content"><p>行数少就只有很少的线程块，即使每行很长。拆分一行可以提高并行度，但需要正确地合并部分结果，并带来额外开销。</p></div><div class="cite"></div><div class="num">11 / 17</div><aside class="notes"></aside></section><section class="slide" id="s12"><h2>流量估算算例</h2><div class="content"><p>对 D 个 float32 值和 D 个权重，一次理想的输出遍历读 8D 字节、写 4D 字节。</p><div class="formula">ideal baseline = 12D bytes / row</div><p>简单的 RMSNorm 内核在归约之后为输出再次读取输入，所以它在源码层面的输入流量更大。HBM 流量由缓存决定。</p></div><div class="cite"></div><div class="num">12 / 17</div><aside class="notes"></aside></section><section class="slide" id="s13"><h2>延迟受限与带宽受限</h2><div class="content"><p>短行可能暴露启动/归约开销；长行可能暴露流量、寄存器或调度约束。扫描形状，而不是只调一个方便的维度。</p></div><div class="cite"></div><div class="num">13 / 17</div><aside class="notes"></aside></section><section class="slide" id="s14"><h2>CUDA 与 HIP 的可移植性</h2><div class="content"><p>源码翻译不能证明性能。检查执行组的假设、矩阵指令、共享/局部内存，以及目标上后端的实际支持情况。</p></div><div class="cite"><a href="../../notes/amd_stack.html">AMD 栈对比</a> · <a href="33_programming_models_beyond_cuda.html">第 33 讲：CUDA 之外的编程模型</a></div><div class="num">14 / 17</div><aside class="notes"></aside></section><section class="slide" id="s15"><h2>要检查什么</h2><div class="content"><ul><li>地址计算和支持的步幅。</li><li>线程块/warp 的分配和可用的并行工作。</li><li>寄存器/共享内存使用和实际流量。</li><li>同步范围和数据生命周期。</li></ul></div><div class="cite"></div><div class="num">15 / 17</div><aside class="notes"></aside></section><section class="slide" id="s16"><h2>L3A：阅读参考内核</h2><div class="content"><p>对照 CPU 参考实现，追踪 float32、连续存储、每行一个线程块的 RMSNorm 示例。解释 D = 1、33 和 257 时的行为。</p></div><div class="cite"></div><div class="num">16 / 17</div><aside class="notes"></aside></section><section class="slide" id="s17"><h2>验证边界</h2><div class="content"><p>CPU 参考实现可以在这里运行。CUDA 的构建/运行/sanitizer 检查需要受支持的 NVIDIA 主机，本次发布不对此做声明。</p><p><a href="../../labs/kit/handouts/lab03_reductions.html">L3 讲义与 CUDA 命令</a></p></div><div class="cite"></div><div class="num">17 / 17</div><aside class="notes"></aside></section></div><div id="hint">← / → · Home / End · F fullscreen</div><script>const slides=[...document.querySelectorAll('.slide')];let current=0;function show(n){current=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>{s.classList.toggle('active',i===current);s.setAttribute('aria-hidden',i!==current)});location.hash='slide-'+(current+1)}function resize(){document.getElementById('stage').style.transform='translate(-50%,-50%) scale('+Math.min(innerWidth/1280,innerHeight/720)+')'}addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(current+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(current-1)}if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1);if(e.key.toLowerCase()==='f'){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>{})}});addEventListener('resize',resize);resize();const n=Number(location.hash.replace('#slide-',''));show(Number.isFinite(n)&&n>0?n-1:0);</script></body></html>
+    barrier</pre><p>这个示意的归约树假设线程块大小是选定的 2 的幂。</p></div><div class="cite"></div><div class="num">8 / 17</div><aside class="notes"></aside></section><section class="slide" id="s9"><h2>屏障的正确性</h2><div class="content"><p>屏障只作用于一个协作范围。它不是跨所有线程块或设备的通用排序原语。写明生产者/消费者关系和内存序要求。</p></div><div class="cite"></div><div class="num">9 / 17</div><aside class="notes"></aside></section><section class="slide" id="s10"><h2>寄存器与占用率</h2><div class="content"><p>更多存活的值可能增加寄存器需求，限制驻留的工作。更高的占用率本身不是目标：驻留线程块更少但复用友好的内核可能仍然更快。</p></div><div class="cite"></div><div class="num">10 / 17</div><aside class="notes"></aside></section><section class="slide" id="s11"><h2>每行一个线程块会限制可用的工作</h2><div class="content"><p>行数少就只有很少的线程块，即使每行很长。拆分一行可以提高并行度，但需要正确地合并部分结果，并带来额外开销。</p></div><div class="cite"></div><div class="num">11 / 17</div><aside class="notes"></aside></section><section class="slide" id="s12"><h2>流量估算算例</h2><div class="content"><p>对 D 个 float32 值和 D 个权重，一次理想的输出遍历读 8D 字节、写 4D 字节。</p><div class="formula">ideal baseline = 12D bytes / row</div><p>简单的 RMSNorm 内核在归约之后为输出再次读取输入，所以它在源码层面的输入流量更大。HBM 流量由缓存决定。</p></div><div class="cite"></div><div class="num">12 / 17</div><aside class="notes"></aside></section><section class="slide" id="s13"><h2>延迟受限与带宽受限</h2><div class="content"><p>短行可能暴露启动/归约开销；长行可能暴露流量、寄存器或调度约束。扫描形状，而不是只调一个方便的维度。</p></div><div class="cite"></div><div class="num">13 / 17</div><aside class="notes"></aside></section><section class="slide" id="s14"><h2>CUDA 与 HIP 的可移植性</h2><div class="content"><p>源码翻译不能证明性能。检查执行组的假设、矩阵指令、共享/局部内存，以及目标上后端的实际支持情况。</p></div><div class="cite"><a href="../../notes/amd_stack.html">AMD 栈对比</a> · <a href="33_programming_models_beyond_cuda.html">第 33 讲：CUDA 之外的编程模型</a></div><div class="num">14 / 17</div><aside class="notes"></aside></section><section class="slide" id="s15"><h2>要检查什么</h2><div class="content"><ul><li>地址计算和支持的步幅。</li><li>线程块/warp 的分配和可用的并行工作。</li><li>寄存器/共享内存使用和实际流量。</li><li>同步范围和数据生命周期。</li></ul></div><div class="cite"></div><div class="num">15 / 17</div><aside class="notes"></aside></section><section class="slide" id="s16"><h2>L3A：阅读参考内核</h2><div class="content"><p>对照 CPU 参考实现，追踪 float32、连续存储、每行一个线程块的 RMSNorm 示例。解释 D = 1、33 和 257 时的行为。</p></div><div class="cite"></div><div class="num">16 / 17</div><aside class="notes"></aside></section><section class="slide" id="s17"><h2>验证边界</h2><div class="content"><p>CPU 参考实现可以在这里运行。CUDA 的构建/运行/sanitizer 检查需要受支持的 NVIDIA 主机，本次发布不对此做声明。</p><p><a href="../../labs/kit/handouts/lab03_reductions.html">L3 讲义与 CUDA 命令</a></p></div><div class="cite"></div><div class="num">17 / 17</div><aside class="notes"></aside></section></div><div id="hint">← / → · Home / End · F fullscreen</div><script>const slides=[...document.querySelectorAll('.slide')];let current=0;function show(n){current=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>{s.classList.toggle('active',i===current);s.setAttribute('aria-hidden',i!==current)});location.hash='slide-'+(current+1)}function resize(){document.getElementById('stage').style.transform='translate(-50%,-50%) scale('+Math.min(innerWidth/1280,innerHeight/720)+')'}addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(current+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(current-1)}if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1);if(e.key.toLowerCase()==='f'){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>{})}});addEventListener('resize',resize);resize();const n=Number(location.hash.replace('#slide-',''));show(Number.isFinite(n)&&n>0?n-1:0);</script><script id="course-presenter">/* Offline teaching controls. Embedded by build_presenter_mode.py; no network or storage. */
+(() => {
+  const zh = document.documentElement.lang.startsWith('zh');
+  const words = zh ? {
+    notes:'讲者备注', presenter:'讲者窗口', missing:'本页暂无讲者备注。请结合本讲来源与实验手册备课。',
+    prev:'上一页', next:'下一页', start:'开始', pause:'暂停', reset:'重置',
+    help:'S：备注 · P：讲者窗口 · ←/→：翻页。投影窗口默认不显示备注。',
+    blocked:'讲者窗口未能打开；请允许弹出窗口，或按 S 使用本页备注。',
+    elapsed:'授课计时', nextTitle:'下一页', end:'本讲结束'
+  } : {
+    notes:'Speaker notes', presenter:'Presenter window', missing:'No speaker notes for this slide yet. Prepare with the lecture sources and lab handout.',
+    prev:'Previous', next:'Next', start:'Start', pause:'Pause', reset:'Reset',
+    help:'S: notes · P: presenter · ←/→: navigate. Notes stay hidden on the projection window by default.',
+    blocked:'Presenter window blocked. Allow popups, or press S for notes in this window.',
+    elapsed:'Lecture timer', nextTitle:'Next slide', end:'End of lecture'
+  };
+  const style = document.createElement('style');
+  style.id = 'course-presenter-style';
+  style.textContent = `
+    #course-notes-panel{display:none;position:fixed;inset:60% 0 0;z-index:100;background:#f4f6fa;color:#152238;padding:16px 28px;overflow:auto;border-top:3px solid #4a719f;font:18px/1.5 system-ui}
+    #course-notes-panel h3{font-size:22px;margin:8px 0}#course-notes-panel p{font-size:18px;line-height:1.5;margin:8px 0}
+    .course-presenter-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.course-presenter-tools button{font:16px system-ui;padding:6px 12px;cursor:pointer}
+    .course-presenter-tools time{font:20px ui-monospace,monospace;min-width:70px}.course-presenter-tools small{font-size:14px}
+    @media print{#course-notes-panel{display:none!important}}`;
+  document.head.append(style);
+  const panel = document.createElement('section');
+  panel.id = 'course-notes-panel';
+  panel.setAttribute('aria-label', words.notes);
+  document.body.append(panel);
+  let visible = false, popup = null, elapsed = 0, started = 0, running = false;
+  const stage = document.getElementById('stage');
+  const slides = [...document.querySelectorAll('.slide')];
+  if (!stage || !slides.length) return;
+  const index = () => Math.max(0, slides.findIndex(s => s.classList.contains('active')));
+  const clock = () => elapsed + (running ? performance.now() - started : 0);
+  const stamp = () => {
+    const seconds = Math.floor(clock() / 1000);
+    return String(Math.floor(seconds / 60)).padStart(2,'0') + ':' + String(seconds % 60).padStart(2,'0');
+  };
+  const move = delta => { if (typeof show === 'function') show(index() + delta); };
+  function makeView(doc, mount) {
+    const bar = doc.createElement('div'); bar.className = 'course-presenter-tools';
+    const button = (label, action) => {
+      const b = doc.createElement('button'); b.type = 'button'; b.textContent = label;
+      b.addEventListener('click', action); bar.append(b); return b;
+    };
+    const prev = button(words.prev, () => move(-1));
+    const next = button(words.next, () => move(1));
+    const time = doc.createElement('time'); time.setAttribute('aria-label',words.elapsed); bar.append(time);
+    const toggle = button(words.start, () => {
+      if (running) { elapsed = clock(); running = false; }
+      else { started = performance.now(); running = true; }
+      render();
+    });
+    button(words.reset, () => { elapsed = 0; started = performance.now(); render(); });
+    const help = doc.createElement('small'); help.textContent = words.help; bar.append(help);
+    const title = doc.createElement('h3');
+    const body = doc.createElement('div'); body.className = 'course-note-content';
+    const upcoming = doc.createElement('p');
+    mount.append(bar,title,body,upcoming);
+    return {prev,next,time,toggle,title,body,upcoming,slide:-1};
+  }
+  const inline = makeView(document,panel);
+  let external = null;
+  function update(view) {
+    const i = index(), slide = slides[i];
+    view.time.textContent = stamp();
+    view.toggle.textContent = running ? words.pause : words.start;
+    view.prev.disabled = i === 0; view.next.disabled = i === slides.length - 1;
+    if (view.slide === i) return;
+    view.slide = i;
+    view.title.textContent = `${i+1} / ${slides.length} · ${slide.querySelector('h1,h2')?.textContent || ''}`;
+    const note = slide.querySelector('aside.notes');
+    view.body.replaceChildren();
+    if (note && note.textContent.trim()) {
+      // Clone authored, repository-owned notes; do not fetch or execute external content.
+      for (const child of note.childNodes) view.body.append(child.cloneNode(true));
+    } else {
+      const p = view.body.ownerDocument.createElement('p'); p.textContent = words.missing; view.body.append(p);
+    }
+    view.upcoming.textContent = words.nextTitle + ': ' + (slides[i+1]?.querySelector('h1,h2')?.textContent || words.end);
+  }
+  function render() {
+    update(inline);
+    if (popup && !popup.closed && external) update(external);
+  }
+  function fit() {
+    if (!visible) { stage.style.top = '50%'; if (typeof resize === 'function') resize(); return; }
+    stage.style.top = '30%';
+    stage.style.transform = `translate(-50%,-50%) scale(${Math.min(innerWidth/1280,innerHeight*0.6/720)})`;
+  }
+  function toggleNotes() {
+    visible = !visible; panel.style.display = visible ? 'block' : 'none'; render(); fit();
+  }
+  function openPresenter() {
+    if (popup && !popup.closed) { popup.focus(); return; }
+    popup = window.open('', 'llm-course-presenter', 'width=960,height=800');
+    if (!popup) { if (!visible) toggleNotes(); inline.upcoming.textContent = words.blocked; return; }
+    const doc = popup.document;
+    doc.open(); doc.write('<!doctype html><html><head><meta charset="utf-8"><title></title></head><body></body></html>'); doc.close();
+    doc.documentElement.lang = document.documentElement.lang;
+    doc.title = words.presenter + ' · ' + document.title;
+    const css = doc.createElement('style');
+    css.textContent = 'body{margin:24px;background:#f4f6fa;color:#152238;font:20px/1.6 system-ui}h3{font-size:26px}p,li{font-size:20px}.course-presenter-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.course-presenter-tools button{font:16px system-ui;padding:8px;cursor:pointer}.course-presenter-tools time{font:24px monospace}.course-presenter-tools small{width:100%;font-size:15px}a{color:#24548c}';
+    doc.head.append(css); external = makeView(doc,doc.body);
+    popup.addEventListener('keydown', e => {
+      if (['ArrowRight','PageDown'].includes(e.key)) {e.preventDefault();move(1);}
+      if (['ArrowLeft','PageUp'].includes(e.key)) {e.preventDefault();move(-1);}
+    });
+    render();
+  }
+  // Keep native button activation from also triggering the deck's Space-to-next handler.
+  addEventListener('keydown', e => {
+    if (panel.contains(e.target) && e.target.closest('button') && [' ', 'Enter'].includes(e.key)) e.stopPropagation();
+  }, true);
+  addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey || e.altKey || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || e.target.isContentEditable) return;
+    if (e.key.toLowerCase() === 's') {e.preventDefault();toggleNotes();}
+    if (e.key.toLowerCase() === 'p') {e.preventDefault();openPresenter();}
+  });
+  addEventListener('resize',fit);
+  new MutationObserver(render).observe(stage,{subtree:true,attributes:true,attributeFilter:['class']});
+  setInterval(render,1000);
+  const hint = document.getElementById('hint');
+  if (hint) hint.textContent += zh ? ' · S 备注 · P 讲者窗口' : ' · S notes · P presenter';
+  render();
+})();
+</script></body></html>

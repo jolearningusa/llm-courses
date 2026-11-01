@@ -323,13 +323,20 @@ def apply():
         if len(matches)!=1:raise ValueError('one deck required for '+entry['prefix'])
         path=matches[0];svg=entry['svg'].out();(HERE/(entry['slug']+'.svg')).write_text(svg)
         source=path.read_text()
+        # Keep authored speaker notes when rebuilding a companion figure.
+        old_figures=re.findall(r'<section class="slide"[^>]* data-illustration="[^"]+".*?</section>',source,re.S)
+        old_notes={re.search(r'data-illustration="([^"]+)"',section).group(1):
+                   re.search(r'<aside class="notes">.*?</aside>',section,re.S)
+                   for section in old_figures}
+        note=old_notes.get(entry['slug'])
+        speaker_note=note.group() if note else ''
         # Remove only previously generated illustration sections; keep every authored slide.
         source=re.sub(r'<section class="slide"[^>]* data-illustration="[^"]+".*?</section>','',source,flags=re.S)
         sections=list(re.finditer(r'<section class="slide".*?</section>',source,re.S))
         target=next((m for m in sections if '<h2>'+entry['after']+'</h2>' in m.group()),None)
         if target is None:raise ValueError('missing teaching anchor '+entry['after'])
         cite=re.search(r'<div class="cite">(.*?)</div>',target.group(),re.S).group(1)
-        addition='<section class="slide" data-illustration="'+entry['slug']+'"><h2>'+escape(entry['title'])+'</h2><div class="content">'+svg+'<p class="note">'+escape(entry['caption'])+'</p></div><div class="cite">'+cite+' · Original conceptual figure; not measured performance</div><div class="num"></div></section>'
+        addition='<section class="slide" data-illustration="'+entry['slug']+'"><h2>'+escape(entry['title'])+'</h2><div class="content">'+svg+'<p class="note">'+escape(entry['caption'])+'</p></div><div class="cite">'+cite+' · Original conceptual figure; not measured performance</div><div class="num"></div>'+speaker_note+'</section>'
         source=source[:target.end()]+addition+source[target.end():]
         total=source.count('class="slide"');index=[0]
         def renumber(m):

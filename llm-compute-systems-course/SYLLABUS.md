@@ -52,6 +52,22 @@ Supplements: deck 33 (programming models beyond CUDA) extends Part II after deck
 | **Capstone** | | | |
 | 16 | **Capstone review.** Training systems presentations and trace walkthroughs. | **Capstone review.** Serving/deployment presentations; negative results, portability and unresolved limits. | Submit a reproducible artifact, fixed workload description, causal ablations and report. |
 
+## Supplement placement and teaching-time choices
+
+The 32 scheduled sessions above remain the core timetable. Supplements are choices within a session, pre-class reading or optional seminars; they are not additional required lectures hidden in sixteen weeks. The excerpt durations below are planning estimates for an instructor pilot, not measured pacing. If a full supplement is taught, allocate an extra session or explicitly replace a core session and state the lost coverage.
+
+| Supplement | Insertion point | Core-preserving excerpt / trade-off |
+|---|---|---|
+| [32 · Optimization decisions](slides/32_optimization_decision_systems.html) | After deck 12; revisit after 24 | 15–20 minute search-cost case instead of an additional tuning demonstration; full treatment is an optional seminar. |
+| [33 · Programming models](slides/33_programming_models_beyond_cuda.html) | After deck 07 | 15–20 minute backend comparison instead of a vendor API tour; retain SIMT/memory fundamentals. |
+| [34 · Model lowering](slides/34_model_lowering_codesign.html) | After deck 23 | 20-minute lowering case instead of a second delegate example; preserve the export/delegate boundary and L11 evidence. |
+| [35 · Inference engines](slides/35_inference_engines_compared.html) | After deck 16 | 20-minute comparison of two engines instead of a second implementation tour; the rest is reference reading, not another table-heavy lecture. |
+| [36 · Inference bottlenecks](slides/36_inference_bottlenecks.html) | After deck 17; revisit 19–21 | 20-minute diagnosis case instead of a second scheduling example; keep chunking/SLO concepts and L8. The existing diagnosis section below remains the assignment path. |
+| [37–39 · AI-assisted development and verification](slides/37_ai_assisted_development.html) | After 32 and deployment; before capstone | Select one 15–20 minute contract/release case during capstone preparation. Full three-deck treatment needs separate optional seminars; it does not silently replace core training weeks. |
+| [40 · Accelerator architectures](slides/40_inference_accelerator_architectures.html) | After deck 24 | 25–30 minute systolic/dataflow case in place of an extended vendor catalogue; keep Rubin topology and the analytical L15A dossier. |
+
+For a standard cohort, assign the remaining supplement pages as optional reference. Record which core example was replaced in the instructor's lesson plan; do not require all full decks plus all original material in the same 75–90 minutes.
+
 ## AMD comparison thread
 
 AMD ROCm is integrated across kernel, collective and serving comparisons, using the [AMD stack note](notes/amd_stack.md). Compare HIP/CK/AITER and hipBLASLt with CUDA/CUTLASS and library paths, and RCCL/rocSHMEM with communication responsibilities. Hardware access is optional; factual library roles and portability limits are core content.
