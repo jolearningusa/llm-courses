@@ -7,7 +7,7 @@ Companion to [deck 35](../slides/35_inference_engines_compared.html) · [简体�
 | Project | Useful comparison question | Direct source |
 |---|---|---|
 | llama.cpp / llama-server | How do ggml backend, offload, slot policy and cache settings affect this model? | [Repository](https://github.com/ggml-org/llama.cpp), [server reference](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md) |
-| Ollama | Which execution backend and defaults did the model-management/API layer select? | [Repository](https://github.com/ollama/ollama), [engine discussion](https://ollama.com/blog/new-engine) |
+| Ollama | Which execution backend and defaults did the model-management/API layer select? | [Repository](https://github.com/ollama/ollama), [engine discussion](https://ollama.com/blog/multimodal-models) |
 | MLX / MLX-LM | How do representation, residency and the Apple-silicon path affect the workload? | [MLX-LM](https://github.com/ml-explore/mlx-lm), [server limitations](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/SERVER.md) |
 | vLLM | Which scheduling, paged-KV and prefix-reuse path is active? | [Repository](https://github.com/vllm-project/vllm), [GGUF status](https://docs.vllm.ai/en/stable/features/quantization/gguf/) |
 | SGLang | Does prefix-aware reuse help this arrival/history pattern? | [Repository](https://github.com/sgl-project/sglang), [documentation](https://docs.sglang.io/) |

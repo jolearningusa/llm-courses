@@ -7,7 +7,7 @@
 | 项目 | 有用的比较问题 | 原始来源 |
 |---|---|---|
 | llama.cpp / llama-server | ggml 后端、卸载、槽位和缓存设置如何影响这个模型？ | [仓库](https://github.com/ggml-org/llama.cpp)、[服务参考](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md) |
-| Ollama | 模型管理与 API 层为本次模型选了什么执行后端和默认值？ | [仓库](https://github.com/ollama/ollama)、[引擎说明](https://ollama.com/blog/new-engine) |
+| Ollama | 模型管理与 API 层为本次模型选了什么执行后端和默认值？ | [仓库](https://github.com/ollama/ollama)、[引擎说明](https://ollama.com/blog/multimodal-models) |
 | MLX / MLX-LM | 表示、驻留与 Apple silicon 路径如何影响负载？ | [MLX-LM](https://github.com/ml-explore/mlx-lm)、[服务边界](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/SERVER.md) |
 | vLLM | 实际启用了哪些调度、分页 KV 与前缀复用路径？ | [仓库](https://github.com/vllm-project/vllm)、[GGUF 状态](https://docs.vllm.ai/en/stable/features/quantization/gguf/) |
 | SGLang | 前缀感知复用是否改善这种到达与历史模式？ | [仓库](https://github.com/sgl-project/sglang)、[文档](https://docs.sglang.io/) |
