@@ -51,11 +51,14 @@ class Drawing:
             self.path([(330,165),(330,275),(410,275)])
             self.path([(705,60),(785,60),(785,165),(855,165)])
             self.path([(705,275),(785,275),(785,165)])
-            if len(a)>4:self.t(550,170,a[4],23,MUTED,'middle')
+            if len(a)>4:
+                wrapped=textwrap.wrap(a[4],width=17 if self.zh else 32,break_long_words=True)
+                self.t(550,160-(len(wrapped)-1)*14,'|'.join(wrapped),23,MUTED,'middle')
         elif k=='states':
             coords=[(25,30),(665,30),(665,230),(25,230)]
             for i,(x,y) in enumerate(coords):self.box(x,y,400,75,a[i],TEAL if i==2 else BLUE)
-            self.line(425,67,665,67);self.line(865,105,865,230);self.line(665,267,425,267);self.line(225,230,225,105,AMBER)
+            self.line(425,67,665,67);self.line(865,105,865,230);self.line(665,267,425,267)
+            if not self.spec.get('terminal'):self.line(225,230,225,105,AMBER)
             if len(a)>4:self.t(550,170,a[4],23,AMBER,'middle')
         elif k in ['serial','overlap']:
             self.t(15,67,a[0],22,BLUE);self.t(15,187,a[1],22,TEAL)
@@ -85,9 +88,9 @@ class Drawing:
             self.path([(910,100),(910,155),(550,155)])
             self.t(550,230,self.spec.get('formula',''),27,AMBER,'middle')
             self.t(550,310,a[2],24,TEAL,'middle')
-        elif k=='compare':
-            for row in range(2):
-                y=35+row*165;self.t(20,y+40,a[row*4],22,TEAL if row else BLUE)
+        elif k in ['compare','compare3']:
+            for row in range(3 if k=='compare3' else 2):
+                y=10+row*110 if k=='compare3' else 35+row*165;self.t(20,y+40,a[row*4],22,TEAL if row else BLUE)
                 for j in range(3):
                     x=260+j*280;self.box(x,y,255,80,a[row*4+j+1],TEAL if row else BLUE)
                     if j<2:self.line(x+255,y+40,x+280,y+40)
@@ -106,6 +109,25 @@ class Drawing:
                 y=10+i*110;self.box(430,y,230,75,a[i+1],TEAL if i==0 else BLUE)
                 self.path([(225,157),(330,157),(330,y+37),(430,y+37)])
                 self.line(660,y+37,805,y+37);self.box(805,y,270,75,a[i+4],TEAL if i==0 else MUTED)
+        elif k=='accumulation':
+            self.box(25,25,330,80,a[0]);self.box(25,235,330,80,a[1])
+            self.box(445,125,300,80,a[2],AMBER);self.box(855,125,220,80,a[3],TEAL)
+            self.path([(355,65),(400,65),(400,165),(445,165)]);self.path([(355,275),(400,275),(400,165)])
+            self.line(745,165,855,165);self.t(550,335,a[4],23,MUTED,'middle')
+        elif k=='cache_layers':
+            for i in range(6):
+                y=10+i*55;self.box(25,y,450,44,a[i*2],TEAL if i%2 else BLUE)
+                self.line(475,y+22,590,y+22);self.t(620,y+30,a[i*2+1],23)
+        elif k=='zero_stages':
+            for j,title in enumerate(a[:3]):self.t(380+j*280,30,title,23,INK,'middle')
+            for stage in range(1,4):
+                y=55+(stage-1)*88;self.t(25,y+47,'ZeRO-'+str(stage),25,AMBER)
+                for j in range(3):
+                    x=260+j*280;sharded=(j>=3-stage)
+                    self.rect(x,y,240,70,TEAL if sharded else BLUE)
+                    for rank in range(3):
+                        self.rect(x+12+(rank*72 if sharded else 0),y+9+rank*19,68 if sharded else 216,12,TEAL if sharded else BLUE,TEAL if sharded else BLUE)
+            self.t(550,340,a[3],21,MUTED,'middle')
         elif k=='spec_tokens':
             for i in range(4):
                 self.box(25+i*270,45,240,80,a[i],TEAL if i<2 else RED if i==2 else MUTED)
@@ -119,8 +141,8 @@ class Drawing:
             self.box(870,120,205,80,a[3],TEAL)
             self.path([(725,60),(800,60),(800,160),(870,160)]);self.path([(725,275),(800,275),(800,160)])
         elif k=='tiles':
-            for x,title,pattern in [(50,a[0],lambda r,c:1<=r<3),(445,a[1],lambda r,c:2<=c<4),(840,a[2],lambda r,c:1<=r<3 and 2<=c<4)]:
-                self.t(x,35,title,23);self.grid(x,65,5,6,pattern)
+            for x,title,rows,cols,pattern in [(50,a[0],5,6,lambda r,c:1<=r<3),(445,a[1],6,5,lambda r,c:2<=c<4),(840,a[2],5,5,lambda r,c:1<=r<3 and 2<=c<4)]:
+                self.t(x,35,title,23);self.grid(x,65,rows,cols,pattern)
             self.line(260,140,415,140);self.line(655,140,810,140)
             self.t(550,300,a[3],24,AMBER,'middle')
         elif k=='mask':
@@ -131,7 +153,10 @@ class Drawing:
             for row in range(2):
                 y=40+row*155;self.t(20,y+30,a[row*3],23,BLUE if row==0 else TEAL)
                 for j in range(8):
-                    x=320+j*85;self.rect(x,y,72,50,BLUE if row==0 else TEAL);self.t(x+36,y+33,str(j),22,INK,'middle')
+                    x=320+j*85;mode=self.spec.get('lane_mode','plain')
+                    color=(TEAL if j<5 else GRAY) if mode=='tail' else BLUE if row==0 else TEAL
+                    value=(str(j) if row==0 else str(int(j<5))) if mode=='tail' else str(j if row==0 else 4*j) if mode=='stride' else str(j)
+                    self.rect(x,y,72,50,color);self.t(x+36,y+33,value,22,INK,'middle')
                 self.t(320,y+98,a[row*3+1],23,AMBER)
             self.t(550,335,a[2]+' / '+a[5],22,MUTED,'middle')
         elif k=='pages':
@@ -194,11 +219,13 @@ def apply():
             if 'data-illustration=' not in old:
                 original=re.search(r'<div class="content">(.*?)</div><div class="cite">',old,re.S).group(1)
                 # Retain both detailed original content and any previously authored notes.
-                notes='<div data-original-explanation="true">'+original+'</div>'+notes
+                original_cite=re.search(r'<div class="cite">(.*?)</div>',old,re.S).group(1)
+                notes='<div data-original-explanation="true">'+original+'</div><p data-original-sources="true">'+original_cite+'</p>'+notes
             src=data['sources'][spec['source']];url=src['url'];label=src['label']
             if 'data-visual-reading' not in notes:
                 prompt='读图：先辨认数据、状态和参与者，再沿箭头解释依赖或回收边界。预测一个失效条件，再用原页解释核对。' if zh else 'Read the data, states and actors first, then trace dependencies or reclamation boundaries. Predict one failure condition and check the retained explanation.'
                 notes+=f'<p data-visual-reading="true">{prompt}</p><p><a href="{escape(url,quote=True)}">{escape(label)}</a></p>'
+            notes=re.sub(r'(<p data-visual-reading="true">.*?</p>)<p><a href="[^"]+">.*?</a></p>',lambda m:m.group(1)+f'<p><a href="{escape(url,quote=True)}">{escape(label)}</a></p>',notes,flags=re.S)
             caption=spec['caption_cn' if zh else 'caption']
             index_url=('../../' if zh else '../')+'references/figure_sources.html'
             cite=f'<a href="{escape(url,quote=True)}">'+('原创示意图，参考：' if zh else 'Original schematic, reference: ')+escape(label)+f'</a> · <a href="{index_url}">'+('图源与适用范围' if zh else 'Figure sources and scope')+'</a>'

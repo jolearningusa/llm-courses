@@ -120,6 +120,18 @@
     "tpu": {
       "label": "Google TPU architecture",
       "url": "https://cloud.google.com/tpu/docs/system-architecture-tpu-vm"
+    },
+    "zero": {
+      "label": "ZeRO state-partition stages",
+      "url": "https://arxiv.org/abs/1910.02054"
+    },
+    "attention2": {
+      "label": "FlashAttention-2 work partitioning",
+      "url": "https://arxiv.org/html/2307.08691v1"
+    },
+    "sampling": {
+      "label": "FlashInfer sampling operators",
+      "url": "https://docs.flashinfer.ai/api/sampling.html"
     }
   },
   "figures": [
@@ -589,18 +601,18 @@
       "slug": "mechanism-05-11",
       "title": "Gradient accumulation",
       "title_cn": "梯度累加",
-      "kind": "states",
+      "kind": "accumulation",
       "en": [
-        "Microbatch 1",
-        "Accumulate .grad",
-        "Microbatch 2",
-        "One optimizer step",
+        "Microbatch 1 backward",
+        "Microbatch 2 backward",
+        "Add gradients",
+        "One optimizer update",
         "Match loss scaling and effective batch"
       ],
       "zh": [
-        "微批 1",
-        "累加 .grad",
-        "微批 2",
+        "微批 1 反向",
+        "微批 2 反向",
+        "梯度相加",
         "一次优化器更新",
         "匹配损失缩放与有效批大小"
       ],
@@ -670,7 +682,7 @@
       "slug": "mechanism-06-09",
       "title": "Fusion, graph replay and megakernels",
       "title_cn": "融合、图重放与巨型内核",
-      "kind": "compare",
+      "kind": "compare3",
       "en": [
         "Fusion",
         "Read inputs",
@@ -679,7 +691,11 @@
         "Graph replay",
         "Record launches",
         "Replay launch graph",
-        "Same kernel work"
+        "Same kernel work",
+        "Megakernel",
+        "Device-side schedule",
+        "Many operator tasks",
+        "Broad fused kernel"
       ],
       "zh": [
         "算子融合",
@@ -689,7 +705,11 @@
         "图重放",
         "记录启动",
         "重放启动图",
-        "仍执行内核工作"
+        "仍执行内核工作",
+        "Megakernel",
+        "设备端调度",
+        "多个算子任务",
+        "较大范围融合内核"
       ],
       "caption": "Fusion changes intermediate work; replay primarily targets launch orchestration.",
       "caption_cn": "融合改变中间工作；重放主要优化启动编排。",
@@ -703,24 +723,25 @@
       "title_cn": "尾部处理",
       "kind": "lanes",
       "en": [
-        "Valid lanes",
-        "Mask: index < length",
-        "Participate correctly",
-        "Tail lanes",
-        "Masked load / store",
-        "No out-of-bounds access"
+        "Lane indices",
+        "Input length = 5",
+        "Mask the tail",
+        "Load / store mask",
+        "1 = active, 0 = masked",
+        "Eight teaching lanes"
       ],
       "zh": [
-        "有效线程",
-        "掩码：索引 < 长度",
-        "正确参与计算",
-        "尾部线程",
-        "带掩码读写",
-        "避免越界访问"
+        "线程索引",
+        "输入长度 = 5",
+        "屏蔽尾部",
+        "加载 / 写入掩码",
+        "1 = 有效，0 = 屏蔽",
+        "八个教学线程"
       ],
       "caption": "Lane numbers are a small teaching subset, not a hardware warp-width claim.",
       "caption_cn": "线程编号只是教学子集，不表示硬件 warp 宽度。",
-      "source": "cuda"
+      "source": "cuda",
+      "lane_mode": "tail"
     },
     {
       "prefix": "07",
@@ -731,23 +752,24 @@
       "kind": "lanes",
       "en": [
         "Contiguous",
-        "Adjacent lanes → adjacent addresses",
+        "Element indices accessed by adjacent lanes",
         "Fewer memory segments",
         "Strided",
-        "Adjacent lanes → separated addresses",
+        "Constructed stride: 4 elements",
         "More segments may be touched"
       ],
       "zh": [
         "连续访问",
-        "相邻线程访问相邻地址",
+        "相邻线程访问的元素索引",
         "访问较少内存段",
         "跨步访问",
-        "相邻线程访问分散地址",
+        "构造步幅：4 个元素",
         "可能触及更多内存段"
       ],
       "caption": "The address pattern matters; transaction counts depend on alignment and architecture.",
       "caption_cn": "地址模式很重要；事务数量还取决于对齐与架构。",
-      "source": "cuda"
+      "source": "cuda",
+      "lane_mode": "stride"
     },
     {
       "prefix": "07",
@@ -1113,7 +1135,7 @@
       ],
       "caption": "Conceptual work partitioning; actual warp ownership is kernel-specific.",
       "caption_cn": "工作划分示意；实际 warp 所有权由内核决定。",
-      "source": "attention",
+      "source": "attention2",
       "map": [
         0,
         1,
@@ -1350,7 +1372,8 @@
       ],
       "caption": "Request-state transitions need resource accounting and a safe reclaim boundary.",
       "caption_cn": "请求状态迁移需要资源统计与安全回收边界。",
-      "source": "kv"
+      "source": "kv",
+      "terminal": true
     },
     {
       "prefix": "15",
@@ -1427,27 +1450,37 @@
       "slug": "mechanism-16-02",
       "title": "Six cache layers",
       "title_cn": "六层缓存",
-      "kind": "tree",
+      "kind": "cache_layers",
       "en": [
-        "Reusable state",
-        "Compiled code",
-        "Prefix K/V",
-        "Response result",
-        "Artifact identity",
-        "Causal history",
-        "Fresh answer contract"
+        "Completed answer",
+        "Avoid a valid full call",
+        "Compatible prefix",
+        "Avoid repeated prefill",
+        "Live sequence KV",
+        "Avoid old-state recomputation",
+        "Offloaded session",
+        "Avoid post-wait recomputation",
+        "Compiled code / graph",
+        "Avoid compile / launch setup",
+        "Weights / OS pages",
+        "Avoid some loading traffic"
       ],
       "zh": [
-        "可复用状态",
-        "已编译代码",
-        "前缀 K/V",
-        "响应结果",
-        "产物身份",
-        "因果历史",
-        "答案新鲜度契约"
+        "已完成答案",
+        "省去有效的完整调用",
+        "兼容前缀",
+        "省去重复预填充",
+        "存活序列 KV",
+        "省去旧状态重计算",
+        "卸载会话",
+        "省去等待后的重计算",
+        "已编译代码 / 图",
+        "省去编译 / 启动设置",
+        "权重 / OS 页面",
+        "省去部分加载流量"
       ],
-      "caption": "Selected cache layers with different validity rules; this is not a full cache taxonomy.",
-      "caption_cn": "选取有效性规则不同的缓存层；不是完整分类。",
+      "caption": "Each cached object avoids different work and needs its own validity contract.",
+      "caption_cn": "不同缓存对象省去不同工作，并需要各自的有效性契约。",
       "source": "prefix"
     },
     {
@@ -2135,30 +2168,22 @@
       "slug": "mechanism-25-11",
       "title": "ZeRO stages",
       "title_cn": "ZeRO 各阶段",
-      "kind": "compare",
+      "kind": "zero_stages",
       "en": [
-        "Replicated",
         "Parameters",
         "Gradients",
         "Optimizer state",
-        "Sharded",
-        "Partition parameters?",
-        "Partition gradients?",
-        "Partition optimizer"
+        "Three rank rows: full bars replicate, offset slices partition"
       ],
       "zh": [
-        "复制存储",
         "参数",
         "梯度",
         "优化器状态",
-        "分片存储",
-        "参数是否分片？",
-        "梯度是否分片？",
-        "优化器是否分片？"
+        "三个 rank 行：满条表示复制，错开的切片表示分片"
       ],
-      "caption": "ZeRO stages shard different state categories; consult the retained stage table.",
-      "caption_cn": "ZeRO 各阶段分片不同状态；请结合备注中的阶段表。",
-      "source": "fsdp"
+      "caption": "Constructed three-rank sketch; use actual dtypes and transient buffers for memory estimates.",
+      "caption_cn": "构造的三 rank 示例；内存估算需使用真实类型并计入临时缓冲区。",
+      "source": "zero"
     },
     {
       "prefix": "25",
@@ -2191,20 +2216,20 @@
       "slug": "mechanism-25-16",
       "title": "Gradient accumulation",
       "title_cn": "梯度累积",
-      "kind": "states",
+      "kind": "accumulation",
       "en": [
-        "Microbatch forward",
-        "Microbatch backward",
-        "Accumulate gradients",
-        "Synchronized update",
-        "Match effective batch, loss scaling and synchronization"
+        "Microbatch 1 backward",
+        "Microbatch 2 backward",
+        "Add gradients",
+        "One optimizer update",
+        "Match loss scaling and effective batch"
       ],
       "zh": [
-        "微批前向",
-        "微批反向",
-        "累加梯度",
-        "同步更新",
-        "匹配有效批、损失缩放与同步方式"
+        "微批 1 反向",
+        "微批 2 反向",
+        "梯度相加",
+        "一次优化器更新",
+        "匹配损失缩放与有效批大小"
       ],
       "caption": "Schematic accumulation cycle; communication suppression is implementation-specific.",
       "caption_cn": "累加循环示意；是否延后通信取决于实现。",
@@ -3043,9 +3068,9 @@
         "合并所选集合",
         "并非总需要对整个词表完全排序"
       ],
-      "caption": "Conceptual hierarchical selection, not a claim about a particular engine kernel.",
-      "caption_cn": "分层选择示意，不表示某个引擎采用此内核。",
-      "source": "cuda"
+      "caption": "Top-k selection example. Top-p additionally applies a cumulative-mass rule; actual kernels depend on the engine.",
+      "caption_cn": "Top-k 选择示例；top-p 还需要累积概率质量规则，具体内核依引擎而定。",
+      "source": "sampling"
     },
     {
       "prefix": "36",

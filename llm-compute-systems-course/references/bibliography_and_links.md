@@ -218,3 +218,7 @@ Sources for [deck 40](../slides/40_inference_accelerator_architectures.html). Th
 ## Teaching/reference split for supplements (2026-11-01)
 
 The optional [lowering](../notes/lowering_codesign_reference.md), [engine](../notes/inference_engines_reference.md) and [accelerator](../notes/accelerator_codesign_reference.md) handouts preserve source links and worksheets outside the projected lecture path. Rechecked IREE/TVM/PJRT integration, llama-server split/cache options, GGUF format/plugin limitations, MLX-LM server scope, and current project READMEs. The source-based edit supplies no new executed performance results; no installed version is implied by a moving documentation page.
+
+## Course mechanism illustrations — 2026-11-01
+
+The [figure-source inventory](figure_sources.md) maps all 164 mechanisms to lecture pages and sources. The visual revision adds original diagrams informed by official CUDA pipeline, PyTorch compiler/autograd/FSDP/DCP, Triton, ExecuTorch, IREE, NCCL, AMD HIP, TVM, PJRT and GGUF documentation plus the attention, paging, scheduling, disaggregation and speculative-decoding papers cited above. Newly checked moving documentation supports conceptual responsibilities; existing lab versions and API contracts are not silently upgraded. All charts/timelines introduced in this revision are explicitly schematic, not benchmark results.
