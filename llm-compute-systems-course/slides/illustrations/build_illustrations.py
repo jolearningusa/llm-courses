@@ -330,8 +330,8 @@ def apply():
                    for section in old_figures}
         note=old_notes.get(entry['slug'])
         speaker_note=note.group() if note else ''
-        # Remove only previously generated illustration sections; keep every authored slide.
-        source=re.sub(r'<section class="slide"[^>]* data-illustration="[^"]+".*?</section>','',source,flags=re.S)
+        # Replace this companion only; preserve all other figures in the same deck.
+        source=re.sub(r'<section class="slide"[^>]* data-illustration="'+re.escape(entry['slug'])+r'".*?</section>','',source,flags=re.S)
         sections=list(re.finditer(r'<section class="slide".*?</section>',source,re.S))
         target=next((m for m in sections if '<h2>'+entry['after']+'</h2>' in m.group()),None)
         if target is None:raise ValueError('missing teaching anchor '+entry['after'])
@@ -348,4 +348,7 @@ def apply():
         manifest.append({k:v for k,v in entry.items() if k!='svg'}|{'deck':path.name,'asset':entry['slug']+'.svg'})
     (HERE/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
     print(f'Embedded {len(manifest)} original SVG figures in {len(manifest)} decks')
-if __name__=='__main__':apply()
+if __name__=='__main__':
+    apply()
+    import visual_explanations
+    visual_explanations.apply()

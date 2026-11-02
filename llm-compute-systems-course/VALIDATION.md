@@ -59,3 +59,13 @@ Deck 36 adds 18 slides in English and 18 in Simplified Chinese, with an original
 ## AI-assisted verification unit — 2026-10-31
 
 Executed the standard-library evaluator and eight tests: correct/reordered numerical implementations accepted, three numerical mutants rejected, ownership/generation controls checked. Authored event traces are not concurrent device execution. GPU sanitizers, formal tools, HIL, power/thermal and firmware flashing were not run. The new bilingual decks and diagrams undergo browser/layout/site checks; student pacing remains unpiloted.
+
+## Course-wide visual revision — 2026-11-01
+
+All 41 English/Chinese deck pairs retain their page counts (713 slides per language). Each now contains four SVG mechanism pages: 41 retained companion illustrations and 123 text pages rewritten in place. There are 164 concepts and 328 localized standalone SVGs, embedded in HTML for offline use. Original explanations and authored notes remain accessible through the existing presenter controls.
+
+Primary diagram/documentation review covers CUDA pipelines, PyTorch compiler/autograd/FSDP/DCP, Triton, FlashAttention/FlashAttention-2, GQA, PagedAttention, Sarathi-Serve, DistServe, speculative decoding, ZeRO, NCCL, ExecuTorch, IREE, AMD HIP, TVM, PJRT, GGUF, SGLang and FlashInfer. See [the source guide](references/figure_sources.md) for precise scope and destination pages. Online NCCL, PagedAttention and ExecuTorch illustrations were also inspected visually. Distributed artwork is original geometry; no upstream image assets or benchmark values are reproduced.
+
+Rendered the initial full 1,426-slide course and all 328 final diagram pages at 1280×720; checked text/caption/SVG bounds. Reviewed bilingual contact sheets and representative full-size diagrams. Corrected edge labels, connector/text intersections, tensor-grid dimension consistency, terminal request state, accumulation dependencies and explicit ZeRO-stage representation. Regeneration hash check covers 411 outputs: 82 HTML decks, 328 SVGs and the manifest. Repeated unified generation is idempotent.
+
+Course consistency: three courses, zero problems. Site audit: 818 pages, zero broken relative links, unlisted decks or missing home links. Full browser audit: 128 decks, zero console/numbering problems. Presenter audit: 98 embedded copies, bilingual navigation, notes, timer, resize and popup fallback passed. Lab implementation and recorded reports were unchanged. No new GPU, hardware, HIL, physical measurement or student-pacing result is claimed.

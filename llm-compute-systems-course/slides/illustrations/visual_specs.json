@@ -1,0 +1,3422 @@
+{
+  "reviewed": "2026-11-01",
+  "sources": {
+    "roofline": {
+      "label": "Roofline accounting",
+      "url": "https://jax-ml.github.io/scaling-book/roofline/"
+    },
+    "cuda": {
+      "label": "CUDA programming model",
+      "url": "https://docs.nvidia.com/cuda/cuda-programming-guide/index.html"
+    },
+    "pipeline": {
+      "label": "CUDA pipeline ownership",
+      "url": "https://docs.nvidia.com/cuda/cuda-programming-guide/04-special-topics/pipelines.html"
+    },
+    "triton": {
+      "label": "Triton blocked GEMM",
+      "url": "https://triton-lang.org/main/getting-started/tutorials/03-matrix-multiplication.html"
+    },
+    "autograd": {
+      "label": "PyTorch autograd",
+      "url": "https://docs.pytorch.org/docs/2.15/notes/autograd.html"
+    },
+    "compiler": {
+      "label": "PyTorch Dynamo diagrams",
+      "url": "https://github.com/pytorch/docs/blob/site/main/user_guide/torch_compiler/torch.compiler_dynamo_overview.md"
+    },
+    "attention": {
+      "label": "FlashAttention §3 / Fig. 1",
+      "url": "https://arxiv.org/html/2205.14135v2"
+    },
+    "gqa": {
+      "label": "GQA head sharing",
+      "url": "https://arxiv.org/abs/2305.13245"
+    },
+    "kv": {
+      "label": "PagedAttention §4 / figures",
+      "url": "https://arxiv.org/html/2309.06180v1"
+    },
+    "prefix": {
+      "label": "vLLM prefix-cache identity",
+      "url": "https://docs.vllm.ai/en/latest/design/prefix_caching/"
+    },
+    "schedule": {
+      "label": "Sarathi-Serve §4",
+      "url": "https://arxiv.org/html/2403.02310v1"
+    },
+    "disagg": {
+      "label": "DistServe phase separation",
+      "url": "https://arxiv.org/html/2401.09670v3"
+    },
+    "speculate": {
+      "label": "Speculative decoding §2",
+      "url": "https://arxiv.org/html/2211.17192v2"
+    },
+    "fsdp": {
+      "label": "PyTorch FSDP2 dataflow",
+      "url": "https://docs.pytorch.org/tutorials/intermediate/FSDP_tutorial.html"
+    },
+    "nccl": {
+      "label": "NCCL collective diagrams",
+      "url": "https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html"
+    },
+    "dcp": {
+      "label": "PyTorch async checkpoint",
+      "url": "https://docs.pytorch.org/tutorials/recipes/distributed_async_checkpoint_recipe.html"
+    },
+    "executorch": {
+      "label": "ExecuTorch lowering diagram",
+      "url": "https://docs.pytorch.org/executorch/stable/intro-how-it-works.html"
+    },
+    "iree": {
+      "label": "IREE runtime component diagrams",
+      "url": "https://iree.dev/reference/bindings/c-api/"
+    },
+    "numerics": {
+      "label": "NVIDIA floating-point guide",
+      "url": "https://docs.nvidia.com/cuda/floating-point/index.html"
+    },
+    "dma": {
+      "label": "Linux DMA ownership",
+      "url": "https://docs.kernel.org/core-api/dma-api-howto.html"
+    },
+    "evaluation": {
+      "label": "Course verification contracts",
+      "url": "https://jolearningusa.github.io/llm-courses/llm-compute-systems-course/references/ai_development_verification.html"
+    },
+    "code": {
+      "label": "TorchTitan source boundaries",
+      "url": "https://github.com/pytorch/torchtitan"
+    },
+    "co_design": {
+      "label": "Architecture / engine primary-source audit",
+      "url": "https://jolearningusa.github.io/llm-courses/llm-compute-systems-course/references/accelerator_architectures_review.html"
+    },
+    "telemetry": {
+      "label": "NVIDIA telemetry definitions",
+      "url": "https://docs.nvidia.com/deploy/nvidia-smi/"
+    },
+    "tvm": {
+      "label": "TVM architecture / BYOC",
+      "url": "https://tvm.apache.org/docs/arch/index.html"
+    },
+    "pjrt": {
+      "label": "OpenXLA PJRT responsibilities",
+      "url": "https://openxla.org/xla/pjrt"
+    },
+    "hip": {
+      "label": "AMD HIP programming model",
+      "url": "https://rocm.docs.amd.com/projects/HIP/en/latest/understand/programming_model.html"
+    },
+    "gguf": {
+      "label": "GGML GGUF specification",
+      "url": "https://github.com/ggml-org/ggml/blob/master/docs/gguf.md"
+    },
+    "sglang": {
+      "label": "SGLang RadixAttention §3",
+      "url": "https://arxiv.org/html/2312.07104v2"
+    },
+    "tpu": {
+      "label": "Google TPU architecture",
+      "url": "https://cloud.google.com/tpu/docs/system-architecture-tpu-vm"
+    },
+    "zero": {
+      "label": "ZeRO state-partition stages",
+      "url": "https://arxiv.org/abs/1910.02054"
+    },
+    "attention2": {
+      "label": "FlashAttention-2 work partitioning",
+      "url": "https://arxiv.org/html/2307.08691v1"
+    },
+    "sampling": {
+      "label": "FlashInfer sampling operators",
+      "url": "https://docs.flashinfer.ai/api/sampling.html"
+    }
+  },
+  "figures": [
+    {
+      "prefix": "00",
+      "deck": "00_master_compute_systems.html",
+      "slug": "mechanism-00-04",
+      "title": "Inference work",
+      "title_cn": "推理工作",
+      "kind": "flow",
+      "en": [
+        "Prompt tokens",
+        "Prefill + KV",
+        "Decode one step",
+        "Select next token"
+      ],
+      "zh": [
+        "提示词 token",
+        "预填充与 KV",
+        "解码一步",
+        "选择下一 token"
+      ],
+      "caption": "Each selected token gates the next step of that sequence.",
+      "caption_cn": "每个序列都要用已选 token 才能执行下一步。",
+      "source": "kv"
+    },
+    {
+      "prefix": "00",
+      "deck": "00_master_compute_systems.html",
+      "slug": "mechanism-00-05",
+      "title": "Training work",
+      "title_cn": "训练工作",
+      "kind": "states",
+      "en": [
+        "Forward",
+        "Loss + backward",
+        "Optimizer update",
+        "Next batch",
+        "Saved values connect forward and backward"
+      ],
+      "zh": [
+        "前向",
+        "损失与反向",
+        "优化器更新",
+        "下一批",
+        "保存值连接前向与反向"
+      ],
+      "caption": "Training adds gradient dependencies and persistent optimizer state.",
+      "caption_cn": "训练增加梯度依赖与持久优化器状态。",
+      "source": "autograd"
+    },
+    {
+      "prefix": "00",
+      "deck": "00_master_compute_systems.html",
+      "slug": "mechanism-00-07",
+      "title": "The experiment loop",
+      "title_cn": "实验循环",
+      "kind": "states",
+      "en": [
+        "Predict a bound",
+        "Implement one change",
+        "Validate + measure",
+        "Explain the result",
+        "Keep the workload and quality contract fixed"
+      ],
+      "zh": [
+        "预测边界",
+        "实现一个变更",
+        "验证并测量",
+        "解释结果",
+        "保持工作负载与质量契约不变"
+      ],
+      "caption": "A failed prediction is useful evidence about the missing cost.",
+      "caption_cn": "预测失败也能帮助发现遗漏的开销。",
+      "source": "roofline"
+    },
+    {
+      "prefix": "01",
+      "deck": "01_workloads_rooflines.html",
+      "slug": "mechanism-01-05",
+      "title": "A minimal traffic model",
+      "title_cn": "最简流量模型",
+      "kind": "tiles",
+      "en": [
+        "A: M × K",
+        "B: K × N",
+        "C: M × N",
+        "Read A and B; accumulate and write C"
+      ],
+      "zh": [
+        "A：M × K",
+        "B：K × N",
+        "C：M × N",
+        "读取 A、B，累加并写入 C"
+      ],
+      "caption": "This minimal traffic picture omits cache misses, packing and repeated tile loads.",
+      "caption_cn": "最小流量图没有计入缓存缺失、打包与重复加载。",
+      "source": "triton"
+    },
+    {
+      "prefix": "01",
+      "deck": "01_workloads_rooflines.html",
+      "slug": "mechanism-01-13",
+      "title": "Capacity is a separate constraint",
+      "title_cn": "容量是另一个约束",
+      "kind": "budget",
+      "en": [
+        "Weights",
+        "Live KV",
+        "Activations",
+        "Workspace",
+        "All live allocations must fit the capacity budget"
+      ],
+      "zh": [
+        "权重",
+        "存活 KV",
+        "激活",
+        "工作区",
+        "所有同时存活的分配必须符合容量预算"
+      ],
+      "caption": "Equal boxes name ledger terms; their widths do not encode bytes.",
+      "caption_cn": "等宽方框只标记预算项，宽度不代表字节数。",
+      "source": "roofline"
+    },
+    {
+      "prefix": "01",
+      "deck": "01_workloads_rooflines.html",
+      "slug": "mechanism-01-16",
+      "title": "Amdahl’s limit",
+      "title_cn": "阿姆达尔极限",
+      "kind": "equation",
+      "en": [
+        "Accelerated fraction f",
+        "Unchanged fraction 1 − f",
+        "The unchanged portion limits end-to-end speedup"
+      ],
+      "zh": [
+        "被加速比例 f",
+        "未改变比例 1 − f",
+        "未改变部分限制端到端加速比"
+      ],
+      "caption": "Analytical Amdahl model with a fixed workload.",
+      "caption_cn": "固定工作负载下的 Amdahl 分析模型。",
+      "source": "roofline",
+      "formula": "Speedup = 1 / [(1 − f) + f / s]"
+    },
+    {
+      "prefix": "02",
+      "deck": "02_architecture_workload_primer.html",
+      "slug": "mechanism-02-02",
+      "title": "A decoder block supplies repeatable work",
+      "title_cn": "解码器块提供可重复的工作",
+      "kind": "states",
+      "en": [
+        "Normalize + attention",
+        "Residual add",
+        "Normalize + MLP",
+        "Residual add / next block",
+        "Weights, activations and KV have different lifetimes"
+      ],
+      "zh": [
+        "归一化与注意力",
+        "残差相加",
+        "归一化与 MLP",
+        "残差相加 / 下一块",
+        "权重、激活和 KV 的生命周期不同"
+      ],
+      "caption": "A conceptual decoder block, not a specification of every model.",
+      "caption_cn": "概念性的解码器块，并非所有模型的结构规范。",
+      "source": "attention"
+    },
+    {
+      "prefix": "02",
+      "deck": "02_architecture_workload_primer.html",
+      "slug": "mechanism-02-07",
+      "title": "KV caching",
+      "title_cn": "KV 缓存",
+      "kind": "compare",
+      "en": [
+        "Without KV",
+        "Old tokens",
+        "Recompute K/V",
+        "Attend + output",
+        "With KV",
+        "Past K/V",
+        "Append new K/V",
+        "Attend + output"
+      ],
+      "zh": [
+        "没有 KV",
+        "过去的 token",
+        "重算 K/V",
+        "注意力与输出",
+        "使用 KV",
+        "过去的 K/V",
+        "追加新 K/V",
+        "注意力与输出"
+      ],
+      "caption": "Caching avoids old K/V projection work; new queries still attend to allowed history.",
+      "caption_cn": "缓存避免重算旧 K/V 投影；新查询仍访问允许的历史。",
+      "source": "kv"
+    },
+    {
+      "prefix": "02",
+      "deck": "02_architecture_workload_primer.html",
+      "slug": "mechanism-02-08",
+      "title": "MHA, MQA and GQA",
+      "title_cn": "MHA、MQA 与 GQA",
+      "kind": "mapping",
+      "en": [
+        "Query head 0",
+        "Query head 1",
+        "Query head 2",
+        "Query head 3",
+        "K/V group 0",
+        "K/V group 1",
+        "Separate output heads"
+      ],
+      "zh": [
+        "查询头 0",
+        "查询头 1",
+        "查询头 2",
+        "查询头 3",
+        "K/V 组 0",
+        "K/V 组 1",
+        "输出头仍然分开"
+      ],
+      "caption": "Illustrative GQA: four query heads share two K/V groups.",
+      "caption_cn": "GQA 示例：四个查询头共享两个 K/V 组。",
+      "source": "gqa",
+      "map": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "prefix": "03",
+      "deck": "03_measurement_profiling.html",
+      "slug": "mechanism-03-02",
+      "title": "A measurement contract",
+      "title_cn": "测量契约",
+      "kind": "test",
+      "en": [
+        "Candidate execution",
+        "Frozen workload",
+        "Correctness + scope",
+        "Timing result"
+      ],
+      "zh": [
+        "候选执行",
+        "冻结的工作负载",
+        "正确性与范围",
+        "计时结果"
+      ],
+      "caption": "Fix inputs, boundaries, warm-up, synchronization and the sample population.",
+      "caption_cn": "固定输入、边界、预热、同步方式和样本总体。",
+      "source": "roofline"
+    },
+    {
+      "prefix": "03",
+      "deck": "03_measurement_profiling.html",
+      "slug": "mechanism-03-06",
+      "title": "Cold and warm execution",
+      "title_cn": "冷启动与热执行",
+      "kind": "compare",
+      "en": [
+        "Cold",
+        "Compile / load",
+        "Initialize / allocate",
+        "First execution",
+        "Warm",
+        "Artifact ready",
+        "State ready",
+        "Repeated execution"
+      ],
+      "zh": [
+        "冷启动",
+        "编译 / 加载",
+        "初始化 / 分配",
+        "第一次执行",
+        "热执行",
+        "产物已就绪",
+        "状态已就绪",
+        "重复执行"
+      ],
+      "caption": "Report cold and warm costs separately; define what was reused.",
+      "caption_cn": "分别报告冷启动与热执行成本，并说明复用了什么。",
+      "source": "roofline"
+    },
+    {
+      "prefix": "03",
+      "deck": "03_measurement_profiling.html",
+      "slug": "mechanism-03-10",
+      "title": "Critical path and overlap",
+      "title_cn": "关键路径与重叠",
+      "kind": "fork",
+      "en": [
+        "Input ready",
+        "GPU compute path",
+        "Communication path",
+        "Join / completion",
+        "Only exposed dependencies set the finish time"
+      ],
+      "zh": [
+        "输入就绪",
+        "GPU 计算路径",
+        "通信路径",
+        "汇合 / 完成",
+        "只有暴露的依赖决定结束时间"
+      ],
+      "caption": "Parallel phase durations cannot simply be added.",
+      "caption_cn": "不能直接相加并行阶段的时长。",
+      "source": "roofline"
+    },
+    {
+      "prefix": "04",
+      "deck": "04_host_os_data_paths.html",
+      "slug": "mechanism-04-08",
+      "title": "CPU affinity and NUMA",
+      "title_cn": "CPU 亲和性与 NUMA",
+      "kind": "mapping",
+      "en": [
+        "Worker 0",
+        "Worker 1",
+        "Pinned buffer",
+        "GPU transfer",
+        "NUMA node 0",
+        "NUMA node 1",
+        "GPU attachment"
+      ],
+      "zh": [
+        "工作线程 0",
+        "工作线程 1",
+        "固定缓冲区",
+        "GPU 传输",
+        "NUMA 节点 0",
+        "NUMA 节点 1",
+        "GPU 所属链路"
+      ],
+      "caption": "Illustrative placement graph; inspect the actual CPU and device topology.",
+      "caption_cn": "示意放置关系；实际实验需要检查 CPU 与设备拓扑。",
+      "source": "dma",
+      "map": [
+        0,
+        1,
+        0,
+        2
+      ]
+    },
+    {
+      "prefix": "04",
+      "deck": "04_host_os_data_paths.html",
+      "slug": "mechanism-04-09",
+      "title": "Pageable and pinned host memory",
+      "title_cn": "可分页内存与锁页内存",
+      "kind": "compare",
+      "en": [
+        "Pageable",
+        "Application bytes",
+        "Possible staging",
+        "Device transfer",
+        "Pinned",
+        "Registered pages",
+        "Stable lifetime",
+        "Device transfer"
+      ],
+      "zh": [
+        "可分页",
+        "应用数据",
+        "可能需要中转",
+        "设备传输",
+        "固定页",
+        "注册的内存页",
+        "稳定生命周期",
+        "设备传输"
+      ],
+      "caption": "Pinning enables relevant transfer paths but does not guarantee overlap.",
+      "caption_cn": "固定页支持相应传输路径，但不保证发生重叠。",
+      "source": "cuda"
+    },
+    {
+      "prefix": "04",
+      "deck": "04_host_os_data_paths.html",
+      "slug": "mechanism-04-14",
+      "title": "Prefetch and backpressure",
+      "title_cn": "预取与背压",
+      "kind": "states",
+      "en": [
+        "Producer",
+        "Bounded queue",
+        "Consumer",
+        "Capacity feedback",
+        "Backpressure bounds retained work"
+      ],
+      "zh": [
+        "生产者",
+        "有界队列",
+        "消费者",
+        "容量反馈",
+        "反压限制待处理工作量"
+      ],
+      "caption": "Prefetch depth trades starvation risk against retained memory and queueing.",
+      "caption_cn": "预取深度在供给不足、内存占用与排队之间权衡。",
+      "source": "roofline"
+    },
+    {
+      "prefix": "05",
+      "deck": "05_pytorch_execution_autograd.html",
+      "slug": "mechanism-05-05",
+      "title": "Views and copies",
+      "title_cn": "视图与拷贝",
+      "kind": "compare",
+      "en": [
+        "View",
+        "Shared storage",
+        "New shape / stride",
+        "Alias remains",
+        "Copy",
+        "Read storage",
+        "Allocate + write",
+        "Independent storage"
+      ],
+      "zh": [
+        "视图",
+        "共享存储",
+        "新形状 / 步幅",
+        "仍存在别名",
+        "复制",
+        "读取原存储",
+        "分配并写入",
+        "独立存储"
+      ],
+      "caption": "Metadata changes do not necessarily move tensor bytes.",
+      "caption_cn": "元数据变化并不一定搬移张量字节。",
+      "source": "autograd"
+    },
+    {
+      "prefix": "05",
+      "deck": "05_pytorch_execution_autograd.html",
+      "slug": "mechanism-05-09",
+      "title": "A linear layer backward",
+      "title_cn": "线性层的反向",
+      "kind": "fork",
+      "en": [
+        "Y = XW",
+        "dX = dY Wᵀ",
+        "dW = Xᵀ dY",
+        "Accumulate gradients",
+        "Saved X and W feed different backward paths"
+      ],
+      "zh": [
+        "Y = XW",
+        "dX = dY Wᵀ",
+        "dW = Xᵀ dY",
+        "累加梯度",
+        "保存的 X、W 进入不同反向路径"
+      ],
+      "caption": "A linear-layer dependency picture; bias and batching details are omitted.",
+      "caption_cn": "线性层的依赖示意；省略偏置与批处理细节。",
+      "source": "autograd"
+    },
+    {
+      "prefix": "05",
+      "deck": "05_pytorch_execution_autograd.html",
+      "slug": "mechanism-05-11",
+      "title": "Gradient accumulation",
+      "title_cn": "梯度累加",
+      "kind": "accumulation",
+      "en": [
+        "Microbatch 1 backward",
+        "Microbatch 2 backward",
+        "Add gradients",
+        "One optimizer update",
+        "Match loss scaling and effective batch"
+      ],
+      "zh": [
+        "微批 1 反向",
+        "微批 2 反向",
+        "梯度相加",
+        "一次优化器更新",
+        "匹配损失缩放与有效批大小"
+      ],
+      "caption": "Illustrative two-microbatch accumulation, not two optimizer updates.",
+      "caption_cn": "两个微批累加的示例，并非两次优化器更新。",
+      "source": "autograd"
+    },
+    {
+      "prefix": "06",
+      "deck": "06_pytorch_compiler.html",
+      "slug": "mechanism-06-05",
+      "title": "Guards and specialization",
+      "title_cn": "守卫与特化",
+      "kind": "fork",
+      "en": [
+        "New input",
+        "Guards pass",
+        "Guard miss",
+        "Selected execution",
+        "A miss may trigger another specialization"
+      ],
+      "zh": [
+        "新输入",
+        "守卫条件满足",
+        "守卫条件不满足",
+        "所选执行路径",
+        "失配可能触发新的特化"
+      ],
+      "caption": "The real compiler chooses reuse, recompilation or fallback under its configuration.",
+      "caption_cn": "实际编译器按配置选择复用、重编译或回退。",
+      "source": "compiler"
+    },
+    {
+      "prefix": "06",
+      "deck": "06_pytorch_compiler.html",
+      "slug": "mechanism-06-06",
+      "title": "Graph breaks",
+      "title_cn": "图中断",
+      "kind": "compare",
+      "en": [
+        "One graph",
+        "Captured region",
+        "Optimized kernels",
+        "Return output",
+        "Graph break",
+        "Compiled region A",
+        "Python boundary",
+        "Compiled region B"
+      ],
+      "zh": [
+        "一个图",
+        "捕获区域",
+        "优化内核",
+        "返回输出",
+        "图中断",
+        "编译区域 A",
+        "Python 边界",
+        "编译区域 B"
+      ],
+      "caption": "A graph break splits optimization regions; it is distinct from an input guard miss.",
+      "caption_cn": "图中断拆分优化区域，与输入守卫失配不同。",
+      "source": "compiler"
+    },
+    {
+      "prefix": "06",
+      "deck": "06_pytorch_compiler.html",
+      "slug": "mechanism-06-09",
+      "title": "Fusion, graph replay and megakernels",
+      "title_cn": "融合、图重放与巨型内核",
+      "kind": "compare3",
+      "en": [
+        "Fusion",
+        "Read inputs",
+        "Fused operator work",
+        "Write output",
+        "Graph replay",
+        "Record launches",
+        "Replay launch graph",
+        "Same kernel work",
+        "Megakernel",
+        "Device-side schedule",
+        "Many operator tasks",
+        "Broad fused kernel"
+      ],
+      "zh": [
+        "算子融合",
+        "读取输入",
+        "融合算子工作",
+        "写出结果",
+        "图重放",
+        "记录启动",
+        "重放启动图",
+        "仍执行内核工作",
+        "Megakernel",
+        "设备端调度",
+        "多个算子任务",
+        "较大范围融合内核"
+      ],
+      "caption": "Fusion changes intermediate work; replay primarily targets launch orchestration.",
+      "caption_cn": "融合改变中间工作；重放主要优化启动编排。",
+      "source": "compiler"
+    },
+    {
+      "prefix": "07",
+      "deck": "07_cuda_execution_memory.html",
+      "slug": "mechanism-07-05",
+      "title": "Tail handling",
+      "title_cn": "尾部处理",
+      "kind": "lanes",
+      "en": [
+        "Lane indices",
+        "Input length = 5",
+        "Mask the tail",
+        "Load / store mask",
+        "1 = active, 0 = masked",
+        "Eight teaching lanes"
+      ],
+      "zh": [
+        "线程索引",
+        "输入长度 = 5",
+        "屏蔽尾部",
+        "加载 / 写入掩码",
+        "1 = 有效，0 = 屏蔽",
+        "八个教学线程"
+      ],
+      "caption": "Lane numbers are a small teaching subset, not a hardware warp-width claim.",
+      "caption_cn": "线程编号只是教学子集，不表示硬件 warp 宽度。",
+      "source": "cuda",
+      "lane_mode": "tail"
+    },
+    {
+      "prefix": "07",
+      "deck": "07_cuda_execution_memory.html",
+      "slug": "mechanism-07-06",
+      "title": "Coalesced access",
+      "title_cn": "合并访问",
+      "kind": "lanes",
+      "en": [
+        "Contiguous",
+        "Element indices accessed by adjacent lanes",
+        "Fewer memory segments",
+        "Strided",
+        "Constructed stride: 4 elements",
+        "More segments may be touched"
+      ],
+      "zh": [
+        "连续访问",
+        "相邻线程访问的元素索引",
+        "访问较少内存段",
+        "跨步访问",
+        "构造步幅：4 个元素",
+        "可能触及更多内存段"
+      ],
+      "caption": "The address pattern matters; transaction counts depend on alignment and architecture.",
+      "caption_cn": "地址模式很重要；事务数量还取决于对齐与架构。",
+      "source": "cuda",
+      "lane_mode": "stride"
+    },
+    {
+      "prefix": "07",
+      "deck": "07_cuda_execution_memory.html",
+      "slug": "mechanism-07-10",
+      "title": "Registers and occupancy",
+      "title_cn": "寄存器与占用率",
+      "kind": "budget",
+      "en": [
+        "Registers / thread",
+        "Threads / block",
+        "Shared memory",
+        "SM limits",
+        "Resource limits constrain resident work"
+      ],
+      "zh": [
+        "每线程寄存器",
+        "每块线程数",
+        "共享内存",
+        "SM 限制",
+        "资源限制约束同时驻留的工作"
+      ],
+      "caption": "These are joint resource constraints, not additive bytes or a universal occupancy formula.",
+      "caption_cn": "这些是联合资源约束，不是可相加字节或通用占用率公式。",
+      "source": "cuda",
+      "join": "∩"
+    },
+    {
+      "prefix": "08",
+      "deck": "08_reductions_custom_operators.html",
+      "slug": "mechanism-08-02",
+      "title": "RMSNorm",
+      "title_cn": "RMSNorm",
+      "kind": "equation",
+      "en": [
+        "Row x, width D",
+        "Scale weights γ",
+        "Scale each xᵢ by the same row statistic"
+      ],
+      "zh": [
+        "行 x，宽度 D",
+        "缩放权重 γ",
+        "用同一个行统计量缩放各 xᵢ"
+      ],
+      "caption": "Declare epsilon placement, accumulation dtype and tail handling.",
+      "caption_cn": "明确 epsilon 的位置、累加精度与尾部处理。",
+      "source": "numerics",
+      "formula": "yᵢ = xᵢ γᵢ / √(mean(x²) + ε)"
+    },
+    {
+      "prefix": "08",
+      "deck": "08_reductions_custom_operators.html",
+      "slug": "mechanism-08-04",
+      "title": "Stable softmax",
+      "title_cn": "稳定的 softmax",
+      "kind": "flow",
+      "en": [
+        "Row maximum m",
+        "exp(x − m)",
+        "Sum exponentials",
+        "Normalize row"
+      ],
+      "zh": [
+        "行最大值 m",
+        "exp(x − m)",
+        "指数值求和",
+        "归一化行"
+      ],
+      "caption": "Subtracting the row maximum improves numerical range; handle nonfinite inputs explicitly.",
+      "caption_cn": "减去行最大值改善数值范围；非有限输入需另定策略。",
+      "source": "numerics"
+    },
+    {
+      "prefix": "08",
+      "deck": "08_reductions_custom_operators.html",
+      "slug": "mechanism-08-10",
+      "title": "Fusion tradeoffs",
+      "title_cn": "融合的权衡",
+      "kind": "compare",
+      "en": [
+        "Separate",
+        "Kernel A",
+        "HBM intermediate",
+        "Kernel B",
+        "Fused",
+        "Load inputs",
+        "A + B in one kernel",
+        "Store final output"
+      ],
+      "zh": [
+        "分离执行",
+        "内核 A",
+        "HBM 中间结果",
+        "内核 B",
+        "融合执行",
+        "加载输入",
+        "一个内核执行 A+B",
+        "写出最终输出"
+      ],
+      "caption": "Avoided intermediate traffic can trade against registers, occupancy and specialization.",
+      "caption_cn": "减少中间流量的代价可能是寄存器、占用率与特化成本。",
+      "source": "cuda"
+    },
+    {
+      "prefix": "09",
+      "deck": "09_gemm_tensor_cores.html",
+      "slug": "mechanism-09-03",
+      "title": "Naive repeated reads",
+      "title_cn": "朴素的重复读取",
+      "kind": "tiles",
+      "en": [
+        "A rows reused",
+        "B columns reused",
+        "C output tile",
+        "Naive work can reload values for neighboring outputs"
+      ],
+      "zh": [
+        "复用 A 的行",
+        "复用 B 的列",
+        "C 输出块",
+        "朴素计算可能为相邻输出反复加载相同值"
+      ],
+      "caption": "Tiling seeks reuse; cache behavior must still be measured.",
+      "caption_cn": "分块旨在复用数据；缓存行为仍需测量。",
+      "source": "triton"
+    },
+    {
+      "prefix": "09",
+      "deck": "09_gemm_tensor_cores.html",
+      "slug": "mechanism-09-07",
+      "title": "Registers hold accumulated outputs",
+      "title_cn": "寄存器保存累加的输出",
+      "kind": "lifetime",
+      "en": [
+        "Initialize",
+        "K tile 0",
+        "K tile 1",
+        "K tile 2",
+        "Store C",
+        "Accumulator retained across the K loop"
+      ],
+      "zh": [
+        "初始化",
+        "K 块 0",
+        "K 块 1",
+        "K 块 2",
+        "写出 C",
+        "累加器跨 K 循环保留"
+      ],
+      "caption": "A logical accumulator lifetime; register pressure depends on the implementation.",
+      "caption_cn": "累加器生命周期示意；寄存器压力取决于具体实现。",
+      "source": "triton"
+    },
+    {
+      "prefix": "09",
+      "deck": "09_gemm_tensor_cores.html",
+      "slug": "mechanism-09-14",
+      "title": "Epilogue fusion",
+      "title_cn": "尾处理融合",
+      "kind": "compare",
+      "en": [
+        "Separate",
+        "GEMM output",
+        "HBM read / write",
+        "Bias + activation",
+        "Epilogue",
+        "Accumulator",
+        "Bias + activation",
+        "Final store"
+      ],
+      "zh": [
+        "分离执行",
+        "GEMM 输出",
+        "HBM 读写",
+        "偏置与激活",
+        "尾处理融合",
+        "累加器",
+        "偏置与激活",
+        "最终写出"
+      ],
+      "caption": "Fuse supported epilogue operations without changing the numerical contract.",
+      "caption_cn": "在保持数值契约的前提下融合受支持的尾处理。",
+      "source": "triton"
+    },
+    {
+      "prefix": "10",
+      "deck": "10_async_kernel_pipelines.html",
+      "slug": "mechanism-10-02",
+      "title": "A serial tile loop",
+      "title_cn": "串行的分块循环",
+      "kind": "serial",
+      "en": [
+        "Copy",
+        "Compute",
+        "Load tile 0",
+        "Compute tile 0",
+        "Load tile 1",
+        "Compute tile 1"
+      ],
+      "zh": [
+        "复制",
+        "计算",
+        "加载块 0",
+        "计算块 0",
+        "加载块 1",
+        "计算块 1"
+      ],
+      "caption": "Serial tile dependencies expose transfer before each compute phase.",
+      "caption_cn": "串行分块依赖让每次计算前的传输直接暴露。",
+      "source": "pipeline"
+    },
+    {
+      "prefix": "10",
+      "deck": "10_async_kernel_pipelines.html",
+      "slug": "mechanism-10-03",
+      "title": "A pipelined tile loop",
+      "title_cn": "流水化的分块循环",
+      "kind": "overlap",
+      "en": [
+        "Producer",
+        "Consumer",
+        "Fill A: tile 0",
+        "Read A: tile 0",
+        "Fill B: tile 1",
+        "Read B: tile 1"
+      ],
+      "zh": [
+        "生产者",
+        "消费者",
+        "A 写入块 0",
+        "A 读取块 0",
+        "B 写入块 1",
+        "B 读取块 1"
+      ],
+      "caption": "Read only after ready; reuse a buffer only after its consumer releases it.",
+      "caption_cn": "就绪后才能读取；消费者释放后才能复用缓冲区。",
+      "source": "pipeline"
+    },
+    {
+      "prefix": "10",
+      "deck": "10_async_kernel_pipelines.html",
+      "slug": "mechanism-10-14",
+      "title": "Pipeline hazards",
+      "title_cn": "流水线冒险",
+      "kind": "lifetime",
+      "en": [
+        "Acquire",
+        "Copy starts",
+        "Ready event",
+        "Consumer reads",
+        "Release",
+        "No overwrite while the consumer holds the buffer"
+      ],
+      "zh": [
+        "获取",
+        "开始复制",
+        "就绪事件",
+        "消费者读取",
+        "释放",
+        "消费者持有缓冲区时禁止覆盖"
+      ],
+      "caption": "The actual implementation must satisfy the target pipeline and barrier protocol.",
+      "caption_cn": "具体实现必须遵守目标平台的流水线与屏障协议。",
+      "source": "pipeline"
+    },
+    {
+      "prefix": "11",
+      "deck": "11_attention_execution.html",
+      "slug": "mechanism-11-03",
+      "title": "A materialized path",
+      "title_cn": "实体化路径",
+      "kind": "flow",
+      "en": [
+        "QKᵀ scores",
+        "Write S × S",
+        "Softmax matrix",
+        "Multiply by V"
+      ],
+      "zh": [
+        "QKᵀ 分数",
+        "写出 S × S",
+        "Softmax 矩阵",
+        "与 V 相乘"
+      ],
+      "caption": "This materialized path exposes large score/probability intermediates in memory.",
+      "caption_cn": "物化路径会在内存中产生较大的分数与概率中间矩阵。",
+      "source": "attention"
+    },
+    {
+      "prefix": "11",
+      "deck": "11_attention_execution.html",
+      "slug": "mechanism-11-06",
+      "title": "Online state",
+      "title_cn": "在线状态",
+      "kind": "budget",
+      "en": [
+        "Maximum m",
+        "Denominator ℓ",
+        "Weighted sum u",
+        "New score tile",
+        "Rescale old state and merge the new tile"
+      ],
+      "zh": [
+        "最大值 m",
+        "分母 ℓ",
+        "加权和 u",
+        "新分数块",
+        "重缩放旧状态，再合并新块"
+      ],
+      "caption": "Boxes identify online state, not additive memory sizes.",
+      "caption_cn": "方框标记在线状态，不表示可相加的内存大小。",
+      "source": "attention",
+      "formula": "m′ = max(m, m_tile),  O = u / ℓ",
+      "join": "&"
+    },
+    {
+      "prefix": "11",
+      "deck": "11_attention_execution.html",
+      "slug": "mechanism-11-09",
+      "title": "Causal masking",
+      "title_cn": "因果掩码",
+      "kind": "mask",
+      "en": [
+        "Query rows × key columns",
+        "Allowed: key position ≤ query position",
+        "Masked entries do not contribute",
+        "All-masked rows require a defined contract"
+      ],
+      "zh": [
+        "查询行 × 键列",
+        "允许：键位置 ≤ 查询位置",
+        "屏蔽项不参与计算",
+        "全屏蔽行需要明确数值契约"
+      ],
+      "caption": "A causal mask changes allowed pairs, not the representation of KV blocks.",
+      "caption_cn": "因果掩码改变允许配对的位置，不等于 KV 分块表示。",
+      "source": "attention"
+    },
+    {
+      "prefix": "12",
+      "deck": "12_attention_kernel_codesign.html",
+      "slug": "mechanism-12-03",
+      "title": "FlashAttention-2: work partitioning",
+      "title_cn": "FlashAttention-2：工作划分",
+      "kind": "mapping",
+      "en": [
+        "Query tile 0",
+        "Query tile 1",
+        "Query tile 2",
+        "Query tile 3",
+        "Worker group 0",
+        "Worker group 1",
+        "Shared K/V stream"
+      ],
+      "zh": [
+        "查询块 0",
+        "查询块 1",
+        "查询块 2",
+        "查询块 3",
+        "工作组 0",
+        "工作组 1",
+        "共享 K/V 流"
+      ],
+      "caption": "Conceptual work partitioning; actual warp ownership is kernel-specific.",
+      "caption_cn": "工作划分示意；实际 warp 所有权由内核决定。",
+      "source": "attention2",
+      "map": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "prefix": "12",
+      "deck": "12_attention_kernel_codesign.html",
+      "slug": "mechanism-12-08",
+      "title": "Tile order and locality",
+      "title_cn": "分块顺序与局部性",
+      "kind": "tiles",
+      "en": [
+        "Query tile order",
+        "Reused K/V tiles",
+        "Output tile",
+        "Changing traversal can change locality and retained state"
+      ],
+      "zh": [
+        "查询块遍历顺序",
+        "复用的 K/V 块",
+        "输出块",
+        "遍历变化会影响局部性与保留状态"
+      ],
+      "caption": "A locality hypothesis needs a matched shape, mask and cache experiment.",
+      "caption_cn": "局部性假设需要匹配形状、掩码与缓存条件后验证。",
+      "source": "triton"
+    },
+    {
+      "prefix": "12",
+      "deck": "12_attention_kernel_codesign.html",
+      "slug": "mechanism-12-10",
+      "title": "Backend selection",
+      "title_cn": "后端选择",
+      "kind": "fork",
+      "en": [
+        "Attention workload",
+        "Supported fast kernel",
+        "Fallback path",
+        "Validated output",
+        "Shape, dtype, mask and layout select the path"
+      ],
+      "zh": [
+        "注意力工作负载",
+        "受支持的快速内核",
+        "回退路径",
+        "已验证输出",
+        "形状、类型、掩码与布局共同选择路径"
+      ],
+      "caption": "Backend labels alone do not identify which kernel actually ran.",
+      "caption_cn": "后端名称本身无法说明实际运行了哪个内核。",
+      "source": "attention"
+    },
+    {
+      "prefix": "13",
+      "deck": "13_precision_numerics.html",
+      "slug": "mechanism-13-03",
+      "title": "Range and resolution",
+      "title_cn": "范围与分辨率",
+      "kind": "numberline",
+      "en": [
+        "−range",
+        "−small",
+        "0",
+        "+small",
+        "+range",
+        "Range and spacing are separate format choices"
+      ],
+      "zh": [
+        "−范围",
+        "−小值",
+        "0",
+        "+小值",
+        "+范围",
+        "范围与数值间距是不同的格式选择"
+      ],
+      "caption": "Symbolic number line; ticks do not reproduce any specific floating-point encoding.",
+      "caption_cn": "符号数轴；刻度不对应特定浮点编码。",
+      "source": "numerics"
+    },
+    {
+      "prefix": "13",
+      "deck": "13_precision_numerics.html",
+      "slug": "mechanism-13-04",
+      "title": "A symmetric teaching quantizer",
+      "title_cn": "一个对称的教学用量化器",
+      "kind": "flow",
+      "en": [
+        "Choose scale s",
+        "Round x / s",
+        "Clamp to integer range",
+        "Reconstruct s × q"
+      ],
+      "zh": [
+        "选择缩放 s",
+        "舍入 x / s",
+        "截断到整数范围",
+        "重构 s × q"
+      ],
+      "caption": "Teaching symmetric quantizer; saturation changes the error contract.",
+      "caption_cn": "教学对称量化器；饱和截断会改变误差契约。",
+      "source": "numerics"
+    },
+    {
+      "prefix": "13",
+      "deck": "13_precision_numerics.html",
+      "slug": "mechanism-13-10",
+      "title": "Outlier exercise",
+      "title_cn": "离群值练习",
+      "kind": "compare",
+      "en": [
+        "One group",
+        "Ordinary values",
+        "One large outlier",
+        "Shared scale",
+        "Smaller groups",
+        "Local values",
+        "Separate scales",
+        "More metadata"
+      ],
+      "zh": [
+        "一个分组",
+        "普通数值",
+        "一个大离群值",
+        "共享缩放",
+        "更小分组",
+        "局部数值",
+        "独立缩放",
+        "更多元数据"
+      ],
+      "caption": "Grouping trades local error against scale storage and supported kernel layouts.",
+      "caption_cn": "分组在局部误差、缩放存储与内核布局支持之间权衡。",
+      "source": "numerics"
+    },
+    {
+      "prefix": "14",
+      "deck": "14_quantization_serving.html",
+      "slug": "mechanism-14-03",
+      "title": "Block-scaled formats",
+      "title_cn": "块缩放格式",
+      "kind": "quant_blocks",
+      "en": [
+        "Value blocks",
+        "Local scales",
+        "Decode tile",
+        "Values and matching scales feed the kernel"
+      ],
+      "zh": [
+        "数值分块",
+        "局部缩放",
+        "解码块",
+        "数值与对应缩放一起进入内核"
+      ],
+      "caption": "Block shape, scale format and accumulation mode must match the kernel.",
+      "caption_cn": "分块形状、缩放格式与累加方式必须匹配内核。",
+      "source": "numerics"
+    },
+    {
+      "prefix": "14",
+      "deck": "14_quantization_serving.html",
+      "slug": "mechanism-14-10",
+      "title": "Fused dequantize GEMM: Marlin",
+      "title_cn": "融合反量化 GEMM：Marlin",
+      "kind": "compare",
+      "en": [
+        "Separate",
+        "Packed weights",
+        "Dequantize to HBM",
+        "GEMM",
+        "Fused",
+        "Packed tile",
+        "Decode near compute",
+        "Accumulate output"
+      ],
+      "zh": [
+        "分离执行",
+        "打包权重",
+        "反量化到 HBM",
+        "GEMM",
+        "融合执行",
+        "打包块",
+        "在计算附近解码",
+        "累加输出"
+      ],
+      "caption": "Conceptual fused dequantization; supported packing and shapes remain kernel-specific.",
+      "caption_cn": "融合反量化示意；打包与形状支持仍由内核决定。",
+      "source": "triton"
+    },
+    {
+      "prefix": "14",
+      "deck": "14_quantization_serving.html",
+      "slug": "mechanism-14-12",
+      "title": "Serving quality gate",
+      "title_cn": "服务质量门槛",
+      "kind": "test",
+      "en": [
+        "Precision candidate",
+        "Frozen reference",
+        "Held-out task quality",
+        "Retain or revise"
+      ],
+      "zh": [
+        "精度候选",
+        "冻结的参考",
+        "留出任务质量",
+        "保留或修订"
+      ],
+      "caption": "Operator error, model quality and serving SLOs require separate acceptance checks.",
+      "caption_cn": "算子误差、模型质量与服务 SLO 需要分别验收。",
+      "source": "evaluation"
+    },
+    {
+      "prefix": "15",
+      "deck": "15_serving_scheduler.html",
+      "slug": "mechanism-15-02",
+      "title": "A request state machine",
+      "title_cn": "请求状态机",
+      "kind": "states",
+      "en": [
+        "Waiting",
+        "Admitted / prefill",
+        "Decode iterations",
+        "Complete / cancel",
+        "Admission and cleanup own the KV lifetime"
+      ],
+      "zh": [
+        "等待",
+        "准入 / 预填充",
+        "逐次解码",
+        "完成 / 取消",
+        "准入与清理负责 KV 生命周期"
+      ],
+      "caption": "Request-state transitions need resource accounting and a safe reclaim boundary.",
+      "caption_cn": "请求状态迁移需要资源统计与安全回收边界。",
+      "source": "kv",
+      "terminal": true
+    },
+    {
+      "prefix": "15",
+      "deck": "15_serving_scheduler.html",
+      "slug": "mechanism-15-03",
+      "title": "Iteration-level batching",
+      "title_cn": "迭代级批处理",
+      "kind": "compare",
+      "en": [
+        "Iteration t",
+        "A + B decode",
+        "C finishes",
+        "New D waits",
+        "Iteration t+1",
+        "A + B decode",
+        "D joins",
+        "C slot reclaimed"
+      ],
+      "zh": [
+        "迭代 t",
+        "A、B 解码",
+        "C 完成",
+        "新 D 等待",
+        "迭代 t+1",
+        "A、B 解码",
+        "D 加入",
+        "回收 C 的槽位"
+      ],
+      "caption": "Constructed iteration example; each live sequence keeps its token dependencies.",
+      "caption_cn": "构造的迭代示例；每个存活序列仍保留 token 依赖。",
+      "source": "schedule"
+    },
+    {
+      "prefix": "15",
+      "deck": "15_serving_scheduler.html",
+      "slug": "mechanism-15-08",
+      "title": "Physical blocks and logical positions",
+      "title_cn": "物理块与逻辑位置",
+      "kind": "pages",
+      "en": [
+        "Logical token blocks",
+        "Physical KV pool",
+        "Logical 0",
+        "Logical 1",
+        "Logical 2",
+        "Physical 7",
+        "Free block",
+        "Physical 2",
+        "Physical 9"
+      ],
+      "zh": [
+        "逻辑 token 块",
+        "物理 KV 池",
+        "逻辑块 0",
+        "逻辑块 1",
+        "逻辑块 2",
+        "物理块 7",
+        "空闲块",
+        "物理块 2",
+        "物理块 9"
+      ],
+      "caption": "Constructed non-contiguous mapping; page placement differs from attention arithmetic.",
+      "caption_cn": "构造的非连续映射；页面放置与注意力计算量不同。",
+      "source": "kv",
+      "map": [
+        2,
+        0,
+        3
+      ]
+    },
+    {
+      "prefix": "16",
+      "deck": "16_kv_prefix_cache_mechanisms.html",
+      "slug": "mechanism-16-02",
+      "title": "Six cache layers",
+      "title_cn": "六层缓存",
+      "kind": "cache_layers",
+      "en": [
+        "Completed answer",
+        "Avoid a valid full call",
+        "Compatible prefix",
+        "Avoid repeated prefill",
+        "Live sequence KV",
+        "Avoid old-state recomputation",
+        "Offloaded session",
+        "Avoid post-wait recomputation",
+        "Compiled code / graph",
+        "Avoid compile / launch setup",
+        "Weights / OS pages",
+        "Avoid some loading traffic"
+      ],
+      "zh": [
+        "已完成答案",
+        "省去有效的完整调用",
+        "兼容前缀",
+        "省去重复预填充",
+        "存活序列 KV",
+        "省去旧状态重计算",
+        "卸载会话",
+        "省去等待后的重计算",
+        "已编译代码 / 图",
+        "省去编译 / 启动设置",
+        "权重 / OS 页面",
+        "省去部分加载流量"
+      ],
+      "caption": "Each cached object avoids different work and needs its own validity contract.",
+      "caption_cn": "不同缓存对象省去不同工作，并需要各自的有效性契约。",
+      "source": "prefix"
+    },
+    {
+      "prefix": "16",
+      "deck": "16_kv_prefix_cache_mechanisms.html",
+      "slug": "mechanism-16-03",
+      "title": "A prefix is a computation identity",
+      "title_cn": "前缀是一种计算身份",
+      "kind": "budget",
+      "en": [
+        "Model / adapter",
+        "Exact token IDs",
+        "Position / mask",
+        "Sharing domain",
+        "Compatible causal computation determines a cache hit"
+      ],
+      "zh": [
+        "模型 / 适配器",
+        "精确 token ID",
+        "位置 / 掩码",
+        "共享域",
+        "缓存命中取决于兼容的因果计算"
+      ],
+      "caption": "These are joint identity conditions, not additive bytes.",
+      "caption_cn": "这些是联合身份条件，不是可相加的字节。",
+      "source": "prefix",
+      "join": "∩"
+    },
+    {
+      "prefix": "16",
+      "deck": "16_kv_prefix_cache_mechanisms.html",
+      "slug": "mechanism-16-12",
+      "title": "Ownership and eviction",
+      "title_cn": "所有权与驱逐",
+      "kind": "lifetime",
+      "en": [
+        "Allocate",
+        "Share prefix",
+        "Request A ends",
+        "B still active",
+        "Last owner ends",
+        "Retain shared blocks until every live owner releases them"
+      ],
+      "zh": [
+        "分配",
+        "共享前缀",
+        "请求 A 结束",
+        "B 仍在运行",
+        "最后持有者结束",
+        "所有存活持有者都释放之后，才能回收共享块"
+      ],
+      "caption": "Completion, references and in-flight device access must all permit reuse.",
+      "caption_cn": "完成状态、引用与在途设备访问都必须允许复用。",
+      "source": "kv"
+    },
+    {
+      "prefix": "17",
+      "deck": "17_prefill_decode_scheduling.html",
+      "slug": "mechanism-17-03",
+      "title": "Interference example",
+      "title_cn": "干扰示例",
+      "kind": "schedule_interference",
+      "en": [
+        "GPU",
+        "Decode",
+        "Long prefill",
+        "Waiting decode",
+        "More prefill",
+        "Next decode"
+      ],
+      "zh": [
+        "GPU",
+        "解码",
+        "长预填充",
+        "等待中的解码",
+        "更多预填充",
+        "下一次解码"
+      ],
+      "caption": "Schematic interference: a long admitted prefill can delay existing decode work.",
+      "caption_cn": "干扰示意：获准执行的长预填充会延迟已有解码。",
+      "source": "schedule"
+    },
+    {
+      "prefix": "17",
+      "deck": "17_prefill_decode_scheduling.html",
+      "slug": "mechanism-17-06",
+      "title": "Token budgets are not time budgets",
+      "title_cn": "token 预算不是时间预算",
+      "kind": "compare",
+      "en": [
+        "Equal tokens",
+        "Short contexts",
+        "Small KV reads",
+        "Lower service cost",
+        "Equal tokens",
+        "Long contexts",
+        "Large KV reads",
+        "Different service cost"
+      ],
+      "zh": [
+        "相同 token 数",
+        "短上下文",
+        "较少 KV 读取",
+        "较低服务成本",
+        "相同 token 数",
+        "长上下文",
+        "更多 KV 读取",
+        "不同服务成本"
+      ],
+      "caption": "Token budgets alone do not fix elapsed time or memory traffic.",
+      "caption_cn": "仅有 token 预算无法固定耗时或内存流量。",
+      "source": "schedule"
+    },
+    {
+      "prefix": "17",
+      "deck": "17_prefill_decode_scheduling.html",
+      "slug": "mechanism-17-11",
+      "title": "Goodput definition",
+      "title_cn": "有效吞吐的定义",
+      "kind": "equation",
+      "en": [
+        "Offered requests",
+        "Completed within declared SLOs",
+        "Count useful completions over the observation interval"
+      ],
+      "zh": [
+        "到达的请求",
+        "满足所定 SLO 的完成请求",
+        "在观测区间内统计有用完成量"
+      ],
+      "caption": "Declare TTFT/TPOT gates and include failures and unfinished requests.",
+      "caption_cn": "声明 TTFT/TPOT 门槛，并计入失败与未完成请求。",
+      "source": "disagg",
+      "formula": "Goodput = SLO-qualified completions / interval"
+    },
+    {
+      "prefix": "18",
+      "deck": "18_disaggregated_inference.html",
+      "slug": "mechanism-18-02",
+      "title": "Disaggregated path",
+      "title_cn": "分离式路径",
+      "kind": "flow",
+      "en": [
+        "Route request",
+        "Prefill worker",
+        "Transfer KV state",
+        "Decode worker"
+      ],
+      "zh": [
+        "路由请求",
+        "预填充工作节点",
+        "传输 KV 状态",
+        "解码工作节点"
+      ],
+      "caption": "Separating phase placement adds transfer, queues and an ownership handoff.",
+      "caption_cn": "分离阶段放置会增加传输、排队与所有权交接。",
+      "source": "disagg"
+    },
+    {
+      "prefix": "18",
+      "deck": "18_disaggregated_inference.html",
+      "slug": "mechanism-18-12",
+      "title": "Ownership handoff",
+      "title_cn": "所有权交接",
+      "kind": "lifetime",
+      "en": [
+        "Prefill writes",
+        "KV ready",
+        "Transfer in flight",
+        "Decode accepts",
+        "Source releases",
+        "No premature source reuse during the handoff"
+      ],
+      "zh": [
+        "预填充写入",
+        "KV 就绪",
+        "传输在途",
+        "解码接收",
+        "源端释放",
+        "交接期间禁止过早复用源端状态"
+      ],
+      "caption": "A logical handoff contract; transport completion and consumer readiness need explicit meaning.",
+      "caption_cn": "逻辑交接契约；传输完成与消费者就绪需分别定义。",
+      "source": "disagg"
+    },
+    {
+      "prefix": "18",
+      "deck": "18_disaggregated_inference.html",
+      "slug": "mechanism-18-14",
+      "title": "Layout compatibility",
+      "title_cn": "布局兼容性",
+      "kind": "fork",
+      "en": [
+        "Produced KV state",
+        "Compatible layout / dtype",
+        "Repack or reject",
+        "Decode consumption",
+        "Model, heads, positions and partitioning must agree"
+      ],
+      "zh": [
+        "生成的 KV 状态",
+        "布局与类型兼容",
+        "重打包或拒绝",
+        "解码消费",
+        "模型、头、位置与分区方式必须一致"
+      ],
+      "caption": "A connector cannot infer compatibility from equal byte counts alone.",
+      "caption_cn": "连接器不能仅凭字节数相同判断兼容。",
+      "source": "disagg"
+    },
+    {
+      "prefix": "19",
+      "deck": "19_moe_execution.html",
+      "slug": "mechanism-19-04",
+      "title": "The distributed path",
+      "title_cn": "分布式路径",
+      "kind": "flow",
+      "en": [
+        "Route + permute",
+        "Dispatch all-to-all",
+        "Expert GEMMs",
+        "Return + combine"
+      ],
+      "zh": [
+        "路由与排列",
+        "All-to-all 分发",
+        "专家 GEMM",
+        "返回并组合"
+      ],
+      "caption": "The routed pipeline exposes network traffic and expert load imbalance.",
+      "caption_cn": "路由流水线会暴露网络流量与专家负载不均。",
+      "source": "nccl"
+    },
+    {
+      "prefix": "19",
+      "deck": "19_moe_execution.html",
+      "slug": "mechanism-19-08",
+      "title": "Permutation and restoration",
+      "title_cn": "置换与还原",
+      "kind": "mapping",
+      "en": [
+        "Token 0",
+        "Token 1",
+        "Token 2",
+        "Token 3",
+        "Expert buffer 0",
+        "Expert buffer 1",
+        "Expert buffer 2"
+      ],
+      "zh": [
+        "Token 0",
+        "Token 1",
+        "Token 2",
+        "Token 3",
+        "专家缓冲区 0",
+        "专家缓冲区 1",
+        "专家缓冲区 2"
+      ],
+      "caption": "Illustrative top-1 permutation; retain indices to restore original token order.",
+      "caption_cn": "Top-1 排列示例；需保留索引以恢复原始 token 顺序。",
+      "source": "nccl",
+      "map": [
+        2,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "prefix": "19",
+      "deck": "19_moe_execution.html",
+      "slug": "mechanism-19-09",
+      "title": "Grouped GEMM opportunity",
+      "title_cn": "分组 GEMM 的机会",
+      "kind": "tiles",
+      "en": [
+        "Expert token groups",
+        "Expert weights",
+        "Per-expert outputs",
+        "Different token counts create different GEMM shapes"
+      ],
+      "zh": [
+        "各专家 token 分组",
+        "专家权重",
+        "各专家输出",
+        "不同 token 数形成不同 GEMM 形状"
+      ],
+      "caption": "Grouped execution changes launch organization; it does not remove routing skew.",
+      "caption_cn": "分组执行改变启动组织方式，不会消除路由倾斜。",
+      "source": "triton"
+    },
+    {
+      "prefix": "20",
+      "deck": "20_speculative_decoding.html",
+      "slug": "mechanism-20-05",
+      "title": "Acceptance rule",
+      "title_cn": "接受规则",
+      "kind": "equation",
+      "en": [
+        "Draft probability q(x)",
+        "Target probability p(x)",
+        "Accept a sampled draft token with the declared probability"
+      ],
+      "zh": [
+        "草稿概率 q(x)",
+        "目标概率 p(x)",
+        "按规定概率接受采样得到的草稿 token"
+      ],
+      "caption": "This is the sampling contract, distinct from greedy token matching.",
+      "caption_cn": "这是采样契约，与贪心 token 匹配不同。",
+      "source": "speculate",
+      "formula": "accept(x) = min(1, p(x) / q(x))"
+    },
+    {
+      "prefix": "20",
+      "deck": "20_speculative_decoding.html",
+      "slug": "mechanism-20-06",
+      "title": "Correction rule",
+      "title_cn": "校正规则",
+      "kind": "equation",
+      "en": [
+        "Target mass p(x)",
+        "Draft mass q(x)",
+        "On rejection, sample the normalized positive residual"
+      ],
+      "zh": [
+        "目标概率质量 p(x)",
+        "草稿概率质量 q(x)",
+        "拒绝时，从正残差归一化后的分布采样"
+      ],
+      "caption": "Handle zero denominators and support conditions explicitly.",
+      "caption_cn": "显式处理零分母与概率支持集条件。",
+      "source": "speculate",
+      "formula": "r(x) ∝ max(0, p(x) − q(x))"
+    },
+    {
+      "prefix": "20",
+      "deck": "20_speculative_decoding.html",
+      "slug": "mechanism-20-09",
+      "title": "From one token to a sequence",
+      "title_cn": "从单个 token 到序列",
+      "kind": "spec_tokens",
+      "en": [
+        "Draft 0",
+        "Draft 1",
+        "Draft 2",
+        "Draft 3",
+        "Keep accepted prefix",
+        "Correct first rejection; drop later KV"
+      ],
+      "zh": [
+        "草稿 0",
+        "草稿 1",
+        "草稿 2",
+        "草稿 3",
+        "保留已接受前缀",
+        "校正首次拒绝，并丢弃后续 KV"
+      ],
+      "caption": "Constructed example: two accepted tokens, then a rejection and an uncommitted tail.",
+      "caption_cn": "构造示例：接受两个 token，随后拒绝，尾部不提交。",
+      "source": "speculate"
+    },
+    {
+      "prefix": "21",
+      "deck": "21_agentos_inference_cache_policy.html",
+      "slug": "mechanism-21-05",
+      "title": "Byte-seconds",
+      "title_cn": "字节·秒",
+      "kind": "equation",
+      "en": [
+        "Retained KV bytes B",
+        "Agent wait duration Δt",
+        "Waiting retains capacity even when no model kernel executes"
+      ],
+      "zh": [
+        "保留的 KV 字节 B",
+        "智能体等待时长 Δt",
+        "没有模型内核执行时，等待仍占用容量"
+      ],
+      "caption": "A retained-capacity ledger, not a measured energy estimate.",
+      "caption_cn": "保留容量的预算项，并非实测能耗。",
+      "source": "prefix",
+      "formula": "Retained byte-seconds = B × Δt"
+    },
+    {
+      "prefix": "21",
+      "deck": "21_agentos_inference_cache_policy.html",
+      "slug": "mechanism-21-08",
+      "title": "Shared branches",
+      "title_cn": "共享分支",
+      "kind": "tree",
+      "en": [
+        "Shared task prefix",
+        "Tool branch A",
+        "Tool branch B",
+        "Cancelled branch",
+        "Private suffix A",
+        "Private suffix B",
+        "Release its reference"
+      ],
+      "zh": [
+        "共享任务前缀",
+        "工具分支 A",
+        "工具分支 B",
+        "被取消分支",
+        "私有后缀 A",
+        "私有后缀 B",
+        "释放自身引用"
+      ],
+      "caption": "Shared prefix storage remains live while another compatible branch owns it.",
+      "caption_cn": "另一个兼容分支仍持有前缀时，共享存储继续存活。",
+      "source": "kv"
+    },
+    {
+      "prefix": "21",
+      "deck": "21_agentos_inference_cache_policy.html",
+      "slug": "mechanism-21-12",
+      "title": "Tool freshness is another layer",
+      "title_cn": "工具结果的新鲜度是另一层",
+      "kind": "compare",
+      "en": [
+        "KV validity",
+        "Model + tokens",
+        "Compatible positions",
+        "Reusable computation",
+        "Tool freshness",
+        "External data version",
+        "Time / policy",
+        "Reusable answer?"
+      ],
+      "zh": [
+        "KV 有效性",
+        "模型与 token",
+        "兼容的位置",
+        "可复用计算",
+        "工具新鲜度",
+        "外部数据版本",
+        "时间 / 策略",
+        "答案可复用吗？"
+      ],
+      "caption": "A computation cache hit does not establish freshness of an external tool result.",
+      "caption_cn": "计算缓存命中不能证明外部工具结果仍然新鲜。",
+      "source": "prefix"
+    },
+    {
+      "prefix": "22",
+      "deck": "22_export_aotinductor.html",
+      "slug": "mechanism-22-04",
+      "title": "Export makes assumptions explicit",
+      "title_cn": "导出让假设显式化",
+      "kind": "fork",
+      "en": [
+        "Exported program",
+        "Shapes + guards",
+        "Operator semantics",
+        "Deployment contract",
+        "The artifact carries assumptions beyond tensor values"
+      ],
+      "zh": [
+        "导出程序",
+        "形状与守卫",
+        "算子语义",
+        "部署契约",
+        "产物的假设不止张量数值本身"
+      ],
+      "caption": "Recheck the pinned producer/loader version; this diagram does not change its API.",
+      "caption_cn": "需核对固定版本的生产端与加载端；本图不更改 API。",
+      "source": "compiler"
+    },
+    {
+      "prefix": "22",
+      "deck": "22_export_aotinductor.html",
+      "slug": "mechanism-22-06",
+      "title": "Graph archive versus compiled archive",
+      "title_cn": "图归档与编译归档",
+      "kind": "compare",
+      "en": [
+        "Graph archive",
+        "Exported graph",
+        "Shape constraints",
+        "Needs compilation",
+        "Compiled archive",
+        "Device / host code",
+        "Runtime dependencies",
+        "Needs compatible loader"
+      ],
+      "zh": [
+        "图归档",
+        "导出图",
+        "形状约束",
+        "仍需编译",
+        "编译后归档",
+        "设备与主机代码",
+        "运行时依赖",
+        "需要兼容加载端"
+      ],
+      "caption": "A saved graph and an executable package have different compatibility boundaries.",
+      "caption_cn": "保存的图与可执行包有不同的兼容边界。",
+      "source": "iree"
+    },
+    {
+      "prefix": "22",
+      "deck": "22_export_aotinductor.html",
+      "slug": "mechanism-22-11",
+      "title": "Four timing phases",
+      "title_cn": "四个计时阶段",
+      "kind": "flow",
+      "en": [
+        "Compile / package",
+        "Load artifact",
+        "First execution",
+        "Warm repetitions"
+      ],
+      "zh": [
+        "编译与打包",
+        "加载产物",
+        "首次执行",
+        "热执行重复"
+      ],
+      "caption": "Keep costs separate and report the number of requests that amortize compilation.",
+      "caption_cn": "分别统计成本，并说明需要多少请求摊销编译。",
+      "source": "compiler"
+    },
+    {
+      "prefix": "23",
+      "deck": "23_executorch_deployment.html",
+      "slug": "mechanism-23-03",
+      "title": "Program and separate data",
+      "title_cn": "程序与独立数据",
+      "kind": "fork",
+      "en": [
+        "Exported graph",
+        "Program instructions",
+        "Separate tensor data",
+        "Runtime loader",
+        "Program and data packaging are target/version dependent"
+      ],
+      "zh": [
+        "导出图",
+        "程序指令",
+        "独立张量数据",
+        "运行时加载端",
+        "程序与数据打包取决于目标与版本"
+      ],
+      "caption": "The format and deployment contract remain those of the pinned ExecuTorch release.",
+      "caption_cn": "格式与部署契约仍以课件固定的 ExecuTorch 版本为准。",
+      "source": "executorch"
+    },
+    {
+      "prefix": "23",
+      "deck": "23_executorch_deployment.html",
+      "slug": "mechanism-23-09",
+      "title": "Memory planning",
+      "title_cn": "内存规划",
+      "kind": "lifetime",
+      "en": [
+        "Tensor allocated",
+        "Op A uses",
+        "Last use",
+        "Storage reusable",
+        "Next allocation",
+        "Live tensor storage"
+      ],
+      "zh": [
+        "分配张量",
+        "算子 A 使用",
+        "最后使用",
+        "存储可复用",
+        "下一次分配",
+        "存活张量存储"
+      ],
+      "caption": "Static planning depends on graph, shapes, aliases and backend requirements.",
+      "caption_cn": "静态规划取决于图、形状、别名与后端要求。",
+      "source": "executorch",
+      "retain_until": 2
+    },
+    {
+      "prefix": "23",
+      "deck": "23_executorch_deployment.html",
+      "slug": "mechanism-23-10",
+      "title": "A CPU fallback can be expensive",
+      "title_cn": "CPU 回退可能代价高昂",
+      "kind": "compare",
+      "en": [
+        "Full delegation",
+        "Device region",
+        "Device region",
+        "Device output",
+        "Split delegation",
+        "Device region",
+        "CPU fallback + copies",
+        "Device region"
+      ],
+      "zh": [
+        "完整委托",
+        "设备区域",
+        "设备区域",
+        "设备输出",
+        "分段委托",
+        "设备区域",
+        "CPU 回退与复制",
+        "设备区域"
+      ],
+      "caption": "A fallback boundary may add synchronization and transfers beyond operator time.",
+      "caption_cn": "回退边界可能在算子耗时外增加同步与传输。",
+      "source": "executorch"
+    },
+    {
+      "prefix": "24",
+      "deck": "24_rubin_vendor_stacks.html",
+      "slug": "mechanism-24-05",
+      "title": "GPU mechanism questions",
+      "title_cn": "GPU 机制问题",
+      "kind": "budget",
+      "en": [
+        "Matrix compute",
+        "HBM / KV traffic",
+        "Scale-up links",
+        "Host / scale-out",
+        "Match each bottleneck hypothesis to a hardware boundary"
+      ],
+      "zh": [
+        "矩阵计算",
+        "HBM / KV 流量",
+        "纵向扩展链路",
+        "主机 / 横向扩展",
+        "将每个瓶颈假设对应到硬件边界"
+      ],
+      "caption": "Joint system constraints, not additive rates or a new Rubin specification.",
+      "caption_cn": "系统联合约束，不是可相加速率或新增 Rubin 规格。",
+      "source": "roofline",
+      "join": "∩"
+    },
+    {
+      "prefix": "24",
+      "deck": "24_rubin_vendor_stacks.html",
+      "slug": "mechanism-24-08",
+      "title": "A training execution map",
+      "title_cn": "训练执行映射",
+      "kind": "states",
+      "en": [
+        "Forward kernels",
+        "Backward gradients",
+        "Collective communication",
+        "Optimizer update",
+        "Trace compute, memory and network responsibilities"
+      ],
+      "zh": [
+        "前向内核",
+        "反向梯度",
+        "集合通信",
+        "优化器更新",
+        "跟踪计算、内存与网络职责"
+      ],
+      "caption": "A generic distributed training map; actual overlap follows the chosen stack.",
+      "caption_cn": "通用分布式训练图；实际重叠取决于所用执行栈。",
+      "source": "fsdp"
+    },
+    {
+      "prefix": "24",
+      "deck": "24_rubin_vendor_stacks.html",
+      "slug": "mechanism-24-09",
+      "title": "An inference execution map",
+      "title_cn": "推理执行映射",
+      "kind": "flow",
+      "en": [
+        "Request scheduler",
+        "Prefill kernels",
+        "KV ownership",
+        "Decode kernels"
+      ],
+      "zh": [
+        "请求调度器",
+        "预填充内核",
+        "KV 所有权",
+        "解码内核"
+      ],
+      "caption": "Software libraries cover different responsibilities; platform support must be verified.",
+      "caption_cn": "软件库负责不同职责；平台支持需要逐项确认。",
+      "source": "kv"
+    },
+    {
+      "prefix": "25",
+      "deck": "25_ddp_zero_fsdp.html",
+      "slug": "mechanism-25-11",
+      "title": "ZeRO stages",
+      "title_cn": "ZeRO 各阶段",
+      "kind": "zero_stages",
+      "en": [
+        "Parameters",
+        "Gradients",
+        "Optimizer state",
+        "Three rank rows: full bars replicate, offset slices partition"
+      ],
+      "zh": [
+        "参数",
+        "梯度",
+        "优化器状态",
+        "三个 rank 行：满条表示复制，错开的切片表示分片"
+      ],
+      "caption": "Constructed three-rank sketch; use actual dtypes and transient buffers for memory estimates.",
+      "caption_cn": "构造的三 rank 示例；内存估算需使用真实类型并计入临时缓冲区。",
+      "source": "zero"
+    },
+    {
+      "prefix": "25",
+      "deck": "25_ddp_zero_fsdp.html",
+      "slug": "mechanism-25-14",
+      "title": "Peak is not persistent state",
+      "title_cn": "峰值不等于持久状态",
+      "kind": "budget",
+      "en": [
+        "Persistent shards",
+        "Gathered layer",
+        "Activations",
+        "Prefetch / workspace",
+        "Peak depends on allocations whose lifetimes overlap"
+      ],
+      "zh": [
+        "持久分片",
+        "聚合的层参数",
+        "激活",
+        "预取 / 工作区",
+        "峰值取决于生命周期重叠的分配"
+      ],
+      "caption": "Equal boxes identify terms, not their sizes; persistent state alone misses the peak.",
+      "caption_cn": "等宽方框只标记项目；仅统计持久状态会遗漏峰值。",
+      "source": "fsdp"
+    },
+    {
+      "prefix": "25",
+      "deck": "25_ddp_zero_fsdp.html",
+      "slug": "mechanism-25-16",
+      "title": "Gradient accumulation",
+      "title_cn": "梯度累积",
+      "kind": "accumulation",
+      "en": [
+        "Microbatch 1 backward",
+        "Microbatch 2 backward",
+        "Add gradients",
+        "One optimizer update",
+        "Match loss scaling and effective batch"
+      ],
+      "zh": [
+        "微批 1 反向",
+        "微批 2 反向",
+        "梯度相加",
+        "一次优化器更新",
+        "匹配损失缩放与有效批大小"
+      ],
+      "caption": "Schematic accumulation cycle; communication suppression is implementation-specific.",
+      "caption_cn": "累加循环示意；是否延后通信取决于实现。",
+      "source": "fsdp"
+    },
+    {
+      "prefix": "26",
+      "deck": "26_collectives_overlap.html",
+      "slug": "mechanism-26-05",
+      "title": "A ring teaching model",
+      "title_cn": "用于教学的环模型",
+      "kind": "states",
+      "en": [
+        "Rank 0",
+        "Rank 1",
+        "Rank 2",
+        "Rank 3",
+        "Reduce-scatter, then all-gather"
+      ],
+      "zh": [
+        "Rank 0",
+        "Rank 1",
+        "Rank 2",
+        "Rank 3",
+        "先 Reduce-scatter，再 All-gather"
+      ],
+      "caption": "Conceptual ring, not a promise about NCCL algorithm selection or physical routing.",
+      "caption_cn": "概念环，并不保证 NCCL 选择该算法或物理路由。",
+      "source": "nccl"
+    },
+    {
+      "prefix": "26",
+      "deck": "26_collectives_overlap.html",
+      "slug": "mechanism-26-07",
+      "title": "Overlap is constrained by readiness",
+      "title_cn": "重叠受数据就绪的约束",
+      "kind": "overlap",
+      "en": [
+        "Backward",
+        "Collective",
+        "Gradients A",
+        "Reduce bucket A",
+        "Gradients B",
+        "Reduce bucket B"
+      ],
+      "zh": [
+        "反向",
+        "集合通信",
+        "梯度 A",
+        "归约桶 A",
+        "梯度 B",
+        "归约桶 B"
+      ],
+      "caption": "A bucket can communicate only after its gradients are ready on participating ranks.",
+      "caption_cn": "只有参与 rank 的梯度就绪后，桶才能开始通信。",
+      "source": "nccl"
+    },
+    {
+      "prefix": "26",
+      "deck": "26_collectives_overlap.html",
+      "slug": "mechanism-26-09",
+      "title": "Bucket trade-off",
+      "title_cn": "分桶权衡",
+      "kind": "compare",
+      "en": [
+        "Small buckets",
+        "Earlier readiness",
+        "More launches",
+        "Less work per call",
+        "Large buckets",
+        "Later readiness",
+        "Fewer launches",
+        "Longer tail risk"
+      ],
+      "zh": [
+        "小桶",
+        "更早就绪",
+        "更多启动",
+        "每次工作量少",
+        "大桶",
+        "更晚就绪",
+        "更少启动",
+        "尾部等待风险"
+      ],
+      "caption": "The best bucket size balances readiness, launch cost and transport efficiency.",
+      "caption_cn": "桶大小需要平衡就绪时间、启动成本与传输效率。",
+      "source": "nccl"
+    },
+    {
+      "prefix": "27",
+      "deck": "27_parallelism_recomputation.html",
+      "slug": "mechanism-27-04",
+      "title": "Tensor parallel matrix flow",
+      "title_cn": "张量并行的矩阵数据流",
+      "kind": "fork",
+      "en": [
+        "Input activation",
+        "W shard 0 → Y₀",
+        "W shard 1 → Y₁",
+        "Combine outputs",
+        "The collective depends on row/column partitioning"
+      ],
+      "zh": [
+        "输入激活",
+        "W 分片 0 → Y₀",
+        "W 分片 1 → Y₁",
+        "组合输出",
+        "通信方式取决于按行还是按列分片"
+      ],
+      "caption": "A conceptual two-way tensor partition; specify actual tensor layouts and collectives.",
+      "caption_cn": "两路张量分区示意；实际布局与集合通信需另行明确。",
+      "source": "nccl"
+    },
+    {
+      "prefix": "27",
+      "deck": "27_parallelism_recomputation.html",
+      "slug": "mechanism-27-05",
+      "title": "Pipeline parallel flow",
+      "title_cn": "流水线并行数据流",
+      "kind": "overlap",
+      "en": [
+        "Stage 0",
+        "Stage 1",
+        "Microbatch A",
+        "Microbatch A",
+        "Microbatch B",
+        "Microbatch B"
+      ],
+      "zh": [
+        "阶段 0",
+        "阶段 1",
+        "微批 A",
+        "微批 A",
+        "微批 B",
+        "微批 B"
+      ],
+      "caption": "Forward-only pipeline sketch; backward scheduling adds dependencies and live activations.",
+      "caption_cn": "仅示意前向流水；反向调度还会增加依赖与存活激活。",
+      "source": "fsdp"
+    },
+    {
+      "prefix": "27",
+      "deck": "27_parallelism_recomputation.html",
+      "slug": "mechanism-27-10",
+      "title": "Recomputation trades resources",
+      "title_cn": "重计算是在交换资源",
+      "kind": "compare",
+      "en": [
+        "Save activations",
+        "Forward",
+        "Retain intermediates",
+        "Backward reads",
+        "Recompute",
+        "Forward",
+        "Retain boundary input",
+        "Replay + backward"
+      ],
+      "zh": [
+        "保存激活",
+        "前向",
+        "保留中间结果",
+        "反向读取",
+        "重计算",
+        "前向",
+        "保留边界输入",
+        "重放与反向"
+      ],
+      "caption": "Reduced retained memory costs recomputation and may alter RNG requirements.",
+      "caption_cn": "减少保留内存需要额外重计算，也可能改变 RNG 要求。",
+      "source": "autograd"
+    },
+    {
+      "prefix": "28",
+      "deck": "28_training_stack_walkthrough.html",
+      "slug": "mechanism-28-07",
+      "title": "Process topology",
+      "title_cn": "进程拓扑",
+      "kind": "budget",
+      "en": [
+        "Rank coordinate",
+        "DP membership",
+        "TP membership",
+        "PP membership",
+        "A rank participates in several explicitly constructed groups"
+      ],
+      "zh": [
+        "Rank 坐标",
+        "DP 组成员身份",
+        "TP 组成员身份",
+        "PP 组成员身份",
+        "一个 rank 参与多个明确构造的进程组"
+      ],
+      "caption": "Responsibility sketch only; real process groups overlap and require an explicit mesh.",
+      "caption_cn": "仅示意职责；真实进程组会交叠，需要明确的网格定义。",
+      "source": "code",
+      "map": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "join": "∩"
+    },
+    {
+      "prefix": "28",
+      "deck": "28_training_stack_walkthrough.html",
+      "slug": "mechanism-28-08",
+      "title": "Model transformation boundary",
+      "title_cn": "模型变换边界",
+      "kind": "flow",
+      "en": [
+        "Construct model",
+        "Apply parallel transforms",
+        "Compile supported regions",
+        "Optimizer + execution"
+      ],
+      "zh": [
+        "构造模型",
+        "应用并行变换",
+        "编译受支持区域",
+        "优化器与执行"
+      ],
+      "caption": "Read the pinned stack to verify actual transformation and initialization order.",
+      "caption_cn": "实际变换与初始化顺序必须检查固定版本源码。",
+      "source": "code"
+    },
+    {
+      "prefix": "28",
+      "deck": "28_training_stack_walkthrough.html",
+      "slug": "mechanism-28-11",
+      "title": "Expert groups are separate",
+      "title_cn": "专家组是独立的",
+      "kind": "fork",
+      "en": [
+        "Expert-routed tensors",
+        "Expert placement group",
+        "Token dispatch group",
+        "Expert execution",
+        "Do not infer expert groups from tensor-parallel names alone"
+      ],
+      "zh": [
+        "专家路由张量",
+        "专家放置组",
+        "Token 分发组",
+        "专家执行",
+        "不能仅凭张量并行名称推断专家组"
+      ],
+      "caption": "Conceptual responsibilities; record the real group constructor and membership.",
+      "caption_cn": "概念职责图；需记录真实组构造函数与成员。",
+      "source": "code"
+    },
+    {
+      "prefix": "29",
+      "deck": "29_checkpoint_recovery.html",
+      "slug": "mechanism-29-05",
+      "title": "A safe snapshot boundary",
+      "title_cn": "安全的快照边界",
+      "kind": "lifetime",
+      "en": [
+        "Step finishes",
+        "Snapshot selected",
+        "State staged",
+        "Writer finishes",
+        "Durable publication",
+        "Publish only a consistent state boundary"
+      ],
+      "zh": [
+        "训练步结束",
+        "选择快照",
+        "状态暂存",
+        "写入结束",
+        "持久化发布",
+        "只发布一致的状态边界"
+      ],
+      "caption": "Snapshot consistency and durability are separate obligations.",
+      "caption_cn": "快照一致性与持久性是不同职责。",
+      "source": "dcp"
+    },
+    {
+      "prefix": "29",
+      "deck": "29_checkpoint_recovery.html",
+      "slug": "mechanism-29-06",
+      "title": "Async checkpoint stages",
+      "title_cn": "异步检查点的各阶段",
+      "kind": "overlap",
+      "en": [
+        "Training",
+        "Writer",
+        "Step / stage state",
+        "Write staged snapshot",
+        "Next training step",
+        "Finish publication"
+      ],
+      "zh": [
+        "训练",
+        "写入端",
+        "训练步 / 暂存",
+        "写入暂存快照",
+        "下一个训练步",
+        "完成发布"
+      ],
+      "caption": "Async save can overlap only after the snapshot data is safely staged.",
+      "caption_cn": "只有安全暂存快照数据后，异步保存才能与训练重叠。",
+      "source": "dcp"
+    },
+    {
+      "prefix": "29",
+      "deck": "29_checkpoint_recovery.html",
+      "slug": "mechanism-29-07",
+      "title": "Mutation hazard",
+      "title_cn": "修改冒险",
+      "kind": "compare",
+      "en": [
+        "Unsafe",
+        "Writer reads live state",
+        "Optimizer mutates it",
+        "Mixed snapshot",
+        "Staged",
+        "Copy consistent state",
+        "Train on live state",
+        "Writer reads stable copy"
+      ],
+      "zh": [
+        "不安全",
+        "读取存活状态",
+        "优化器修改状态",
+        "混合快照",
+        "已暂存",
+        "复制一致状态",
+        "更新存活状态",
+        "读取稳定副本"
+      ],
+      "caption": "A mutation hazard schematic; no storage durability or distributed commit is implied.",
+      "caption_cn": "修改风险示意；不代表存储持久化或分布式提交。",
+      "source": "dcp"
+    },
+    {
+      "prefix": "30",
+      "deck": "30_whole_system_efficiency.html",
+      "slug": "mechanism-30-02",
+      "title": "A useful-work denominator",
+      "title_cn": "有效工作的分母",
+      "kind": "equation",
+      "en": [
+        "Total resource cost",
+        "Qualified useful work",
+        "Choose a task/quality denominator before claiming efficiency"
+      ],
+      "zh": [
+        "总资源成本",
+        "合格的有用工作",
+        "声明效率前，先选定任务与质量分母"
+      ],
+      "caption": "Workload, quality, failures and recovery belong in the accounting boundary.",
+      "caption_cn": "工作负载、质量、失败与恢复都属于统计边界。",
+      "source": "roofline",
+      "formula": "Efficiency ledger = cost / qualified useful work"
+    },
+    {
+      "prefix": "30",
+      "deck": "30_whole_system_efficiency.html",
+      "slug": "mechanism-30-06",
+      "title": "Do not sum overlapping phases",
+      "title_cn": "不要把重叠的阶段相加",
+      "kind": "fork",
+      "en": [
+        "Step starts",
+        "Compute intervals",
+        "Transfer intervals",
+        "Step finishes",
+        "Count overlap once in wall-clock time"
+      ],
+      "zh": [
+        "训练步开始",
+        "计算区间",
+        "传输区间",
+        "训练步结束",
+        "墙钟统计只计一次重叠部分"
+      ],
+      "caption": "Use a critical-path ledger rather than summing every instrumented duration.",
+      "caption_cn": "使用关键路径记录，而不是相加所有被测区间。",
+      "source": "roofline"
+    },
+    {
+      "prefix": "30",
+      "deck": "30_whole_system_efficiency.html",
+      "slug": "mechanism-30-12",
+      "title": "Energy boundary",
+      "title_cn": "能耗边界",
+      "kind": "energy",
+      "en": [
+        "Meter boundary",
+        "Device / board / system",
+        "Matched work window"
+      ],
+      "zh": [
+        "仪表边界",
+        "设备 / 板卡 / 系统",
+        "匹配工作窗口"
+      ],
+      "caption": "Schematic power curve, not measured data; report scope and completed work.",
+      "caption_cn": "功率曲线是示意而非实测；报告测量范围与完成工作量。",
+      "source": "telemetry"
+    },
+    {
+      "prefix": "31",
+      "deck": "31_capstone_workshop.html",
+      "slug": "mechanism-31-05",
+      "title": "A credible baseline",
+      "title_cn": "可信的基线",
+      "kind": "test",
+      "en": [
+        "Candidate change",
+        "Reproduced baseline",
+        "Held-out + adverse cases",
+        "Defensible decision"
+      ],
+      "zh": [
+        "候选修改",
+        "已复现基线",
+        "留出与不利用例",
+        "可辩护的决策"
+      ],
+      "caption": "Use the same workload, resources and correctness contract for both paths.",
+      "caption_cn": "两条路径使用相同工作负载、资源与正确性契约。",
+      "source": "evaluation"
+    },
+    {
+      "prefix": "31",
+      "deck": "31_capstone_workshop.html",
+      "slug": "mechanism-31-06",
+      "title": "Correctness is a gate",
+      "title_cn": "正确性是一道关卡",
+      "kind": "fork",
+      "en": [
+        "Candidate output",
+        "Exact protocol checks",
+        "Numerical / quality checks",
+        "Performance eligible",
+        "Match the oracle to the claimed change"
+      ],
+      "zh": [
+        "候选输出",
+        "精确协议检查",
+        "数值 / 质量检查",
+        "有资格比较性能",
+        "按所声明变更选择验收标准"
+      ],
+      "caption": "A failed correctness gate cannot be traded for higher speed.",
+      "caption_cn": "不能用更高速度抵消正确性门槛失败。",
+      "source": "evaluation"
+    },
+    {
+      "prefix": "31",
+      "deck": "31_capstone_workshop.html",
+      "slug": "mechanism-31-07",
+      "title": "Ablation and adverse case",
+      "title_cn": "消融与不利用例",
+      "kind": "compare",
+      "en": [
+        "Baseline",
+        "Control workload",
+        "Unchanged settings",
+        "Raw result",
+        "Intervention",
+        "Same workload",
+        "One change",
+        "Raw paired result"
+      ],
+      "zh": [
+        "基线",
+        "对照工作负载",
+        "保持设置",
+        "原始结果",
+        "干预",
+        "相同工作负载",
+        "单个变更",
+        "原始成对结果"
+      ],
+      "caption": "Ablate one mechanism and include a workload where the hypothesis may fail.",
+      "caption_cn": "隔离一个机制，并加入可能推翻假设的工作负载。",
+      "source": "evaluation"
+    },
+    {
+      "prefix": "32",
+      "deck": "32_optimization_decision_systems.html",
+      "slug": "mechanism-32-09",
+      "title": "AOT deployment choices",
+      "title_cn": "AOT 部署选择",
+      "kind": "fork",
+      "en": [
+        "Deployment workload",
+        "General graph artifact",
+        "Target-compiled package",
+        "Compatible runtime",
+        "Compare cold cost, portability and supported operators"
+      ],
+      "zh": [
+        "部署工作负载",
+        "通用图产物",
+        "目标编译包",
+        "兼容运行时",
+        "比较冷启动、可移植性与算子支持"
+      ],
+      "caption": "Artifact format does not eliminate loader, ABI or kernel requirements.",
+      "caption_cn": "产物格式不会消除加载端、ABI 或内核要求。",
+      "source": "iree"
+    },
+    {
+      "prefix": "32",
+      "deck": "32_optimization_decision_systems.html",
+      "slug": "mechanism-32-16",
+      "title": "Code search needs an evaluator",
+      "title_cn": "代码搜索需要评估器",
+      "kind": "test",
+      "en": [
+        "Generated candidate",
+        "Frozen contract",
+        "Independent evaluator",
+        "Retain / reject"
+      ],
+      "zh": [
+        "生成的候选",
+        "冻结契约",
+        "独立验收器",
+        "保留 / 拒绝"
+      ],
+      "caption": "Search may propose code but may not relax the acceptance criteria.",
+      "caption_cn": "搜索可提议代码，却不能放宽验收条件。",
+      "source": "evaluation"
+    },
+    {
+      "prefix": "32",
+      "deck": "32_optimization_decision_systems.html",
+      "slug": "mechanism-32-20",
+      "title": "Composition needs another experiment",
+      "title_cn": "组合需要另一个实验",
+      "kind": "compare",
+      "en": [
+        "Change A",
+        "Validated alone",
+        "One environment",
+        "Local evidence",
+        "A + B",
+        "Revalidate composition",
+        "Same workload",
+        "New evidence required"
+      ],
+      "zh": [
+        "变更 A",
+        "单独验证",
+        "一个环境",
+        "局部证据",
+        "A + B",
+        "重新验证组合",
+        "相同工作负载",
+        "需要新证据"
+      ],
+      "caption": "Two separately valid optimizations can interact through layout, state or synchronization.",
+      "caption_cn": "两个单独有效的优化可能通过布局、状态或同步产生交互。",
+      "source": "evaluation"
+    },
+    {
+      "prefix": "33",
+      "deck": "33_programming_models_beyond_cuda.html",
+      "slug": "mechanism-33-02",
+      "title": "The CUDA programming model in one slide",
+      "title_cn": "一页讲清 CUDA 编程模型",
+      "kind": "budget",
+      "en": [
+        "Thread / block map",
+        "Storage scopes",
+        "Synchronization",
+        "Launch / runtime",
+        "A programming model defines how these responsibilities compose"
+      ],
+      "zh": [
+        "线程 / 块映射",
+        "存储作用域",
+        "同步",
+        "启动 / 运行时",
+        "编程模型规定这些职责如何组合"
+      ],
+      "caption": "Joint responsibilities, not an assertion that every accelerator uses CUDA execution.",
+      "caption_cn": "联合职责，并不表示每个加速器都采用 CUDA 执行方式。",
+      "source": "cuda",
+      "join": "∩"
+    },
+    {
+      "prefix": "33",
+      "deck": "33_programming_models_beyond_cuda.html",
+      "slug": "mechanism-33-06",
+      "title": "AMD kernel stack: several layers, one runtime",
+      "title_cn": "AMD 内核栈：多层，一个运行时",
+      "kind": "flow",
+      "en": [
+        "Framework / graph",
+        "HIP / kernel DSL",
+        "ROCm libraries",
+        "Runtime + device"
+      ],
+      "zh": [
+        "框架 / 图",
+        "HIP / 内核 DSL",
+        "ROCm 库",
+        "运行时与设备"
+      ],
+      "caption": "A responsibility sketch; supported kernels and backends need target-specific verification.",
+      "caption_cn": "职责示意；内核与后端支持需要按目标确认。",
+      "source": "hip"
+    },
+    {
+      "prefix": "33",
+      "deck": "33_programming_models_beyond_cuda.html",
+      "slug": "mechanism-33-15",
+      "title": "Edge DSP and NPU stacks: libraries and graph compilers",
+      "title_cn": "边缘 DSP 与 NPU 栈：库与图编译器",
+      "kind": "fork",
+      "en": [
+        "Exported model",
+        "Supported delegate region",
+        "Unsupported / CPU region",
+        "Target runtime",
+        "Libraries and graph compilers meet at explicit boundaries"
+      ],
+      "zh": [
+        "导出模型",
+        "受支持委托区域",
+        "不支持 / CPU 区域",
+        "目标运行时",
+        "库与图编译器在明确边界处衔接"
+      ],
+      "caption": "DSP/NPU deployment requires a supported toolchain, layout and recovery path.",
+      "caption_cn": "DSP/NPU 部署需要受支持的工具链、布局与恢复路径。",
+      "source": "executorch"
+    },
+    {
+      "prefix": "34",
+      "deck": "34_model_lowering_codesign.html",
+      "slug": "mechanism-34-06",
+      "title": "IREE: one compiler, many HAL targets",
+      "title_cn": "IREE：一个编译器，多个 HAL 目标",
+      "kind": "flow",
+      "en": [
+        "Graph lowering",
+        "Executable module",
+        "HAL command buffers",
+        "Device backend"
+      ],
+      "zh": [
+        "图降低",
+        "可执行模块",
+        "HAL 命令缓冲区",
+        "设备后端"
+      ],
+      "caption": "A conceptual IREE responsibility path; HAL is not itself a universal firmware ABI.",
+      "caption_cn": "IREE 职责路径示意；HAL 本身并非通用固件 ABI。",
+      "source": "iree"
+    },
+    {
+      "prefix": "34",
+      "deck": "34_model_lowering_codesign.html",
+      "slug": "mechanism-34-07",
+      "title": "TVM: Relax, TensorIR and BYOC",
+      "title_cn": "TVM：Relax、TensorIR 与 BYOC",
+      "kind": "fork",
+      "en": [
+        "Relax / graph IR",
+        "TensorIR-generated code",
+        "BYOC external codegen",
+        "Runtime artifact",
+        "Partition boundaries need supported operators and layouts"
+      ],
+      "zh": [
+        "Relax / 图 IR",
+        "TensorIR 生成代码",
+        "BYOC 外部代码生成",
+        "运行时产物",
+        "分区边界需要受支持的算子与布局"
+      ],
+      "caption": "Conceptual TVM paths; BYOC does not supply every unsupported remainder.",
+      "caption_cn": "TVM 路径示意；BYOC 不会自动补齐所有不支持的算子。",
+      "source": "tvm"
+    },
+    {
+      "prefix": "34",
+      "deck": "34_model_lowering_codesign.html",
+      "slug": "mechanism-34-08",
+      "title": "OpenXLA: plugin and compiler responsibilities",
+      "title_cn": "OpenXLA：插件与编译器的责任",
+      "kind": "fork",
+      "en": [
+        "OpenXLA program",
+        "Compiler / lowering",
+        "Runtime plugin",
+        "Target execution",
+        "A plugin and a compiler backend have different obligations"
+      ],
+      "zh": [
+        "OpenXLA 程序",
+        "编译器 / 降低",
+        "运行时插件",
+        "目标执行",
+        "插件与编译器后端有不同职责"
+      ],
+      "caption": "Use the retained reference handout for current plugin and backend support.",
+      "caption_cn": "当前插件与后端支持请结合备注中的参考手册。",
+      "source": "pjrt"
+    },
+    {
+      "prefix": "35",
+      "deck": "35_inference_engines_compared.html",
+      "slug": "mechanism-35-06",
+      "title": "GGUF: representation and loading",
+      "title_cn": "GGUF：表示与加载",
+      "kind": "fork",
+      "en": [
+        "Model representation",
+        "Tensor metadata",
+        "Packed weights",
+        "Backend loader",
+        "Representation, placement and execution are separate choices"
+      ],
+      "zh": [
+        "模型表示",
+        "张量元数据",
+        "打包权重",
+        "后端加载端",
+        "表示、放置与执行是不同选择"
+      ],
+      "caption": "A GGUF responsibility picture, not a claim of universal quantized-kernel support.",
+      "caption_cn": "GGUF 职责示意，不表示所有量化内核均受支持。",
+      "source": "gguf"
+    },
+    {
+      "prefix": "35",
+      "deck": "35_inference_engines_compared.html",
+      "slug": "mechanism-35-12",
+      "title": "vLLM: throughput across many requests",
+      "title_cn": "vLLM：面向大量请求的吞吐",
+      "kind": "flow",
+      "en": [
+        "Waiting requests",
+        "Iteration scheduler",
+        "Paged KV + kernels",
+        "Token completions"
+      ],
+      "zh": [
+        "等待请求",
+        "迭代调度器",
+        "分页 KV 与内核",
+        "Token 完成"
+      ],
+      "caption": "Conceptual serving path; match model, quality and resources when comparing engines.",
+      "caption_cn": "服务路径示意；比较引擎时需匹配模型、质量与资源。",
+      "source": "kv"
+    },
+    {
+      "prefix": "35",
+      "deck": "35_inference_engines_compared.html",
+      "slug": "mechanism-35-13",
+      "title": "SGLang: prefix-heavy and structured workloads",
+      "title_cn": "SGLang：前缀密集与结构化工作负载",
+      "kind": "tree",
+      "en": [
+        "Compatible prefix",
+        "Request branch A",
+        "Request branch B",
+        "New branch",
+        "Reuse prefix state",
+        "Reuse prefix state",
+        "Compute missing suffix"
+      ],
+      "zh": [
+        "兼容前缀",
+        "请求分支 A",
+        "请求分支 B",
+        "新分支",
+        "复用前缀状态",
+        "复用前缀状态",
+        "计算缺失后缀"
+      ],
+      "caption": "Conceptual prefix-heavy execution; current SGLang behavior requires the pinned implementation.",
+      "caption_cn": "前缀密集执行示意；当前 SGLang 行为需检查固定版本实现。",
+      "source": "sglang"
+    },
+    {
+      "prefix": "36",
+      "deck": "36_inference_bottlenecks.html",
+      "slug": "mechanism-36-04",
+      "title": "Prefill and decode expose different work",
+      "title_cn": "Prefill 与 decode 暴露不同的工作形态",
+      "kind": "compare",
+      "en": [
+        "Prefill",
+        "Many query positions",
+        "Matrix-shaped work",
+        "Produce KV state",
+        "Decode",
+        "One new position",
+        "Read retained K/V",
+        "Select next token"
+      ],
+      "zh": [
+        "预填充",
+        "多个查询位置",
+        "矩阵形状的工作",
+        "产生 KV 状态",
+        "解码",
+        "一个新位置",
+        "读取保留的 K/V",
+        "选择下一 token"
+      ],
+      "caption": "Regimes depend on batch, context, precision and actual kernels.",
+      "caption_cn": "具体计算状态取决于批量、上下文、精度与内核。",
+      "source": "kv"
+    },
+    {
+      "prefix": "36",
+      "deck": "36_inference_bottlenecks.html",
+      "slug": "mechanism-36-10",
+      "title": "Top-k and top-p need not fully sort",
+      "title_cn": "Top-k 与 top-p 不必完整排序",
+      "kind": "fork",
+      "en": [
+        "Vocabulary logits",
+        "Local candidates A",
+        "Local candidates B",
+        "Merge selected set",
+        "A full sorted vocabulary is not always required"
+      ],
+      "zh": [
+        "词表 logits",
+        "局部候选 A",
+        "局部候选 B",
+        "合并所选集合",
+        "并非总需要对整个词表完全排序"
+      ],
+      "caption": "Top-k selection example. Top-p additionally applies a cumulative-mass rule; actual kernels depend on the engine.",
+      "caption_cn": "Top-k 选择示例；top-p 还需要累积概率质量规则，具体内核依引擎而定。",
+      "source": "sampling"
+    },
+    {
+      "prefix": "36",
+      "deck": "36_inference_bottlenecks.html",
+      "slug": "mechanism-36-11",
+      "title": "Beam search adds hypotheses and state work",
+      "title_cn": "束搜索增加候选路径与状态工作",
+      "kind": "tree",
+      "en": [
+        "Beam prefix",
+        "Hypothesis A",
+        "Hypothesis B",
+        "Hypothesis C",
+        "Score + KV branch",
+        "Score + KV branch",
+        "Prune / reclaim"
+      ],
+      "zh": [
+        "束搜索前缀",
+        "假设 A",
+        "假设 B",
+        "假设 C",
+        "评分与 KV 分支",
+        "评分与 KV 分支",
+        "剪枝 / 回收"
+      ],
+      "caption": "Beam width adds state, candidate selection and reorder work beyond one sequence.",
+      "caption_cn": "束宽增加状态、候选选择与重排工作。",
+      "source": "kv"
+    },
+    {
+      "prefix": "37",
+      "deck": "37_ai_assisted_development.html",
+      "slug": "mechanism-37-05",
+      "title": "Choose the right edit surface",
+      "title_cn": "选择合适的修改边界",
+      "kind": "tree",
+      "en": [
+        "Optimization proposal",
+        "Kernel / fusion",
+        "Runtime / queue",
+        "Serving policy",
+        "Numerical oracle",
+        "Ownership invariants",
+        "Quality + SLO gate"
+      ],
+      "zh": [
+        "优化提议",
+        "内核 / 融合",
+        "运行时 / 队列",
+        "服务策略",
+        "数值验收器",
+        "所有权不变量",
+        "质量与 SLO 门槛"
+      ],
+      "caption": "The edit surface determines which independent evidence is required.",
+      "caption_cn": "修改层次决定所需的独立证据。",
+      "source": "evaluation"
+    },
+    {
+      "prefix": "37",
+      "deck": "37_ai_assisted_development.html",
+      "slug": "mechanism-37-08",
+      "title": "A test must sometimes reject",
+      "title_cn": "测试必须能拒绝错误实现",
+      "kind": "compare",
+      "en": [
+        "Useful evaluator",
+        "Valid baseline",
+        "Broken mutant",
+        "Legal transform",
+        "Expected outcome",
+        "Accept baseline",
+        "Reject mutant",
+        "Accept transform"
+      ],
+      "zh": [
+        "有效验收器",
+        "有效基线",
+        "错误变体",
+        "合法变换",
+        "预期结果",
+        "接受基线",
+        "拒绝变体",
+        "接受合法变换"
+      ],
+      "caption": "An evaluator that rejects everything has not demonstrated useful correctness discrimination.",
+      "caption_cn": "全部拒绝的验收器没有证明其能有效区分正确与错误。",
+      "source": "evaluation"
+    },
+    {
+      "prefix": "37",
+      "deck": "37_ai_assisted_development.html",
+      "slug": "mechanism-37-09",
+      "title": "Search budget is part of the outcome",
+      "title_cn": "搜索预算也是结果的一部分",
+      "kind": "budget",
+      "en": [
+        "Generate candidates",
+        "Compile / load",
+        "Validate / measure",
+        "Deploy + observe",
+        "Account for search costs before claiming an end-to-end gain"
+      ],
+      "zh": [
+        "生成候选",
+        "编译 / 加载",
+        "验证 / 测量",
+        "部署与观察",
+        "声明端到端收益前，计入搜索成本"
+      ],
+      "caption": "Equal boxes name cost categories, not measured shares.",
+      "caption_cn": "等宽方框只标记成本类别，不表示实测比例。",
+      "source": "evaluation"
+    },
+    {
+      "prefix": "38",
+      "deck": "38_verification_contracts.html",
+      "slug": "mechanism-38-05",
+      "title": "Choose the numerical oracle first",
+      "title_cn": "先选择数值验收标准",
+      "kind": "tree",
+      "en": [
+        "Claimed change",
+        "ABI / integer",
+        "Float reordering",
+        "Low-bit approximation",
+        "Specified exactness",
+        "Declared tolerance",
+        "Error + task quality"
+      ],
+      "zh": [
+        "所声明的变更",
+        "ABI / 整数",
+        "浮点重排",
+        "低位宽近似",
+        "按规范精确匹配",
+        "规定的容差",
+        "误差与任务质量"
+      ],
+      "caption": "A CPU reference does not imply universal bit-exact GPU acceptance.",
+      "caption_cn": "CPU 参考不意味着 GPU 必须普遍位精确匹配。",
+      "source": "numerics"
+    },
+    {
+      "prefix": "38",
+      "deck": "38_verification_contracts.html",
+      "slug": "mechanism-38-08",
+      "title": "Two graph-testing campaigns",
+      "title_cn": "把图测试分成两条路径",
+      "kind": "fork",
+      "en": [
+        "Generated test input",
+        "Valid graph: compare",
+        "Invalid input: reject",
+        "Classified outcome",
+        "Preserve seed, graph, versions and minimized reproducer"
+      ],
+      "zh": [
+        "生成的测试输入",
+        "有效图：结果对比",
+        "非法输入：明确拒绝",
+        "已分类的结果",
+        "保留种子、图、版本与最小复现用例"
+      ],
+      "caption": "Valid resource-heavy inputs need separate budgets and exhaustion outcomes.",
+      "caption_cn": "合法但耗资源的输入需要单独预算与耗尽结果。",
+      "source": "evaluation"
+    },
+    {
+      "prefix": "38",
+      "deck": "38_verification_contracts.html",
+      "slug": "mechanism-38-11",
+      "title": "A timeout does not end DMA",
+      "title_cn": "超时不等于 DMA 已停止",
+      "kind": "lifetime",
+      "en": [
+        "Submit",
+        "DMA active",
+        "IRQ lost",
+        "Host timeout",
+        "Quiesce / reap",
+        "A host deadline does not end device ownership"
+      ],
+      "zh": [
+        "提交",
+        "DMA 活跃",
+        "中断丢失",
+        "主机超时",
+        "静止 / 收取",
+        "主机截止时间不会终止设备所有权"
+      ],
+      "caption": "Retain buffers until completion or target-supported quiescence establishes safety.",
+      "caption_cn": "保留缓冲区，直到完成或目标支持的静止流程确认安全。",
+      "source": "dma"
+    },
+    {
+      "prefix": "39",
+      "deck": "39_qualification_release.html",
+      "slug": "mechanism-39-07",
+      "title": "Design observability before optimization",
+      "title_cn": "优化之前先设计可观测性",
+      "kind": "budget",
+      "en": [
+        "Request / generation",
+        "Queue progress",
+        "Clock domains",
+        "Reset / fault trace",
+        "Correlate bounded raw events across ownership boundaries"
+      ],
+      "zh": [
+        "请求 / 代次",
+        "队列进展",
+        "时钟域",
+        "复位 / 故障轨迹",
+        "跨所有权边界关联有界原始事件"
+      ],
+      "caption": "Joint observability responsibilities; measure tracing overhead and preserve definitions.",
+      "caption_cn": "联合可观测性职责；测量追踪开销并保留定义。",
+      "source": "evaluation",
+      "join": "∩"
+    },
+    {
+      "prefix": "39",
+      "deck": "39_qualification_release.html",
+      "slug": "mechanism-39-08",
+      "title": "Qualify a layout change on silicon",
+      "title_cn": "在真机上验证布局优化",
+      "kind": "energy",
+      "en": [
+        "Named sensor scope",
+        "Baseline / candidate",
+        "Equal completed work"
+      ],
+      "zh": [
+        "指定传感器范围",
+        "基线 / 候选",
+        "相同完成工作量"
+      ],
+      "caption": "Schematic power curve, not measurements; record operating limits and sampling cadence.",
+      "caption_cn": "功率曲线并非实测；记录运行边界与采样间隔。",
+      "source": "telemetry"
+    },
+    {
+      "prefix": "39",
+      "deck": "39_qualification_release.html",
+      "slug": "mechanism-39-10",
+      "title": "Scale test evidence, then the farm",
+      "title_cn": "先扩展证据流程，再扩展机房",
+      "kind": "states",
+      "en": [
+        "Freeze + build",
+        "CPU / simulation",
+        "One-board target gate",
+        "Stage / recover",
+        "Unexecuted evidence remains NOT RUN"
+      ],
+      "zh": [
+        "冻结与构建",
+        "CPU / 仿真",
+        "单板目标门槛",
+        "分阶段放行 / 恢复",
+        "未执行的证据保持“未运行”"
+      ],
+      "caption": "A proposed HIL sequence; device deployment requires a supported recoverable setup.",
+      "caption_cn": "建议的 HIL 顺序；上设备需要受支持且可恢复的环境。",
+      "source": "evaluation"
+    },
+    {
+      "prefix": "40",
+      "deck": "40_inference_accelerator_architectures.html",
+      "slug": "mechanism-40-09",
+      "title": "Weight-stationary and output-stationary",
+      "title_cn": "权重驻留与输出驻留",
+      "kind": "compare",
+      "en": [
+        "Output stationary",
+        "Move A / B",
+        "Keep partial C",
+        "Write final C",
+        "Weight stationary",
+        "Keep weight tile",
+        "Move activations",
+        "Route partial sums"
+      ],
+      "zh": [
+        "输出驻留",
+        "移动 A / B",
+        "保留 C 部分和",
+        "写出最终 C",
+        "权重驻留",
+        "保留权重块",
+        "移动激活",
+        "传送部分和"
+      ],
+      "caption": "Conceptual dataflows; real accelerators may combine or reconfigure stationary choices.",
+      "caption_cn": "概念数据流；实际加速器可能组合或重配驻留策略。",
+      "source": "tpu"
+    },
+    {
+      "prefix": "40",
+      "deck": "40_inference_accelerator_architectures.html",
+      "slug": "mechanism-40-12",
+      "title": "Array utilization depends on shape",
+      "title_cn": "阵列利用率取决于形状",
+      "kind": "tile_occupancy",
+      "en": [
+        "Input shape",
+        "Hardware tile",
+        "Padded / useful work",
+        "Edge tiles may execute work that contributes no useful output"
+      ],
+      "zh": [
+        "输入形状",
+        "硬件块",
+        "填充 / 有效工作",
+        "边缘块可能执行对有效输出无贡献的工作"
+      ],
+      "caption": "Illustrative tile occupancy; sustained utilization needs a target measurement.",
+      "caption_cn": "块利用率示意；持续利用率需要目标设备测量。",
+      "source": "triton"
+    },
+    {
+      "prefix": "40",
+      "deck": "40_inference_accelerator_architectures.html",
+      "slug": "mechanism-40-17",
+      "title": "The software–hardware mapping contract",
+      "title_cn": "软硬件映射的约束",
+      "kind": "fork",
+      "en": [
+        "Graph / tensor contract",
+        "Layout + kernel mapping",
+        "Runtime synchronization",
+        "Target execution",
+        "The compiler must satisfy software and hardware constraints"
+      ],
+      "zh": [
+        "图 / 张量契约",
+        "布局与内核映射",
+        "运行时同步",
+        "目标执行",
+        "编译器必须同时满足软件与硬件约束"
+      ],
+      "caption": "Co-design includes scheduling, representation, data movement and verification.",
+      "caption_cn": "协同设计涵盖调度、表示、数据移动与验证。",
+      "source": "iree"
+    }
+  ]
+}

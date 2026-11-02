@@ -50,3 +50,11 @@ Counts use the same parser before/after: English alphanumeric tokens in the visi
 | 40 | 22 → 23 | 1,267 → 983 | 86 → 86 |
 
 The unchanged maximum in 40 belongs to the worked heartbeat schedule; it was retained for its stepwise mechanism. The pass targets catalogues/comparison/code annotations rather than imposing an arbitrary token cap. All six revised decks were rendered and checked for bounds; standard body/code is 23px, tables 21px. Presenter notes and long optional handouts do not enter the projected-word metric.
+
+## Course-wide mechanism figures — 2026-11-01
+
+F3's generator limitation is removed: regeneration preserves other diagrams and notes in the same lecture. All 41 decks now have four mechanism pages each. The 41 existing companion illustrations remain, and 123 text pages are replaced in place with original bilingual diagrams, with [page/source mapping](figure_sources.md). This includes producer/consumer buffer ownership, prefill/decode interference, online attention, logical/physical KV mapping, collective readiness, sharding and consistent checkpointing.
+
+Each language retains 713 slides. There are 164 diagram concepts and 328 localized editable SVG assets. Original explanations and any authored instructor notes are retained in accessible S/P notes; 237 slides per language now contain nonempty notes, including preserved explanations and diagram-reading prompts. This is not a claim of 237 complete lecture scripts or course-wide F1 completion. Classroom pacing, student comprehension, F2/F5/F7 expansion and the instructor pilot remain pending.
+
+The course-wide visual pass replaces prose with relationships, state lifetimes, masks, maps and schematic schedules. It preserves worked predictions, detailed examples, numerical assumptions, laboratory versions and hardware specification tables. Equal-width ledger boxes do not imply sizes. Lane/head/rank grids are constructed subsets, and power plots/schedules are not measured data. Source documentation that has moved to newer releases is used for conceptual reading, without silently changing the pinned lab/API requirements.

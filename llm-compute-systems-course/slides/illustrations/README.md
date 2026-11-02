@@ -1,17 +1,21 @@
-# Original SVG teaching illustrations
+# Original mechanism illustrations
 
-These figures are editable vectors with native text, paths and shapes. They are conceptual diagrams and constructed accounting examples, not photographs, hardware die layouts or measured performance charts. Colors distinguish computation (blue/teal), retained state or synchronization (amber), and inactive/context elements (gray); labels carry the meaning independently of color.
+The 41 decks contain four diagrams each: 41 existing companion figures plus 123 text pages rewritten in place. All 164 concepts have English and Chinese editable SVG assets (328 files). HTML embeds SVG directly and remains self-contained offline. Detailed original explanations and instructor notes remain accessible with **S** or **P**.
 
-Every released deck has one companion visual slide next to the relevant mechanism. The original slide remains intact. Each figure has an accessible SVG title/description, a concise teaching caption and the neighboring slide's primary-source citation. Standalone `.svg` files are supplied for reuse; the HTML also embeds their contents so decks remain self-contained offline.
+The [source and reading guide](../../references/figure_sources.md) identifies the primary-source illustrations/documentation, destination slides and interpretation limits. New artwork is original simplified geometry, not traced or redistributed upstream figures. The inventory distinguishes external mechanism readings from course-owned experiment/verification designs. Existing hardware specification tables and pinned APIs are preserved.
 
-`manifest.json` maps each figure to its deck and teaching anchor. `build_illustrations.py` contains the editable drawing source. To regenerate all current figures and their companion slides:
+- `build_illustrations.py`: the 41 established companion drawings and unified regeneration entry point.
+- `visual_specs.json`: bilingual labels/captions, in-place page anchors, source assignments and drawing parameters for the 123 replacements.
+- `visual_explanations.py`: editable mechanism layouts and notes-preserving page replacement.
+- `manifest.json`: all 164 concepts, deck names and asset paths.
+- `*.svg` / `zh/*.svg`: localized standalone assets for reuse.
+
+From the repository root:
 
 ```sh
 python3 llm-compute-systems-course/slides/illustrations/build_illustrations.py
 ```
 
-The operation is idempotent and renumbers slides. When adding/rebuilding lectures, regenerate diagrams, synchronize the README slide counts/tree and master links, then run the repository course/site/slide checks. New topics require their own explicitly reviewed figure entries; the generator does not invent diagrams for unknown decks.
+Regeneration preserves other figures in a deck, all retained explanations and instructor notes, and continuous numbering. Running it twice must leave all 82 decks, 328 SVGs and the manifest unchanged. Use this unified entry point rather than running the in-place helper alone.
 
-## Review questions
-
-Can a student follow the data or state ownership without reading a paragraph? Are time bars labeled schematic when they are not measurements? Do shard/shape/precision labels match the lecture contract? Are transfer and completion boundaries unambiguous? Do the caption and source separate the mechanism from evidence of performance?
+Color supports the labels: blue/teal identify work/data, amber retained state/constraints and red rejected or unsafe paths. Equal ledger boxes do not encode sizes. Schedules show logical dependencies, not milliseconds. Small head/rank/lane/block examples are teaching subsets. Power plots and occupancy grids are explicitly schematic, not measurements or chip floorplans.
