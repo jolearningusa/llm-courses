@@ -31,3 +31,39 @@ Without an engine, fill the table with cited mechanism/metric locations and expl
 ## C. Response-cache distinction
 
 Read [cache-layer notes](../../../notes/agentic_caching.md). Explain how GPTCache-style semantic response reuse differs from exact prefix tensor reuse. Construct an example where stale tool output makes a semantically close cached answer invalid while compatible prefix KV remains reusable. Submit raw simulation JSON, two-engine/source worksheet and [report](../../report_template.md).
+
+<a id="cache-teaching-checkpoint"></a>
+## Cache teaching checkpoint — deck 16
+
+Allow 10–15 minutes (estimate). Predict before execution: with four-token blocks, A holds tokens 0–7 and B requests tokens 0–8. How much does B match? Does releasing A evict the shared state?
+
+From `labs/kit/`:
+
+```sh
+python3 - <<'PY'
+from cache_lab import Identity, PrefixCache
+cache = PrefixCache(capacity=4, block_size=4)
+identity = Identity('checkpoint')
+cache.acquire('A', list(range(8)), identity)
+print('B', cache.acquire('B', list(range(9)), identity))
+print('both', cache.snapshot())
+cache.release('A')
+print('after_A', cache.snapshot())
+cache.release('B')
+print('after_B', cache.snapshot())
+PY
+```
+
+Expected B fields: `matched_tokens=8`, `recomputed_tokens=1`, `full_blocks_owned=2`. Expected snapshots:
+
+| Boundary | Resident blocks | Pinned blocks | References | Live requests |
+|---|---:|---:|---:|---:|
+| Both own the prefix | 2 | 2 | 4 | 2 |
+| A released | 2 | 2 | 2 | 1 |
+| B released | 2 | 0 | 0 | 0 |
+
+The partial ninth token is counted as recomputed but is not persisted as a full block. Released idle blocks remain resident until eviction. Extend the exercise with a first-token mismatch and, separately, a changed sharing domain: start each case from a fresh cache populated only by A, and predict zero matched tokens. Later equal token IDs cannot repair a different prefix history. Read the [vLLM identity/refcount design](https://docs.vllm.ai/en/latest/design/prefix_caching/) as an implementation comparison, not proof that this tuple-key simulator implements that engine.
+
+Submit the four counter states, changed-case predictions and one reason simulated avoided tokens cannot predict measured TTFT. Then complete B's engine/source worksheet, explicitly marking unavailable measurements.
+
+中文提示：B 命中 8 个 token、重算 1 个；A 释放后，共享块仍由 B 固定。空闲驻留不等于已淘汰。模拟器没有真实 KV 张量，也不预测 TTFT。

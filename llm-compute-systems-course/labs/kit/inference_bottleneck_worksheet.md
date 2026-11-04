@@ -39,3 +39,28 @@ Sparse-attention top-k and MoE routing require separate fixtures and reference c
 ## 5. Report the decision
 
 Provide a bottleneck hypothesis, one budget, raw samples/events, a confirming trace, measured versus predicted terms, one adverse case and the intervention decision. Use a measured baseline fraction for any Amdahl estimate; a faster component does not guarantee a service gain under queueing. Label every constructed estimate and unavailable target. The [experiment report](../report_template.md) supplies the common structure; [P26](../../projects/COURSE_APPENDIX.md#p26) expands this into a six-week project.
+
+<a id="bottleneck-teaching-checkpoint"></a>
+## CPU teaching checkpoint — deck 36
+
+Allow 10–15 minutes (estimate). A constructed, nonoverlapping serial decode step takes 10 ms. Predict the benefit of a 5× faster token-selection stage when it initially takes (a) 1 ms or (b) 5 ms. Which baseline fraction matters more than implementation difficulty?
+
+From `labs/kit/`:
+
+```sh
+python3 - <<'PY'
+for selection_ms in (1, 5):
+    baseline_ms, component_speedup = 10, 5
+    candidate_ms = baseline_ms - selection_ms + selection_ms / component_speedup
+    print('selection_ms', selection_ms, 'candidate_ms', candidate_ms,
+          'speedup', round(baseline_ms / candidate_ms, 3))
+PY
+```
+
+Expected: `selection_ms 1 candidate_ms 9.2 speedup 1.087` and `selection_ms 5 candidate_ms 6.0 speedup 1.667`. These are constructed Amdahl calculations, not GPU timings. A 5× sampler improvement therefore need not imply a 5× decode improvement. An overlapping stage needs critical-path analysis; loaded-service queueing needs its own measurements.
+
+Revisit the deck's weight budget: 8 billion BF16 parameters occupy 16 decimal GB; at an assumed effective 2 decimal TB/s, one ideal full read takes 8 ms. Do not substitute this assumption for a measured bandwidth, or sum it blindly with overlapping profiler ranges. Compare [the inference analysis](https://jax-ml.github.io/scaling-book/inference/) and the existing annotated review.
+
+Submit both predictions and outputs, then use sections 1–5 to choose one falsifiable hypothesis. Identify one observation that would **reject** selection as the next optimization target, such as projection dominating the combined range. Without a GPU, submit the proposed controls, missing evidence and explicit “not measured” cells. With a supported target, record baseline fractions and full-path results independently of this arithmetic.
+
+中文提示：先估算原始占比，再讨论加速；采样难实现不代表它占主要时间。9.2 ms 和 6.0 ms 是构造值，不能当作 GPU 实测或排队服务收益。

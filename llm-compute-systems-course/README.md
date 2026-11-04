@@ -4,6 +4,8 @@ A systems engineering course on building and measuring the computing stack for L
 
 **Status: materials and CPU-reference release, 2026-10-27.** The package contains 41 decks with 164 original mechanism diagrams (328 localized editable SVG assets), L0–L15 handouts/reference kits, a capstone and 20 original project specifications, expanded into [26 detailed project execution plans](projects/COURSE_APPENDIX.md). The [visual source guide](references/figure_sources.md) maps four diagrams per lecture to their readings. [Validation](VALIDATION.md) distinguishes executed CPU paths, analytical/source work and unverified accelerated extensions. GPU qualification and a student pacing pilot remain pending.
 
+The worked-example pilot in decks 10/16/36/38 links prediction questions to reproducible CPU checkpoints: [pipelines](labs/kit/handouts/lab04_gemm.md#pipeline-teaching-checkpoint), [prefix-cache ownership](labs/kit/handouts/lab07_cache.md#cache-teaching-checkpoint), [inference bottlenecks](labs/kit/inference_bottleneck_worksheet.md#bottleneck-teaching-checkpoint), and [verification](labs/kit/handouts/lab_ai_verification.md#verification-teaching-checkpoint). English/Chinese slides include worked answers in **S** notes; hardware extensions remain separately scoped.
+
 ## Start here
 
 1. [Research review and design decisions](references/research_review.md): what existing courses, papers and repositories contribute, where they fall short for this course, and what to reproduce.

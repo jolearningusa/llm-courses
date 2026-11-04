@@ -28,3 +28,26 @@ Without device access, complete A/B and a source walkthrough for C/D, label hard
 ## Optimization-backend source comparison
 
 Using [the technique map](../../../notes/optimization_techniques.md), select one supported library baseline and two eligible paths among Triton, TileLang, CuTe DSL and CUDA C++. Identify who controls tiles, layout, asynchronous movement and synchronization. Inspect an existing autotuner before proposing a new one. Record target/release constraints, correctness cases and the compile/search budget. This is a source worksheet unless you actually build/run the target; no TileLang or GPU validation is added by this documentation update.
+
+<a id="pipeline-teaching-checkpoint"></a>
+## Pipeline teaching checkpoint — deck 10
+
+Allow 10–15 minutes (estimate, not classroom-piloted). Before running anything, draw four loads and four computes with two buffers. Assume independent copy/compute resources, load `L=3 μs`, compute `C=5 μs`, and no extra overhead. When is the last output ready? What prevents buffer reuse while a consumer is active?
+
+From `labs/kit/`, run this standard-library calculation:
+
+```sh
+python3 - <<'PY'
+n, load, compute = 4, 3, 5
+serial = n * (load + compute)
+pipeline = load + compute + (n - 1) * max(load, compute)
+print('serial_us', serial, 'pipeline_us', pipeline)
+print('speedup', round(serial / pipeline, 3))
+PY
+```
+
+Expected: `serial_us 32 pipeline_us 23`, then `speedup 1.391`. Compute intervals are `[3,8]`, `[8,13]`, `[13,18]`, `[18,23]` μs. Loads are `[0,3]`, `[3,6]`, `[8,11]`, `[13,16]` μs. The second reuse of each buffer waits until its previous consumer finishes. The 5 μs steady-state period is not the finite four-tile latency. Repeat by hand with one tile (8 μs), then swap L/C (still 23 μs for four tiles under these assumptions).
+
+Submit your prediction, annotated schedule, arithmetic output and one reason measured overlap may fail. For the C/D target extension, point to actual producer commit, consumer wait and consumer release operations at a pinned source revision. The [CUDA pipeline guide](https://docs.nvidia.com/cuda/cuda-programming-guide/04-special-topics/pipelines.html) defines the producer/consumer protocol; this constructed arithmetic does not execute that API, model resource contention or measure GPU speed. More staging can consume resources and reduce occupancy; investigate rather than assume monotonic improvement.
+
+中文提示：先画双缓冲的所有权，再计算四块的完成时间；23 μs 包含启动与排空，5 μs 只是稳态周期。提交预测、时序、输出及一个可能破坏重叠的条件。

@@ -68,3 +68,37 @@ Submit this matrix with a reason for every unsupported or not-run entry:
 | Release recovery | One designated recoverable target | Known-good restore and fresh-command success | Deployment identity, device logs, recovery record | Not-run without device |
 
 Use the [companion verification lecture](../../../../ai-accelerator-software-course/slides/05_verification.html), [qualification lecture](../../../../ai-accelerator-software-course/slides/06_qualification.html) and [target evidence checklist](../../../../ai-accelerator-software-course/labs/TARGET_EVIDENCE.md) to distinguish the executable virtual-device exercises from physical extensions.
+
+<a id="verification-teaching-checkpoint"></a>
+## Verification teaching checkpoint — deck 38
+
+Allow 15–20 minutes (estimate). Before execution, mark the first illegal event in `submit → start → release → complete`. Predict whether a legal reduction-order change and an always-zero implementation should receive the same decision.
+
+From `labs/kit/`:
+
+```sh
+python3 - <<'PY'
+from verification_lab import report
+result = report()
+for name, item in result['numerical'].items():
+    print(name, item['accepted_on_fixtures'])
+for name, item in result['traces'].items():
+    print(name, item['accepted_on_trace'], item.get('event_index', '-'))
+PY
+```
+
+Expected numerical decisions: `reference True`, `reordered True`; `constant_zero False`, `missing_tail False`, `epsilon_outside_sqrt False`. Expected trace decisions:
+
+| Fixture | Accepted | First failing event (zero-based) |
+|---|---|---|
+| complete_then_release | True | — |
+| queued_cancel | True | — |
+| early_release | False | 2: release before completion |
+| old_completion_after_reset | False | 3: stale generation |
+| reset_drains_ownership | True | — |
+
+The trace's `reset` abstracts a quiesced ownership drain. It does not implement the hardware procedure needed to guarantee that drain. A timeout does not establish quiescence. Moving completion before release repairs this fixture; retaining buffers until a supported completion/quiesce boundary is the real contract.
+
+As a numerical counterexample, the constant-zero candidate passes the all-zero fixture. Explain why the nonzero fixtures are needed and why a valid reordered reduction must still be accepted within the frozen tolerance. Submit the minimal failing trace, one accepted control, one rejected control, the raw decisions and the remaining coverage gap. The [Compute Sanitizer scope](https://docs.nvidia.com/compute-sanitizer/ComputeSanitizer/index.html) guides the optional GPU extension; passing these CPU fixtures does not run those tools or establish device-wide race freedom. Follow section D for physical and release evidence.
+
+中文提示：先找索引 2 的非法释放；超时不能证明 DMA 停止。数值检查要同时接受合法变换、拒绝错误变体；全零输入无法排除恒零实现。
