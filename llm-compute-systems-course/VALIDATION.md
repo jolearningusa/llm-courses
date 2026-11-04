@@ -72,9 +72,9 @@ Course consistency: three courses, zero problems. Site audit: 818 pages, zero br
 
 ## Worked-example / lab handoff pilot — 2026-11-03
 
-- Revised two existing pages per lecture in decks 10/16/36/38, EN and ZH; counts and all mechanism illustrations unchanged. Added bilingual prediction/reveal notes and linked four executable checkpoints in existing handouts/worksheet.
+- Revised two existing pages each in decks 10/16/38 and one in deck 36, EN and ZH; counts and all mechanism illustrations unchanged. Added bilingual prediction/reveal notes and linked four executable checkpoints in existing handouts/worksheet.
 - Executed all four published Python snippets from `labs/kit/`: pipeline 32/23 μs and 1.391 ratio; cache B 8 matched/1 recomputed with ownership counts; selection 9.2/6.0 ms and 1.087/1.667 ratios; numerical/trace decisions exactly as documented. These are constructed arithmetic or existing CPU fixture outcomes, not GPU measurements.
 - Existing cache (3) and verification (8) unit tests passed from the documented kit working directory. An initial test invocation from the repository root failed module imports; rerunning from the kit directory passed without code changes. No lab implementation changed.
 - Course check: 4 courses, zero problems. Site build/link check: 956 pages, zero broken relative links/unlisted decks/missing home links. Slide check: 216 decks, zero problems. Presenter check: 98 canonical embedded copies and all behavior checks passed.
-- Rendered all 138 pages across the eight revised deck files at 1280×720; bounds check found no issues. Visually inspected EN/ZH contact sheets for the eight revised page positions. Regenerating the illustration library left all 82 compute HTML decks byte-identical.
+- Rendered all 138 pages across the eight revised deck files at 1280×720; bounds check found no issues. Visually inspected EN/ZH contact sheets for the seven revised page positions and the retained deck-36 source/closure page. Regenerating the illustration library left all 82 compute HTML decks byte-identical.
 - Rechecked primary inference analysis, CUDA pipeline, vLLM prefix-cache and Compute Sanitizer documentation. No device benchmark, firmware execution, classroom timing or student comprehension claim added; checkpoint durations remain estimates.
