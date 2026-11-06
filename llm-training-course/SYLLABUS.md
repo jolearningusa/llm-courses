@@ -21,8 +21,8 @@ this course links to it instead of repeating it (see "Decks this course links to
 
 Python, NumPy, linear algebra, probability, and the basics of training a neural network: a loss, backpropagation,
 stochastic gradient descent and what a softmax and cross-entropy do. Labs L1, L3, L5 and L7 also use PyTorch.
-Classic architectures (MLPs, CNNs, RNNs and LSTMs) and general machine learning are not taught here;
-Stanford's CS229 (machine learning) and CS231n (deep learning for vision) cover that ground. You should also
+Classic architectures (MLPs, CNNs, RNNs and LSTMs) and the basics of training them are taught in
+[ML 101: Neural Network Foundations](../ml101-neural-networks-course/), not here. You should also
 know what a decoder-only Transformer computes, at the level of decks 01 and 02 of the architecture course.
 
 ## Parts and decks

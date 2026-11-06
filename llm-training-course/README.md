@@ -30,7 +30,7 @@ Every paper deck follows the same five steps: the problem, the method, the evide
 
 Engineers and students who can read a model card and want to know how each training stage behind it works, what it costs and when it fails. You need Python, NumPy, probability and the basics of neural-network training (a loss, backpropagation, SGD, softmax and cross-entropy); labs L1, L3, L5 and L7 also use PyTorch. All labs run on a laptop CPU with tiny models or toy distributions.
 
-Classic architectures such as MLPs, CNNs, RNNs and LSTMs, and general machine learning, are not taught here; Stanford's CS229 and CS231n cover that ground. Model architecture is taught in [LLM Transformer Architecture](../llm-transformer-architecture-course/) and the systems side of training (kernels, collectives, sharding, checkpointing) in [Efficient LLM Computing Systems](../llm-compute-systems-course/). This course links to their decks where topics overlap instead of repeating them; the [syllabus](SYLLABUS.md#decks-this-course-links-to) lists each link.
+Classic architectures such as MLPs, CNNs, RNNs and LSTMs, and the basics of training them, are taught in [ML 101: Neural Network Foundations](../ml101-neural-networks-course/), not here. Model architecture is taught in [LLM Transformer Architecture](../llm-transformer-architecture-course/) and the systems side of training (kernels, collectives, sharding, checkpointing) in [Efficient LLM Computing Systems](../llm-compute-systems-course/). This course links to their decks where topics overlap instead of repeating them; the [syllabus](SYLLABUS.md#decks-this-course-links-to) lists each link.
 
 ## Slide decks
 
