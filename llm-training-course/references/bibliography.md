@@ -5,7 +5,7 @@ entry's ID, title and first author was checked on its arXiv abstract page, and e
 page. The year is that of arXiv v1, or of publication for sources without an arXiv paper. Decks cite
 sections and tables of these papers. Papers that are already a deck in the
 [architecture course](../../llm-transformer-architecture-course/references/bibliography.md) (BERT, T5, the Kaplan
-scaling laws, Chinchilla, multi-token prediction) are cited from there and not repeated here. The list holds 96 distinct sources.
+scaling laws, Chinchilla, multi-token prediction) are cited from there and not repeated here. The list holds 97 distinct sources.
 
 ## Part I. The pre-training recipe
 
@@ -49,6 +49,7 @@ scaling laws, Chinchilla, multi-token prediction) are cited from there and not r
 | 09 | Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism | Shoeybi, 2019 | [arXiv:1909.08053](https://arxiv.org/abs/1909.08053) |
 | 09 | GPipe: Efficient Training of Giant Neural Networks using Pipeline Parallelism | Huang, 2018 | [arXiv:1811.06965](https://arxiv.org/abs/1811.06965) |
 | 09 | Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM | Narayanan, 2021 | [arXiv:2104.04473](https://arxiv.org/abs/2104.04473) |
+| 09 | Reducing Activation Recomputation in Large Transformer Models | Korthikanti, 2022 | [arXiv:2205.05198](https://arxiv.org/abs/2205.05198) |
 | 10 | Mixed Precision Training | Micikevicius, 2017 | [arXiv:1710.03740](https://arxiv.org/abs/1710.03740) |
 | 10 | FP8 Formats for Deep Learning | Micikevicius, 2022 | [arXiv:2209.05433](https://arxiv.org/abs/2209.05433) |
 | 10 | DeepSeek-V3 Technical Report | DeepSeek-AI, 2024 | [arXiv:2412.19437](https://arxiv.org/abs/2412.19437) |
