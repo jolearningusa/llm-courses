@@ -2,7 +2,7 @@
 
 Read the papers behind how today's language models are trained, one method at a time: pre-training data and recipes, training at scale, long context, supervised fine-tuning, parameter-efficient tuning, RLHF, direct preference methods, RL for reasoning, distillation, safety tuning and evaluation.
 
-**Status, 2026-11-06: Part I published.** The course map deck, the four Part I decks on the pre-training recipe (AdamW and learning-rate schedules, batch size and μP, training stability, Muon), labs L0 and L1, the syllabus (34 decks in eleven parts, ten CPU labs, weekly plan, assessment) and the bibliography (96 sources, each checked on its arXiv or blog page) are in place. The other parts follow one at a time.
+**Status, 2026-11-06: Parts I and II published.** The course map deck, the four Part I decks on the pre-training recipe (AdamW and learning-rate schedules, batch size and μP, training stability, Muon), the four Part II decks on pre-training data (web corpora, deduplication and quality filtering, mixtures and repetition, code, math and synthetic data with mid-training), labs L0 to L2, the syllabus (34 decks in eleven parts, ten CPU labs, weekly plan, assessment) and the bibliography (96 sources, each checked on its arXiv or blog page) are in place. The other parts follow one at a time.
 
 ## Start here
 
@@ -42,6 +42,11 @@ Classic architectures such as MLPs, CNNs, RNNs and LSTMs, and general machine le
 | [02 Batch size and hyperparameter transfer](slides/02_batch_size_mup.html) (11 slides) | Week 1: the gradient noise scale and critical batch, batch ramps, μP and μTransfer; lab L0 |
 | [03 Training stability](slides/03_training_stability.html) (10 slides) | Week 2: PaLM's loss spikes and z-loss, small-scale proxies and QK-norm, the OLMo 2 recipe; lab L1 |
 | [04 Muon](slides/04_muon.html) (10 slides) | Week 2: orthogonalized updates by Newton-Schulz, Moonlight's scaling, QK-Clip in Kimi K2; labs L0, L1 |
+| **Part II. Pre-training data** | |
+| [05 Web corpora](slides/05_web_corpora.html) (10 slides) | Week 3: CCNet, The Pile, RefinedWeb and Dolma; the stages every pipeline shares; lab L2 |
+| [06 Deduplication and quality filtering](slides/06_dedup_quality.html) (10 slides) | Week 3: exact and MinHash dedup, FineWeb and FineWeb-Edu, DataComp-LM's classifier; lab L2 |
+| [07 Data mixtures and repetition](slides/07_mixtures_repetition.html) (9 slides) | Week 4: DoReMi, RegMix, the value of repeated tokens; lab L2 |
+| [08 Code, math and synthetic data, and mid-training](slides/08_code_math_synthetic.html) (9 slides) | Week 4: phi-1, the DeepSeekMath corpus, annealing in Llama 3 and OLMo 2; lab L2 |
 
 ## Repository layout
 
@@ -59,6 +64,14 @@ llm-training-course/
 │   │   ├── schedules.py             # Constant, warm-up + cosine, WSD
 │   │   ├── test_pretraining.py
 │   │   └── train.py                 # Same data, budget and seeds across optimizers and schedules
+│   ├── L2_data_pipeline/
+│   │   ├── README.md
+│   │   ├── corpus.py                # Synthetic labeled crawl: prose, boilerplate, duplicates, spam
+│   │   ├── dedup.py                 # Normalized exact hashing, MinHash, LSH bands
+│   │   ├── mixture.py               # Mixture sampling, epochs per domain, value of repeated tokens
+│   │   ├── pipeline.py              # Rules, dedup and classifier stages with a funnel by document type
+│   │   ├── quality.py               # FineWeb line rules and a bigram naive Bayes classifier
+│   │   └── test_data_pipeline.py
 │   └── README.md                    # Lab index
 ├── references/
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-06
@@ -67,7 +80,11 @@ llm-training-course/
 │   ├── 01_training_loop.html
 │   ├── 02_batch_size_mup.html
 │   ├── 03_training_stability.html
-│   └── 04_muon.html
+│   ├── 04_muon.html
+│   ├── 05_web_corpora.html
+│   ├── 06_dedup_quality.html
+│   ├── 07_mixtures_repetition.html
+│   └── 08_code_math_synthetic.html
 ├── LICENSE                          # Apache-2.0
 ├── README.md                        # This file
 └── SYLLABUS.md                      # Parts, decks, weekly plan, labs and assessment
