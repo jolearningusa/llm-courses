@@ -38,7 +38,7 @@ know what a decoder-only Transformer computes, at the level of decks 01 and 02 o
 | | 06 | Deduplication and quality filtering: Lee et al., FineWeb and FineWeb-Edu, DataComp-LM |
 | | 07 | Data mixtures and repetition: DoReMi, RegMix, data-constrained scaling |
 | | 08 | Code, math and synthetic data, and mid-training: phi-1, the DeepSeekMath corpus, annealing |
-| III Training at scale | 09 | Parallelism for model builders: ZeRO, Megatron-LM, GPipe, 3D parallelism (links to the compute course) |
+| III Training at scale | 09 | Parallelism for model builders: ZeRO, Megatron-LM, GPipe, 3D parallelism, activation recomputation (links to the compute course) |
 | | 10 | Low-precision training: mixed precision, FP8 formats, DeepSeek-V3's FP8 recipe |
 | IV Long context and continued pre-training | 11 | Long-context continued pre-training: Xiong et al., Fu et al., ProLong, the Llama 3 stages |
 | | 12 | Domain-adaptive and continual pre-training: Don't Stop Pretraining, Ibrahim et al. |
@@ -91,7 +91,7 @@ These topics already have a deck in a sibling course. The deck here gives the tr
 | 2 | 03, 04 | L1: a tiny pre-training loop with AdamW and three schedules |
 | 3 | 05, 06 | L2: a data pipeline: exact and MinHash dedup, a quality classifier |
 | 4 | 07, 08 | L2 (continued): temperature-sampled mixtures |
-| 5 | 09, 10 | Extends L0: ZeRO stages and activation memory |
+| 5 | 09, 10 | Extends L0: ZeRO stages, pipeline bubbles and activation memory |
 | 6 | 11, 12 | Paper critique 1 |
 | 7 | 13, 14, 15 | L3: SFT with response-only loss and packing |
 | 8 | 16, 17 | L4: LoRA from scratch and 4-bit NormalFloat |
@@ -110,7 +110,7 @@ output against a reference implementation, a closed form or a value computed by 
 
 | Lab | Task | Check |
 |---|---|---|
-| L0 | Compute the FLOPs, Chinchilla-optimal tokens and per-GPU memory (weights, gradients, Adam states, ZeRO stages 1 to 3) of a training run | Matches the 6ND estimate and the memory table in the ZeRO paper |
+| L0 | Compute the FLOPs, Chinchilla-optimal tokens and per-GPU memory (weights, gradients, Adam states, ZeRO stages 1 to 3, activations) of a training run, and its pipeline bubble and days | Matches the 6ND estimate, the memory table in the ZeRO paper, Megatron's training-time estimates and the activation-memory equations |
 | L1 | Train a small character-level model with a hand-written AdamW and warm-up-cosine, WSD and constant schedules | Hand-written AdamW equals `torch.optim.AdamW`; fixed seeds and budget, loss reported with spread across seeds |
 | L2 | Exact and MinHash near-duplicate removal, an n-gram quality classifier and temperature-sampled mixtures | MinHash estimate tracks exact Jaccard similarity; sampled proportions match the target mixture |
 | L3 | Supervised fine-tuning of a tiny model with the loss on assistant tokens only, with packed sequences | Masked tokens get zero gradient; packed and unpacked batches give the same loss |

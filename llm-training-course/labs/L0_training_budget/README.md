@@ -17,6 +17,10 @@ papers in Part I and Part III use, and checks each against a number a paper publ
   - `model_state_bytes`: weights, gradients and Adam state per GPU at ZeRO stages 0 to 3.
   - `steps_and_examples`: the steps-against-examples trade-off around the critical batch size (deck 02).
   - `muon_overhead`: the extra FLOPs of Muon's Newton-Schulz steps (deck 04).
+  - `pipeline_bubble` and `bubble_over_ideal`: the idle share of a pipeline step, plain and interleaved (deck 09).
+  - `recompute_days`: Megatron's 8TP / (nX) estimate of training time with activation recomputation (deck 09).
+  - `activation_bytes`: activation memory per layer with tensor and sequence parallelism and selective
+    recomputation (deck 09).
 - `test_budget.py`: the checks.
 
 ## Run
@@ -25,6 +29,7 @@ papers in Part I and Part III use, and checks each against a number a paper publ
 python budget.py --params 405e9 --tokens 15.6e12 --gpus 16384 --peak 989e12 --mfu 0.40
 python budget.py --compute 5.88e23
 python budget.py --params 7.5e9 --dp 64
+python budget.py --seq 2048 --hidden 12288 --heads 96 --tp 8
 python -m unittest test_budget.py
 ```
 
@@ -43,6 +48,14 @@ value for a current data-center GPU in BF16 without sparsity.
 - Muon's overhead is about 0.7% for the NanoGPT speedrun and 0.5% at Llama 405B's width and batch, as
   in [Jordan (2024)](https://kellerjordan.github.io/posts/muon/).
 
+- GPipe's bubble is under 20% of a step at M = 4K micro-batches, and the interleaved schedule divides
+  Megatron's bubble by v ([arXiv:1811.06965](https://arxiv.org/abs/1811.06965) §2.3,
+  [arXiv:2104.04473](https://arxiv.org/abs/2104.04473) §2.2).
+- 8TP / (nX) gives the 34 days for GPT-3 175B and 84 days for the 1T model in
+  [arXiv:2104.04473](https://arxiv.org/abs/2104.04473) §5.1.
+- Activation memory follows equations 1, 2 and 4 and Table 2 of
+  [arXiv:2205.05198](https://arxiv.org/abs/2205.05198).
+
 ## Tasks
 
 1. Llama 3 405B trained on 15.6T tokens. How many tokens per parameter is that, and how many times the
@@ -54,3 +67,7 @@ value for a current data-center GPU in BF16 without sparsity.
 4. With S_min = 10,000 steps and E_min = 10^10 tokens, what does a batch of 4M tokens cost in steps and
    tokens? Of 16M? Which would you pick with a fixed deadline, and which with a fixed GPU budget?
 5. Add a function for the 6ND of a mixture-of-experts model, where N counts only the active parameters.
+6. For a GPT-3-sized layer (s = 2048, h = 12288, a = 96, micro-batch 1, t = 8), how much of the activation
+   memory is the 5as/h attention term? What does selective recomputation give up to remove it?
+7. A 16-stage pipeline needs its bubble under 10% of the step. How many micro-batches does GPipe need,
+   and how many does an interleaved schedule with v = 4 need? What does a larger v cost in communication?

@@ -2,7 +2,7 @@
 
 Read the papers behind how today's language models are trained, one method at a time: pre-training data and recipes, training at scale, long context, supervised fine-tuning, parameter-efficient tuning, RLHF, direct preference methods, RL for reasoning, distillation, safety tuning and evaluation.
 
-**Status, 2026-11-06: Parts I and II published.** The course map deck, the four Part I decks on the pre-training recipe (AdamW and learning-rate schedules, batch size and μP, training stability, Muon), the four Part II decks on pre-training data (web corpora, deduplication and quality filtering, mixtures and repetition, code, math and synthetic data with mid-training), labs L0 to L2, the syllabus (34 decks in eleven parts, ten CPU labs, weekly plan, assessment) and the bibliography (96 sources, each checked on its arXiv or blog page) are in place. The other parts follow one at a time.
+**Status, 2026-11-06: Parts I to IV published.** The course map deck, the four Part I decks on the pre-training recipe (AdamW and learning-rate schedules, batch size and μP, training stability, Muon), the four Part II decks on pre-training data (web corpora, deduplication and quality filtering, mixtures and repetition, code, math and synthetic data with mid-training), the two Part III decks on training at scale (parallelism, low-precision training), the two Part IV decks on long context and continual pre-training, labs L0 to L2, the syllabus (34 decks in eleven parts, ten CPU labs, weekly plan, assessment) and the bibliography (97 sources, each checked on its arXiv or blog page) are in place. The other parts follow one at a time.
 
 ## Start here
 
@@ -47,6 +47,12 @@ Classic architectures such as MLPs, CNNs, RNNs and LSTMs, and the basics of trai
 | [06 Deduplication and quality filtering](slides/06_dedup_quality.html) (10 slides) | Week 3: exact and MinHash dedup, FineWeb and FineWeb-Edu, DataComp-LM's classifier; lab L2 |
 | [07 Data mixtures and repetition](slides/07_mixtures_repetition.html) (9 slides) | Week 4: DoReMi, RegMix, the value of repeated tokens; lab L2 |
 | [08 Code, math and synthetic data, and mid-training](slides/08_code_math_synthetic.html) (9 slides) | Week 4: phi-1, the DeepSeekMath corpus, annealing in Llama 3 and OLMo 2; lab L2 |
+| **Part III. Training at scale** | |
+| [09 Parallelism for model builders](slides/09_parallelism.html) (9 slides) | Week 5: ZeRO, Megatron tensor parallelism, GPipe, 3D parallelism, sequence parallelism and selective recomputation; lab L0 |
+| [10 Low-precision training](slides/10_low_precision.html) (9 slides) | Week 5: mixed precision and loss scaling, BF16, the FP8 formats, DeepSeek-V3's fine-grained FP8; lab L0 |
+| **Part IV. Long context and continued pre-training** | |
+| [11 Long-context continued pre-training](slides/11_long_context.html) (9 slides) | Week 6: Llama 2 Long's RoPE base, per-source length upsampling, ProLong, Llama 3's six stages |
+| [12 Domain-adaptive and continual pre-training](slides/12_continual_pretraining.html) (8 slides) | Week 6: DAPT and TAPT, re-warming, re-decaying and replay, infinite schedules; paper critique 1 |
 
 ## Repository layout
 
@@ -55,7 +61,7 @@ llm-training-course/
 ├── labs/
 │   ├── L0_training_budget/
 │   │   ├── README.md
-│   │   ├── budget.py                # FLOPs, Chinchilla tokens, days at an MFU, ZeRO memory, batch trade-off
+│   │   ├── budget.py                # FLOPs, days, ZeRO and activation memory, pipeline bubbles
 │   │   └── test_budget.py
 │   ├── L1_pretraining_loop/
 │   │   ├── README.md
@@ -84,7 +90,11 @@ llm-training-course/
 │   ├── 05_web_corpora.html
 │   ├── 06_dedup_quality.html
 │   ├── 07_mixtures_repetition.html
-│   └── 08_code_math_synthetic.html
+│   ├── 08_code_math_synthetic.html
+│   ├── 09_parallelism.html
+│   ├── 10_low_precision.html
+│   ├── 11_long_context.html
+│   └── 12_continual_pretraining.html
 ├── LICENSE                          # Apache-2.0
 ├── README.md                        # This file
 └── SYLLABUS.md                      # Parts, decks, weekly plan, labs and assessment
