@@ -75,4 +75,36 @@ of these sources; numbers that come from the course's own labs say so on the sli
 | 14 | Highway Networks | Srivastava, 2015 | [arXiv:1505.00387](https://arxiv.org/abs/1505.00387) |
 | 14 | Language Models are Unsupervised Multitask Learners (GPT-2; residual-branch initialization) | Radford, 2019 | [OpenAI PDF](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) |
 
-Parts V and VI (recurrent networks, sequence to sequence, attention) are added with their decks.
+## Part V. Sequence models
+
+| Deck | Paper | First author, year | Source |
+|---|---|---|---|
+| 15 | Finding Structure in Time | Elman, 1990 | [doi:10.1207/s15516709cog1402_1](https://doi.org/10.1207/s15516709cog1402_1) |
+| 15 | Backpropagation through time: what it does and how to do it | Werbos, 1990 | [doi:10.1109/5.58337](https://doi.org/10.1109/5.58337) |
+| 15, 16 | Learning long-term dependencies with gradient descent is difficult | Bengio, 1994 | [doi:10.1109/72.279181](https://doi.org/10.1109/72.279181) |
+| 15 | On the difficulty of training recurrent neural networks (gradient clipping) | Pascanu, 2012 | [arXiv:1211.5063](https://arxiv.org/abs/1211.5063) |
+| 15 | Generating Sequences With Recurrent Neural Networks | Graves, 2013 | [arXiv:1308.0850](https://arxiv.org/abs/1308.0850) |
+| 16 | Long Short-Term Memory | Hochreiter, 1997 | [doi:10.1162/neco.1997.9.8.1735](https://doi.org/10.1162/neco.1997.9.8.1735) |
+| 16 | Learning to Forget: Continual Prediction with LSTM | Gers, 2000 | [doi:10.1162/089976600300015015](https://doi.org/10.1162/089976600300015015) |
+| 16, 17 | Learning Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation (GRU) | Cho, 2014 | [arXiv:1406.1078](https://arxiv.org/abs/1406.1078) |
+| 16 | Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling | Chung, 2014 | [arXiv:1412.3555](https://arxiv.org/abs/1412.3555) |
+| 16, 19 | LSTM: A Search Space Odyssey | Greff, 2015 | [arXiv:1503.04069](https://arxiv.org/abs/1503.04069) |
+| 16 | An Empirical Exploration of Recurrent Network Architectures | Jozefowicz, 2015 | [ICML 2015](https://proceedings.mlr.press/v37/jozefowicz15.html) |
+| 17 | Sequence to Sequence Learning with Neural Networks | Sutskever, 2014 | [arXiv:1409.3215](https://arxiv.org/abs/1409.3215) |
+| 17 | On the Properties of Neural Machine Translation: Encoder-Decoder Approaches | Cho, 2014 | [arXiv:1409.1259](https://arxiv.org/abs/1409.1259) |
+| 17 | Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer (T5) | Raffel, 2019 | [arXiv:1910.10683](https://arxiv.org/abs/1910.10683) |
+| 18 | Neural Machine Translation by Jointly Learning to Align and Translate | Bahdanau, 2014 | [arXiv:1409.0473](https://arxiv.org/abs/1409.0473) |
+| 18 | Effective Approaches to Attention-based Neural Machine Translation | Luong, 2015 | [arXiv:1508.04025](https://arxiv.org/abs/1508.04025) |
+| 18 | Google's Neural Machine Translation System: Bridging the Gap between Human and Machine Translation | Wu, 2016 | [arXiv:1609.08144](https://arxiv.org/abs/1609.08144) |
+| 18 | In-context Learning and Induction Heads | Olsson, 2022 | [arXiv:2209.11895](https://arxiv.org/abs/2209.11895) |
+
+## Part VI. Practice and the bridge
+
+| Deck | Source | Author, year | Link |
+|---|---|---|---|
+| 19 | A Recipe for Training Neural Networks (blog post) | Karpathy, 2019 | [karpathy.github.io](https://karpathy.github.io/2019/04/25/recipe/) |
+| 19 | Deep Learning Tuning Playbook | Godbole, 2023 | [github.com/google-research/tuning_playbook](https://github.com/google-research/tuning_playbook) |
+| 19 | Practical Recommendations for Gradient-Based Training of Deep Architectures | Bengio, 2012 | [arXiv:1206.5533](https://arxiv.org/abs/1206.5533) |
+| 19 | Random Search for Hyper-Parameter Optimization | Bergstra, 2012 | [JMLR 13](https://jmlr.org/papers/v13/bergstra12a.html) |
+| 18, 20 | Attention Is All You Need (self-attention, Table 1 on per-layer cost) | Vaswani, 2017 | [arXiv:1706.03762](https://arxiv.org/abs/1706.03762) |
+| 20 | Transformers are RNNs: Fast Autoregressive Transformers with Linear Attention | Katharopoulos, 2020 | [arXiv:2006.16236](https://arxiv.org/abs/2006.16236) |

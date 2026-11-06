@@ -9,8 +9,7 @@ example** with numbers measured in the course's labs, the **traps** (what goes w
 **where it shows up in LLMs**, and **check yourself** questions with the matching lab. Sources are listed in the
 [bibliography](references/bibliography.md).
 
-**Status, 2026-11-06:** Parts I to IV (decks 00 to 14) and labs L0 to L4 are published. Parts V and VI and
-labs L5 and L6 follow in the next pull request.
+**Status, 2026-11-06:** all 21 decks (00 to 20) and labs L0 to L6 are published.
 
 ## Parts and decks
 
@@ -31,12 +30,12 @@ labs L5 and L6 follow in the next pull request.
 | IV Convolutional networks | 12 | Convolutions and LeNet | LeCun et al. 1989 and 1998 |
 | | 13 | AlexNet and VGG | Krizhevsky et al. 2012; Simonyan and Zisserman 2014 |
 | | 14 | ResNet and residual connections | He et al. 2015 and 2016; Srivastava et al. 2015 |
-| V Sequence models | 15 | Recurrent networks and backpropagation through time | planned |
-| | 16 | LSTM and GRU | planned |
-| | 17 | Sequence to sequence | planned |
-| | 18 | Attention in sequence to sequence (Bahdanau, Luong) | planned |
-| VI Practice and the bridge | 19 | Training practice: a debugging recipe | planned |
-| | 20 | Bridge to the Transformer | planned |
+| V Sequence models | 15 | Recurrent networks and backpropagation through time | Elman 1990; Werbos 1990; Bengio et al. 1994; Pascanu et al. 2012 |
+| | 16 | LSTM and GRU | Hochreiter and Schmidhuber 1997; Gers et al. 2000; Cho et al. 2014; Greff et al. 2015 |
+| | 17 | Sequence to sequence | Sutskever et al. 2014; Cho et al. 2014 |
+| | 18 | Attention in sequence to sequence (Bahdanau, Luong) | Bahdanau et al. 2014; Luong et al. 2015 |
+| VI Practice and the bridge | 19 | Training practice: a debugging recipe | Karpathy 2019; Godbole et al. 2023; Bergstra and Bengio 2012 |
+| | 20 | Bridge to the Transformer | Vaswani et al. 2017; Katharopoulos et al. 2020 |
 
 ## Weekly plan
 
@@ -64,8 +63,8 @@ All labs run on a laptop CPU in seconds to minutes and check themselves with `py
 | L2 | SGD, momentum, Nesterov, AdaGrad, RMSProp, Adam, AdamW and schedules | Bias correction and decoupled decay by construction; momentum beats GD on a narrow quadratic; decaying schedules beat a constant rate |
 | L3 | Weight decay, dropout, early stopping and batch normalization | Batch norm gradients by finite differences; a memorizing network made to generalize; batch norm across a 30-fold learning-rate range |
 | L4 | Convolution and pooling by hand, a small CNN, residual blocks | im2col against a direct loop; CNN against MLP on moved shapes; a 64-layer residual network trains where a plain one cannot |
-| L5 | RNN, LSTM and GRU with backpropagation through time (planned) | |
-| L6 | Seq2seq with and without attention (planned) | |
+| L5 | RNN, LSTM and GRU with backpropagation through time | Every gradient by finite differences; gradient reaching early steps against the recurrent scale; LSTM and GRU solve the adding problem at length 100 where an RNN is at chance |
+| L6 | Seq2seq with and without attention | Gradients of all three models by finite differences; attention keeps accuracy as strings get longer; attention weights follow the anti-diagonal |
 
 ## Assessment
 
