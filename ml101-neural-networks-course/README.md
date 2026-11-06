@@ -2,7 +2,7 @@
 
 Learn the machine learning that comes before the Transformer, from linear regression to backpropagation, CNNs, RNNs and attention, with every idea built from scratch in a CPU lab.
 
-**Status, 2026-11-06: Parts I and II published.** The course map, the four Part I decks on learning from data (linear regression, logistic regression and softmax, gradient descent and SGD, generalization) and the three Part II decks on neural networks (the perceptron and the MLP, backpropagation, initialization), labs L0 and L1, the syllabus and the bibliography are in place. Parts III to VI and labs L2 to L6 follow in later pull requests.
+**Status, 2026-11-06: Parts I to IV published.** The course map, the four Part I decks on learning from data (linear regression, logistic regression and softmax, gradient descent and SGD, generalization), the three Part II decks on neural networks (the perceptron and the MLP, backpropagation, initialization), the four Part III decks on optimization and regularization (momentum, RMSProp and Adam; schedules and batch size; weight decay, dropout, early stopping and augmentation; batch normalization), the three Part IV decks on convolutional networks (convolutions and LeNet, AlexNet and VGG, ResNet), labs L0 to L4, the syllabus and the bibliography are in place. Parts V and VI and labs L5 and L6 follow in the next pull request.
 
 ## Start here
 
@@ -26,7 +26,7 @@ Every deck ends with where its idea shows up in today's LLMs, and with check-you
 
 ## Audience and prerequisites
 
-Engineers and students who want the foundations before reading LLM papers. You need Python and NumPy, linear algebra (matrix products, transposes, eigenvalues), calculus up to the chain rule, and basic probability. All labs run on a laptop CPU in seconds to minutes; L0 to L5 use only NumPy.
+Engineers and students who want the foundations before reading LLM papers. You need Python and NumPy, linear algebra (matrix products, transposes, eigenvalues), calculus up to the chain rule, and basic probability. All labs run on a laptop CPU in seconds to minutes; L0 to L4 use only NumPy.
 
 The Transformer and its variants are taught in [LLM Transformer Architecture](../llm-transformer-architecture-course/), which this course leads into. LLM pre-training at scale and post-training (instruction tuning, preference optimization, RLHF) are taught in [LLM Training and Post-Training](../llm-training-course/).
 
@@ -44,8 +44,17 @@ The Transformer and its variants are taught in [LLM Transformer Architecture](..
 | [05 From the perceptron to the MLP](slides/05_perceptron_mlp.html) (10 slides) | Week 3: XOR, hidden layers, activations, universal approximation; lab L1 |
 | [06 Backpropagation](slides/06_backpropagation.html) (10 slides) | Week 3: computational graphs, reverse mode, layer gradients, an autograd engine; lab L1 |
 | [07 Initialization and vanishing gradients](slides/07_initialization.html) (10 slides) | Week 4: variance through a layer, Xavier and He initialization, signals measured by depth; lab L1 |
+| **Part III. Optimization and regularization** | |
+| [08 Momentum, RMSProp and Adam](slides/08_optimizers.html) (10 slides) | Week 4: momentum and Nesterov, per-parameter steps, Adam's bias correction, AdamW; lab L2 |
+| [09 Learning-rate schedules and batch size](slides/09_schedules_batch.html) (10 slides) | Week 5: the noise floor, step and cosine decay, warm-up, linear scaling, gradient clipping; lab L2 |
+| [10 Regularization](slides/10_regularization.html) (10 slides) | Week 5: weight decay, early stopping, dropout, data augmentation, label smoothing; lab L3 |
+| [11 Batch normalization](slides/11_batchnorm.html) (10 slides) | Week 6: the transform, training against inference, why it works, layer norm; lab L3 |
+| **Part IV. Convolutional networks** | |
+| [12 Convolutions and LeNet](slides/12_convolutions_lenet.html) (10 slides) | Week 6: local and shared weights, receptive fields, pooling, LeNet-5; lab L4 |
+| [13 AlexNet and VGG](slides/13_alexnet_vgg.html) (10 slides) | Week 7: ImageNet 2012, ReLU, dropout and augmentation at scale, stacks of 3 × 3 filters; lab L4 |
+| [14 ResNet and residual connections](slides/14_resnet.html) (10 slides) | Week 7: the degradation problem, identity shortcuts, bottlenecks, the residual stream; lab L4 |
 
-Parts III to VI (decks 08 to 20) are listed in the [syllabus](SYLLABUS.md) and added with their labs.
+Parts V and VI (decks 15 to 20) are listed in the [syllabus](SYLLABUS.md) and added with their labs.
 
 ## Repository layout
 
@@ -61,6 +70,18 @@ ml101-neural-networks-course/
 │   │   ├── autograd.py              # Reverse-mode autodiff on NumPy arrays
 │   │   ├── mlp.py                   # MLPs, initialization schemes, XOR and spirals, signal scale by depth
 │   │   └── test_mlp.py
+│   ├── L2_optimizers/
+│   │   ├── README.md
+│   │   ├── optimizers.py            # SGD, momentum, AdaGrad, RMSProp, Adam, AdamW; schedules; test problems
+│   │   └── test_optimizers.py
+│   ├── L3_regularization_bn/
+│   │   ├── README.md
+│   │   ├── regularization.py        # Hand-written MLP with dropout and batch norm; weight decay, early stopping
+│   │   └── test_regularization.py
+│   ├── L4_cnn_resnet/
+│   │   ├── README.md
+│   │   ├── cnn.py                   # im2col convolution, pooling, a small CNN, plain against residual depth
+│   │   └── test_cnn.py
 │   └── README.md                    # Lab index
 ├── references/
 │   └── bibliography.md              # Every source, grouped by deck; checked 2026-11-06
@@ -72,7 +93,14 @@ ml101-neural-networks-course/
 │   ├── 04_generalization.html
 │   ├── 05_perceptron_mlp.html
 │   ├── 06_backpropagation.html
-│   └── 07_initialization.html
+│   ├── 07_initialization.html
+│   ├── 08_optimizers.html
+│   ├── 09_schedules_batch.html
+│   ├── 10_regularization.html
+│   ├── 11_batchnorm.html
+│   ├── 12_convolutions_lenet.html
+│   ├── 13_alexnet_vgg.html
+│   └── 14_resnet.html
 ├── LICENSE                          # Apache-2.0
 ├── README.md                        # This file
 └── SYLLABUS.md                      # Parts, weekly plan, labs and assessment
