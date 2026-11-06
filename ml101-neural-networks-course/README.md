@@ -28,7 +28,7 @@ Every deck ends with where its idea shows up in today's LLMs, and with check-you
 
 Engineers and students who want the foundations before reading LLM papers. You need Python and NumPy, linear algebra (matrix products, transposes, eigenvalues), calculus up to the chain rule, and basic probability. All labs run on a laptop CPU in seconds to minutes; L0 to L5 use only NumPy.
 
-The Transformer and its variants are taught in [LLM Transformer Architecture](../llm-transformer-architecture-course/), which this course leads into. LLM pre-training at scale and post-training (instruction tuning, preference optimization, RLHF) are left to a separate course.
+The Transformer and its variants are taught in [LLM Transformer Architecture](../llm-transformer-architecture-course/), which this course leads into. LLM pre-training at scale and post-training (instruction tuning, preference optimization, RLHF) are taught in [LLM Training and Post-Training](../llm-training-course/).
 
 ## Slide decks
 
