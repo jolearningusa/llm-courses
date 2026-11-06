@@ -2,7 +2,7 @@
 
 Learn the machine learning that comes before the Transformer, from linear regression to backpropagation, CNNs, RNNs and attention, with every idea built from scratch in a CPU lab.
 
-**Status, 2026-11-06: Parts I to IV published.** The course map, the four Part I decks on learning from data (linear regression, logistic regression and softmax, gradient descent and SGD, generalization), the three Part II decks on neural networks (the perceptron and the MLP, backpropagation, initialization), the four Part III decks on optimization and regularization (momentum, RMSProp and Adam; schedules and batch size; weight decay, dropout, early stopping and augmentation; batch normalization), the three Part IV decks on convolutional networks (convolutions and LeNet, AlexNet and VGG, ResNet), labs L0 to L4, the syllabus and the bibliography are in place. Parts V and VI and labs L5 and L6 follow in the next pull request.
+**Status, 2026-11-06: complete.** All 21 decks (the course map and Parts I to VI: learning from data, neural networks, optimization and regularization, convolutional networks, sequence models, and practice with the bridge to the Transformer), labs L0 to L6, the syllabus and the bibliography are published.
 
 ## Start here
 
@@ -53,8 +53,14 @@ The Transformer and its variants are taught in [LLM Transformer Architecture](..
 | [12 Convolutions and LeNet](slides/12_convolutions_lenet.html) (10 slides) | Week 6: local and shared weights, receptive fields, pooling, LeNet-5; lab L4 |
 | [13 AlexNet and VGG](slides/13_alexnet_vgg.html) (10 slides) | Week 7: ImageNet 2012, ReLU, dropout and augmentation at scale, stacks of 3 × 3 filters; lab L4 |
 | [14 ResNet and residual connections](slides/14_resnet.html) (10 slides) | Week 7: the degradation problem, identity shortcuts, bottlenecks, the residual stream; lab L4 |
-
-Parts V and VI (decks 15 to 20) are listed in the [syllabus](SYLLABUS.md) and added with their labs.
+| **Part V. Sequence models** | |
+| [15 Recurrent networks and backpropagation through time](slides/15_rnn_bptt.html) (10 slides) | Week 8: the recurrence, BPTT, vanishing and exploding gradients, clipping, character language models; lab L5 |
+| [16 LSTM and GRU](slides/16_lstm_gru.html) (10 slides) | Week 8: the cell state and gates, the forget gate and its bias, the GRU, which unit to use; lab L5 |
+| [17 Sequence to sequence](slides/17_seq2seq.html) (10 slides) | Week 9: the encoder–decoder, teacher forcing, beam search, reversing the source, the bottleneck; lab L6 |
+| [18 Attention in sequence to sequence](slides/18_attention_seq2seq.html) (10 slides) | Week 9: Bahdanau and Luong attention, alignments, what the lab's attention learned; lab L6 |
+| **Part VI. Practice and the bridge** | |
+| [19 Training practice: a debugging recipe](slides/19_debugging_recipe.html) (10 slides) | Week 10: baselines, the loss at initialization, overfitting on purpose, the learning rate, reading curves, fair tuning |
+| [20 Bridge to the Transformer](slides/20_bridge_transformer.html) (10 slides) | Week 10: why self-attention replaced recurrence, each part of a Transformer block mapped to its deck, recurrence returning |
 
 ## Repository layout
 
@@ -82,6 +88,14 @@ ml101-neural-networks-course/
 │   │   ├── README.md
 │   │   ├── cnn.py                   # im2col convolution, pooling, a small CNN, plain against residual depth
 │   │   └── test_cnn.py
+│   ├── L5_rnn_lstm_gru/
+│   │   ├── README.md
+│   │   ├── rnn.py                   # RNN, LSTM and GRU cells with BPTT; adding problem; character language model
+│   │   └── test_rnn.py
+│   ├── L6_seq2seq_attention/
+│   │   ├── README.md
+│   │   ├── seq2seq.py               # GRU encoder-decoder with no, dot or additive attention; digit reversal
+│   │   └── test_seq2seq.py
 │   └── README.md                    # Lab index
 ├── references/
 │   └── bibliography.md              # Every source, grouped by deck; checked 2026-11-06
@@ -100,7 +114,13 @@ ml101-neural-networks-course/
 │   ├── 11_batchnorm.html
 │   ├── 12_convolutions_lenet.html
 │   ├── 13_alexnet_vgg.html
-│   └── 14_resnet.html
+│   ├── 14_resnet.html
+│   ├── 15_rnn_bptt.html
+│   ├── 16_lstm_gru.html
+│   ├── 17_seq2seq.html
+│   ├── 18_attention_seq2seq.html
+│   ├── 19_debugging_recipe.html
+│   └── 20_bridge_transformer.html
 ├── LICENSE                          # Apache-2.0
 ├── README.md                        # This file
 └── SYLLABUS.md                      # Parts, weekly plan, labs and assessment
