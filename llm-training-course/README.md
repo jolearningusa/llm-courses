@@ -2,7 +2,7 @@
 
 Read the papers behind how today's language models are trained, one method at a time: pre-training data and recipes, training at scale, long context, supervised fine-tuning, parameter-efficient tuning, RLHF, direct preference methods, RL for reasoning, distillation, safety tuning and evaluation.
 
-**Status, 2026-11-07: Parts I to X published.** The course map deck, the four Part I decks on the pre-training recipe (AdamW and learning-rate schedules, batch size and μP, training stability, Muon), the four Part II decks on pre-training data (web corpora, deduplication and quality filtering, mixtures and repetition, code, math and synthetic data with mid-training), the two Part III decks on training at scale (parallelism, low-precision training), the two Part IV decks on long context and continual pre-training, the three Part V decks on supervised fine-tuning (instruction tuning, instruction data, Tülu 3 end to end), the two Part VI decks on parameter-efficient tuning (adapters, prefix tuning and LoRA; QLoRA, DoRA and what LoRA forgets), the four Part VII decks on RLHF (learning from human preferences, PPO and InstructGPT, RLHF at scale, Constitutional AI and RLAIF), the three Part VIII decks on direct preference methods (DPO; IPO, KTO, ORPO and SimPO; online preference learning and DPO against PPO), the four Part IX decks on RL for reasoning (verifiers and process rewards; GRPO and RLOO; RLVR with DeepSeek-R1, Kimi k1.5 and Tülu 3; DAPO, Dr. GRPO and test-time compute), the two Part X decks on distillation (knowledge distillation and sequence-level KD; MiniLLM, on-policy distillation, Gemma 2 and R1's distilled models), labs L0 to L8, the syllabus (34 decks in eleven parts, ten CPU labs, weekly plan, assessment) and the bibliography (97 sources, each checked on its arXiv or blog page) are in place. The other parts follow one at a time.
+**Status, 2026-11-07: complete, all eleven parts published.** The course map deck, the four Part I decks on the pre-training recipe (AdamW and learning-rate schedules, batch size and μP, training stability, Muon), the four Part II decks on pre-training data (web corpora, deduplication and quality filtering, mixtures and repetition, code, math and synthetic data with mid-training), the two Part III decks on training at scale (parallelism, low-precision training), the two Part IV decks on long context and continual pre-training, the three Part V decks on supervised fine-tuning (instruction tuning, instruction data, Tülu 3 end to end), the two Part VI decks on parameter-efficient tuning (adapters, prefix tuning and LoRA; QLoRA, DoRA and what LoRA forgets), the four Part VII decks on RLHF (learning from human preferences, PPO and InstructGPT, RLHF at scale, Constitutional AI and RLAIF), the three Part VIII decks on direct preference methods (DPO; IPO, KTO, ORPO and SimPO; online preference learning and DPO against PPO), the four Part IX decks on RL for reasoning (verifiers and process rewards; GRPO and RLOO; RLVR with DeepSeek-R1, Kimi k1.5 and Tülu 3; DAPO, Dr. GRPO and test-time compute), the two Part X decks on distillation (knowledge distillation and sequence-level KD; MiniLLM, on-policy distillation, Gemma 2 and R1's distilled models), the three Part XI decks (safety tuning and its attacks; evaluating LLMs; the capstone), labs L0 to L9, the syllabus (34 decks in eleven parts, ten CPU labs, weekly plan, assessment) and the bibliography (97 sources, each checked on its arXiv or blog page) are in place.
 
 ## Start here
 
@@ -76,6 +76,9 @@ Classic architectures such as MLPs, CNNs, RNNs and LSTMs, and the basics of trai
 | [28 Fixing GRPO and spending test-time compute: DAPO, Dr. GRPO, Snell et al.](slides/28_dapo_drgrpo_test_time.html) (9 slides) | Week 13: Clip-Higher and dynamic sampling, length and difficulty biases, search against a verifier and revisions; paper critique 2 |
 | [29 Knowledge distillation: Hinton et al., sequence-level KD, DistilBERT](slides/29_knowledge_distillation.html) (10 slides) | Week 14: soft targets and the temperature, logit matching, distilling whole sequences, a distilled BERT; lab L8 |
 | [30 Distilling LLMs: MiniLLM, on-policy distillation, Gemma 2, R1's distilled models](slides/30_distilling_llms.html) (11 slides) | Week 14: forward against reverse KL, distilling on the student's own samples, distillation in pre-training, reasoning by SFT; lab L8 |
+| [31 Safety tuning and its attacks: red teaming, Safety-Tuned LLaMAs, fine-tuning attacks, GCG, deliberative alignment](slides/31_safety_tuning_attacks.html) (12 slides) | Week 14: red teaming with a language model, how much safety data, fine-tuning and suffix attacks, reasoning over a written policy |
+| [32 Evaluating LLMs: MMLU, HumanEval and pass@k, HELM, MT-Bench and Chatbot Arena, contamination](slides/32_evaluating_llms.html) (12 slides) | Week 15: multiple choice, unit tests and pass@k, holistic metrics, LLM judges and their biases, Bradley-Terry ratings, a permutation test for contamination; lab L9 |
+| [33 Capstone: plan a training run from base model to chat and reasoning model](slides/33_capstone.html) (10 slides) | Week 15: the brief, the budget with lab L0, data, systems, optimizer, post-training stages and evaluation gates; capstone presentations |
 
 ## Repository layout
 
@@ -135,6 +138,12 @@ llm-training-course/
 │   │   ├── kd.py                    # Soft targets at a temperature, the T² factor, logit matching
 │   │   ├── modes.py                 # Forward and reverse KL on a two-mode teacher; on-policy gradient
 │   │   └── test_kd.py
+│   ├── L9_evaluation/
+│   │   ├── README.md
+│   │   ├── passk.py                 # Unbiased pass@k, brute-force check, the biased plug-in
+│   │   ├── ratings.py               # Bradley-Terry by Newton's method against online Elo; bootstrap
+│   │   ├── contamination.py         # n-gram overlap and the example-order permutation test
+│   │   └── test_eval.py
 │   └── README.md                    # Lab index
 ├── references/
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-06
@@ -169,7 +178,10 @@ llm-training-course/
 │   ├── 27_rlvr_r1.html
 │   ├── 28_dapo_drgrpo_test_time.html
 │   ├── 29_knowledge_distillation.html
-│   └── 30_distilling_llms.html
+│   ├── 30_distilling_llms.html
+│   ├── 31_safety_tuning_attacks.html
+│   ├── 32_evaluating_llms.html
+│   └── 33_capstone.html
 ├── LICENSE                          # Apache-2.0
 ├── README.md                        # This file
 └── SYLLABUS.md                      # Parts, decks, weekly plan, labs and assessment
