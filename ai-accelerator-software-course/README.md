@@ -4,6 +4,8 @@ Build and verify the software boundary between an AI framework and an accelerato
 
 **Functional-reference release, 2026-10-31; visual revision, 2026-11-01.** Eight decks in English and Simplified Chinese (80 slides per language), 32 original mechanism diagrams (64 localized editable SVGs), L0–L7 handouts and an executable standard-library virtual accelerator are supplied. Twenty-four regression tests, five scenarios, seeded state exercising and a bounded ownership explorer validate their stated functional scopes. Real-device, firmware-binary, driver, HIL and physical qualification remain target-dependent.
 
+[Research audit, 2026-11-07](references/research_audit_2026_11.md): checked readings, compatibility findings, prioritized updates and potential projects. Proposed experiments are distinguished from executed results.
+
 ## Start here
 
 - [Syllabus](SYLLABUS.md): eight-week path, prerequisites, assessed outcomes and capstone.
@@ -70,7 +72,8 @@ ai-accelerator-software-course/
 │   └── virtual_accelerator.py
 ├── references/
 │   ├── bibliography_and_links.md
-│   └── figure_sources.md
+│   ├── figure_sources.md
+│   └── research_audit_2026_11.md
 ├── slides/
 │   ├── illustrations/
 │   │   ├── zh/

@@ -9,6 +9,8 @@ slides and F for full screen.
 
 ## Courses
 
+[All-course research audit, 2026-11-07](docs/research-audit-2026-11-07.md): six course reports, compatibility findings and proposed updates/projects.
+
 | Course | What it covers | Materials |
 |--------|----------------|-----------|
 | [ML 101: Neural Network Foundations](ml101-neural-networks-course/) ([website](https://jolearningusa.github.io/llm-courses/ml101-neural-networks-course/)) | The foundations before LLMs, in the spirit of a first university course on machine learning and neural networks: linear and logistic regression, gradient descent and backpropagation, MLPs and initialization, then optimizers, regularization, CNNs, RNNs, LSTMs and seq2seq attention, ending with a bridge to the Transformer course | Complete: course map and 20 decks in six parts, CPU labs L0–L6 in NumPy, syllabus, bibliography |
@@ -26,6 +28,8 @@ llm-courses/
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
 │   ├── git-workflow.md          # Trunk-based git workflow and GitHub settings
+│   ├── research-audit-2026-11-07.md
+│   ├── research-audit-2026-11-07-versions.json
 │   └── updating-courses.md      # Consistency and freshness checks; how to update a course with new findings
 ├── scripts/
 │   ├── build_site.py            # Builds the website from every course into _site/

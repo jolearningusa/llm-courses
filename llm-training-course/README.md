@@ -4,6 +4,8 @@ Read the papers behind how today's language models are trained, one method at a 
 
 **Status, 2026-11-07: complete, all eleven parts published.** The course map deck, the four Part I decks on the pre-training recipe (AdamW and learning-rate schedules, batch size and μP, training stability, Muon), the four Part II decks on pre-training data (web corpora, deduplication and quality filtering, mixtures and repetition, code, math and synthetic data with mid-training), the two Part III decks on training at scale (parallelism, low-precision training), the two Part IV decks on long context and continual pre-training, the three Part V decks on supervised fine-tuning (instruction tuning, instruction data, Tülu 3 end to end), the two Part VI decks on parameter-efficient tuning (adapters, prefix tuning and LoRA; QLoRA, DoRA and what LoRA forgets), the four Part VII decks on RLHF (learning from human preferences, PPO and InstructGPT, RLHF at scale, Constitutional AI and RLAIF), the three Part VIII decks on direct preference methods (DPO; IPO, KTO, ORPO and SimPO; online preference learning and DPO against PPO), the four Part IX decks on RL for reasoning (verifiers and process rewards; GRPO and RLOO; RLVR with DeepSeek-R1, Kimi k1.5 and Tülu 3; DAPO, Dr. GRPO and test-time compute), the two Part X decks on distillation (knowledge distillation and sequence-level KD; MiniLLM, on-policy distillation, Gemma 2 and R1's distilled models), the three Part XI decks (safety tuning and its attacks; evaluating LLMs; the capstone), labs L0 to L9, the syllabus (34 decks in eleven parts, ten CPU labs, weekly plan, assessment) and the bibliography (97 sources, each checked on its arXiv or blog page) are in place.
 
+[Research audit, 2026-11-07](references/research_audit_2026_11.md): checked readings, compatibility findings, prioritized updates and potential projects. Proposed experiments are distinguished from executed results.
+
 ## Start here
 
 - [Course map deck](slides/00_course_map.html): the whole course on 11 slides.
@@ -146,6 +148,7 @@ llm-training-course/
 │   │   └── test_eval.py
 │   └── README.md                    # Lab index
 ├── references/
+│   ├── research_audit_2026_11.md
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-06
 ├── slides/
 │   ├── 00_course_map.html           # Course map deck

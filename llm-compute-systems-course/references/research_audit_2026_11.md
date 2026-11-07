@@ -1,0 +1,37 @@
+# Research audit — efficient LLM computing systems, 2026-11-07
+
+Reviewed all 41 deck topics, the syllabus/tracker, prior research notes and representative deployment/verification lab boundaries. Preserve the visual and worked-example changes from PRs #103/#104. This pass proposes updates; it does not silently migrate lab environments. [Repository-wide audit and registry snapshot](../../docs/research-audit-2026-11-07.md).
+
+## Primary sources checked
+
+| Source / inspected scope | Finding and decision |
+|---|---|
+| [PyTorch FSDP2 tutorial](https://docs.pytorch.org/tutorials/intermediate/FSDP_tutorial.html) and [TorchTitan](https://github.com/pytorch/torchtitan), overview and training responsibilities | Extend source walkthroughs with an actual pinned configuration and a resume/equivalence gate. Reading current examples does not validate the older pinned CPU lab or a distributed run. |
+| [ExecuTorch getting started](https://docs.pytorch.org/executorch/stable/getting-started.html), export/delegate workflow | The moving `stable` page rendered 1.5 while PyPI metadata reported 1.6.0. Keep documentation version and install artifact separate. The tested 1.0 CPU pin remains the baseline until a new export/lower/load/execute pilot succeeds. |
+| [FlashAttention-4 author README](https://github.com/Dao-AILab/flash-attention/blob/main/flash_attn/cute/README.md) and [TileLang author repository](https://github.com/tile-ai/tilelang), implementation/target descriptions | Target-specific realization matters more than DSL name alone. Decks 12/33/40 should link a pinned kernel with its shape/dtype/mask constraints. Source availability is not tested support for every backend. |
+| [vLLM disaggregated-prefill documentation](https://docs.vllm.ai/en/latest/features/disagg_prefill/), experimental status | Keep placement, transfer cost and failure ownership in the comparison. A connector/configuration example is not end-to-end throughput evidence. PyPI 0.33.0 was observed, but a matching tagged GitHub release body was unavailable in this pass. |
+| [NVIDIA Rubin platform](https://www.nvidia.com/en-us/data-center/technologies/rubin/), platform scope/status; [Google TPU7x/Ironwood](https://docs.cloud.google.com/tpu/docs/tpu7x), system documentation; [AMD ROCm](https://rocm.docs.amd.com/en/latest/), components and compatibility links | Re-read dated device/library claims against vendor pages and per-target matrices. Rubin's current page describes production and agentic/reasoning infrastructure; do not turn platform marketing into a measured model-specific speedup. ROCm's moving landing page is not a universal supported combination. |
+
+## Freshness findings beyond the automatic headline
+
+The 15-entry repository scan reports five rows above configured comparison thresholds, including compute's PyTorch `2.9.1 → 2.15.0` and vLLM `0.32.0 → 0.33.0`. The L3T Triton pin still matches observed 3.9.0 metadata. The shared snapshot records patch movements too.
+
+**ExecuTorch is a monitoring gap:** observed `1.0.0 → 1.6.0` is suppressed by `compare: 1`. Minor-version movement can still matter to export/runtime APIs. Recommend comparing minor versions in a separate monitoring change while retaining the tested pin until qualification; advancing `verified` would wrongly suggest a successful compatibility check. The rendered 1.5 docs / 1.6 registry difference must also be resolved against versioned documentation.
+
+## Proposed changes
+
+| ID / priority | Exact target | Execution and acceptance |
+|---|---|---|
+| CMP-1 / P1 compatibility | Decks 05/06/22/23; L2/L11 requirements and deployment reports | Create isolated old/new environment lanes, freeze model/input/export constraints and compare eager/export/lowered output. Test one documented shape rejection and cold versus warm timing. Save actual delegate partition, versions and artifact identity. Update pins only after the reproducible pilot. |
+| CMP-2 / P1 compatibility | Decks 16/18/35; AgentOS cache lab | Identify an installable vLLM 0.33 artifact/source pair first. Recheck connector roles, failure/cancel ownership and cold/shared-prefix controls on a qualified target. No version-only feature claim or simulator timing substituted for engine evidence. |
+| CMP-3 / P1 mechanism | Decks 12/33/40; L4/L5 | Select one FA4/CuTeDSL and one TileLang implementation at revisions. Map tile layout, staging, synchronization, masks and supported shapes. Begin with numerical/tail cases; benchmark matched contracts on supported hardware only. A source-only report lists missing generated-code/device evidence. |
+| CMP-4 / P1 source accuracy | Decks 24/40; vendor notes | Recheck each hardware table row against a dated vendor source, separating chip, rack and cluster units; peak precision/sparsity from delivered performance; current status from roadmap. Preserve historical statements as explicitly dated history. Any unverifiable product specification stays unresolved rather than being repeated as fact. |
+| CMP-5 / P2 training reliability | Decks 25/28/29; distributed/recovery labs | Pin a TorchTitan/FSDP2 path and require uninterrupted-versus-resumed progress equivalence, including data cursor/RNG and optimizer state. Then measure checkpoint stalls and useful completed work. CPU sharding arithmetic alone cannot qualify distributed recovery. |
+
+## Potential projects
+
+**Deployment compatibility matrix (engineering).** Week 1 freeze old/new environments and constraints; week 2 export/lower/load and test allowed/rejected inputs; week 3 collect delegate/fallback/memory evidence; week 4 publish reproducible manifests and unsupported cases. Do not confuse new documentation with successfully installed runtimes.
+
+**Kernel portability under a fixed contract (replication/research extension).** Week 1 choose operation and quality tolerance; week 2 inspect pinned implementations and validate irregular inputs; week 3 measure one supported target; week 4 add a second eligible backend and explain regressions using generated code and counters. Novelty requires a broader prior-art check, not simply writing the same GEMM in two DSLs.
+
+No GPU or distributed experiment, new model run, hardware purchase recommendation or dependency upgrade was performed. This is a scoped source/registry audit; it is not an exhaustive verification of every external link or every existing device claim.

@@ -4,6 +4,8 @@ Learn the machine learning that comes before the Transformer, from linear regres
 
 **Status, 2026-11-06: complete.** All 21 decks (the course map and Parts I to VI: learning from data, neural networks, optimization and regularization, convolutional networks, sequence models, and practice with the bridge to the Transformer), labs L0 to L6, the syllabus and the bibliography are published.
 
+[Research audit, 2026-11-07](references/research_audit_2026_11.md): checked readings, compatibility findings, prioritized updates and potential projects. Proposed experiments are distinguished from executed results.
+
 ## Start here
 
 - [Course map deck](slides/00_course_map.html): the whole course on 9 slides.
@@ -98,6 +100,7 @@ ml101-neural-networks-course/
 │   │   └── test_seq2seq.py
 │   └── README.md                    # Lab index
 ├── references/
+│   ├── research_audit_2026_11.md
 │   └── bibliography.md              # Every source, grouped by deck; checked 2026-11-06
 ├── slides/
 │   ├── 00_course_map.html           # Course map deck
