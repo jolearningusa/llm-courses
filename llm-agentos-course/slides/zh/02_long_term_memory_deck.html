@@ -439,30 +439,7 @@ client.agents.passages.insert(
 </section>
 
 <!-- 17 -->
-<section class="slide">
-  <h2><small>评估</small>如何知道记忆有效？</h2>
-  <div class="cols">
-    <div>
-      <h3 class="accent2" style="margin:0 0 8px">基准测试</h3>
-      <ul style="font-size:19px">
-        <li><b>LoCoMo</b>：超长期对话（多个会话），含问答、摘要和生成任务。</li>
-        <li><b>LongMemEval</b>：五种能力：信息提取、多会话推理、时间推理、知识更新、拒答（abstention）。商用助手和长上下文 LLM 在持续交互中准确率下降约 30%。</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>在你自己的框架中要度量什么</h3>
-      <ul>
-        <li>在带标注的“应该记住”问题集上的 Recall@k</li>
-        <li>注入精确率：被注入的记忆中实际被用到的比例</li>
-        <li>过期：使用了已被取代事实的回答</li>
-        <li>拒答：在没有存储任何内容时说“我不知道”</li>
-        <li>每轮增加的 token 和延迟，自动 vs. 工具</li>
-        <li>跨用户泄漏：始终为零</li>
-      </ul>
-    </div>
-  </div>
-  <div class="cite">Maharana et al., LoCoMo (arXiv:2402.17753); Wu et al., LongMemEval (arXiv:2410.10813)。</div>
-</section>
+<section class="slide"><h2><small>公平比较</small>记忆提升，还是实验条件变了？</h2><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1136 300" role="img" aria-labelledby="memory-conditions-title memory-conditions-desc" style="display:block;width:100%;height:auto"><title id="memory-conditions-title">同一问题，四种记忆条件</title><desc id="memory-conditions-desc">固定生成模型、问题、历史、评分规则和输入上限；只改变提供历史信息的方式。</desc><g font-family="system-ui,sans-serif"><rect x="0" y="0" width="1136" height="46" rx="10" fill="#161d2e" stroke="#7be0b8" stroke-width="2"/><text x="568" y="30" font-size="22" fill="#7be0b8" text-anchor="middle">固定：模型 · 问题/历史 · 评分 · 输入上限</text><rect x="0" y="77" width="269" height="126" rx="10" fill="#161d2e" stroke="#6ea8ff" stroke-width="2"/><text x="134.5" y="111" font-size="23" fill="#7be0b8" text-anchor="middle">无记忆</text><text x="134.5" y="150" font-size="20" fill="#e8ecf4" text-anchor="middle">只给问题</text><text x="134.5" y="181" font-size="18" fill="#9aa6bd" text-anchor="middle">检查历史是否必要</text><path d="M134.5,207 V232" stroke="#6ea8ff" stroke-width="2"/><path d="M128.5,225 L134.5,232 L140.5,225" fill="none" stroke="#6ea8ff" stroke-width="2"/><rect x="289" y="77" width="269" height="126" rx="10" fill="#161d2e" stroke="#6ea8ff" stroke-width="2"/><text x="423.5" y="111" font-size="23" fill="#7be0b8" text-anchor="middle">完整历史</text><text x="423.5" y="150" font-size="20" fill="#e8ecf4" text-anchor="middle">保留所有历史</text><text x="423.5" y="181" font-size="18" fill="#9aa6bd" text-anchor="middle">只在容量足够时比较</text><path d="M423.5,207 V232" stroke="#6ea8ff" stroke-width="2"/><path d="M417.5,225 L423.5,232 L429.5,225" fill="none" stroke="#6ea8ff" stroke-width="2"/><rect x="578" y="77" width="269" height="126" rx="10" fill="#161d2e" stroke="#6ea8ff" stroke-width="2"/><text x="712.5" y="111" font-size="23" fill="#7be0b8" text-anchor="middle">原文检索</text><text x="712.5" y="150" font-size="20" fill="#e8ecf4" text-anchor="middle">检索历史原文块</text><text x="712.5" y="181" font-size="18" fill="#9aa6bd" text-anchor="middle">不经事实提取</text><path d="M712.5,207 V232" stroke="#6ea8ff" stroke-width="2"/><path d="M706.5,225 L712.5,232 L718.5,225" fill="none" stroke="#6ea8ff" stroke-width="2"/><rect x="867" y="77" width="269" height="126" rx="10" fill="#161d2e" stroke="#6ea8ff" stroke-width="2"/><text x="1001.5" y="111" font-size="23" fill="#7be0b8" text-anchor="middle">提取式记忆</text><text x="1001.5" y="150" font-size="20" fill="#e8ecf4" text-anchor="middle">写入并检索事实</text><text x="1001.5" y="181" font-size="18" fill="#9aa6bd" text-anchor="middle">记录提取与写入成本</text><path d="M1001.5,207 V232" stroke="#6ea8ff" stroke-width="2"/><path d="M995.5,225 L1001.5,232 L1007.5,225" fill="none" stroke="#6ea8ff" stroke-width="2"/><rect x="0" y="240" width="1136" height="48" rx="10" fill="#161d2e" stroke="#6ea8ff" stroke-width="2"/><text x="568" y="271" font-size="22" fill="#e8ecf4" text-anchor="middle">同一回答与评分流程 → 按问题类型报告质量 + 总成本</text></g></svg><p style="font-size:21px">比较原文检索与事实提取时，尽量匹配嵌入模型、分块与检索配置；记录无法匹配的差异。</p><p class="muted" style="font-size:19px">完整历史超出上限时，标记“不适用”；更大窗口是另一个预算组，不能默默截断。</p><div class="cite"><a style="color:var(--accent)" href="https://arxiv.org/html/2606.29914v1">MemDelta, arXiv:2606.29914v1, §3 / limitations</a> · 原创教学图；无基准复现实验。</div></section>
 
 <!-- 18 -->
 <section class="slide">
@@ -481,31 +458,7 @@ client.agents.passages.insert(
 </section>
 
 <!-- 19 -->
-<section class="slide">
-  <h2><small>设计清单</small>为你自己的智能体构建记忆</h2>
-  <div class="cols">
-    <div>
-      <ol style="font-size:20px;padding-left:26px">
-        <li>决定<b>记住什么</b>：语义、情景、程序。</li>
-        <li>选择<b>写入触发方式</b>：热路径工具、后台钩子，或两者兼用。</li>
-        <li>按问题类型选择<b>索引</b>：精确 → BM25，模糊 → 向量，关系 → 图。通常是混合。</li>
-        <li>按层选择<b>读取触发方式</b>：固定、自动召回、工具。</li>
-        <li>在上线前定义<b>更新与遗忘</b>规则。</li>
-        <li>所有内容都按用户<b>限定范围</b>。</li>
-        <li><b>度量</b>召回、过期、成本。</li>
-      </ol>
-    </div>
-    <div class="card">
-      <h3>练习：同一份记忆，两条读取路径</h3>
-      <p>实现一个存储（例如 Mem0 OSS 或 LanceDB），并在实验 12A 的 Hermes 提供者中以两种方式接入（实验 4 在 nanoos 里做同样的对比）：</p>
-      <ul>
-        <li><b>A</b>：从 <code>prefetch()</code> 返回记忆</li>
-        <li><b>B</b>：通过 <code>get_tool_schemas()</code> 暴露一个 <code>search_memory</code> 工具</li>
-      </ul>
-      <p>运行 20 个需要记忆的问题和 20 个不需要记忆的问题。比较准确率、每轮 token 数，以及模型实际调用工具的频率。</p>
-    </div>
-  </div>
-</section>
+<section class="slide"><h2><small>实验 4 扩展</small>固定条件，记录每一笔成本</h2><div class="cols"><div class="card"><h3>先冻结实验约定</h3><ul><li>同一批问题 ID、历史与用户隔离。</li><li>同一生成模型、评分规则、输入上限和输出预算。</li><li>每种条件重建存储；标明截断、失败与缺失。</li></ul></div><div class="card"><h3>再提交证据</h3><ul><li>按问题类型的质量与有效样本数。</li><li>写入：调用、token、耗时和费用。</li><li>读取/回答：token、延迟、费用及总成本。</li></ul></div></div><p style="font-size:20px">现有 <code>none / auto / tool / both</code> 比较的是同一存储的读取方式，不是上述四种记忆架构。</p><p style="font-size:20px"><a style="color:var(--accent)" href="../../labs/kit/handouts/lab04_long_term_memory.html#matched-memory-evaluation">实验协议、结果模板与检查题</a> · demo 答案是脚本，不用于比较模型能力。</p><div class="cite"><a style="color:var(--accent)" href="https://arxiv.org/html/2606.29914v1">MemDelta, arXiv:2606.29914v1, §3 / limitations</a> · 原创教学图；无基准复现实验。</div></section>
 
 <!-- 20 -->
 <section class="slide">

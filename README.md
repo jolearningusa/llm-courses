@@ -27,6 +27,11 @@ llm-courses/
 ├── README.md                    # This file
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
+│   ├── reviews/
+│   │   └── agentos-memory-evaluation/
+│   │       ├── README.md
+│   │       ├── en.png
+│   │       └── zh.png
 │   ├── git-workflow.md          # Trunk-based git workflow and GitHub settings
 │   ├── research-audit-2026-11-07.md
 │   ├── research-audit-2026-11-07-versions.json

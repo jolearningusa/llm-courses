@@ -439,30 +439,7 @@ client.agents.passages.insert(
 </section>
 
 <!-- 17 -->
-<section class="slide">
-  <h2><small>Evaluation</small>How do you know memory works?</h2>
-  <div class="cols">
-    <div>
-      <h3 class="accent2" style="margin:0 0 8px">Benchmarks</h3>
-      <ul style="font-size:19px">
-        <li><b>LoCoMo</b>: very long-term conversations (many sessions) with QA, summarization and generation tasks.</li>
-        <li><b>LongMemEval</b>: five abilities: information extraction, multi-session reasoning, temporal reasoning, knowledge updates, abstention. Commercial assistants and long-context LLMs drop about 30% accuracy over sustained interactions.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>What to measure in your own harness</h3>
-      <ul>
-        <li>Recall@k on a labeled set of "should remember" questions</li>
-        <li>Injection precision: share of injected memories actually used</li>
-        <li>Staleness: answers that use superseded facts</li>
-        <li>Abstention: says "I don't know" when nothing was stored</li>
-        <li>Tokens and latency added per turn, auto vs. tool</li>
-        <li>Cross-user leakage: always zero</li>
-      </ul>
-    </div>
-  </div>
-  <div class="cite">Maharana et al., LoCoMo (arXiv:2402.17753); Wu et al., LongMemEval (arXiv:2410.10813).</div>
-</section>
+<section class="slide"><h2><small>Controlled evaluation</small>Better memory—or a changed experiment?</h2><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1136 300" role="img" aria-labelledby="memory-conditions-title memory-conditions-desc" style="display:block;width:100%;height:auto"><title id="memory-conditions-title">One question, four memory conditions</title><desc id="memory-conditions-desc">Hold the answer model, question, history, judge and input cap fixed; vary how history is made available.</desc><g font-family="system-ui,sans-serif"><rect x="0" y="0" width="1136" height="46" rx="10" fill="#161d2e" stroke="#7be0b8" stroke-width="2"/><text x="568" y="30" font-size="22" fill="#7be0b8" text-anchor="middle">FIX: answer model · questions/history · judge · input cap</text><rect x="0" y="77" width="269" height="126" rx="10" fill="#161d2e" stroke="#6ea8ff" stroke-width="2"/><text x="134.5" y="111" font-size="23" fill="#7be0b8" text-anchor="middle">No memory</text><text x="134.5" y="150" font-size="20" fill="#e8ecf4" text-anchor="middle">Question only</text><text x="134.5" y="181" font-size="18" fill="#9aa6bd" text-anchor="middle">Tests need for history</text><path d="M134.5,207 V232" stroke="#6ea8ff" stroke-width="2"/><path d="M128.5,225 L134.5,232 L140.5,225" fill="none" stroke="#6ea8ff" stroke-width="2"/><rect x="289" y="77" width="269" height="126" rx="10" fill="#161d2e" stroke="#6ea8ff" stroke-width="2"/><text x="423.5" y="111" font-size="23" fill="#7be0b8" text-anchor="middle">Full history</text><text x="423.5" y="150" font-size="20" fill="#e8ecf4" text-anchor="middle">All prior messages</text><text x="423.5" y="181" font-size="18" fill="#9aa6bd" text-anchor="middle">Eligible only if it fits</text><path d="M423.5,207 V232" stroke="#6ea8ff" stroke-width="2"/><path d="M417.5,225 L423.5,232 L429.5,225" fill="none" stroke="#6ea8ff" stroke-width="2"/><rect x="578" y="77" width="269" height="126" rx="10" fill="#161d2e" stroke="#6ea8ff" stroke-width="2"/><text x="712.5" y="111" font-size="23" fill="#7be0b8" text-anchor="middle">Verbatim retrieval</text><text x="712.5" y="150" font-size="20" fill="#e8ecf4" text-anchor="middle">Retrieve original chunks</text><text x="712.5" y="181" font-size="18" fill="#9aa6bd" text-anchor="middle">No fact extraction</text><path d="M712.5,207 V232" stroke="#6ea8ff" stroke-width="2"/><path d="M706.5,225 L712.5,232 L718.5,225" fill="none" stroke="#6ea8ff" stroke-width="2"/><rect x="867" y="77" width="269" height="126" rx="10" fill="#161d2e" stroke="#6ea8ff" stroke-width="2"/><text x="1001.5" y="111" font-size="23" fill="#7be0b8" text-anchor="middle">Extracted memory</text><text x="1001.5" y="150" font-size="20" fill="#e8ecf4" text-anchor="middle">Write and retrieve facts</text><text x="1001.5" y="181" font-size="18" fill="#9aa6bd" text-anchor="middle">Count extraction cost</text><path d="M1001.5,207 V232" stroke="#6ea8ff" stroke-width="2"/><path d="M995.5,225 L1001.5,232 L1007.5,225" fill="none" stroke="#6ea8ff" stroke-width="2"/><rect x="0" y="240" width="1136" height="48" rx="10" fill="#161d2e" stroke="#6ea8ff" stroke-width="2"/><text x="568" y="271" font-size="22" fill="#e8ecf4" text-anchor="middle">Same answering/scoring procedure → quality by question type + total cost</text></g></svg><p style="font-size:21px">For retrieval versus extraction, match embedding, chunking and retrieval settings where possible; disclose mismatches.</p><p class="muted" style="font-size:19px">If full history exceeds the cap, mark ineligible; a larger-window diagnostic is a separate budget group.</p><div class="cite"><a style="color:var(--accent)" href="https://arxiv.org/html/2606.29914v1">MemDelta, arXiv:2606.29914v1, §3 / limitations</a> · Original teaching diagram; no benchmark reproduced.</div></section>
 
 <!-- 18 -->
 <section class="slide">
@@ -481,31 +458,7 @@ client.agents.passages.insert(
 </section>
 
 <!-- 19 -->
-<section class="slide">
-  <h2><small>Design checklist</small>Building memory for your own agent</h2>
-  <div class="cols">
-    <div>
-      <ol style="font-size:20px;padding-left:26px">
-        <li>Decide <b>what</b> to remember: semantic, episodic, procedural.</li>
-        <li>Pick the <b>write trigger</b>: hot path tool, background hook, or both.</li>
-        <li>Pick the <b>index</b> by question type: exact → BM25, fuzzy → vector, relational → graph. Usually hybrid.</li>
-        <li>Pick the <b>read trigger</b> per tier: pinned, auto-recall, tool.</li>
-        <li>Define <b>update and forget</b> rules before launch.</li>
-        <li><b>Scope</b> everything by user.</li>
-        <li><b>Measure</b> recall, staleness, cost.</li>
-      </ol>
-    </div>
-    <div class="card">
-      <h3>Exercise: same memory, two read paths</h3>
-      <p>Implement one store (e.g. Mem0 OSS or LanceDB) and wire it both ways in the Lab 12A Hermes provider (Lab 4 builds the same comparison in nanoos):</p>
-      <ul>
-        <li><b>A</b>: return memories from <code>prefetch()</code></li>
-        <li><b>B</b>: expose a <code>search_memory</code> tool via <code>get_tool_schemas()</code></li>
-      </ul>
-      <p>Run 20 questions that need memory and 20 that don't. Compare accuracy, tokens per turn and how often the model actually calls the tool.</p>
-    </div>
-  </div>
-</section>
+<section class="slide"><h2><small>Lab 4 extension</small>Freeze the contract; account for both paths</h2><div class="cols"><div class="card"><h3>Before running</h3><ul><li>Same question IDs, histories and user isolation.</li><li>Same answer model, judge, input cap and output budget.</li><li>Rebuild each store; label truncation, failures and missing runs.</li></ul></div><div class="card"><h3>Submit evidence</h3><ul><li>Quality and eligible sample count by question type.</li><li>Write: calls, tokens, time and cost.</li><li>Read/answer: tokens, latency, cost and total cost.</li></ul></div></div><p style="font-size:20px">Existing <code>none / auto / tool / both</code> modes compare read paths on one store, not the four architectures above.</p><p style="font-size:20px"><a style="color:var(--accent)" href="../labs/kit/handouts/lab04_long_term_memory.html#matched-memory-evaluation">Protocol, results template and checkpoint</a> · Demo answers are scripted, not model-quality evidence.</p><div class="cite"><a style="color:var(--accent)" href="https://arxiv.org/html/2606.29914v1">MemDelta, arXiv:2606.29914v1, §3 / limitations</a> · Original teaching diagram; no benchmark reproduced.</div></section>
 
 <!-- 20 -->
 <section class="slide">
