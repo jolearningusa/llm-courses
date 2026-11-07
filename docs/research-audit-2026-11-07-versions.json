@@ -1,0 +1,258 @@
+{
+  "checked": "2026-11-07",
+  "scope": "15 existing tracked entries across two courses; metadata only, not compatibility qualification",
+  "items": [
+    {
+      "course": "llm-agentos-course",
+      "name": "MCP specification",
+      "course_version": "2026-07-28",
+      "observed_upstream": "2026-07-28",
+      "significant_change": false,
+      "upstream": {
+        "type": "github_dir",
+        "repo": "modelcontextprotocol/modelcontextprotocol",
+        "path": "schema",
+        "match": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "used_in": [
+        "slides/05_mcp_connectors_deck.html",
+        "slides/05_tools_sandbox_deck.html",
+        "slides/05_extension_layer_deck.html",
+        "README.md"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    },
+    {
+      "course": "llm-agentos-course",
+      "name": "vLLM",
+      "course_version": "0.32.0",
+      "observed_upstream": "0.33.0",
+      "significant_change": true,
+      "upstream": {
+        "type": "pypi",
+        "package": "vllm"
+      },
+      "used_in": [
+        "labs/lab2_aios_kv_cache/",
+        "slides/03_kv_cache_deck.html",
+        "slides/05_opensource_plugin_apis_slides.html"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    },
+    {
+      "course": "llm-agentos-course",
+      "name": "LMCache",
+      "course_version": "0.5.6",
+      "observed_upstream": "0.5.7",
+      "significant_change": false,
+      "upstream": {
+        "type": "pypi",
+        "package": "lmcache"
+      },
+      "used_in": [
+        "labs/lab2_aios_kv_cache/",
+        "slides/03_kv_cache_deck.html"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    },
+    {
+      "course": "llm-agentos-course",
+      "name": "NIXL",
+      "course_version": "1.5.0",
+      "observed_upstream": "1.5.2",
+      "significant_change": false,
+      "upstream": {
+        "type": "pypi",
+        "package": "nixl"
+      },
+      "used_in": [
+        "labs/lab2_aios_kv_cache/vllm_lmcache_nixl_config.py",
+        "slides/03_kv_cache_deck.html"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    },
+    {
+      "course": "llm-agentos-course",
+      "name": "Letta Python client (letta-client)",
+      "course_version": "1.12.1",
+      "observed_upstream": "1.12.1",
+      "significant_change": false,
+      "upstream": {
+        "type": "pypi",
+        "package": "letta-client"
+      },
+      "used_in": [
+        "labs/lab1_memory_plugins/letta_shared_blocks.py",
+        "README.md"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    },
+    {
+      "course": "llm-agentos-course",
+      "name": "OpenClaw",
+      "course_version": "2026.10.7",
+      "observed_upstream": "2026.11.1",
+      "significant_change": true,
+      "upstream": {
+        "type": "npm",
+        "package": "openclaw"
+      },
+      "used_in": [
+        "labs/lab1_memory_plugins/openclaw_context_engine.ts",
+        "labs/kit/nanoos/ports.py",
+        "slides/05_opensource_plugin_apis_slides.html",
+        "slides/05_extension_layer_deck.html"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    },
+    {
+      "course": "llm-agentos-course",
+      "name": "Hermes Agent",
+      "course_version": "v0.22.5",
+      "observed_upstream": "v0.23.0",
+      "significant_change": true,
+      "upstream": {
+        "type": "github_release",
+        "repo": "NousResearch/hermes-agent"
+      },
+      "used_in": [
+        "labs/lab1_memory_plugins/hermes_custom_memory.py",
+        "labs/kit/nanoos/ports.py",
+        "slides/05_opensource_plugin_apis_slides.html",
+        "slides/05_skills_deck.html"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    },
+    {
+      "course": "llm-compute-systems-course",
+      "name": "L2 PyTorch lab pin",
+      "course_version": "2.9.1",
+      "observed_upstream": "2.15.0",
+      "significant_change": true,
+      "upstream": {
+        "type": "pypi",
+        "package": "torch"
+      },
+      "used_in": [
+        "labs/kit/pytorch_lab.py",
+        "labs/kit/requirements-pytorch.txt",
+        "labs/kit/handouts/lab02_pytorch.md"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    },
+    {
+      "course": "llm-compute-systems-course",
+      "name": "L11 ExecuTorch CPU lab pin",
+      "course_version": "1.0.0",
+      "observed_upstream": "1.6.0",
+      "significant_change": false,
+      "upstream": {
+        "type": "pypi",
+        "package": "executorch"
+      },
+      "used_in": [
+        "labs/kit/deployment_lab.py",
+        "labs/kit/requirements-executorch.txt",
+        "labs/kit/handouts/lab11_deployment.md"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    },
+    {
+      "course": "llm-compute-systems-course",
+      "name": "vLLM (deck 35)",
+      "course_version": "0.32.0",
+      "observed_upstream": "0.33.0",
+      "significant_change": true,
+      "upstream": {
+        "type": "pypi",
+        "package": "vllm"
+      },
+      "used_in": [
+        "slides/35_inference_engines_compared.html",
+        "references/bibliography_and_links.md"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    },
+    {
+      "course": "llm-compute-systems-course",
+      "name": "SGLang (deck 35)",
+      "course_version": "0.5.23",
+      "observed_upstream": "0.5.23",
+      "significant_change": false,
+      "upstream": {
+        "type": "pypi",
+        "package": "sglang"
+      },
+      "used_in": [
+        "slides/35_inference_engines_compared.html",
+        "references/bibliography_and_links.md"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    },
+    {
+      "course": "llm-compute-systems-course",
+      "name": "TensorRT-LLM (deck 35)",
+      "course_version": "1.2.1",
+      "observed_upstream": "1.2.1",
+      "significant_change": false,
+      "upstream": {
+        "type": "pypi",
+        "package": "tensorrt-llm"
+      },
+      "used_in": [
+        "slides/35_inference_engines_compared.html",
+        "references/bibliography_and_links.md"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    },
+    {
+      "course": "llm-compute-systems-course",
+      "name": "mlx-lm (deck 35)",
+      "course_version": "0.32.2",
+      "observed_upstream": "0.32.2",
+      "significant_change": false,
+      "upstream": {
+        "type": "pypi",
+        "package": "mlx-lm"
+      },
+      "used_in": [
+        "slides/35_inference_engines_compared.html",
+        "references/bibliography_and_links.md"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    },
+    {
+      "course": "llm-compute-systems-course",
+      "name": "Ollama (deck 35)",
+      "course_version": "v0.40.12",
+      "observed_upstream": "v0.40.15",
+      "significant_change": false,
+      "upstream": {
+        "type": "github_release",
+        "repo": "ollama/ollama"
+      },
+      "used_in": [
+        "slides/35_inference_engines_compared.html",
+        "references/bibliography_and_links.md"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    },
+    {
+      "course": "llm-compute-systems-course",
+      "name": "L3T Triton lab pin",
+      "course_version": "3.9.0",
+      "observed_upstream": "3.9.0",
+      "significant_change": false,
+      "upstream": {
+        "type": "pypi",
+        "package": "triton"
+      },
+      "used_in": [
+        "labs/kit/triton_lab.py",
+        "labs/kit/requirements-triton.txt",
+        "labs/kit/handouts/lab03t_triton.md"
+      ],
+      "status": "registry_checked_not_runtime_qualified"
+    }
+  ]
+}

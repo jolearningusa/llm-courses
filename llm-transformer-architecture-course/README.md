@@ -4,6 +4,8 @@ Read the architecture papers behind today's language, vision, diffusion and spee
 
 **Status, 2026-11-02: all decks (English and Simplified Chinese) and labs published.** The course map, the six Part I paper decks (the 2017 Transformer, GPT-1/2, BERT, T5, GPT-3 with the Kaplan scaling laws, Chinchilla), the five Part II decks on how the context is constructed (subword tokenization, RoPE, ALiBi, Position Interpolation and YaRN, chat templates and long contexts), the seven Part III and IV decks on attention variants and the modern block (MQA, GQA, FlashAttention, sliding windows and attention sinks, MLA, Pre-LN and RMSNorm, SwiGLU), the four Part V decks on mixture of experts (sparsely-gated MoE and GShard, Switch, Mixtral, DeepSeekMoE with loss-free balancing), the five Part VI decks on newer efficiency designs (Mamba and Mamba-2, Jamba, Gated DeltaNet and Qwen3-Next, native and DeepSeek sparse attention, multi-token prediction), the six Part VII decks on popular model families (LLaMA and Llama 2, Llama 3 and 4, Qwen2.5 and Qwen3, DeepSeek-V3 and R1, Gemma 1 to 3, Phi-3, OLMo, Kimi K2 and gpt-oss), the four Part VIII decks on multimodal models (ViT, CLIP, Flamingo and LLaVA, Chameleon), the five Part IX decks on diffusion and speech (DDPM and latent diffusion, DiT, Whisper, SoundStream and EnCodec, AudioLM and VALL-E), the capstone deck, labs L0 to L9, the syllabus and the full bibliography (70 sources, each checked on its arXiv or vendor page) are in place. Every deck also has a Simplified Chinese twin in `slides/zh/`, linked on the same row of the table below.
 
+[Research audit, 2026-11-07](references/research_audit_2026_11.md): checked readings, compatibility findings, prioritized updates and potential projects. Proposed experiments are distinguished from executed results.
+
 ## Start here
 
 - [Course map deck](slides/00_course_map.html) ([简体中文](slides/zh/00_course_map.html)): the whole course on 11 slides.
@@ -150,6 +152,7 @@ llm-transformer-architecture-course/
 │   │   └── test_rvq.py
 │   └── README.md                    # Lab index
 ├── references/
+│   ├── research_audit_2026_11.md
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-01
 ├── slides/
 │   ├── 00_course_map.html           # Course map deck

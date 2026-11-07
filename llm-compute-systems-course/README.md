@@ -6,6 +6,8 @@ A systems engineering course on building and measuring the computing stack for L
 
 The worked-example pilot in decks 10/16/36/38 links prediction questions to reproducible CPU checkpoints: [pipelines](labs/kit/handouts/lab04_gemm.md#pipeline-teaching-checkpoint), [prefix-cache ownership](labs/kit/handouts/lab07_cache.md#cache-teaching-checkpoint), [inference bottlenecks](labs/kit/inference_bottleneck_worksheet.md#bottleneck-teaching-checkpoint), and [verification](labs/kit/handouts/lab_ai_verification.md#verification-teaching-checkpoint). English/Chinese slides include worked answers in **S** notes; hardware extensions remain separately scoped.
 
+[Research audit, 2026-11-07](references/research_audit_2026_11.md): checked readings, compatibility findings, prioritized updates and potential projects. Proposed experiments are distinguished from executed results.
+
 ## Start here
 
 1. [Research review and design decisions](references/research_review.md): what existing courses, papers and repositories contribute, where they fall short for this course, and what to reproduce.
@@ -260,6 +262,7 @@ llm-compute-systems-course/
 │   ├── POTENTIAL_PROJECTS.md
 │   └── optimization-engine.svg
 ├── references/
+│   ├── research_audit_2026_11.md
 │   ├── accelerator_architectures_review.md
 │   ├── ai_development_verification.md
 │   ├── bibliography_and_links.md

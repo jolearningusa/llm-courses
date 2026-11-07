@@ -15,6 +15,8 @@ Hermes Agent, OpenClaw, Letta, vLLM + LMCache + NIXL, and Google Research's Harn
 
 ---
 
+[Research audit, 2026-11-07](references/research_audit_2026_11.md): checked readings, compatibility findings, prioritized updates and potential projects. Proposed experiments are distinguished from executed results.
+
 ## Slide decks
 
 Open a deck in the browser; use **← / →** to move between slides and **F** for full screen.
@@ -250,6 +252,7 @@ llm-agentos-course/
 │       ├── run_harness2_demo.sh               # Quickstart for google-research/harness2
 │       └── sample_lesson_entry.jsonl          # Course schema for an evidence-backed lesson record
 └── references/
+    ├── research_audit_2026_11.md
     ├── bibliography_and_links.md              # Papers (2023–2026), repos, docs and video lectures
     └── tracked_sources.json                   # Fast-moving sources (MCP spec, vLLM, LMCache, ...) and the version last checked
 ```
