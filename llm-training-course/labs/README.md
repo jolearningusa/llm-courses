@@ -1,7 +1,7 @@
 # Labs
 
 CPU-only labs, each checked against a reference value, a closed form or a definition. The
-[syllabus](../SYLLABUS.md) lists all ten; labs are added with the part of the course they belong to.
+[syllabus](../SYLLABUS.md) lists all ten and the week each is used.
 
 | Lab | Topic | Decks | Needs |
 |---|---|---|---|
@@ -14,5 +14,6 @@ CPU-only labs, each checked against a reference value, a closed form or a defini
 | [L6](L6_dpo/) | DPO, IPO and SimPO losses from log-probabilities with gradients; DPO reaches the closed-form RLHF optimum; IPO against DPO on a certain preference | 22–24 | Python 3.10+, NumPy |
 | [L7](L7_grpo/) | GRPO and Dr. GRPO on toy addition with a rule-based reward: group advantages, length and difficulty normalizations, the clipped loss | 25–28 | Python 3.10+, PyTorch 2 (CPU) |
 | [L8](L8_distillation/) | Distillation: soft targets and the T² factor, forward against reverse KL on a two-mode teacher, on-policy distillation from student samples | 29, 30 | Python 3.10+, NumPy |
+| [L9](L9_evaluation/) | Evaluation estimators: unbiased pass@k, Bradley-Terry ratings from pairwise votes against Elo, n-gram overlap and a permutation test for contamination | 32, 33 | Python 3.10+, NumPy |
 
 Run every lab's checks from the lab directory with `python -m unittest`.
