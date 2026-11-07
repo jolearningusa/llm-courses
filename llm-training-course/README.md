@@ -2,7 +2,7 @@
 
 Read the papers behind how today's language models are trained, one method at a time: pre-training data and recipes, training at scale, long context, supervised fine-tuning, parameter-efficient tuning, RLHF, direct preference methods, RL for reasoning, distillation, safety tuning and evaluation.
 
-**Status, 2026-11-07: Parts I to VI published.** The course map deck, the four Part I decks on the pre-training recipe (AdamW and learning-rate schedules, batch size and μP, training stability, Muon), the four Part II decks on pre-training data (web corpora, deduplication and quality filtering, mixtures and repetition, code, math and synthetic data with mid-training), the two Part III decks on training at scale (parallelism, low-precision training), the two Part IV decks on long context and continual pre-training, the three Part V decks on supervised fine-tuning (instruction tuning, instruction data, Tülu 3 end to end), the two Part VI decks on parameter-efficient tuning (adapters, prefix tuning and LoRA; QLoRA, DoRA and what LoRA forgets), labs L0 to L4, the syllabus (34 decks in eleven parts, ten CPU labs, weekly plan, assessment) and the bibliography (97 sources, each checked on its arXiv or blog page) are in place. The other parts follow one at a time.
+**Status, 2026-11-07: Parts I to VII published.** The course map deck, the four Part I decks on the pre-training recipe (AdamW and learning-rate schedules, batch size and μP, training stability, Muon), the four Part II decks on pre-training data (web corpora, deduplication and quality filtering, mixtures and repetition, code, math and synthetic data with mid-training), the two Part III decks on training at scale (parallelism, low-precision training), the two Part IV decks on long context and continual pre-training, the three Part V decks on supervised fine-tuning (instruction tuning, instruction data, Tülu 3 end to end), the two Part VI decks on parameter-efficient tuning (adapters, prefix tuning and LoRA; QLoRA, DoRA and what LoRA forgets), the four Part VII decks on RLHF (learning from human preferences, PPO and InstructGPT, RLHF at scale, Constitutional AI and RLAIF), labs L0 to L5, the syllabus (34 decks in eleven parts, ten CPU labs, weekly plan, assessment) and the bibliography (97 sources, each checked on its arXiv or blog page) are in place. The other parts follow one at a time.
 
 ## Start here
 
@@ -60,6 +60,11 @@ Classic architectures such as MLPs, CNNs, RNNs and LSTMs, and the basics of trai
 | **Part VI. Parameter-efficient tuning** | |
 | [16 Adapters, prefix tuning and LoRA](slides/16_adapters_lora.html) (9 slides) | Week 8: bottleneck adapters, trained prefixes, low-rank updates and merging, LoRA on GPT-3; lab L4 |
 | [17 QLoRA, DoRA, and what LoRA learns and forgets](slides/17_qlora_dora.html) (9 slides) | Week 8: 4-bit NormalFloat and double quantization, magnitude and direction, LoRA against full fine-tuning; lab L4 |
+| **Part VII. Reward models and RLHF** | |
+| [18 Learning from human preferences](slides/18_human_preferences.html) (10 slides) | Week 9: reward models from pairwise choices, the Bradley-Terry loss, the KL penalty, summarization from feedback; lab L5 |
+| [19 PPO and InstructGPT](slides/19_ppo_instructgpt.html) (10 slides) | Week 9: GAE, the clipped objective, four models in memory, SFT then reward model then PPO, the alignment tax; lab L5 |
+| [20 RLHF at scale: Anthropic HH, Llama 2-Chat and overoptimization](slides/20_rlhf_at_scale.html) (10 slides) | Week 10: online rounds, helpfulness and safety reward models, rejection sampling, the gold-reward peak; lab L5 |
+| [21 AI feedback: Constitutional AI and RLAIF](slides/21_constitutional_ai_rlaif.html) (9 slides) | Week 10: critique and revision, AI preference labels, RLAIF against RLHF, what makes a good AI labeler; lab L5 |
 
 ## Repository layout
 
@@ -97,6 +102,12 @@ llm-training-course/
 │   │   ├── lora.py                  # LoRA layer with hand-written gradients, merging, rank-r fits
 │   │   ├── nf4.py                   # NF4 and Int4 code books, block-wise and double quantization
 │   │   └── test_lora_nf4.py
+│   ├── L5_reward_ppo/
+│   │   ├── README.md
+│   │   ├── preferences.py           # Toy responses, gold reward, Bradley-Terry labels and reward model
+│   │   ├── ppo.py                   # Clipped objective, GAE, PPO with a KL penalty on a tilted policy
+│   │   ├── rlhf.py                  # Reward model, then PPO at several KL weights: proxy against gold
+│   │   └── test_rlhf.py
 │   └── README.md                    # Lab index
 ├── references/
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-06
@@ -118,7 +129,11 @@ llm-training-course/
 │   ├── 14_instruction_data.html
 │   ├── 15_tulu3.html
 │   ├── 16_adapters_lora.html
-│   └── 17_qlora_dora.html
+│   ├── 17_qlora_dora.html
+│   ├── 18_human_preferences.html
+│   ├── 19_ppo_instructgpt.html
+│   ├── 20_rlhf_at_scale.html
+│   └── 21_constitutional_ai_rlaif.html
 ├── LICENSE                          # Apache-2.0
 ├── README.md                        # This file
 └── SYLLABUS.md                      # Parts, decks, weekly plan, labs and assessment
