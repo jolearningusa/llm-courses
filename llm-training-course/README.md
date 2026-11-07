@@ -2,7 +2,7 @@
 
 Read the papers behind how today's language models are trained, one method at a time: pre-training data and recipes, training at scale, long context, supervised fine-tuning, parameter-efficient tuning, RLHF, direct preference methods, RL for reasoning, distillation, safety tuning and evaluation.
 
-**Status, 2026-11-07: Parts I to VII published.** The course map deck, the four Part I decks on the pre-training recipe (AdamW and learning-rate schedules, batch size and μP, training stability, Muon), the four Part II decks on pre-training data (web corpora, deduplication and quality filtering, mixtures and repetition, code, math and synthetic data with mid-training), the two Part III decks on training at scale (parallelism, low-precision training), the two Part IV decks on long context and continual pre-training, the three Part V decks on supervised fine-tuning (instruction tuning, instruction data, Tülu 3 end to end), the two Part VI decks on parameter-efficient tuning (adapters, prefix tuning and LoRA; QLoRA, DoRA and what LoRA forgets), the four Part VII decks on RLHF (learning from human preferences, PPO and InstructGPT, RLHF at scale, Constitutional AI and RLAIF), labs L0 to L5, the syllabus (34 decks in eleven parts, ten CPU labs, weekly plan, assessment) and the bibliography (97 sources, each checked on its arXiv or blog page) are in place. The other parts follow one at a time.
+**Status, 2026-11-07: Parts I to VIII published.** The course map deck, the four Part I decks on the pre-training recipe (AdamW and learning-rate schedules, batch size and μP, training stability, Muon), the four Part II decks on pre-training data (web corpora, deduplication and quality filtering, mixtures and repetition, code, math and synthetic data with mid-training), the two Part III decks on training at scale (parallelism, low-precision training), the two Part IV decks on long context and continual pre-training, the three Part V decks on supervised fine-tuning (instruction tuning, instruction data, Tülu 3 end to end), the two Part VI decks on parameter-efficient tuning (adapters, prefix tuning and LoRA; QLoRA, DoRA and what LoRA forgets), the four Part VII decks on RLHF (learning from human preferences, PPO and InstructGPT, RLHF at scale, Constitutional AI and RLAIF), the three Part VIII decks on direct preference methods (DPO; IPO, KTO, ORPO and SimPO; online preference learning and DPO against PPO), labs L0 to L6, the syllabus (34 decks in eleven parts, ten CPU labs, weekly plan, assessment) and the bibliography (97 sources, each checked on its arXiv or blog page) are in place. The other parts follow one at a time.
 
 ## Start here
 
@@ -65,6 +65,10 @@ Classic architectures such as MLPs, CNNs, RNNs and LSTMs, and the basics of trai
 | [19 PPO and InstructGPT](slides/19_ppo_instructgpt.html) (10 slides) | Week 9: GAE, the clipped objective, four models in memory, SFT then reward model then PPO, the alignment tax; lab L5 |
 | [20 RLHF at scale: Anthropic HH, Llama 2-Chat and overoptimization](slides/20_rlhf_at_scale.html) (10 slides) | Week 10: online rounds, helpfulness and safety reward models, rejection sampling, the gold-reward peak; lab L5 |
 | [21 AI feedback: Constitutional AI and RLAIF](slides/21_constitutional_ai_rlaif.html) (9 slides) | Week 10: critique and revision, AI preference labels, RLAIF against RLHF, what makes a good AI labeler; lab L5 |
+| **Part VIII. Direct preference methods** | |
+| [22 Direct Preference Optimization](slides/22_dpo.html) (9 slides) | Week 11: the closed-form RLHF optimum, the implicit reward, the DPO loss and its gradient; lab L6 |
+| [23 DPO variants: IPO, KTO, ORPO and SimPO](slides/23_dpo_variants.html) (9 slides) | Week 11: a bounded target gap, unpaired feedback, no reference model, length-normalized rewards with a margin; lab L6 |
+| [24 Online and iterative preference learning; DPO against PPO](slides/24_online_preference.html) (9 slides) | Week 11: self-rewarding models, why DPO can leave the reference's support, what matters most between data, algorithm, reward model and prompts; lab L6 |
 
 ## Repository layout
 
@@ -108,6 +112,11 @@ llm-training-course/
 │   │   ├── ppo.py                   # Clipped objective, GAE, PPO with a KL penalty on a tilted policy
 │   │   ├── rlhf.py                  # Reward model, then PPO at several KL weights: proxy against gold
 │   │   └── test_rlhf.py
+│   ├── L6_dpo/
+│   │   ├── README.md
+│   │   ├── losses.py                # DPO, IPO and SimPO losses with gradients from log-probabilities
+│   │   ├── bandit.py                # Softmax policy on exact pair expectations; closed-form RLHF optimum
+│   │   └── test_dpo.py
 │   └── README.md                    # Lab index
 ├── references/
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-06
@@ -133,7 +142,10 @@ llm-training-course/
 │   ├── 18_human_preferences.html
 │   ├── 19_ppo_instructgpt.html
 │   ├── 20_rlhf_at_scale.html
-│   └── 21_constitutional_ai_rlaif.html
+│   ├── 21_constitutional_ai_rlaif.html
+│   ├── 22_dpo.html
+│   ├── 23_dpo_variants.html
+│   └── 24_online_preference.html
 ├── LICENSE                          # Apache-2.0
 ├── README.md                        # This file
 └── SYLLABUS.md                      # Parts, decks, weekly plan, labs and assessment
