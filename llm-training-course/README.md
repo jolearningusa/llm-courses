@@ -2,7 +2,7 @@
 
 Read the papers behind how today's language models are trained, one method at a time: pre-training data and recipes, training at scale, long context, supervised fine-tuning, parameter-efficient tuning, RLHF, direct preference methods, RL for reasoning, distillation, safety tuning and evaluation.
 
-**Status, 2026-11-06: Parts I to V published.** The course map deck, the four Part I decks on the pre-training recipe (AdamW and learning-rate schedules, batch size and μP, training stability, Muon), the four Part II decks on pre-training data (web corpora, deduplication and quality filtering, mixtures and repetition, code, math and synthetic data with mid-training), the two Part III decks on training at scale (parallelism, low-precision training), the two Part IV decks on long context and continual pre-training, the three Part V decks on supervised fine-tuning (instruction tuning, instruction data, Tülu 3 end to end), labs L0 to L3, the syllabus (34 decks in eleven parts, ten CPU labs, weekly plan, assessment) and the bibliography (97 sources, each checked on its arXiv or blog page) are in place. The other parts follow one at a time.
+**Status, 2026-11-07: Parts I to VI published.** The course map deck, the four Part I decks on the pre-training recipe (AdamW and learning-rate schedules, batch size and μP, training stability, Muon), the four Part II decks on pre-training data (web corpora, deduplication and quality filtering, mixtures and repetition, code, math and synthetic data with mid-training), the two Part III decks on training at scale (parallelism, low-precision training), the two Part IV decks on long context and continual pre-training, the three Part V decks on supervised fine-tuning (instruction tuning, instruction data, Tülu 3 end to end), the two Part VI decks on parameter-efficient tuning (adapters, prefix tuning and LoRA; QLoRA, DoRA and what LoRA forgets), labs L0 to L4, the syllabus (34 decks in eleven parts, ten CPU labs, weekly plan, assessment) and the bibliography (97 sources, each checked on its arXiv or blog page) are in place. The other parts follow one at a time.
 
 ## Start here
 
@@ -57,6 +57,9 @@ Classic architectures such as MLPs, CNNs, RNNs and LSTMs, and the basics of trai
 | [13 Instruction tuning: FLAN, T0 and the Flan Collection](slides/13_instruction_tuning.html) (9 slides) | Week 7: datasets as instructions, held-out task clusters, scaling to 1,836 tasks, mixing formats; lab L3 |
 | [14 Instruction data: Self-Instruct, Alpaca and LIMA](slides/14_instruction_data.html) (9 slides) | Week 7: model-written instructions, a 7B chat model for under $600, 1,000 curated examples; lab L3 |
 | [15 An open post-training recipe end to end: Tülu 3](slides/15_tulu3.html) (10 slides) | Week 7: evaluation and decontamination, SFT data ablations, the loss mask, packing and loss averaging; lab L3 |
+| **Part VI. Parameter-efficient tuning** | |
+| [16 Adapters, prefix tuning and LoRA](slides/16_adapters_lora.html) (9 slides) | Week 8: bottleneck adapters, trained prefixes, low-rank updates and merging, LoRA on GPT-3; lab L4 |
+| [17 QLoRA, DoRA, and what LoRA learns and forgets](slides/17_qlora_dora.html) (9 slides) | Week 8: 4-bit NormalFloat and double quantization, magnitude and direction, LoRA against full fine-tuning; lab L4 |
 
 ## Repository layout
 
@@ -89,6 +92,11 @@ llm-training-course/
 │   │   ├── packing.py               # Padded and packed batches, block-diagonal causal mask
 │   │   ├── sft.py                   # Padded, packed, all-token and naive-packing runs compared
 │   │   └── test_sft.py
+│   ├── L4_lora_nf4/
+│   │   ├── README.md
+│   │   ├── lora.py                  # LoRA layer with hand-written gradients, merging, rank-r fits
+│   │   ├── nf4.py                   # NF4 and Int4 code books, block-wise and double quantization
+│   │   └── test_lora_nf4.py
 │   └── README.md                    # Lab index
 ├── references/
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-06
@@ -108,7 +116,9 @@ llm-training-course/
 │   ├── 12_continual_pretraining.html
 │   ├── 13_instruction_tuning.html
 │   ├── 14_instruction_data.html
-│   └── 15_tulu3.html
+│   ├── 15_tulu3.html
+│   ├── 16_adapters_lora.html
+│   └── 17_qlora_dora.html
 ├── LICENSE                          # Apache-2.0
 ├── README.md                        # This file
 └── SYLLABUS.md                      # Parts, decks, weekly plan, labs and assessment
