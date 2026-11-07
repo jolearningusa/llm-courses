@@ -115,3 +115,49 @@ Hand in one page from [`report_template.md`](../report_template.md).
   one question where the ranking changes.
 - **A hot-path write tool.** Give the model a `remember(text)` tool next to `search_memory`, and compare what
   it chooses to store with the background extractor.
+
+<a id="matched-memory-evaluation"></a>
+## Optional extension: compare memory conditions fairly
+
+Companion to long-term-memory slides 17/19 and observability slide 19; implements audit item **AGT-2's teaching/protocol update**. The released `memory_eval.py` compares **read paths on one extracted store** (`none`, `auto`, `tool`, `both`). It does not implement full-history or verbatim-history baselines. The protocol below requires those adapters and real answer-model runs before it yields model-quality results. No new launcher or benchmark result is supplied.
+
+### 1. Declare the comparison
+
+Freeze history/question IDs, user scope, answer-model/tokenizer revision, sampling/retry settings, judge/rubric, input cap, output cap, trial count and run order. Keep the available input ceiling the same; actual consumed tokens are an outcome to report, not a quantity to force equal. If history exceeds the cap, mark full-history **ineligible**. A larger-window diagnostic belongs in a separately labeled budget group; do not silently truncate or pool it with the equal-cap comparison.
+
+| Condition | What reaches the answering model | What this comparison can test |
+|---|---|---|
+| No memory | Question, without prior user history | Whether the task needs retained history |
+| Full history | Complete eligible history | Whether the model can use the information when supplied; not a guaranteed quality ceiling |
+| Verbatim retrieval | Retrieved original history chunks | Retrieval without learned fact extraction |
+| Extracted memory | Retrieved facts written by an extractor | The combined write/retrieve design, with extraction cost |
+
+For verbatim versus extracted memory, match embedding identity, retrieval settings and eligible questions where feasible. Different object lengths can prevent identical chunking; record this and any other mismatch. Comparing whole pipelines that differ in several components does not isolate extraction as the cause. Counterbalance repeated-run order or explain how warmup/cache effects are controlled. Start each independent condition from a clean store built only from that condition's allowed history. Keep answers and grading labels out of its write path.
+
+### 2. Keep quality and accounting together
+
+Retain per-question/trial outcomes, question type, input/output tokens, errors, truncation and eligibility. Use the same rubric and a frozen judge; blind condition names and inspect a human-labeled sample for disagreements. A common judge does not guarantee all biases cancel. Pair conditions by question ID and trial policy; report both paired coverage and missing-case reasons. Disclose judge cost separately.
+
+| Condition / task type | Eligible n / planned n | Quality and uncertainty | Write calls / tokens / time / cost | Read + answer tokens / time / cost | Total cost / failures |
+|---|---|---|---|---|---|
+| No memory | Fill after run | Not measured | Measure or justify zero history-write work | Not measured | Not measured |
+| Full history | Record fit / exclusion | Not measured | Include any preprocessing actually performed | Not measured | Not measured |
+| Verbatim retrieval | Fill after run | Not measured | Include indexing/embedding, even with no extractor LLM | Not measured | Not measured |
+| Extracted memory | Fill after run | Not measured | Include extraction, consolidation, indexing and embedding | Not measured | Not measured |
+
+Report cold ingest cost and steady read cost separately. If amortizing writes over Q future questions, state Q and show `total = write_cost + sum(read_answer_cost)` alongside cost per answered question. Do not mix currency with tokens or treat CPU time as billed API cost. The current demo scripts answers, so its `success` column is **not** evidence of model capability; its retrieval/scope observations have a different scope. Current kit metrics do not automatically supply every time/cost field above: instrument adapters or mark fields unavailable.
+
+### 3. Prediction checkpoint: mismatched subsets
+
+Constructed teaching counts, **not measured results**:
+
+- A answers 80 of 100 questions correctly. B answers 18 of 20 on a smaller subset. Can 80% versus 90% rank their general quality? **No:** question sets differ.
+- On the same 20 questions, A gets 16 correct and B gets 18. The paired-subset marginal difference is **+10 percentage points for B**. It says nothing about B on the other 80 questions.
+- Per-question outcome pairs are still needed for a paired uncertainty/significance calculation; marginal totals alone omit the disagreement structure. Do not invent confidence intervals or infer a universal winner.
+- No time or monetary cost was given, so this example cannot establish efficiency.
+
+Submit your prediction, the declared controls, per-question records, a matched-subset table, missing-case reasons and one failed example. A source-only submission leaves all measurements marked not-run. An implementation submission must distinguish implemented adapters from proposed ones and show the actual environment. The existing graded Lab 4 tasks and reference behavior remain as above.
+
+Primary reading: Kuan Wang, [MemDelta, arXiv:2606.29914v1](https://arxiv.org/html/2606.29914v1), §3 controlled comparisons, §4.4 costs and limitations. The paper's partial coverage and imperfect embedding matching limit general claims; this worksheet is an original teaching protocol, not a reproduction of its tables. LoCoMo and LongMemEval remain benchmark readings in the course bibliography; their historical results are not universal performance guarantees.
+
+中文检查：先固定问题、历史、模型、评分和预算，再比较四种条件。不同问题集合的百分比不能直接排名；共享 20 题的 +10 个百分点仅适用于该子集。真实实验需记录写入与读取总成本，缺失结果不能填成通过。

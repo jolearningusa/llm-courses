@@ -471,30 +471,7 @@
 </section>
 
 <!-- 19 -->
-<section class="slide">
-  <h2><small>实验构想</small>为 harness 插桩并比较两种配置</h2>
-  <div class="cols">
-    <div>
-      <ol style="font-size:19px;padding-left:24px">
-        <li>运行本地追踪后端（Phoenix 或 Jaeger）以及 Prometheus + Grafana。</li>
-        <li>在 harness 中启用追踪：OpenClaw <code>diagnostics-otel</code>，或带 <code>hermes-otel</code> 的 Hermes（<code>content_capture: preview</code>）。</li>
-        <li>让 Prometheus 指向实验 5 的 vLLM 服务器的 <code>/metrics</code>。</li>
-        <li>编写 10 个带结果检查的任务；每个运行 4 次（k = 4）。</li>
-        <li>分别用配置 A 和配置 B 运行（例如实验 3 中的两个上下文引擎）。</li>
-      </ol>
-    </div>
-    <div class="card">
-      <h3>报告</h3>
-      <ul>
-        <li>每种配置的 pass@1 和 pass^4</li>
-        <li>每任务的 token、$ 和 P95 延迟</li>
-        <li>每种配置的前缀缓存命中率</li>
-        <li>一次失败的追踪，指出出错的那一步</li>
-        <li>你会上线哪种配置，以及原因</li>
-      </ul>
-    </div>
-  </div>
-</section>
+<section class="slide"><h2><small>先预测，再比较</small>两个分数，是否来自相同问题？</h2><table><thead><tr><th>构造的结果</th><th>条件 A</th><th>条件 B</th><th>结论</th></tr></thead><tbody><tr><td>各自可用的样本</td><td>80 / 100 = 80%</td><td>18 / 20 = 90%</td><td>问题集合不同：不能直接排名</td></tr><tr><td>共享的同一组 20 题</td><td>16 / 20 = 80%</td><td>18 / 20 = 90%</td><td>B 高 10 个百分点；仅限该子集</td></tr></tbody></table><div class="card"><h3>还缺什么？</h3><p>逐题成对结果与不确定性、其余 80 题的缺失原因，以及写入 + 读取/回答的总成本。</p></div><p style="font-size:20px"><a style="color:var(--accent)" href="../../labs/kit/handouts/lab04_long_term_memory.html#matched-memory-evaluation">检查题：90% 能证明 B 更便宜或普遍更好吗？</a></p><p class="muted" style="font-size:19px">不能。以上是构造的教学计数，不是 MemDelta 或课程实测结果。</p><div class="cite"><a style="color:var(--accent)" href="https://arxiv.org/html/2606.29914v1">MemDelta, arXiv:2606.29914v1, §3 / limitations</a> · 原创教学图；无基准复现实验。</div></section>
 
 <!-- 20 -->
 <section class="slide">

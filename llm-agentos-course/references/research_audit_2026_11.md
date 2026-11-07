@@ -32,3 +32,7 @@ For vLLM, PyPI reported 0.33.0, but the corresponding GitHub tagged release body
 **Memory evaluation under matched budgets (replication).** Week 1 freeze task/model/retrieval settings; week 2 implement matched baselines; week 3 record write/read costs and question-type results; week 4 rerun adverse histories and report uncertainty. Ask whether gains survive both cost matching and a new task distribution; novelty is unestablished.
 
 **Memory provenance and repair (engineering/research extension).** Week 1 define trust/write rules; week 2 create benign and misleading multi-round fixtures; week 3 implement correction/deletion with an auditable trail; week 4 assess both harmful-action avoidance and retained utility. All observations are proposed; no model-agent benchmark or new plugin installation ran in this audit.
+
+## AGT-2 teaching update prepared for review — 2026-11-07
+
+Long-term-memory slides 17/19 and observability slide 19, with their Chinese twins, now introduce four controlled memory conditions, write/read accounting and a constructed matched-subset checkpoint. Lab 4's optional protocol and the Lab 13 cross-link define controls, eligibility, missing outcomes and deliverables. The existing kit's four read modes remain a different experiment; no full-history/verbatim adapters or model benchmark were implemented. This addresses teaching/protocol material only; AGT-2's executable comparison and measured evaluation remain pending. Before/after screenshots accompany review. Per the user's new instruction, merging requires explicit approval.

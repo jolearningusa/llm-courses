@@ -471,30 +471,7 @@
 </section>
 
 <!-- 19 -->
-<section class="slide">
-  <h2><small>Lab idea</small>Instrument a harness and compare two configurations</h2>
-  <div class="cols">
-    <div>
-      <ol style="font-size:19px;padding-left:24px">
-        <li>Run a local trace backend (Phoenix or Jaeger) and Prometheus + Grafana.</li>
-        <li>Enable tracing in the harness: OpenClaw <code>diagnostics-otel</code>, or Hermes with <code>hermes-otel</code> (<code>content_capture: preview</code>).</li>
-        <li>Point Prometheus at the Lab 5 vLLM server's <code>/metrics</code>.</li>
-        <li>Write 10 tasks with outcome checks; run each 4 times (k = 4).</li>
-        <li>Run with config A and config B (for example, two context engines from Lab 3).</li>
-      </ol>
-    </div>
-    <div class="card">
-      <h3>Report</h3>
-      <ul>
-        <li>pass@1 and pass^4 per config</li>
-        <li>Tokens, $ and P95 latency per task</li>
-        <li>Prefix-cache hit rate per config</li>
-        <li>One trace of a failure, with the step that went wrong</li>
-        <li>Which config you would ship, and why</li>
-      </ul>
-    </div>
-  </div>
-</section>
+<section class="slide"><h2><small>Predict before comparing</small>Two scores—but the same questions?</h2><table><thead><tr><th>Constructed result</th><th>Condition A</th><th>Condition B</th><th>Conclusion</th></tr></thead><tbody><tr><td>All available cases</td><td>80 / 100 = 80%</td><td>18 / 20 = 90%</td><td>Different question sets: no direct ranking</td></tr><tr><td>Same 20 shared questions</td><td>16 / 20 = 80%</td><td>18 / 20 = 90%</td><td>B +10 percentage points, on this subset only</td></tr></tbody></table><div class="card"><h3>What is still missing?</h3><p>Per-question paired outcomes and uncertainty; why 80 questions are missing; total write + read/answer cost.</p></div><p style="font-size:20px"><a style="color:var(--accent)" href="../labs/kit/handouts/lab04_long_term_memory.html#matched-memory-evaluation">Checkpoint: does 90% prove B is cheaper or generally better?</a></p><p class="muted" style="font-size:19px">No. These are constructed teaching counts, not MemDelta or course measurements.</p><div class="cite"><a style="color:var(--accent)" href="https://arxiv.org/html/2606.29914v1">MemDelta, arXiv:2606.29914v1, §3 / limitations</a> · Original teaching diagram; no benchmark reproduced.</div></section>
 
 <!-- 20 -->
 <section class="slide">

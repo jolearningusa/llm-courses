@@ -1,6 +1,6 @@
 # Bibliography, Repositories & Video Lectures
 
-Every arXiv ID, repository, doc page and video below was opened and checked in October 2026. Titles are given as they
+The original entries were checked in October 2026; dated additions record their own verification. Titles are given as they
 appear on arXiv. Venues are listed only where a primary source states them.
 
 ## 1. AgentOS foundations & program-aware scheduling (Module 1)
@@ -21,6 +21,9 @@ appear on arXiv. Venues are listed only where a primary source states them.
   https://arxiv.org/abs/2507.07400
 
 ## 2. Plane 1: user / cognitive memory (Module 2)
+
+- **MemDelta: Controlled Baselines and Hidden Confounds in Agent Memory Evaluation**, Kuan Wang, June 2026, arXiv:2606.29914 (v1 inspected).
+  https://arxiv.org/html/2606.29914v1 · Checked 2026-11-07: §§3–4 and limitations. Read for controlled comparisons, matched-instance reporting and write-path cost; partial coverage and imperfect embedding matching limit general conclusions.
 
 - **Zep: A Temporal Knowledge Graph Architecture for Agent Memory**, Rasmussen et al., Jan 2025, arXiv:2501.13956.
   https://arxiv.org/abs/2501.13956 · Graphiti: https://github.com/getzep/graphiti

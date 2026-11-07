@@ -161,3 +161,7 @@ Hand in one page from [`report_template.md`](../report_template.md), with the Gr
 - **Sampling.** Keep every failed run and 20% of the others, as the deck's privacy and cost slide suggests. Report
   how much smaller the trace volume gets and whether the dashboard's numbers change.
 - **Inspect.** Run the basic tier as an Inspect task with a scorer that calls your graders.
+
+## Memory comparison extension
+
+Observability slide 19 now illustrates the [Lab 4 matched-memory protocol](lab04_long_term_memory.md#matched-memory-evaluation). Keep the trace/dashboard exercise above as the general harness comparison. For memory experiments, add question IDs, eligibility, per-type outcomes and write/read accounting to the report; two aggregate percentages from different subsets are insufficient. The slide's 80/100, 16/20 and 18/20 counts are constructed arithmetic, not kit or paper measurements. Real model-quality results require actual model runs; the scripted demo does not establish them.
