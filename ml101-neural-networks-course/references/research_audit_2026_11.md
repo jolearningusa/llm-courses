@@ -27,3 +27,7 @@ Engineering/teaching project, not claimed new research. Week 1: freeze smooth, s
 ## Scope and remaining evidence
 
 These are proposed additions, not executed experiments. Existing tests were inspected, not rerun as a claim of full course qualification. Suggested classroom durations require a student pilot. Four sources were read for mechanisms/assignment design; this is not a census of all introductory ML tutorials.
+
+## FND-1 implementation prepared for review — 2026-11-07
+
+Deck 06 slide 10 and deck 19 slides 4/10 now show executed float64 step/error plots and a ReLU branch-crossing schematic. L1 adds a reproducible diagnostic runner, six control tests and a report with standalone SVGs. The runner exercises the existing cubic autograd path, rejects two mutants, and separates absolute/relative scale from nonsmooth checks. Classroom comprehension remains untested; the wider gradient-failure-atlas project is not complete. Before/after screenshots are part of review, and explicit user approval is required before merge.

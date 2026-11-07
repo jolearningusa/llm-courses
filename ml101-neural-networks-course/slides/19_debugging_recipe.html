@@ -1,1 +1,597 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>19 Training practice: a debugging recipe</title><style>*{box-sizing:border-box}html,body{margin:0;height:100%;background:#070b12;color:#eef4ff;font-family:Inter,system-ui,sans-serif;overflow:hidden}#stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center}.slide{position:absolute;inset:0;padding:52px 70px 70px;background:#101927;display:none;flex-direction:column}.slide.active{display:flex}h1{font-size:52px;line-height:1.12;max-width:1100px;margin:75px 0 25px}h2{font-size:36px;line-height:1.2;margin:0 0 26px;max-width:1100px}p,li{font-size:23px;line-height:1.5}p{margin:12px 0}li{margin:10px 0}ul,ol{margin:8px 0;padding-left:30px}strong{color:#8de0cf}a{color:#a4ccff}table{border-collapse:collapse;width:100%;font-size:21px;line-height:1.4;margin:20px 0}th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid #40516b}th{color:#8de0cf}pre{font-size:23px;line-height:1.5;white-space:pre-wrap;background:#09111e;padding:25px;border-left:4px solid #8de0cf;margin:20px 0}code{font-family:ui-monospace,monospace;font-size:.92em}.cite{position:absolute;left:70px;bottom:25px;font-size:14px;max-width:1060px;color:#b7c7df}.num{position:absolute;right:28px;bottom:25px;font-size:14px;color:#b7c7df}.lead{font-size:29px;line-height:1.5;color:#b7c7df}.formula{font:32px/1.5 ui-monospace,monospace;padding:26px 0;color:#8de0cf}.flow{font-size:27px;line-height:1.9;padding:26px 0;border-top:1px solid #40516b;border-bottom:1px solid #40516b;margin:22px 0}.note{font-size:20px;color:#b7c7df}.decklinks{columns:2;column-gap:40px}.decklinks p{font-size:21px;margin:12px 0}.notes{display:none}#hint{position:fixed;top:7px;right:12px;font:12px system-ui;color:#9bb2d0}@media print{html,body{overflow:visible;background:white}#stage{position:static;transform:none!important}.slide{display:flex!important;position:relative;break-after:page}#hint{display:none}}.two{display:grid;grid-template-columns:1fr 1fr;gap:36px}.small li,.small p{font-size:20px}table.tight{font-size:18px}table.tight th,table.tight td{padding:7px 10px}.tag{display:inline-block;font-size:15px;padding:2px 8px;border:1px solid #40516b;border-radius:4px;color:#b7c7df;margin-right:6px}h1.title{margin-top:120px}</style></head><body><div id="stage"><section class="slide" id="s1"><h1 class="title">Training practice: a debugging recipe</h1><div class="content"><p class="lead">A network with a bug usually still trains, just worse, so nothing tells you it is broken. This deck collects the checks used throughout the course into one order of work: know the data, check the start, overfit on purpose, then regularize and tune, changing one thing at a time.</p><p><span class="tag">Part VI · deck 19</span><span class="tag">practice</span><span class="tag">labs L0–L6</span></p></div><div class="cite">Karpathy 2019, <a href="https://karpathy.github.io/2019/04/25/recipe/">A Recipe for Training Neural Networks</a> · Godbole et al. 2023, <a href="https://github.com/google-research/tuning_playbook">Deep Learning Tuning Playbook</a> · <a href="../references/bibliography.html">bibliography</a></div><div class="num">1 / 10</div></section><section class="slide" id="s2"><h2>Problem: training fails silently</h2><div class="content"><ul><li>A wrong sign in a gradient, labels shuffled against inputs, a softmax over the wrong axis, dropout left on at test time: none of these raises an error. The loss still goes down, a little.</li><li>Karpathy's summary: "neural net training fails silently". The defence is to build in small steps, and to check each step against something you can predict.</li><li>Every lab in this course does that: each gradient is compared with finite differences, and each result with a number known in advance (a closed form, chance level, a known paper result).</li></ul></div><div class="cite">Karpathy 2019, <a href="https://karpathy.github.io/2019/04/25/recipe/">A Recipe for Training Neural Networks</a> · <a href="../references/bibliography.html">bibliography</a></div><div class="num">2 / 10</div></section><section class="slide" id="s3"><h2>1. Know the data, start from a baseline</h2><div class="content"><ul><li>Look at many examples by hand, with their labels. Check class balance, duplicates and leaks between training and validation splits.</li><li>Train the simplest model first: a linear or logistic regression (deck 01, 02) or the majority class. It gives the number every later model must beat, and a pipeline you trust.</li><li>Fix the random seeds, so that a change in the result comes from a change in the code.</li><li>Write down the expected numbers before running: initial loss, chance accuracy, a rough target.</li></ul></div><div class="cite">Karpathy 2019, <a href="https://karpathy.github.io/2019/04/25/recipe/">A Recipe for Training Neural Networks</a>, steps 1–2 · <a href="https://www.deeplearningbook.org/">Goodfellow, Bengio and Courville, Deep Learning</a>, §11.1–§11.2 · <a href="../references/bibliography.html">bibliography</a></div><div class="num">3 / 10</div></section><section class="slide" id="s4"><h2>2. Check the start</h2><div class="content"><ul><li><strong>Loss at initialization.</strong> With K classes and small output weights, the softmax is near uniform and the loss is ln K. In this course: ln 2 = 0.69 for two moons (L3), ln 3 = 1.10 for spirals (L1, L4), ln 26 = 3.26 for the character model (L5). A much larger value means the output layer is too large at init (deck 07).</li><li><strong>Gradient check.</strong> Compare backpropagation with finite differences on a tiny network, in float64 (deck 06). Every lab's first tests do this.</li><li><strong>Activation and gradient scale per layer.</strong> Print the standard deviation of each layer's output and gradient for one batch (L1 for initialization, L4 for depth, L5 for time steps).</li></ul></div><div class="cite">Karpathy 2019, <a href="https://karpathy.github.io/2019/04/25/recipe/">A Recipe for Training Neural Networks</a>, step 2 · Labs L1, L3, L4 and L5 · <a href="../references/bibliography.html">bibliography</a></div><div class="num">4 / 10</div></section><section class="slide" id="s5"><h2>3. Overfit on purpose</h2><div class="content"><ul><li>Take one small batch and train on it alone. The loss should reach nearly zero. If it cannot, the model, the loss or the update is broken: no amount of data will fix it.</li><li>Then make the model large enough to fit the whole training set well, before thinking about validation error. Lab L3's unregularized network reaches 100% training accuracy on 40 points.</li><li>Start from a known recipe: the closest published architecture and its optimizer settings. Adam at about 3 × 10<sup>−4</sup> is a common safe start; the course's small labs use 10<sup>−3</sup> to 10<sup>−2</sup>.</li><li>Only now regularize (deck 10): more data or augmentation first, then weight decay, dropout and early stopping, keeping the training loss you gave up in view.</li></ul></div><div class="cite">Karpathy 2019, <a href="https://karpathy.github.io/2019/04/25/recipe/">A Recipe for Training Neural Networks</a>, steps 3–4 · Lab L3 · <a href="../references/bibliography.html">bibliography</a></div><div class="num">5 / 10</div></section><section class="slide" id="s6"><h2>4. Set the learning rate first</h2><div class="content"><ul><li>Sweep it in factors of about 3 (10<sup>−4</sup>, 3 × 10<sup>−4</sup>, 10<sup>−3</sup>, …) for a short budget and plot the final loss. The best value is usually a little below the one that starts to diverge.</li><li>The edge is sharp: in lab L2, gradient descent on a quadratic with largest curvature 100 converges at 0.0199 and diverges at 0.0201 (2/λ<sub>max</sub> = 0.02, deck 03).</li><li>Greff et al. found the learning rate mattered more than any LSTM variant (deck 16); with batch norm, lab L3 trained across a 30-fold range of learning rates (deck 11).</li><li>Then warm-up and decay (deck 09), and only then the other hyperparameters.</li></ul></div><div class="cite">Bengio 2012, <a href="https://arxiv.org/abs/1206.5533">arXiv:1206.5533</a> · Labs L2 and L3 · <a href="../references/bibliography.html">bibliography</a></div><div class="num">6 / 10</div></section><section class="slide" id="s7"><h2>5. Read the curves</h2><div class="content"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1140 250" role="img" aria-label="Four learning-curve shapes and what each usually means" style="display:block;width:100%;height:auto"><g font-family="system-ui,sans-serif" font-size="17" fill="#eef4ff"><rect x="20" y="30" width="250" height="150" fill="#09111e" stroke="#40516b"/><text x="145" y="20" text-anchor="middle" fill="#8de0cf">diverges</text><text x="145" y="205" text-anchor="middle" font-size="15" fill="#b7c7df">lr too high, or a bug</text><path d="M30.0 98.5 L33.8 98.9 L37.7 99.4 L41.5 99.8 L45.3 100.2 L49.2 100.7 L53.0 101.1 L56.8 101.5 L60.7 102.0 L64.5 102.4 L68.3 102.8 L72.2 103.3 L76.0 103.7 L79.8 104.1 L83.7 104.6 L87.5 105.0 L91.3 105.4 L95.2 105.9 L99.0 106.3 L102.8 106.7 L106.7 107.2 L110.5 107.6 L114.3 108.0 L118.2 108.5 L122.0 108.9 L125.8 109.3 L129.7 109.8 L133.5 110.2 L137.3 110.6 L141.2 111.1 L145.0 111.5 L148.8 111.9 L152.7 112.4 L156.5 112.8 L160.3 113.2 L164.2 113.4 L168.0 113.6 L171.8 113.6 L175.7 113.5 L179.5 113.3 L183.3 113.0 L187.2 112.6 L191.0 112.0 L194.8 111.4 L198.7 110.6 L202.5 109.7 L206.3 108.7 L210.2 107.5 L214.0 106.3 L217.8 104.9 L221.7 103.5 L225.5 101.9 L229.3 100.2 L233.2 98.4 L237.0 96.4 L240.8 94.4 L244.7 92.2 L248.5 89.9 L252.3 87.5 L256.2 85.0 L260.0 82.4" fill="none" stroke="#8bbcff" stroke-width="2.5"/><rect x="305" y="30" width="250" height="150" fill="#09111e" stroke="#40516b"/><text x="430" y="20" text-anchor="middle" fill="#8de0cf">flat at ln K</text><text x="430" y="205" text-anchor="middle" font-size="15" fill="#b7c7df">no signal reaches the weights</text><path d="M315.0 137.5 L318.8 136.7 L322.7 137.2 L326.5 136.4 L330.3 136.9 L334.2 137.4 L338.0 136.6 L341.8 137.1 L345.7 136.3 L349.5 136.8 L353.3 137.3 L357.2 136.5 L361.0 137.0 L364.8 137.5 L368.7 136.7 L372.5 137.2 L376.3 136.4 L380.2 136.9 L384.0 137.4 L387.8 136.6 L391.7 137.1 L395.5 136.3 L399.3 136.8 L403.2 137.3 L407.0 136.5 L410.8 137.0 L414.7 137.5 L418.5 136.7 L422.3 137.2 L426.2 136.4 L430.0 136.8 L433.8 137.3 L437.7 136.5 L441.5 137.0 L445.3 136.2 L449.2 136.7 L453.0 137.2 L456.8 136.4 L460.7 136.9 L464.5 137.4 L468.3 136.6 L472.2 137.1 L476.0 136.3 L479.8 136.8 L483.7 137.3 L487.5 136.5 L491.3 137.0 L495.2 136.2 L499.0 136.7 L502.8 137.2 L506.7 136.4 L510.5 136.9 L514.3 137.4 L518.2 136.6 L522.0 137.1 L525.8 136.3 L529.7 136.8 L533.5 137.3 L537.3 136.5 L541.2 137.0 L545.0 137.5" fill="none" stroke="#8bbcff" stroke-width="2.5"/><rect x="590" y="30" width="250" height="150" fill="#09111e" stroke="#40516b"/><text x="715" y="20" text-anchor="middle" fill="#8de0cf">train ≪ validation</text><text x="715" y="205" text-anchor="middle" font-size="15" fill="#b7c7df">overfitting: regularize</text><path d="M600.0 66.0 L603.8 72.3 L607.7 78.2 L611.5 83.7 L615.3 88.8 L619.2 93.6 L623.0 98.1 L626.8 102.4 L630.7 106.3 L634.5 110.0 L638.3 113.4 L642.2 116.7 L646.0 119.7 L649.8 122.5 L653.7 125.2 L657.5 127.6 L661.3 129.9 L665.2 132.1 L669.0 134.1 L672.8 136.0 L676.7 137.8 L680.5 139.5 L684.3 141.0 L688.2 142.5 L692.0 143.8 L695.8 145.1 L699.7 146.3 L703.5 147.4 L707.3 148.4 L711.2 149.4 L715.0 150.3 L718.8 151.2 L722.7 151.9 L726.5 152.7 L730.3 153.4 L734.2 154.0 L738.0 154.7 L741.8 155.2 L745.7 155.8 L749.5 156.3 L753.3 156.7 L757.2 157.2 L761.0 157.6 L764.8 158.0 L768.7 158.3 L772.5 158.6 L776.3 159.0 L780.2 159.3 L784.0 159.5 L787.8 159.8 L791.7 160.0 L795.5 160.2 L799.3 160.5 L803.2 160.7 L807.0 160.8 L810.8 161.0 L814.7 161.2 L818.5 161.3 L822.3 161.5 L826.2 161.6 L830.0 161.7" fill="none" stroke="#8bbcff" stroke-width="2.5"/><path d="M600.0 53.0 L603.8 58.0 L607.7 62.7 L611.5 67.1 L615.3 71.1 L619.2 74.9 L623.0 78.4 L626.8 81.6 L630.7 84.7 L634.5 87.5 L638.3 90.0 L642.2 92.4 L646.0 94.6 L649.8 96.7 L653.7 98.6 L657.5 100.3 L661.3 101.8 L665.2 103.3 L669.0 104.6 L672.8 105.8 L676.7 106.8 L680.5 107.8 L684.3 108.6 L688.2 109.4 L692.0 110.0 L695.8 110.6 L699.7 111.1 L703.5 111.5 L707.3 111.9 L711.2 112.1 L715.0 112.3 L718.8 112.4 L722.7 112.5 L726.5 112.5 L730.3 112.5 L734.2 112.4 L738.0 112.2 L741.8 112.0 L745.7 111.8 L749.5 111.5 L753.3 111.1 L757.2 110.8 L761.0 110.3 L764.8 109.9 L768.7 109.4 L772.5 108.8 L776.3 108.3 L780.2 107.7 L784.0 107.0 L787.8 106.3 L791.7 105.6 L795.5 104.9 L799.3 104.2 L803.2 103.4 L807.0 102.5 L810.8 101.7 L814.7 100.8 L818.5 99.9 L822.3 99.0 L826.2 98.0 L830.0 97.1" fill="none" stroke="#f3c98b" stroke-width="2.5"/><rect x="875" y="30" width="250" height="150" fill="#09111e" stroke="#40516b"/><text x="1000" y="20" text-anchor="middle" fill="#8de0cf">both high, still falling</text><text x="1000" y="205" text-anchor="middle" font-size="15" fill="#b7c7df">underfitting: bigger or longer</text><path d="M885.0 53.0 L888.8 54.0 L892.7 55.0 L896.5 55.9 L900.3 56.9 L904.2 57.9 L908.0 58.9 L911.8 59.8 L915.7 60.8 L919.5 61.8 L923.3 62.8 L927.2 63.7 L931.0 64.7 L934.8 65.7 L938.7 66.7 L942.5 67.6 L946.3 68.6 L950.2 69.6 L954.0 70.6 L957.8 71.5 L961.7 72.5 L965.5 73.5 L969.3 74.5 L973.2 75.4 L977.0 76.4 L980.8 77.4 L984.7 78.4 L988.5 79.3 L992.3 80.3 L996.2 81.3 L1000.0 82.2 L1003.8 83.2 L1007.7 84.2 L1011.5 85.2 L1015.3 86.1 L1019.2 87.1 L1023.0 88.1 L1026.8 89.1 L1030.7 90.0 L1034.5 91.0 L1038.3 92.0 L1042.2 93.0 L1046.0 94.0 L1049.8 94.9 L1053.7 95.9 L1057.5 96.9 L1061.3 97.9 L1065.2 98.8 L1069.0 99.8 L1072.8 100.8 L1076.7 101.8 L1080.5 102.7 L1084.3 103.7 L1088.2 104.7 L1092.0 105.7 L1095.8 106.6 L1099.7 107.6 L1103.5 108.6 L1107.3 109.6 L1111.2 110.5 L1115.0 111.5" fill="none" stroke="#8bbcff" stroke-width="2.5"/><text x="20" y="240" font-size="15" fill="#8bbcff">— training loss</text><text x="200" y="240" font-size="15" fill="#f3c98b">— validation loss</text></g></svg><p class="small">Always plot training and validation loss against steps, on the same axes, with the initial loss marked. Loss spikes: lower the learning rate, add warm-up or clip the gradient (deck 15). Flat at ln K: look for a gradient that never arrives (a detached tensor, dead ReLUs, a too-deep plain network, deck 14).</p></div><div class="cite"><a href="https://www.deeplearningbook.org/">Goodfellow, Bengio and Courville, Deep Learning</a>, §11.4 · Karpathy 2019, <a href="https://karpathy.github.io/2019/04/25/recipe/">A Recipe for Training Neural Networks</a> · <a href="../references/bibliography.html">bibliography</a></div><div class="num">7 / 10</div></section><section class="slide" id="s8"><h2>6. Tune fairly</h2><div class="content"><ul><li>Change one thing at a time, with the same data, budget and seeds, and run more than one seed when the difference is small.</li><li>Random search beats grid search when only a few hyperparameters matter: with the same number of trials it tries more values of each one.</li><li>The tuning playbook separates <strong>scientific</strong> hyperparameters (the thing you are testing), <strong>nuisance</strong> ones (to be re-tuned for each value of it, such as the learning rate) and <strong>fixed</strong> ones, so that a comparison is not just a comparison of how well each option was tuned.</li><li>Keep a log of every run: the configuration, the code version and the curves.</li></ul></div><div class="cite">Bergstra and Bengio 2012, <a href="https://jmlr.org/papers/v13/bergstra12a.html">JMLR 13</a> · Godbole et al. 2023, <a href="https://github.com/google-research/tuning_playbook">Deep Learning Tuning Playbook</a> · <a href="../references/bibliography.html">bibliography</a></div><div class="num">8 / 10</div></section><section class="slide" id="s9"><h2>Where this shows up in LLMs</h2><div class="content"><ul><li>An LLM's initial loss is ln V for a vocabulary of V tokens: about 10.8 for 50,000. A first step far above that is a bug.</li><li>Large runs monitor the gradient norm and the loss at every step, clip at a global norm of 1.0, and watch for loss spikes; the response (skip batches, restart from a checkpoint with a lower rate) is part of the training procedure.</li><li>Recipes are chosen on small models first, then scaled: small-scale ablations and scaling laws are the "overfit a small batch, then grow" step at industrial scale.</li><li>The <a href="../../llm-training-course/">LLM Training course</a> takes this up for large runs: loss spikes, z-loss and other stability fixes (its deck 03).</li></ul></div><div class="cite"><a href="../../llm-training-course/">LLM Training and Post-Training course</a>, decks 01–03 · <a href="../references/bibliography.html">bibliography</a></div><div class="num">9 / 10</div></section><section class="slide" id="s10"><h2>Check yourself</h2><div class="content"><ol><li>A 10-class classifier starts at a loss of 23. What is wrong, and where do you look?</li><li>Your model cannot overfit a single batch of 8 examples. List three possible causes.</li><li>Training loss is 0.02 and validation loss 0.9. What do you try, in which order?</li><li>Option A beats option B by 0.3% with one seed each. What would you do before concluding anything?</li></ol><p><strong>Final project:</strong> apply this recipe to one dataset of your choice, from a linear baseline to an MLP and a CNN or RNN, with a learning-rate sweep and a regularization comparison (see the syllabus).</p></div><div class="cite">Syllabus · <a href="../references/bibliography.html">bibliography</a></div><div class="num">10 / 10</div></section></div><script>const slides=[...document.querySelectorAll('.slide')];let current=0;function show(n){current=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>{s.classList.toggle('active',i===current);s.setAttribute('aria-hidden',i!==current)});location.hash='slide-'+(current+1)}function resize(){document.getElementById('stage').style.transform='translate(-50%,-50%) scale('+Math.min(innerWidth/1280,innerHeight/720)+')'}addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(current+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(current-1)}if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1);if(e.key.toLowerCase()==='f'){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>{})}});addEventListener('resize',resize);resize();const n=Number(location.hash.replace('#slide-',''));show(Number.isFinite(n)&&n>0?n-1:0);</script></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>19 Training practice: a debugging recipe</title><style>*{box-sizing:border-box}html,body{margin:0;height:100%;background:#070b12;color:#eef4ff;font-family:Inter,system-ui,sans-serif;overflow:hidden}#stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center}.slide{position:absolute;inset:0;padding:52px 70px 70px;background:#101927;display:none;flex-direction:column}.slide.active{display:flex}h1{font-size:52px;line-height:1.12;max-width:1100px;margin:75px 0 25px}h2{font-size:36px;line-height:1.2;margin:0 0 26px;max-width:1100px}p,li{font-size:23px;line-height:1.5}p{margin:12px 0}li{margin:10px 0}ul,ol{margin:8px 0;padding-left:30px}strong{color:#8de0cf}a{color:#a4ccff}table{border-collapse:collapse;width:100%;font-size:21px;line-height:1.4;margin:20px 0}th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid #40516b}th{color:#8de0cf}pre{font-size:23px;line-height:1.5;white-space:pre-wrap;background:#09111e;padding:25px;border-left:4px solid #8de0cf;margin:20px 0}code{font-family:ui-monospace,monospace;font-size:.92em}.cite{position:absolute;left:70px;bottom:25px;font-size:14px;max-width:1060px;color:#b7c7df}.num{position:absolute;right:28px;bottom:25px;font-size:14px;color:#b7c7df}.lead{font-size:29px;line-height:1.5;color:#b7c7df}.formula{font:32px/1.5 ui-monospace,monospace;padding:26px 0;color:#8de0cf}.flow{font-size:27px;line-height:1.9;padding:26px 0;border-top:1px solid #40516b;border-bottom:1px solid #40516b;margin:22px 0}.note{font-size:20px;color:#b7c7df}.decklinks{columns:2;column-gap:40px}.decklinks p{font-size:21px;margin:12px 0}.notes{display:none}#hint{position:fixed;top:7px;right:12px;font:12px system-ui;color:#9bb2d0}@media print{html,body{overflow:visible;background:white}#stage{position:static;transform:none!important}.slide{display:flex!important;position:relative;break-after:page}#hint{display:none}}.two{display:grid;grid-template-columns:1fr 1fr;gap:36px}.small li,.small p{font-size:20px}table.tight{font-size:18px}table.tight th,table.tight td{padding:7px 10px}.tag{display:inline-block;font-size:15px;padding:2px 8px;border:1px solid #40516b;border-radius:4px;color:#b7c7df;margin-right:6px}h1.title{margin-top:120px}</style></head><body><div id="stage"><section class="slide" id="s1"><h1 class="title">Training practice: a debugging recipe</h1><div class="content"><p class="lead">A network with a bug usually still trains, just worse, so nothing tells you it is broken. This deck collects the checks used throughout the course into one order of work: know the data, check the start, overfit on purpose, then regularize and tune, changing one thing at a time.</p><p><span class="tag">Part VI · deck 19</span><span class="tag">practice</span><span class="tag">labs L0–L6</span></p></div><div class="cite">Karpathy 2019, <a href="https://karpathy.github.io/2019/04/25/recipe/">A Recipe for Training Neural Networks</a> · Godbole et al. 2023, <a href="https://github.com/google-research/tuning_playbook">Deep Learning Tuning Playbook</a> · <a href="../references/bibliography.html">bibliography</a></div><div class="num">1 / 10</div></section><section class="slide" id="s2"><h2>Problem: training fails silently</h2><div class="content"><ul><li>A wrong sign in a gradient, labels shuffled against inputs, a softmax over the wrong axis, dropout left on at test time: none of these raises an error. The loss still goes down, a little.</li><li>Karpathy's summary: "neural net training fails silently". The defence is to build in small steps, and to check each step against something you can predict.</li><li>Every lab in this course does that: each gradient is compared with finite differences, and each result with a number known in advance (a closed form, chance level, a known paper result).</li></ul></div><div class="cite">Karpathy 2019, <a href="https://karpathy.github.io/2019/04/25/recipe/">A Recipe for Training Neural Networks</a> · <a href="../references/bibliography.html">bibliography</a></div><div class="num">2 / 10</div></section><section class="slide" id="s3"><h2>1. Know the data, start from a baseline</h2><div class="content"><ul><li>Look at many examples by hand, with their labels. Check class balance, duplicates and leaks between training and validation splits.</li><li>Train the simplest model first: a linear or logistic regression (deck 01, 02) or the majority class. It gives the number every later model must beat, and a pipeline you trust.</li><li>Fix the random seeds, so that a change in the result comes from a change in the code.</li><li>Write down the expected numbers before running: initial loss, chance accuracy, a rough target.</li></ul></div><div class="cite">Karpathy 2019, <a href="https://karpathy.github.io/2019/04/25/recipe/">A Recipe for Training Neural Networks</a>, steps 1–2 · <a href="https://www.deeplearningbook.org/">Goodfellow, Bengio and Courville, Deep Learning</a>, §11.1–§11.2 · <a href="../references/bibliography.html">bibliography</a></div><div class="num">3 / 10</div></section><section class="slide" id="s4"><h2>Does the perturbation cross a kink?</h2><div class="content"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 270" role="img" aria-labelledby="kink-title kink-desc" style="width:100%;height:auto"><title id="kink-title">ReLU perturbations across a kink</title><desc id="kink-desc">At x minus one times ten to the minus four, the wide perturbation crosses zero while the narrow perturbation remains on the flat branch. The classical derivative at zero is undefined.</desc><g font-family="system-ui,sans-serif"><path d="M30,220 H560 M310,240 V20" stroke="#7185a4"/><path d="M30,220 H310 L550,28" fill="none" stroke="#8bbcff" stroke-width="4"/><circle cx="285" cy="220" r="6" fill="#8de0cf"/><path d="M35,145 H535 M35,136 V154 M535,136 V154" stroke="#f1c979" stroke-width="3"/><path d="M282.5,187 H287.5 M282.5,178 V196 M287.5,178 V196" stroke="#8de0cf" stroke-width="3"/><text x="90" y="125" font-size="21" fill="#f1c979">wide step crosses zero</text><text x="45" y="185" font-size="21" fill="#8de0cf">narrow step</text><text x="300" y="263" font-size="20" fill="#b7c7df">0</text><text x="430" y="65" font-size="22" fill="#8bbcff">ReLU(x)</text><text x="650" y="55" font-size="23" fill="#eef4ff">x = −1e−4; exact derivative = 0</text><text x="650" y="110" font-size="23" fill="#f1c979">h = 1e−3 → numeric = 0.45</text><text x="650" y="160" font-size="23" fill="#8de0cf">h = 1e−5 → numeric = 0</text><text x="650" y="220" font-size="22" fill="#b7c7df">At x = 0: derivative is undefined.</text></g></svg><p>Before calling it a backward bug, check whether the two forward evaluations stay on the same smooth branch.</p><p>The code may choose a subgradient at zero. A symmetric numerical slope of 0.5 is not proof that choice is wrong.</p></div><div class="cite"><a href="https://cs231n.github.io/neural-networks-3/">CS231n: gradient checks</a> · <a href="../labs/L1_autograd_mlp/index.html#gradient-diagnostics">L1 diagnostic exercise</a></div><div class="num">4 / 10</div></section><section class="slide" id="s5"><h2>3. Overfit on purpose</h2><div class="content"><ul><li>Take one small batch and train on it alone. The loss should reach nearly zero. If it cannot, the model, the loss or the update is broken: no amount of data will fix it.</li><li>Then make the model large enough to fit the whole training set well, before thinking about validation error. Lab L3's unregularized network reaches 100% training accuracy on 40 points.</li><li>Start from a known recipe: the closest published architecture and its optimizer settings. Adam at about 3 × 10<sup>−4</sup> is a common safe start; the course's small labs use 10<sup>−3</sup> to 10<sup>−2</sup>.</li><li>Only now regularize (deck 10): more data or augmentation first, then weight decay, dropout and early stopping, keeping the training loss you gave up in view.</li></ul></div><div class="cite">Karpathy 2019, <a href="https://karpathy.github.io/2019/04/25/recipe/">A Recipe for Training Neural Networks</a>, steps 3–4 · Lab L3 · <a href="../references/bibliography.html">bibliography</a></div><div class="num">5 / 10</div></section><section class="slide" id="s6"><h2>4. Set the learning rate first</h2><div class="content"><ul><li>Sweep it in factors of about 3 (10<sup>−4</sup>, 3 × 10<sup>−4</sup>, 10<sup>−3</sup>, …) for a short budget and plot the final loss. The best value is usually a little below the one that starts to diverge.</li><li>The edge is sharp: in lab L2, gradient descent on a quadratic with largest curvature 100 converges at 0.0199 and diverges at 0.0201 (2/λ<sub>max</sub> = 0.02, deck 03).</li><li>Greff et al. found the learning rate mattered more than any LSTM variant (deck 16); with batch norm, lab L3 trained across a 30-fold range of learning rates (deck 11).</li><li>Then warm-up and decay (deck 09), and only then the other hyperparameters.</li></ul></div><div class="cite">Bengio 2012, <a href="https://arxiv.org/abs/1206.5533">arXiv:1206.5533</a> · Labs L2 and L3 · <a href="../references/bibliography.html">bibliography</a></div><div class="num">6 / 10</div></section><section class="slide" id="s7"><h2>5. Read the curves</h2><div class="content"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1140 250" role="img" aria-label="Four learning-curve shapes and what each usually means" style="display:block;width:100%;height:auto"><g font-family="system-ui,sans-serif" font-size="17" fill="#eef4ff"><rect x="20" y="30" width="250" height="150" fill="#09111e" stroke="#40516b"/><text x="145" y="20" text-anchor="middle" fill="#8de0cf">diverges</text><text x="145" y="205" text-anchor="middle" font-size="15" fill="#b7c7df">lr too high, or a bug</text><path d="M30.0 98.5 L33.8 98.9 L37.7 99.4 L41.5 99.8 L45.3 100.2 L49.2 100.7 L53.0 101.1 L56.8 101.5 L60.7 102.0 L64.5 102.4 L68.3 102.8 L72.2 103.3 L76.0 103.7 L79.8 104.1 L83.7 104.6 L87.5 105.0 L91.3 105.4 L95.2 105.9 L99.0 106.3 L102.8 106.7 L106.7 107.2 L110.5 107.6 L114.3 108.0 L118.2 108.5 L122.0 108.9 L125.8 109.3 L129.7 109.8 L133.5 110.2 L137.3 110.6 L141.2 111.1 L145.0 111.5 L148.8 111.9 L152.7 112.4 L156.5 112.8 L160.3 113.2 L164.2 113.4 L168.0 113.6 L171.8 113.6 L175.7 113.5 L179.5 113.3 L183.3 113.0 L187.2 112.6 L191.0 112.0 L194.8 111.4 L198.7 110.6 L202.5 109.7 L206.3 108.7 L210.2 107.5 L214.0 106.3 L217.8 104.9 L221.7 103.5 L225.5 101.9 L229.3 100.2 L233.2 98.4 L237.0 96.4 L240.8 94.4 L244.7 92.2 L248.5 89.9 L252.3 87.5 L256.2 85.0 L260.0 82.4" fill="none" stroke="#8bbcff" stroke-width="2.5"/><rect x="305" y="30" width="250" height="150" fill="#09111e" stroke="#40516b"/><text x="430" y="20" text-anchor="middle" fill="#8de0cf">flat at ln K</text><text x="430" y="205" text-anchor="middle" font-size="15" fill="#b7c7df">no signal reaches the weights</text><path d="M315.0 137.5 L318.8 136.7 L322.7 137.2 L326.5 136.4 L330.3 136.9 L334.2 137.4 L338.0 136.6 L341.8 137.1 L345.7 136.3 L349.5 136.8 L353.3 137.3 L357.2 136.5 L361.0 137.0 L364.8 137.5 L368.7 136.7 L372.5 137.2 L376.3 136.4 L380.2 136.9 L384.0 137.4 L387.8 136.6 L391.7 137.1 L395.5 136.3 L399.3 136.8 L403.2 137.3 L407.0 136.5 L410.8 137.0 L414.7 137.5 L418.5 136.7 L422.3 137.2 L426.2 136.4 L430.0 136.8 L433.8 137.3 L437.7 136.5 L441.5 137.0 L445.3 136.2 L449.2 136.7 L453.0 137.2 L456.8 136.4 L460.7 136.9 L464.5 137.4 L468.3 136.6 L472.2 137.1 L476.0 136.3 L479.8 136.8 L483.7 137.3 L487.5 136.5 L491.3 137.0 L495.2 136.2 L499.0 136.7 L502.8 137.2 L506.7 136.4 L510.5 136.9 L514.3 137.4 L518.2 136.6 L522.0 137.1 L525.8 136.3 L529.7 136.8 L533.5 137.3 L537.3 136.5 L541.2 137.0 L545.0 137.5" fill="none" stroke="#8bbcff" stroke-width="2.5"/><rect x="590" y="30" width="250" height="150" fill="#09111e" stroke="#40516b"/><text x="715" y="20" text-anchor="middle" fill="#8de0cf">train ≪ validation</text><text x="715" y="205" text-anchor="middle" font-size="15" fill="#b7c7df">overfitting: regularize</text><path d="M600.0 66.0 L603.8 72.3 L607.7 78.2 L611.5 83.7 L615.3 88.8 L619.2 93.6 L623.0 98.1 L626.8 102.4 L630.7 106.3 L634.5 110.0 L638.3 113.4 L642.2 116.7 L646.0 119.7 L649.8 122.5 L653.7 125.2 L657.5 127.6 L661.3 129.9 L665.2 132.1 L669.0 134.1 L672.8 136.0 L676.7 137.8 L680.5 139.5 L684.3 141.0 L688.2 142.5 L692.0 143.8 L695.8 145.1 L699.7 146.3 L703.5 147.4 L707.3 148.4 L711.2 149.4 L715.0 150.3 L718.8 151.2 L722.7 151.9 L726.5 152.7 L730.3 153.4 L734.2 154.0 L738.0 154.7 L741.8 155.2 L745.7 155.8 L749.5 156.3 L753.3 156.7 L757.2 157.2 L761.0 157.6 L764.8 158.0 L768.7 158.3 L772.5 158.6 L776.3 159.0 L780.2 159.3 L784.0 159.5 L787.8 159.8 L791.7 160.0 L795.5 160.2 L799.3 160.5 L803.2 160.7 L807.0 160.8 L810.8 161.0 L814.7 161.2 L818.5 161.3 L822.3 161.5 L826.2 161.6 L830.0 161.7" fill="none" stroke="#8bbcff" stroke-width="2.5"/><path d="M600.0 53.0 L603.8 58.0 L607.7 62.7 L611.5 67.1 L615.3 71.1 L619.2 74.9 L623.0 78.4 L626.8 81.6 L630.7 84.7 L634.5 87.5 L638.3 90.0 L642.2 92.4 L646.0 94.6 L649.8 96.7 L653.7 98.6 L657.5 100.3 L661.3 101.8 L665.2 103.3 L669.0 104.6 L672.8 105.8 L676.7 106.8 L680.5 107.8 L684.3 108.6 L688.2 109.4 L692.0 110.0 L695.8 110.6 L699.7 111.1 L703.5 111.5 L707.3 111.9 L711.2 112.1 L715.0 112.3 L718.8 112.4 L722.7 112.5 L726.5 112.5 L730.3 112.5 L734.2 112.4 L738.0 112.2 L741.8 112.0 L745.7 111.8 L749.5 111.5 L753.3 111.1 L757.2 110.8 L761.0 110.3 L764.8 109.9 L768.7 109.4 L772.5 108.8 L776.3 108.3 L780.2 107.7 L784.0 107.0 L787.8 106.3 L791.7 105.6 L795.5 104.9 L799.3 104.2 L803.2 103.4 L807.0 102.5 L810.8 101.7 L814.7 100.8 L818.5 99.9 L822.3 99.0 L826.2 98.0 L830.0 97.1" fill="none" stroke="#f3c98b" stroke-width="2.5"/><rect x="875" y="30" width="250" height="150" fill="#09111e" stroke="#40516b"/><text x="1000" y="20" text-anchor="middle" fill="#8de0cf">both high, still falling</text><text x="1000" y="205" text-anchor="middle" font-size="15" fill="#b7c7df">underfitting: bigger or longer</text><path d="M885.0 53.0 L888.8 54.0 L892.7 55.0 L896.5 55.9 L900.3 56.9 L904.2 57.9 L908.0 58.9 L911.8 59.8 L915.7 60.8 L919.5 61.8 L923.3 62.8 L927.2 63.7 L931.0 64.7 L934.8 65.7 L938.7 66.7 L942.5 67.6 L946.3 68.6 L950.2 69.6 L954.0 70.6 L957.8 71.5 L961.7 72.5 L965.5 73.5 L969.3 74.5 L973.2 75.4 L977.0 76.4 L980.8 77.4 L984.7 78.4 L988.5 79.3 L992.3 80.3 L996.2 81.3 L1000.0 82.2 L1003.8 83.2 L1007.7 84.2 L1011.5 85.2 L1015.3 86.1 L1019.2 87.1 L1023.0 88.1 L1026.8 89.1 L1030.7 90.0 L1034.5 91.0 L1038.3 92.0 L1042.2 93.0 L1046.0 94.0 L1049.8 94.9 L1053.7 95.9 L1057.5 96.9 L1061.3 97.9 L1065.2 98.8 L1069.0 99.8 L1072.8 100.8 L1076.7 101.8 L1080.5 102.7 L1084.3 103.7 L1088.2 104.7 L1092.0 105.7 L1095.8 106.6 L1099.7 107.6 L1103.5 108.6 L1107.3 109.6 L1111.2 110.5 L1115.0 111.5" fill="none" stroke="#8bbcff" stroke-width="2.5"/><text x="20" y="240" font-size="15" fill="#8bbcff">— training loss</text><text x="200" y="240" font-size="15" fill="#f3c98b">— validation loss</text></g></svg><p class="small">Always plot training and validation loss against steps, on the same axes, with the initial loss marked. Loss spikes: lower the learning rate, add warm-up or clip the gradient (deck 15). Flat at ln K: look for a gradient that never arrives (a detached tensor, dead ReLUs, a too-deep plain network, deck 14).</p></div><div class="cite"><a href="https://www.deeplearningbook.org/">Goodfellow, Bengio and Courville, Deep Learning</a>, §11.4 · Karpathy 2019, <a href="https://karpathy.github.io/2019/04/25/recipe/">A Recipe for Training Neural Networks</a> · <a href="../references/bibliography.html">bibliography</a></div><div class="num">7 / 10</div></section><section class="slide" id="s8"><h2>6. Tune fairly</h2><div class="content"><ul><li>Change one thing at a time, with the same data, budget and seeds, and run more than one seed when the difference is small.</li><li>Random search beats grid search when only a few hyperparameters matter: with the same number of trials it tries more values of each one.</li><li>The tuning playbook separates <strong>scientific</strong> hyperparameters (the thing you are testing), <strong>nuisance</strong> ones (to be re-tuned for each value of it, such as the learning rate) and <strong>fixed</strong> ones, so that a comparison is not just a comparison of how well each option was tuned.</li><li>Keep a log of every run: the configuration, the code version and the curves.</li></ul></div><div class="cite">Bergstra and Bengio 2012, <a href="https://jmlr.org/papers/v13/bergstra12a.html">JMLR 13</a> · Godbole et al. 2023, <a href="https://github.com/google-research/tuning_playbook">Deep Learning Tuning Playbook</a> · <a href="../references/bibliography.html">bibliography</a></div><div class="num">8 / 10</div></section><section class="slide" id="s9"><h2>Where this shows up in LLMs</h2><div class="content"><ul><li>An LLM's initial loss is ln V for a vocabulary of V tokens: about 10.8 for 50,000. A first step far above that is a bug.</li><li>Large runs monitor the gradient norm and the loss at every step, clip at a global norm of 1.0, and watch for loss spikes; the response (skip batches, restart from a checkpoint with a lower rate) is part of the training procedure.</li><li>Recipes are chosen on small models first, then scaled: small-scale ablations and scaling laws are the "overfit a small batch, then grow" step at industrial scale.</li><li>The <a href="../../llm-training-course/">LLM Training course</a> takes this up for large runs: loss spikes, z-loss and other stability fixes (its deck 03).</li></ul></div><div class="cite"><a href="../../llm-training-course/">LLM Training and Post-Training course</a>, decks 01–03 · <a href="../references/bibliography.html">bibliography</a></div><div class="num">9 / 10</div></section><section class="slide" id="s10"><h2>Near zero: inspect absolute and relative error</h2><div class="content"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="792pt" height="259.2pt" viewBox="0 0 792 259.2" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-label="Executed float64 gradient diagnostic" style="display:block;width:100%;height:310px"><title>Executed float64 gradient diagnostic</title><desc>Results computed by the included gradient diagnostics runner; see the linked report for raw values and environment.</desc>
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.9.4, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 259.2
+L 792 259.2
+L 792 0
+L 0 0
+z
+" style="fill: #101927"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 51.85024 216.165385
+L 392.04 216.165385
+L 392.04 22.677427
+L 51.85024 22.677427
+z
+" style="fill: #101927"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 67.313411 216.165385
+L 67.313411 22.677427
+" clip-path="url(#pf80d97cd3a)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2">
+      <defs>
+       <path id="me0f2e2dbd9" d="M 0 0
+L 0 3.5
+" style="stroke: #b7c7df; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#me0f2e2dbd9" x="67.313411" y="216.165385" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="fill: #b7c7df; font: 15px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="67.313411" y="234.563041" transform="rotate(-0 67.313411 234.563041)">1</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 144.629265 216.165385
+L 144.629265 22.677427
+" clip-path="url(#pf80d97cd3a)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#me0f2e2dbd9" x="144.629265" y="216.165385" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="fill: #b7c7df; font: 15px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="144.629265" y="234.563041" transform="rotate(-0 144.629265 234.563041)">1e−3</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 221.94512 216.165385
+L 221.94512 22.677427
+" clip-path="url(#pf80d97cd3a)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#me0f2e2dbd9" x="221.94512" y="216.165385" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="fill: #b7c7df; font: 15px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="221.94512" y="234.563041" transform="rotate(-0 221.94512 234.563041)">1e−6</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 299.260975 216.165385
+L 299.260975 22.677427
+" clip-path="url(#pf80d97cd3a)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#me0f2e2dbd9" x="299.260975" y="216.165385" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="fill: #b7c7df; font: 15px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="299.260975" y="234.563041" transform="rotate(-0 299.260975 234.563041)">1e−9</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 376.576829 216.165385
+L 376.576829 22.677427
+" clip-path="url(#pf80d97cd3a)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#me0f2e2dbd9" x="376.576829" y="216.165385" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="fill: #b7c7df; font: 15px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="376.576829" y="234.563041" transform="rotate(-0 376.576829 234.563041)">0</text>
+     </g>
+    </g>
+    <g id="text_6">
+     <text style="fill: #eef4ff; font: 15px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="221.94512" y="253.080229" transform="rotate(-0 221.94512 253.080229)">reference gradient</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_11">
+      <path d="M 51.85024 216.165385
+L 392.04 216.165385
+" clip-path="url(#pf80d97cd3a)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_12">
+      <defs>
+       <path id="m290ada94e3" d="M 0 0
+L -3.5 0
+" style="stroke: #b7c7df; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m290ada94e3" x="51.85024" y="216.165385" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <!-- $\mathdefault{10^{-13}}$ -->
+      <g style="fill: #b7c7df" transform="translate(3.00024 221.864213)">
+       <text>
+        <tspan style="font: 15px 'DejaVu Sans'" x="0 9.543457" y="-0.4593750000000014">10</tspan>
+        <tspan style="font: 10.5px 'DejaVu Sans'" x="19.230469 28.02832 34.70874" y="-6.201562500000001">−13</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_13">
+      <path d="M 51.85024 119.421406
+L 392.04 119.421406
+" clip-path="url(#pf80d97cd3a)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_14">
+      <g>
+       <use xlink:href="#m290ada94e3" x="51.85024" y="119.421406" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <!-- $\mathdefault{10^{-12}}$ -->
+      <g style="fill: #b7c7df" transform="translate(3.00024 125.120234)">
+       <text>
+        <tspan style="font: 15px 'DejaVu Sans'" x="0 9.543457" y="-0.4593750000000014">10</tspan>
+        <tspan style="font: 10.5px 'DejaVu Sans'" x="19.230469 28.02832 34.70874" y="-6.201562500000001">−12</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_15">
+      <path d="M 51.85024 22.677428
+L 392.04 22.677428
+" clip-path="url(#pf80d97cd3a)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_16">
+      <g>
+       <use xlink:href="#m290ada94e3" x="51.85024" y="22.677428" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <!-- $\mathdefault{10^{-11}}$ -->
+      <g style="fill: #b7c7df" transform="translate(3.00024 28.376256)">
+       <text>
+        <tspan style="font: 15px 'DejaVu Sans'" x="0 9.543457" y="-0.6015625">10</tspan>
+        <tspan style="font: 10.5px 'DejaVu Sans'" x="19.230469 28.02832 34.70874" y="-6.34375">−11</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_17">
+      <defs>
+       <path id="m35bc1443ee" d="M 0 0
+L -2 0
+" style="stroke: #b7c7df; stroke-width: 0.6"/>
+      </defs>
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="187.042545" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_18">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="170.006776" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_19">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="157.919706" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_20">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="148.544246" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_21">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="140.883937" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_9">
+     <g id="line2d_22">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="134.407238" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_10">
+     <g id="line2d_23">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="128.796866" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_11">
+     <g id="line2d_24">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="123.848168" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_12">
+     <g id="line2d_25">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="90.298567" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_13">
+     <g id="line2d_26">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="73.262798" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_14">
+     <g id="line2d_27">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="61.175727" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_15">
+     <g id="line2d_28">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="51.800267" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_16">
+     <g id="line2d_29">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="44.139958" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_17">
+     <g id="line2d_30">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="37.663259" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_18">
+     <g id="line2d_31">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="32.052888" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_19">
+     <g id="line2d_32">
+      <g>
+       <use xlink:href="#m35bc1443ee" x="51.85024" y="27.104189" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_33">
+    <path d="M 67.313411 119.417671
+L 144.629265 119.421406
+L 221.94512 119.421406
+L 299.260975 119.421406
+L 376.576829 119.421406
+" clip-path="url(#pf80d97cd3a)" style="fill: none; stroke: #8de0cf; stroke-width: 1.5; stroke-linecap: square"/>
+    <defs>
+     <path id="m8e9e42e39b" d="M 0 3
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132
+C 2.683901 1.55874 3 0.795609 3 0
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132
+C 1.55874 -2.683901 0.795609 -3 0 -3
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132
+C -2.683901 -1.55874 -3 -0.795609 -3 0
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132
+C -1.55874 2.683901 -0.795609 3 0 3
+z
+" style="stroke: #8de0cf"/>
+    </defs>
+    <g clip-path="url(#pf80d97cd3a)">
+     <use xlink:href="#m8e9e42e39b" x="67.313411" y="119.417671" style="fill: #8de0cf; stroke: #8de0cf"/>
+     <use xlink:href="#m8e9e42e39b" x="144.629265" y="119.421406" style="fill: #8de0cf; stroke: #8de0cf"/>
+     <use xlink:href="#m8e9e42e39b" x="221.94512" y="119.421406" style="fill: #8de0cf; stroke: #8de0cf"/>
+     <use xlink:href="#m8e9e42e39b" x="299.260975" y="119.421406" style="fill: #8de0cf; stroke: #8de0cf"/>
+     <use xlink:href="#m8e9e42e39b" x="376.576829" y="119.421406" style="fill: #8de0cf; stroke: #8de0cf"/>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 51.85024 216.165385
+L 51.85024 22.677428
+" style="fill: none; stroke: #7185a4; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 51.85024 216.165385
+L 392.04 216.165385
+" style="fill: none; stroke: #7185a4; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_10">
+    <text style="fill: #eef4ff; font: 18px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="221.94512" y="16.677427" transform="rotate(-0 221.94512 16.677427)">Absolute error</text>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="patch_5">
+    <path d="M 448.81 216.165385
+L 788.99976 216.165385
+L 788.99976 22.677427
+L 448.81 22.677427
+z
+" style="fill: #101927"/>
+   </g>
+   <g id="matplotlib.axis_3">
+    <g id="xtick_6">
+     <g id="line2d_34">
+      <path d="M 464.273171 216.165385
+L 464.273171 22.677427
+" clip-path="url(#pfb1a3eb6d6)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_35">
+      <g>
+       <use xlink:href="#me0f2e2dbd9" x="464.273171" y="216.165385" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <text style="fill: #b7c7df; font: 15px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="464.273171" y="234.563041" transform="rotate(-0 464.273171 234.563041)">1</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_36">
+      <path d="M 541.589025 216.165385
+L 541.589025 22.677427
+" clip-path="url(#pfb1a3eb6d6)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_37">
+      <g>
+       <use xlink:href="#me0f2e2dbd9" x="541.589025" y="216.165385" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_12">
+      <text style="fill: #b7c7df; font: 15px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="541.589025" y="234.563041" transform="rotate(-0 541.589025 234.563041)">1e−3</text>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_38">
+      <path d="M 618.90488 216.165385
+L 618.90488 22.677427
+" clip-path="url(#pfb1a3eb6d6)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_39">
+      <g>
+       <use xlink:href="#me0f2e2dbd9" x="618.90488" y="216.165385" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_13">
+      <text style="fill: #b7c7df; font: 15px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="618.90488" y="234.563041" transform="rotate(-0 618.90488 234.563041)">1e−6</text>
+     </g>
+    </g>
+    <g id="xtick_9">
+     <g id="line2d_40">
+      <path d="M 696.220735 216.165385
+L 696.220735 22.677427
+" clip-path="url(#pfb1a3eb6d6)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_41">
+      <g>
+       <use xlink:href="#me0f2e2dbd9" x="696.220735" y="216.165385" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_14">
+      <text style="fill: #b7c7df; font: 15px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="696.220735" y="234.563041" transform="rotate(-0 696.220735 234.563041)">1e−9</text>
+     </g>
+    </g>
+    <g id="xtick_10">
+     <g id="line2d_42">
+      <path d="M 773.536589 216.165385
+L 773.536589 22.677427
+" clip-path="url(#pfb1a3eb6d6)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_43">
+      <g>
+       <use xlink:href="#me0f2e2dbd9" x="773.536589" y="216.165385" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_15">
+      <text style="fill: #b7c7df; font: 15px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="773.536589" y="234.563041" transform="rotate(-0 773.536589 234.563041)">0</text>
+     </g>
+    </g>
+    <g id="text_16">
+     <text style="fill: #eef4ff; font: 15px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="618.90488" y="253.080229" transform="rotate(-0 618.90488 253.080229)">reference gradient</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_4">
+    <g id="ytick_20">
+     <g id="line2d_44">
+      <path d="M 448.81 216.165385
+L 788.99976 216.165385
+" clip-path="url(#pfb1a3eb6d6)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_45">
+      <g>
+       <use xlink:href="#m290ada94e3" x="448.81" y="216.165385" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_17">
+      <!-- $\mathdefault{10^{-13}}$ -->
+      <g style="fill: #b7c7df" transform="translate(399.96 221.864213)">
+       <text>
+        <tspan style="font: 15px 'DejaVu Sans'" x="0 9.543457" y="-0.4593750000000014">10</tspan>
+        <tspan style="font: 10.5px 'DejaVu Sans'" x="19.230469 28.02832 34.70874" y="-6.201562500000001">−13</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_21">
+     <g id="line2d_46">
+      <path d="M 448.81 172.524864
+L 788.99976 172.524864
+" clip-path="url(#pfb1a3eb6d6)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_47">
+      <g>
+       <use xlink:href="#m290ada94e3" x="448.81" y="172.524864" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_18">
+      <!-- $\mathdefault{10^{-10}}$ -->
+      <g style="fill: #b7c7df" transform="translate(399.96 178.223693)">
+       <text>
+        <tspan style="font: 15px 'DejaVu Sans'" x="0 9.543457" y="-0.4593750000000014">10</tspan>
+        <tspan style="font: 10.5px 'DejaVu Sans'" x="19.230469 28.02832 34.70874" y="-6.201562500000001">−10</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_22">
+     <g id="line2d_48">
+      <path d="M 448.81 128.884344
+L 788.99976 128.884344
+" clip-path="url(#pfb1a3eb6d6)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_49">
+      <g>
+       <use xlink:href="#m290ada94e3" x="448.81" y="128.884344" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_19">
+      <!-- $\mathdefault{10^{-7}}$ -->
+      <g style="fill: #b7c7df" transform="translate(406.56 134.583172)">
+       <text>
+        <tspan style="font: 15px 'DejaVu Sans'" x="0 9.543457" y="-0.6015625">10</tspan>
+        <tspan style="font: 10.5px 'DejaVu Sans'" x="19.230469 28.02832" y="-6.34375">−7</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_23">
+     <g id="line2d_50">
+      <path d="M 448.81 85.243823
+L 788.99976 85.243823
+" clip-path="url(#pfb1a3eb6d6)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_51">
+      <g>
+       <use xlink:href="#m290ada94e3" x="448.81" y="85.243823" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_20">
+      <!-- $\mathdefault{10^{-4}}$ -->
+      <g style="fill: #b7c7df" transform="translate(406.56 90.942652)">
+       <text>
+        <tspan style="font: 15px 'DejaVu Sans'" x="0 9.543457" y="-0.6015625">10</tspan>
+        <tspan style="font: 10.5px 'DejaVu Sans'" x="19.230469 28.02832" y="-6.34375">−4</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_24">
+     <g id="line2d_52">
+      <path d="M 448.81 41.603303
+L 788.99976 41.603303
+" clip-path="url(#pfb1a3eb6d6)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.18; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_53">
+      <g>
+       <use xlink:href="#m290ada94e3" x="448.81" y="41.603303" style="fill: #b7c7df; stroke: #b7c7df; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_21">
+      <!-- $\mathdefault{10^{-1}}$ -->
+      <g style="fill: #b7c7df" transform="translate(406.56 47.302131)">
+       <text>
+        <tspan style="font: 15px 'DejaVu Sans'" x="0 9.543457" y="-0.6015625">10</tspan>
+        <tspan style="font: 10.5px 'DejaVu Sans'" x="19.230469 28.02832" y="-6.34375">−1</tspan>
+       </text>
+      </g>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_54">
+    <path d="M 464.273171 201.617983
+L 541.589025 157.978024
+L 618.90488 114.33751
+L 696.220735 70.703298
+L 773.536589 27.056463
+" clip-path="url(#pfb1a3eb6d6)" style="fill: none; stroke: #f1c979; stroke-width: 1.5; stroke-linecap: square"/>
+    <defs>
+     <path id="m93870195db" d="M 0 3
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132
+C 2.683901 1.55874 3 0.795609 3 0
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132
+C 1.55874 -2.683901 0.795609 -3 0 -3
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132
+C -2.683901 -1.55874 -3 -0.795609 -3 0
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132
+C -1.55874 2.683901 -0.795609 3 0 3
+z
+" style="stroke: #f1c979"/>
+    </defs>
+    <g clip-path="url(#pfb1a3eb6d6)">
+     <use xlink:href="#m93870195db" x="464.273171" y="201.617983" style="fill: #f1c979; stroke: #f1c979"/>
+     <use xlink:href="#m93870195db" x="541.589025" y="157.978024" style="fill: #f1c979; stroke: #f1c979"/>
+     <use xlink:href="#m93870195db" x="618.90488" y="114.33751" style="fill: #f1c979; stroke: #f1c979"/>
+     <use xlink:href="#m93870195db" x="696.220735" y="70.703298" style="fill: #f1c979; stroke: #f1c979"/>
+     <use xlink:href="#m93870195db" x="773.536589" y="27.056463" style="fill: #f1c979; stroke: #f1c979"/>
+    </g>
+   </g>
+   <g id="patch_6">
+    <path d="M 448.81 216.165385
+L 448.81 22.677427
+" style="fill: none; stroke: #7185a4; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 448.81 216.165385
+L 788.99976 216.165385
+" style="fill: none; stroke: #7185a4; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_22">
+    <text style="fill: #eef4ff; font: 18px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="618.90488" y="16.677427" transform="rotate(-0 618.90488 16.677427)">Raw relative error</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pf80d97cd3a">
+   <rect x="51.85024" y="22.677427" width="340.18976" height="193.487957"/>
+  </clipPath>
+  <clipPath id="pfb1a3eb6d6">
+   <rect x="448.81" y="22.677427" width="340.18976" height="193.487957"/>
+  </clipPath>
+ </defs>
+</svg><p>Constructed perturbation: add <code>1e−12</code>. Raw relative error uses <code>|a−b| / max(|a|, |b|)</code>.</p><p>At reference 0: absolute error = 1e−12, relative error = 1. Choose justified absolute + relative tolerances; no universal cutoff.</p></div><div class="cite"><a href="https://cs231n.github.io/neural-networks-3/">CS231n: gradient checks</a> · <a href="../labs/L1_autograd_mlp/index.html#gradient-diagnostics">L1 diagnostic exercise</a></div><div class="num">10 / 10</div></section></div><script>const slides=[...document.querySelectorAll('.slide')];let current=0;function show(n){current=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>{s.classList.toggle('active',i===current);s.setAttribute('aria-hidden',i!==current)});location.hash='slide-'+(current+1)}function resize(){document.getElementById('stage').style.transform='translate(-50%,-50%) scale('+Math.min(innerWidth/1280,innerHeight/720)+')'}addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(current+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(current-1)}if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1);if(e.key.toLowerCase()==='f'){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>{})}});addEventListener('resize',resize);resize();const n=Number(location.hash.replace('#slide-',''));show(Number.isFinite(n)&&n>0?n-1:0);</script></body></html>
