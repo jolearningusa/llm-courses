@@ -76,6 +76,12 @@ ml101-neural-networks-course/
 │   ├── L1_autograd_mlp/
 │   │   ├── README.md
 │   │   ├── autograd.py              # Reverse-mode autodiff on NumPy arrays
+│   │   ├── gradient_diagnostics.py # Step-size, kink and near-zero checks
+│   │   ├── test_gradient_diagnostics.py
+│   │   ├── figures-report.json
+│   │   ├── figures/
+│   │   │   ├── smooth_step.svg
+│   │   │   └── near_zero.svg
 │   │   ├── mlp.py                   # MLPs, initialization schemes, XOR and spirals, signal scale by depth
 │   │   └── test_mlp.py
 │   ├── L2_optimizers/

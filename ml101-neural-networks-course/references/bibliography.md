@@ -108,3 +108,7 @@ of these sources; numbers that come from the course's own labs say so on the sli
 | 19 | Random Search for Hyper-Parameter Optimization | Bergstra, 2012 | [JMLR 13](https://jmlr.org/papers/v13/bergstra12a.html) |
 | 18, 20 | Attention Is All You Need (self-attention, Table 1 on per-layer cost) | Vaswani, 2017 | [arXiv:1706.03762](https://arxiv.org/abs/1706.03762) |
 | 20 | Transformers are RNNs: Fast Autoregressive Transformers with Linear Attention | Katharopoulos, 2020 | [arXiv:2006.16236](https://arxiv.org/abs/2006.16236) |
+
+## Gradient-check diagnostic supplement — checked 2026-11-07
+
+- Stanford CS231n, [Neural Networks Part 3: Learning](https://cs231n.github.io/neural-networks-3/), gradient checks: centered differences, step-size tradeoffs, kinks and scale-aware error. Used in decks 06/19 and L1. Course curves are executed toy float64 calculations, not copied upstream figures; the mixed tolerance is fixture-specific.
