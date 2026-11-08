@@ -39,3 +39,12 @@ Declare bounded dynamic shapes and re-export, or select one supported alternate 
 Submit artifacts/producer-loader manifests, raw JSON, delegate/partition evidence and [report](../../report_template.md). Instructor diagnostic: an export succeeding does not prove target execution, a file suffix does not prove format compatibility, and two CPU packages do not establish GPU or edge performance.
 
 Recorded authoring runs: [AOTInductor CPU JSON](../examples/l11_aoti_cpu.json) and [ExecuTorch CPU JSON](../examples/l11_executorch_cpu.json). They are actual small-fixture host measurements with stated scope, not performance targets or portable benchmark scores.
+
+
+## E. Version discovery is not a qualified environment
+
+The [2026-11-07 monitoring review](../../../references/executorch_monitoring_2026_11.md) found registry 1.6.0 while `stable` docs displayed 1.5. The tracker now compares major/minor components. Its `version: 1.0.0` and `verified: 2026-10-27` still describe the historical qualified CPU baseline above; checking metadata does not renew runtime qualification.
+
+For a later compatibility pilot, keep that baseline intact and create a separate candidate environment. Freeze the model, input shape/dtype/layout and numerical oracle, then record exact Python/torch/ExecuTorch/delegate/build versions, dependency lock, artifact hash and matching documentation/source revision. Export and lower with the candidate toolchain, record the actual delegated subgraphs and fallback operators, reload in a fresh process, then require eligible-input agreement and a guard rejection before execution for one invalid shape. Keep cold/build/load/first-call/warm timing boundaries explicit. Only a successful recorded pilot supports a new pin/date. Test cross-version old-artifact loading as its own matrix cell; do not infer it from a shared `.pte` suffix.
+
+AOTInductor, TensorRT and ExecuTorch can compose, but each component retains its producer/runtime contract. This monitoring correction does not establish compatibility among new releases or qualify CUDA, quantized paths, NPU or edge devices.

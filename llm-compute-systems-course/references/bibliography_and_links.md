@@ -222,3 +222,10 @@ The optional [lowering](../notes/lowering_codesign_reference.md), [engine](../no
 ## Course mechanism illustrations — 2026-11-01
 
 The [figure-source inventory](figure_sources.md) maps all 164 mechanisms to lecture pages and sources. The visual revision adds original diagrams informed by official CUDA pipeline, PyTorch compiler/autograd/FSDP/DCP, Triton, ExecuTorch, IREE, NCCL, AMD HIP, TVM, PJRT and GGUF documentation plus the attention, paging, scheduling, disaggregation and speculative-decoding papers cited above. Newly checked moving documentation supports conceptual responsibilities; existing lab versions and API contracts are not silently upgraded. All charts/timelines introduced in this revision are explicitly schematic, not benchmark results.
+
+
+## ExecuTorch monitoring versus qualification — reviewed 2026-11-07
+
+- **Registry observation:** [ExecuTorch PyPI JSON](https://pypi.org/pypi/executorch/json) reported 1.6.0; [the version-specific project page](https://pypi.org/project/executorch/1.6.0/) is an artifact-discovery source, not runtime-test evidence.
+- **Documentation observation:** [stable getting started](https://docs.pytorch.org/executorch/stable/getting-started.html) rendered a 1.5 documentation title; [the 1.0 getting-started page](https://docs.pytorch.org/executorch/1.0/getting-started.html) describes the historical install/export/run workflow. The matching versioned 1.6 documentation was not established in this pass. Direct scripted access to the docs returned 403; the web reader supplied the accessible stable/1.0 pages.
+- **Course evidence:** [monitoring note](executorch_monitoring_2026_11.md) records the compare rule and qualification gates. The L11 unquantized XNNPACK CPU baseline remains ExecuTorch 1.0.0 / torch 2.9.1, with its original 2026-10-27 verification date. No new runtime was installed, no dependency pin was advanced, and no old artifact was tested against a new loader.
