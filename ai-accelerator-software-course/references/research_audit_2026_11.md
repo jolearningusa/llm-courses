@@ -27,3 +27,8 @@ Reviewed the eight-deck syllabus, bibliography and `labs/TARGET_EVIDENCE.md`. Ex
 Engineering first; research question is whether an independent coverage gate catches false-clean outcomes without rejecting legal work. Week 1 freeze trust boundaries and accepted/rejected controls. Week 2 implement hidden coverage records and missing-evidence cases. Week 3 add a single supported tool/target adapter and archive raw outputs. Week 4 report false acceptance/rejection, timeout/invalid populations and overhead. Compare ComputeEval/KernelBench facilities before claiming novelty. Without a GPU, deliver only the CPU protocol and a target plan marked not-run.
 
 No driver, firmware image, sanitizer, device adapter or physical experiment was executed in this research pass. The existing 24-test release is not re-certified by reading upstream documentation.
+
+
+## Follow-up progress — 2026-11-08
+
+**ACC-1 CPU protocol, prepared for review:** deck 05 slides 9/10 (EN/ZH), L5 and target template now separate harness-owned execution coverage, numerical correctness and diagnostics. The existing virtual worker supplies observed start/completion traces; nine constructed controls include no launch with numerically correct output, absent/corrupt/replayed evidence, a rejected bounds request, an error completion, wrong output and a legal copy. Eight new tests plus the original 24 pass; the report retains all outcomes (1 passed / 2 failed / 6 invalid) and source identity. The original virtual model and older functional gate are unchanged. This completes the bounded CPU protocol/control exercise, not a hardened isolation boundary, ComputeEval reproduction, GPU sanitizer result or ACC-2/3 target qualification.

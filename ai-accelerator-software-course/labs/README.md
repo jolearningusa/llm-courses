@@ -8,6 +8,7 @@ python3 experiments.py scenarios
 python3 experiments.py explore
 python3 experiments.py fuzz --seed 17 --steps 300
 python3 experiments.py report --output result.json
+python3 execution_coverage.py --output coverage-new.json
 ```
 
 `result.json` must not already exist; reports are created exclusively to avoid overwriting a previous run. Save raw JSON plus exact source/environment identity. The report contains model ticks, CPU execution provenance and explicit hardware/power-thermal `not_run` fields. A scope gate accepts only the supported functional evidence; this is a teaching decision, not a signed attestation or hardware qualification.
@@ -28,3 +29,6 @@ python3 experiments.py report --output result.json
 Read [ABI](ABI.md) before editing. `virtual_accelerator.py` is the deterministic reference. `experiments.py` supplies five scenarios, a small bounded ownership model, seeded state exercising and a report. Tests include deliberate rejection controls and correctness expectations independent of the report formatter. The model retains command history for instruction, so it is not a bounded-memory production service.
 
 Seeded state exercising is not coverage-guided fuzzing. The abstract explorer is not an external formal tool or ISA memory model. Real target work starts with the [target evidence template](TARGET_EVIDENCE.md), a supported adapter and a recoverable designated test device. No physical telemetry or hardware timing is synthesized by the model.
+
+
+The separate [L5 execution-evidence controls](handouts/lab05_state_exploration.md#execution-coverage-controls) use the same virtual worker to distinguish a legal run, no launch, invalid channels and observed failures. They add eight tests (32 total) and an executed reference report. They do not change `experiments.py`'s older functional gate or authenticate that report. GPU and Compute Sanitizer remain not-run.

@@ -1,0 +1,637 @@
+{
+  "compute_sanitizer": "not_run",
+  "controls": [
+    {
+      "candidate_stdout_ignored": "",
+      "control": "legal",
+      "coverage_channel": "{\"nonce\": \"e51b50bf29269dfd2f6145c08aac5da1\", \"target\": \"virtual-copy4-v1\", \"started\": 1, \"completed\": 1}",
+      "decision": {
+        "accepted": true,
+        "correctness": "passed",
+        "coverage": "valid",
+        "diagnostics": "passed",
+        "scope": "CPU functional protocol only",
+        "status": "passed"
+      },
+      "diagnostics_channel": "{\"nonce\": \"e51b50bf29269dfd2f6145c08aac5da1\", \"check\": \"cpu-model-transfer-v1\", \"findings\": []}",
+      "nonce": "e51b50bf29269dfd2f6145c08aac5da1",
+      "output": [
+        0,
+        1,
+        254,
+        255
+      ],
+      "target": "virtual-copy4-v1",
+      "trace": [
+        {
+          "event": "boot_ready",
+          "generation": 0,
+          "image": "tutorial-fw-v1",
+          "tick": 0
+        },
+        {
+          "buffer": 1,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "buffer": 2,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "submit",
+          "generation": 0,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "start",
+          "generation": 0,
+          "tick": 1
+        },
+        {
+          "cookie": 1,
+          "event": "output_visible",
+          "generation": 0,
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "completion",
+          "generation": 0,
+          "irq": true,
+          "status": "done",
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "reap",
+          "generation": 0,
+          "status": "done",
+          "tick": 3
+        }
+      ]
+    },
+    {
+      "candidate_stdout_ignored": "{\"target_launches\":1000,\"status\":\"clean\"}",
+      "control": "no_launch",
+      "coverage_channel": "{\"nonce\": \"777696dc7ec4ea9879fc7be5bba0c8e8\", \"target\": \"virtual-copy4-v1\", \"started\": 0, \"completed\": 0}",
+      "decision": {
+        "accepted": false,
+        "correctness": "passed",
+        "coverage": "invalid",
+        "diagnostics": "passed",
+        "scope": "CPU functional protocol only",
+        "status": "invalid"
+      },
+      "diagnostics_channel": "{\"nonce\": \"777696dc7ec4ea9879fc7be5bba0c8e8\", \"check\": \"cpu-model-transfer-v1\", \"findings\": []}",
+      "nonce": "777696dc7ec4ea9879fc7be5bba0c8e8",
+      "output": [
+        0,
+        1,
+        254,
+        255
+      ],
+      "target": "virtual-copy4-v1",
+      "trace": [
+        {
+          "event": "boot_ready",
+          "generation": 0,
+          "image": "tutorial-fw-v1",
+          "tick": 0
+        },
+        {
+          "buffer": 1,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "buffer": 2,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        }
+      ]
+    },
+    {
+      "candidate_stdout_ignored": "",
+      "control": "missing_coverage",
+      "coverage_channel": null,
+      "decision": {
+        "accepted": false,
+        "correctness": "passed",
+        "coverage": "invalid",
+        "diagnostics": "passed",
+        "scope": "CPU functional protocol only",
+        "status": "invalid"
+      },
+      "diagnostics_channel": "{\"nonce\": \"4c8763604cdd8bf1294dd7ed1ec5936e\", \"check\": \"cpu-model-transfer-v1\", \"findings\": []}",
+      "nonce": "4c8763604cdd8bf1294dd7ed1ec5936e",
+      "output": [
+        0,
+        1,
+        254,
+        255
+      ],
+      "target": "virtual-copy4-v1",
+      "trace": [
+        {
+          "event": "boot_ready",
+          "generation": 0,
+          "image": "tutorial-fw-v1",
+          "tick": 0
+        },
+        {
+          "buffer": 1,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "buffer": 2,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "submit",
+          "generation": 0,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "start",
+          "generation": 0,
+          "tick": 1
+        },
+        {
+          "cookie": 1,
+          "event": "output_visible",
+          "generation": 0,
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "completion",
+          "generation": 0,
+          "irq": true,
+          "status": "done",
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "reap",
+          "generation": 0,
+          "status": "done",
+          "tick": 3
+        }
+      ]
+    },
+    {
+      "candidate_stdout_ignored": "",
+      "control": "malformed_coverage",
+      "coverage_channel": "{broken",
+      "decision": {
+        "accepted": false,
+        "correctness": "passed",
+        "coverage": "invalid",
+        "diagnostics": "passed",
+        "scope": "CPU functional protocol only",
+        "status": "invalid"
+      },
+      "diagnostics_channel": "{\"nonce\": \"5793a3c7c706eb4c93ce116713a461e2\", \"check\": \"cpu-model-transfer-v1\", \"findings\": []}",
+      "nonce": "5793a3c7c706eb4c93ce116713a461e2",
+      "output": [
+        0,
+        1,
+        254,
+        255
+      ],
+      "target": "virtual-copy4-v1",
+      "trace": [
+        {
+          "event": "boot_ready",
+          "generation": 0,
+          "image": "tutorial-fw-v1",
+          "tick": 0
+        },
+        {
+          "buffer": 1,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "buffer": 2,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "submit",
+          "generation": 0,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "start",
+          "generation": 0,
+          "tick": 1
+        },
+        {
+          "cookie": 1,
+          "event": "output_visible",
+          "generation": 0,
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "completion",
+          "generation": 0,
+          "irq": true,
+          "status": "done",
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "reap",
+          "generation": 0,
+          "status": "done",
+          "tick": 3
+        }
+      ]
+    },
+    {
+      "candidate_stdout_ignored": "",
+      "control": "replayed_coverage",
+      "coverage_channel": "{\"nonce\": \"previous-run\", \"target\": \"virtual-copy4-v1\", \"started\": 1, \"completed\": 1}",
+      "decision": {
+        "accepted": false,
+        "correctness": "passed",
+        "coverage": "invalid",
+        "diagnostics": "passed",
+        "scope": "CPU functional protocol only",
+        "status": "invalid"
+      },
+      "diagnostics_channel": "{\"nonce\": \"0484063c4017b38db9b2db63872fadeb\", \"check\": \"cpu-model-transfer-v1\", \"findings\": []}",
+      "nonce": "0484063c4017b38db9b2db63872fadeb",
+      "output": [
+        0,
+        1,
+        254,
+        255
+      ],
+      "target": "virtual-copy4-v1",
+      "trace": [
+        {
+          "event": "boot_ready",
+          "generation": 0,
+          "image": "tutorial-fw-v1",
+          "tick": 0
+        },
+        {
+          "buffer": 1,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "buffer": 2,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "submit",
+          "generation": 0,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "start",
+          "generation": 0,
+          "tick": 1
+        },
+        {
+          "cookie": 1,
+          "event": "output_visible",
+          "generation": 0,
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "completion",
+          "generation": 0,
+          "irq": true,
+          "status": "done",
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "reap",
+          "generation": 0,
+          "status": "done",
+          "tick": 3
+        }
+      ]
+    },
+    {
+      "candidate_stdout_ignored": "",
+      "control": "wrong_result",
+      "coverage_channel": "{\"nonce\": \"9f7bc44c20ef34fc0e3a13f8d2006c8d\", \"target\": \"virtual-copy4-v1\", \"started\": 1, \"completed\": 1}",
+      "decision": {
+        "accepted": false,
+        "correctness": "failed",
+        "coverage": "valid",
+        "diagnostics": "passed",
+        "scope": "CPU functional protocol only",
+        "status": "failed"
+      },
+      "diagnostics_channel": "{\"nonce\": \"9f7bc44c20ef34fc0e3a13f8d2006c8d\", \"check\": \"cpu-model-transfer-v1\", \"findings\": []}",
+      "nonce": "9f7bc44c20ef34fc0e3a13f8d2006c8d",
+      "output": [
+        9,
+        9,
+        9,
+        9
+      ],
+      "target": "virtual-copy4-v1",
+      "trace": [
+        {
+          "event": "boot_ready",
+          "generation": 0,
+          "image": "tutorial-fw-v1",
+          "tick": 0
+        },
+        {
+          "buffer": 1,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "buffer": 2,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "submit",
+          "generation": 0,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "start",
+          "generation": 0,
+          "tick": 1
+        },
+        {
+          "cookie": 1,
+          "event": "output_visible",
+          "generation": 0,
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "completion",
+          "generation": 0,
+          "irq": true,
+          "status": "done",
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "reap",
+          "generation": 0,
+          "status": "done",
+          "tick": 3
+        }
+      ]
+    },
+    {
+      "candidate_stdout_ignored": "",
+      "control": "dma_error",
+      "coverage_channel": "{\"nonce\": \"8e1bea619fdda965443717a57656a698\", \"target\": \"virtual-copy4-v1\", \"started\": 1, \"completed\": 1}",
+      "decision": {
+        "accepted": false,
+        "correctness": "failed",
+        "coverage": "valid",
+        "diagnostics": "failed",
+        "scope": "CPU functional protocol only",
+        "status": "failed"
+      },
+      "diagnostics_channel": "{\"nonce\": \"8e1bea619fdda965443717a57656a698\", \"check\": \"cpu-model-transfer-v1\", \"findings\": [\"modeled transfer completed with error\"]}",
+      "nonce": "8e1bea619fdda965443717a57656a698",
+      "output": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "target": "virtual-copy4-v1",
+      "trace": [
+        {
+          "event": "boot_ready",
+          "generation": 0,
+          "image": "tutorial-fw-v1",
+          "tick": 0
+        },
+        {
+          "buffer": 1,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "buffer": 2,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "submit",
+          "generation": 0,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "start",
+          "generation": 0,
+          "tick": 1
+        },
+        {
+          "cookie": 1,
+          "event": "completion",
+          "generation": 0,
+          "irq": true,
+          "status": "error",
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "reap",
+          "generation": 0,
+          "status": "error",
+          "tick": 3
+        }
+      ]
+    },
+    {
+      "candidate_stdout_ignored": "",
+      "control": "rejected_bounds",
+      "coverage_channel": "{\"nonce\": \"59908f14edf7408f5548cf35339361de\", \"target\": \"virtual-copy4-v1\", \"started\": 0, \"completed\": 0}",
+      "decision": {
+        "accepted": false,
+        "correctness": "failed",
+        "coverage": "invalid",
+        "diagnostics": "failed",
+        "scope": "CPU functional protocol only",
+        "status": "invalid"
+      },
+      "diagnostics_channel": "{\"nonce\": \"59908f14edf7408f5548cf35339361de\", \"check\": \"cpu-model-transfer-v1\", \"findings\": [\"alias or bounds violation\"]}",
+      "nonce": "59908f14edf7408f5548cf35339361de",
+      "output": null,
+      "target": "virtual-copy4-v1",
+      "trace": [
+        {
+          "event": "boot_ready",
+          "generation": 0,
+          "image": "tutorial-fw-v1",
+          "tick": 0
+        },
+        {
+          "buffer": 1,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "buffer": 2,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        }
+      ]
+    },
+    {
+      "candidate_stdout_ignored": "",
+      "control": "missing_diagnostics",
+      "coverage_channel": "{\"nonce\": \"7ed832ae3cebedf6fa3d766315e32aec\", \"target\": \"virtual-copy4-v1\", \"started\": 1, \"completed\": 1}",
+      "decision": {
+        "accepted": false,
+        "correctness": "passed",
+        "coverage": "valid",
+        "diagnostics": "invalid",
+        "scope": "CPU functional protocol only",
+        "status": "invalid"
+      },
+      "diagnostics_channel": null,
+      "nonce": "7ed832ae3cebedf6fa3d766315e32aec",
+      "output": [
+        0,
+        1,
+        254,
+        255
+      ],
+      "target": "virtual-copy4-v1",
+      "trace": [
+        {
+          "event": "boot_ready",
+          "generation": 0,
+          "image": "tutorial-fw-v1",
+          "tick": 0
+        },
+        {
+          "buffer": 1,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "buffer": 2,
+          "event": "alloc",
+          "generation": 0,
+          "size": 4,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "submit",
+          "generation": 0,
+          "tick": 0
+        },
+        {
+          "cookie": 1,
+          "event": "start",
+          "generation": 0,
+          "tick": 1
+        },
+        {
+          "cookie": 1,
+          "event": "output_visible",
+          "generation": 0,
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "completion",
+          "generation": 0,
+          "irq": true,
+          "status": "done",
+          "tick": 3
+        },
+        {
+          "cookie": 1,
+          "event": "reap",
+          "generation": 0,
+          "status": "done",
+          "tick": 3
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "failed": 2,
+    "invalid": 6,
+    "passed": 1
+  },
+  "execution": "cpu-functional-model",
+  "gpu": "not_run",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.9.6",
+  "schema": 1,
+  "security_scope": "course-owned in-process controls; no hostile-code isolation",
+  "source_sha256": {
+    "execution_coverage.py": "89b720ec71be4e80fc4964caa7c57654d0c5a0848a0170a8fd72b9318b1f68c0",
+    "virtual_accelerator.py": "07711dd696bc2bef82f26c7447036f714b111914edc8efbe54f4a6f873975047"
+  },
+  "time_unit": "model_tick"
+}
