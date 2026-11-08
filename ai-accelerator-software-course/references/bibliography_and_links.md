@@ -26,3 +26,10 @@ Use exact checks for protocol/ABI/integer behavior when specified; numerical tol
 ## Mechanism diagrams
 
 See the [figure-source inventory](figure_sources.md) for direct links to the inspected Linux, IREE, OpenTitan and Zephyr illustrations and all 32 bilingual diagram locations. The [IREE C API runtime component diagrams](https://iree.dev/reference/bindings/c-api/#runtime-api) and [OpenTitan OTBN DV testbench](https://opentitan.org/book/hw/ip/otbn/dv/index.html#block-diagram) supplement the existing HAL/methodology readings. All distributed illustrations are original teaching schematics with explicit scope, not copied vendor figures.
+
+
+## Execution coverage supplement — verified 2026-11-08
+
+[ComputeEval README at 00fbad91b63957a002b501f33a06510cd25beaae](https://github.com/NVIDIA/compute-eval/blob/00fbad91b63957a002b501f33a06510cd25beaae/README.md#compute-sanitizer): sanitizer checking is opt-in; its hidden harness supplies run-associated launch evidence separately from candidate stdout. Missing required evidence yields an invalid sanitizer result, with ordinary correctness reported separately. The course's L5 CPU controls adapt the trust/coverage distinction; they do not execute that framework or its CUDA path.
+
+[Compute Sanitizer manual](https://docs.nvidia.com/compute-sanitizer/ComputeSanitizer/index.html), tool descriptions and command-line options: launch filters/summaries, execution scope and finding policy matter in a real run. Memory, shared-memory hazard, initialization and synchronization checks remain separate. No new claim of a clean GPU-tool run is made.

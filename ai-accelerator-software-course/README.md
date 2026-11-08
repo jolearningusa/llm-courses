@@ -52,7 +52,8 @@ Protocol/correctness labs 45%, source/trace critiques 15%, capstone 40%. A minim
 ai-accelerator-software-course/
 ├── labs/
 │   ├── examples/
-│   │   └── functional_report.json
+│   │   ├── functional_report.json
+│   │   └── execution_coverage_report.json
 │   ├── handouts/
 │   │   ├── lab00_abi.md
 │   │   ├── lab01_queue_dma.md
@@ -63,12 +64,14 @@ ai-accelerator-software-course/
 │   │   ├── lab06_qualification.md
 │   │   └── lab07_capstone.md
 │   ├── tests/
-│   │   └── test_virtual_accelerator.py
+│   │   ├── test_virtual_accelerator.py
+│   │   └── test_execution_coverage.py
 │   ├── ABI.md
 │   ├── AI_PROMPTS.md
 │   ├── README.md
 │   ├── TARGET_EVIDENCE.md
 │   ├── experiments.py
+│   ├── execution_coverage.py
 │   └── virtual_accelerator.py
 ├── references/
 │   ├── bibliography_and_links.md
@@ -167,3 +170,5 @@ ai-accelerator-software-course/
 ├── SYLLABUS.md
 └── VALIDATION.md
 ```
+
+[Execution-coverage extension](labs/handouts/lab05_state_exploration.md#execution-coverage-controls), 2026-11-08: 32 CPU tests and nine explicit pass/fail/invalid controls; real sanitizer/device validation remains separate.

@@ -71,3 +71,8 @@ python3 ai-accelerator-software-course/slides/illustrations/build_illustrations.
 ```
 
 The generator updates four matching slides in each deck in place and preserves explanatory notes. It embeds the repository's existing offline presenter controls from `llm-compute-systems-course/slides/presenter_mode.js`. There is no runtime network dependency. Re-running the generator should leave all outputs unchanged.
+
+
+## Additional authored diagrams — 2026-11-08
+
+Deck 05 slides 9/10 (EN/ZH) add original inline SVGs: three independent acceptance dimensions and the executed CPU control matrix. The first is a schematic gate; the second summarizes the nine named cases in `labs/examples/execution_coverage_report.json`. No box width represents timing, risk or statistical coverage. They sit outside the 32 managed bilingual diagram concepts above and must survive regeneration. The [pinned ComputeEval reading](bibliography_and_links.md#execution-coverage-supplement-verified-2026-11-08) motivates the protocol; no upstream artwork was copied and no GPU run is depicted.
