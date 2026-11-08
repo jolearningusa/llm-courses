@@ -63,7 +63,7 @@ For a fixed task/variant, moving evidence preserves its question, expected answe
 | Evidence | Oracle | Current scope |
 |---|---|---|
 | Position mathematics | Relative-position identities / norm preservation | Existing L3 NumPy checks |
-| Execution with a declared mask | Cached versus recomputed outputs within tolerance | Existing L5 checks; random weights |
+| Execution with a declared mask | Cached versus recomputed outputs within tolerance | Existing full-causal cache and mask fixtures; custom window steps need their own comparison |
 | Fixture construction | Preserved facts, coverage, debug oracle and rejected wrong answer | New seven-test fixture suite |
 | Learned context quality | Frozen trained checkpoint, task outputs and per-cell scoring | Not measured by this release |
 
