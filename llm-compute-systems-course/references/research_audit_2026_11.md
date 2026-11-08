@@ -35,3 +35,8 @@ The 15-entry repository scan reports five rows above configured comparison thres
 **Kernel portability under a fixed contract (replication/research extension).** Week 1 choose operation and quality tolerance; week 2 inspect pinned implementations and validate irregular inputs; week 3 measure one supported target; week 4 add a second eligible backend and explain regressions using generated code and counters. Novelty requires a broader prior-art check, not simply writing the same GEMM in two DSLs.
 
 No GPU or distributed experiment, new model run, hardware purchase recommendation or dependency upgrade was performed. This is a scoped source/registry audit; it is not an exhaustive verification of every external link or every existing device claim.
+
+
+## Follow-up progress — 2026-11-07
+
+**ExecuTorch monitoring gap, prepared for review:** changed only that tracker's comparison granularity from one to two components; the 1.0.0 / 2026-10-27 tested baseline and all dependency pins stay intact. Deck 23's final slide now visualizes registry/docs/qualified-environment evidence and export/lower/reload/execute gates in English and Chinese. The dated monitoring note and L11 handout define the later candidate pilot. Registry 1.6.0 was re-observed; stable docs rendered 1.5; matching versioned 1.6 docs and new runtime compatibility remain unqualified. This completes the bounded alert-rule/teaching correction, not CMP-1's runtime matrix or a package migration.

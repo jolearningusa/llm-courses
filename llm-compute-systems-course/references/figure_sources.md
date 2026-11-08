@@ -232,3 +232,7 @@ python3 llm-compute-systems-course/slides/illustrations/build_illustrations.py
 ```
 
 English assets live in `slides/illustrations/`, Chinese assets in its `zh/` folder. `manifest.json` records all 164 concepts. Generated HTML remains self-contained. Repeated generation must leave all 82 decks, 328 SVG assets and the manifest unchanged.
+
+## Additional authored closing-slide diagram — 2026-11-07
+
+Deck 23 slide 18 (EN/ZH) contains a new original inline SVG separating the historical tested baseline, registry metadata and moving documentation, followed by the course's proposed export/lower/reload/execute gates. Primary source observations and qualification limits are in [the monitoring note](executorch_monitoring_2026_11.md). Box widths do not encode performance or relative maturity; the gate sequence is a proposed acceptance protocol, not an executed 1.6 migration. This authored closing diagram sits outside the managed 164-concept companion/mechanism asset inventory above; regeneration must preserve it.

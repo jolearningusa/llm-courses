@@ -28,6 +28,9 @@ llm-courses/
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
 │   ├── reviews/
+│   │   ├── executorch-monitoring/
+│   │   │   ├── README.md
+│   │   │   └── changes.png
 │   │   ├── training-coverage-reward/
 │   │   │   ├── README.md
 │   │   │   └── changes.png

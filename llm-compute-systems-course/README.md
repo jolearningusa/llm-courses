@@ -266,6 +266,7 @@ llm-compute-systems-course/
 │   ├── accelerator_architectures_review.md
 │   ├── ai_development_verification.md
 │   ├── bibliography_and_links.md
+│   ├── executorch_monitoring_2026_11.md
 │   ├── figure_sources.md
 │   ├── inference_bottlenecks_review.md
 │   ├── project_research_review.md
