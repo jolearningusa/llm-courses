@@ -16,7 +16,7 @@ import random
 
 import torch
 
-from task import prompts, split, reward, target, MAX_LEN, EOS
+from task import prompts, split, reward, target, MAX_LEN, EOS, decode
 from policy import Policy
 
 
@@ -76,7 +76,13 @@ def evaluate(policy, ps, samples=8, seed=0):
     return r.mean().item(), (ok.mean().item() if len(ok) else 0.0), (bad.mean().item() if len(bad) else 0.0)
 
 
-def train(policy, ps, steps=300, prompts_per_step=16, G=8, lr=3e-3, inner=2, dr=False, seed=0):
+def train(policy, ps, steps=300, prompts_per_step=16, G=8, lr=3e-3, inner=2, dr=False, seed=0,
+          reward_fn=reward, trace=None):
+    """Optional reward/trace hooks for coverage_ablation.py; defaults retain the original loop.
+
+    A zero-variance group has no direct advantage signal. Adam momentum can still move parameters;
+    the trace does not call this a zero-update group. Sampling always executes MAX_LEN positions.
+    """
     rng = random.Random(seed)
     g = torch.Generator().manual_seed(seed)
     opt = torch.optim.Adam(policy.parameters(), lr=lr)
@@ -85,10 +91,23 @@ def train(policy, ps, steps=300, prompts_per_step=16, G=8, lr=3e-3, inner=2, dr=
         a = torch.tensor([p[0] for p in batch]).repeat_interleave(G)
         b = torch.tensor([p[1] for p in batch]).repeat_interleave(G)
         tokens = policy.sample(a, b, generator=g)
-        r = torch.tensor([reward((int(x), int(y)), t.tolist()) for x, y, t in zip(a, b, tokens)])
+        r = torch.tensor([reward_fn((int(x), int(y)), t.tolist()) for x, y, t in zip(a, b, tokens)])
         adv = group_advantages(r.view(-1, G), std_normalize=not dr).view(-1)
         with torch.no_grad():
             lp_old, mask = policy.logprobs(a, b, tokens)
+        if trace is not None:
+            grouped = r.view(-1, G)
+            strict = [reward((int(x), int(y)), t.tolist()) for x, y, t in zip(a, b, tokens)]
+            trace.append({
+                "groups": prompts_per_step, "responses": len(r),
+                "zero_variance_groups": int((grouped.max(1).values == grouped.min(1).values).sum()),
+                "positive_reward_events": int((r > 0).sum()),
+                "strict_success_events": int(sum(strict)),
+                "reward_sum": float(r.sum()), "valid_tokens": int(mask.sum()),
+                "sampled_token_slots": int(tokens.numel()),
+                "distinct_answers_sum": sum(len({decode(t.tolist()) for t in group})
+                                            for group in tokens.view(-1, G, MAX_LEN)),
+            })
         for _ in range(inner):
             lp_new, _ = policy.logprobs(a, b, tokens)
             loss = policy_loss(lp_new, lp_old, adv, mask, length_normalize=not dr)

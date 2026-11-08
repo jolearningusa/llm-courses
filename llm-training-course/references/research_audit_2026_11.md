@@ -29,3 +29,8 @@ Reviewed the 34-deck syllabus/bibliography and representative L1/L7/L9 labs. The
 **Rollout/learner consistency ledger (engineering, research extension possible).** Week 1 annotate one author stack; week 2 build same-model log-probability/mask fixtures; week 3 introduce controlled policy lag; week 4 report ratio/gradient and throughput effects with a fixed evaluation protocol. Full multi-worker conclusions require the actual backend. Compare existing verl facilities before claiming a new correction or scheduler.
 
 No training/benchmark runs or dependency upgrades were performed in this literature audit. Newer papers are proposals to test; their reported improvements are not course reference results.
+
+
+## Follow-up progress — 2026-11-07
+
+**TRN-1, prepared for review:** decks 26/28 now separate SFT prompt count, measured starting coverage, reward events and held-out strict pass@k. L7 adds a fixed 80/20 split, nested 10/40-prompt SFT interventions, sparse versus deliberately gameable width shaping, independent evaluation, and a complete twelve-run / three-seed CPU ledger. Each reward pair starts from an identical hashed checkpoint; rollout counts, no-signal groups, lengths, diversity and timing boundaries are reported. Six new tests cover controls and counterexamples. This implements a bounded toy ablation, not a frontier-model replication, reliable generalization result or ASE study. The poor held-out result and limitations are retained. TRN-2/3/4 remain separate work.
