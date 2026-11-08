@@ -28,6 +28,9 @@ llm-courses/
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
 │   ├── reviews/
+│   │   ├── foundations-optimizer-comparisons/
+│   │   │   ├── README.md
+│   │   │   └── changes.png
 │   │   ├── foundations-gradient-diagnostics/
 │   │   │   ├── README.md
 │   │   │   └── changes.png
