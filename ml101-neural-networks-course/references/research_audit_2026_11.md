@@ -31,3 +31,7 @@ These are proposed additions, not executed experiments. Existing tests were insp
 ## FND-1 implementation prepared for review — 2026-11-07
 
 Deck 06 slide 10 and deck 19 slides 4/10 now show executed float64 step/error plots and a ReLU branch-crossing schematic. L1 adds a reproducible diagnostic runner, six control tests and a report with standalone SVGs. The runner exercises the existing cubic autograd path, rejects two mutants, and separates absolute/relative scale from nonsmooth checks. Classroom comprehension remains untested; the wider gradient-failure-atlas project is not complete. Before/after screenshots are part of review, and explicit user approval is required before merge.
+
+## FND-2 teaching/protocol update prepared for review — 2026-11-07
+
+Deck 08 slide 10 and deck 09 slide 7 now show independent per-optimizer tuning and a search/refit/evaluation budget. The L2 worksheet declares controlled splits/seeds, validation selection, held-out boundaries, failed trials and actual cost. A six-trial command reuses existing optimizers on a deterministic quadratic; it is optimization-only and does not establish held-out model quality. Original optimizer implementations and reference results are unchanged. This completes the teaching/protocol addition; a student validation-selected learning experiment remains to be run. Screenshots accompany review and explicit user approval is required before merge.

@@ -103,7 +103,7 @@ of these sources; numbers that come from the course's own labs say so on the sli
 | Deck | Source | Author, year | Link |
 |---|---|---|---|
 | 19 | A Recipe for Training Neural Networks (blog post) | Karpathy, 2019 | [karpathy.github.io](https://karpathy.github.io/2019/04/25/recipe/) |
-| 19 | Deep Learning Tuning Playbook | Godbole, 2023 | [github.com/google-research/tuning_playbook](https://github.com/google-research/tuning_playbook) |
+| 08, 09, 19 | Deep Learning Tuning Playbook | Godbole, 2023 | [github.com/google-research/tuning_playbook](https://github.com/google-research/tuning_playbook) |
 | 19 | Practical Recommendations for Gradient-Based Training of Deep Architectures | Bengio, 2012 | [arXiv:1206.5533](https://arxiv.org/abs/1206.5533) |
 | 19 | Random Search for Hyper-Parameter Optimization | Bergstra, 2012 | [JMLR 13](https://jmlr.org/papers/v13/bergstra12a.html) |
 | 18, 20 | Attention Is All You Need (self-attention, Table 1 on per-layer cost) | Vaswani, 2017 | [arXiv:1706.03762](https://arxiv.org/abs/1706.03762) |
@@ -112,3 +112,5 @@ of these sources; numbers that come from the course's own labs say so on the sli
 ## Gradient-check diagnostic supplement — checked 2026-11-07
 
 - Stanford CS231n, [Neural Networks Part 3: Learning](https://cs231n.github.io/neural-networks-3/), gradient checks: centered differences, step-size tradeoffs, kinks and scale-aware error. Used in decks 06/19 and L1. Course curves are executed toy float64 calculations, not copied upstream figures; the mixed tolerance is fixture-specific.
+
+Fair-comparison supplement checked 2026-11-07: Google Tuning Playbook, experimental design / scientific, nuisance and fixed hyperparameters. Decks 08/09 and the L2 worksheet adapt these principles into an original study diagram and a constructed update-budget example; neither is a measured optimizer ranking.
