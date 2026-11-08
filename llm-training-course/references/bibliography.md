@@ -1,11 +1,11 @@
 # Bibliography
 
-Every paper the course reads, grouped by the part of the course that reads it. On 2026-11-06 each arXiv
+Every paper the course reads, grouped by the part of the course that reads it. For the original entries, on 2026-11-06 each arXiv
 entry's ID, title and first author was checked on its arXiv abstract page, and each blog post on its own
 page. The year is that of arXiv v1, or of publication for sources without an arXiv paper. Decks cite
 sections and tables of these papers. Papers that are already a deck in the
 [architecture course](../../llm-transformer-architecture-course/references/bibliography.md) (BERT, T5, the Kaplan
-scaling laws, Chinchilla, multi-token prediction) are cited from there and not repeated here. The list holds 97 distinct sources.
+scaling laws, Chinchilla, multi-token prediction) are cited from there and not repeated here. The list holds 98 distinct sources. Dated supplements below record their own verification dates.
 
 ## Part I. The pre-training recipe
 
@@ -161,3 +161,11 @@ scaling laws, Chinchilla, multi-token prediction) are cited from there and not r
 | 32 | Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena | Zheng, 2023 | [arXiv:2306.05685](https://arxiv.org/abs/2306.05685) |
 | 32 | Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference | Chiang, 2024 | [arXiv:2403.04132](https://arxiv.org/abs/2403.04132) |
 | 32 | Proving Test Set Contamination in Black Box Language Models | Oren, 2023 | [arXiv:2310.17623](https://arxiv.org/abs/2310.17623) |
+
+## Coverage and reward supplement — verified 2026-11-07
+
+| Deck / lab | Paper | First author, year | Source / reading target |
+|---|---|---|---|
+| 26, 28 / L7 | Demystifying Reinforcement Learning Post-Training of Language Models | Clay, 2026 | [arXiv:2608.24949](https://arxiv.org/html/2608.24949v1) (v1), §§4.1–4.3 and 5.1–5.2 |
+
+The paper motivates separating base-distribution, reward and prompt controls. Its controlled dense-reward results do not establish that arbitrary shaping improves general reasoning. L7's right-width proxy is a deliberately weak local counterexample, not the paper's edit-distance reward or PRM, and its arithmetic run is not a replication. DAPO §3.2 and Chen et al. §2.1 / Appendix A (already listed above) were also reread for zero-signal groups and the pass@k estimator.
