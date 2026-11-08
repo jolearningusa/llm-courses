@@ -28,3 +28,7 @@ Reviewed the 44-deck inventory, syllabus/bibliography and L5/L6 lab descriptions
 **Dynamic-chunk accounting workbench (engineering first).** Week 1 implement byte/BPE count baselines; week 2 add deterministic patch boundaries and causal tests; week 3 inspect author H-Net routing/dechunking; week 4 report byte-normalized quality and total work. A CPU boundary simulator is not a trained BLT/H-Net reproduction. Learned-quality claims need trained checkpoints and a budgeted evaluation.
 
 All projects/edits above are proposed. A prior-art review and a fixed experimental protocol must precede any novelty claim; no new architecture or hardware benchmark was executed in this audit.
+
+## ARC-3 teaching/fixture update prepared for review — 2026-11-07
+
+Deck 10 slide 9 and deck 15 slide 10, with Chinese twins, now separate a length/placement/task matrix from the distinct position-math, cache and learned-quality oracles. L3 adds 81 small record-based fixtures and seven construction/scoring tests; L5 links to the tokenized model-evaluation protocol. Records are not model tokens, the debug solver is not a model, and no trained-checkpoint quality or target performance is measured. The original math/attention implementations are unchanged. Screenshots accompany review; explicit approval is required before merge.

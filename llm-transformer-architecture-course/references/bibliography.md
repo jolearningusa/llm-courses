@@ -1,8 +1,7 @@
 # Bibliography
 
-Every paper the course reads, grouped by the part of the course that reads it. On 2026-11-01 each arXiv
-entry's ID, title and first author was checked on its arXiv abstract page, and each blog post on its own
-page. The year is that of arXiv v1, or of publication for sources without an arXiv paper. Decks cite
+Every paper the course reads, grouped by the part of the course that reads it. Original entries were checked
+on 2026-11-01 (arXiv ID, title and first author, or the blog's own page); dated supplements record their own checks. The year is that of arXiv v1, or of publication for sources without an arXiv paper. Decks cite
 sections and tables of these papers; model facts such as layer counts come from the paper's tables or the
 released `config.json`.
 
@@ -125,3 +124,11 @@ released `config.json`.
 
 - Attention kernels, KV-cache paging, MoE execution and serving: [Efficient LLM Computing Systems](../../llm-compute-systems-course/).
 - How agents fill and manage the context window: [LLM AgentOS](../../llm-agentos-course/).
+
+## Long-context evaluation supplement — checked 2026-11-07
+
+| Deck | Paper | First author, year | Source |
+|---|---|---|---|
+| 08–10, 15 | RULER: What’s the Real Context Size of Your Long-Context Language Models? | Hsieh, 2024 | [arXiv:2404.06654](https://arxiv.org/html/2404.06654v1) |
+
+Reading scope: v1 task families, effective-length methodology and error analysis; [author code](https://github.com/NVIDIA/RULER). The course fixture grid is original and much smaller, not RULER or a reproduction of its reported model results. Historical results are not current model rankings.

@@ -40,3 +40,7 @@ direct computation; and that MLA's absorbed decoding equals its explicit form.
 6. In `MLA.step`, the query is multiplied by `W_uk` before it meets the cache. Write the explicit
    version that builds per-head keys from the cached latents, and count the multiplications per step for
    both. Then move RoPE onto the content key and explain why the absorbed form stops working (deck 16, slide 5).
+
+## Context quality is a separate experiment
+
+Use the [L3 controlled-context extension](../L3_positions/#context-evaluation) with deck 15's new closing page. Random-weight cache/recomputation equivalence checks the declared execution relationship; it cannot establish that a trained model retrieves or reasons over old evidence. Log the actual mask, visible information, tokenizer/template lengths and per-cell task outcomes before attributing a quality change to cache correctness. The new fixture builder performs zero model runs.
