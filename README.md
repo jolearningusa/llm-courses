@@ -28,6 +28,9 @@ llm-courses/
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
 │   ├── reviews/
+│   │   ├── vllm-source-identity/
+│   │   │   ├── README.md
+│   │   │   └── changes.png
 │   │   ├── mamba3-recurrence/
 │   │   │   ├── README.md
 │   │   │   ├── en.png
