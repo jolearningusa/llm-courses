@@ -236,3 +236,7 @@ English assets live in `slides/illustrations/`, Chinese assets in its `zh/` fold
 ## Additional authored closing-slide diagram — 2026-11-07
 
 Deck 23 slide 18 (EN/ZH) contains a new original inline SVG separating the historical tested baseline, registry metadata and moving documentation, followed by the course's proposed export/lower/reload/execute gates. Primary source observations and qualification limits are in [the monitoring note](executorch_monitoring_2026_11.md). Box widths do not encode performance or relative maturity; the gate sequence is a proposed acceptance protocol, not an executed 1.6 migration. This authored closing diagram sits outside the managed 164-concept companion/mechanism asset inventory above; regeneration must preserve it.
+
+## Dated source-identity evidence diagram (2026-11-08)
+
+Deck 35 slide 20 has an additional original inline SVG in each language, outside the 164-concept/328-asset managed inventory above. It diagrams the archive/tag/file checks in the [vLLM source-identity note](vllm_source_identity_2026_11.md), followed by explicitly not-run runtime gates. It is an evidence schematic, not an upstream illustration or benchmark. Preserve it when regenerating the managed figures.

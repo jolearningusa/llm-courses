@@ -1,0 +1,70 @@
+{
+  "observed_date": "2026-11-08",
+  "scope": "source identity only; no install, build, import or device execution",
+  "package": "vllm",
+  "candidate_version": "0.33.0",
+  "requires_python": "<3.15,>=3.11",
+  "pypi_metadata_url": "https://pypi.org/pypi/vllm/0.33.0/json",
+  "git": {
+    "tag": "v0.33.0",
+    "tag_object": "3a4d82f569a9f57054ba81633e9b6c73b34b51fe",
+    "commit": "4ba787ec9959e566d3b587a796dff07673324da5",
+    "release_api_http_status": 404
+  },
+  "sdist_check": {
+    "filename": "vllm-0.33.0.tar.gz",
+    "sha256": "f4c33c2503d52bb411146afa9618a4f48bed68912f617e6803ac8d76e4c74112",
+    "size_bytes": 47101396,
+    "hash_matches_pypi": true,
+    "embedded_commit_id": "g4ba787ec9"
+  },
+  "published_files": [
+    {
+      "filename": "vllm-0.33.0-cp38-abi3-manylinux_2_28_aarch64.whl",
+      "url": "https://files.pythonhosted.org/packages/eb/e0/bfb969e9a03c55402f08684c2691e1e2a4307ebc9c90aae0cebadb43d9b5/vllm-0.33.0-cp38-abi3-manylinux_2_28_aarch64.whl",
+      "size_bytes": 333472621,
+      "sha256": "e9e404f52c8494b69bd83fe99fe7ecfa9f6b89fbd156d2a9639c24ea41d6d606",
+      "yanked": false,
+      "inspected": false
+    },
+    {
+      "filename": "vllm-0.33.0-cp38-abi3-manylinux_2_28_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/8b/a8/92e278093df40fde4c4bfd6572704bb8f398d6a2280d8c82cb5efaf12047/vllm-0.33.0-cp38-abi3-manylinux_2_28_x86_64.whl",
+      "size_bytes": 336361138,
+      "sha256": "4b6bdec4ab269990bf70d45a3c1e94c3760a27064513760193b26d6f0da883aa",
+      "yanked": false,
+      "inspected": false
+    },
+    {
+      "filename": "vllm-0.33.0.tar.gz",
+      "url": "https://files.pythonhosted.org/packages/f7/25/aa5684e9c59d6fc75f78926b7f15e8d9adc7de2d9e6e7575b80776ad8169/vllm-0.33.0.tar.gz",
+      "size_bytes": 47101396,
+      "sha256": "f4c33c2503d52bb411146afa9618a4f48bed68912f617e6803ac8d76e4c74112",
+      "yanked": false,
+      "inspected": true
+    }
+  ],
+  "sampled_source_files": [
+    {
+      "path": "vllm/distributed/kv_transfer/kv_connector/v1/nixl/connector.py",
+      "upstream_url": "https://raw.githubusercontent.com/vllm-project/vllm/4ba787ec9959e566d3b587a796dff07673324da5/vllm/distributed/kv_transfer/kv_connector/v1/nixl/connector.py",
+      "sha256": "36dbc6a182ba753caf06fb40d40baa3b218371c62323f3ade29f8dd50514bd8a",
+      "comparison": "byte_equal"
+    },
+    {
+      "path": "docs/features/nixl_connector_compatibility.md",
+      "upstream_url": "https://raw.githubusercontent.com/vllm-project/vllm/4ba787ec9959e566d3b587a796dff07673324da5/docs/features/nixl_connector_compatibility.md",
+      "sha256": "0c9590d05a0e22b06b5f4763f4704e80b794a7476bdaa31066434ca070db6c50",
+      "comparison": "byte_equal"
+    }
+  ],
+  "not_run": [
+    "wheel download/inspection",
+    "complete source-tree comparison",
+    "build provenance authentication",
+    "dependency resolution / installation",
+    "engine import / model loading",
+    "connector transfer / cancellation / failure",
+    "cold/shared-prefix benchmarks"
+  ]
+}

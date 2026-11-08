@@ -57,3 +57,7 @@ The reports propose ten projects, including a gradient-check atlas, recurrent-st
 The checked-in changes are reading reports, source links and a registry snapshot. No slides, model weights, lab implementations, dependency pins, firmware or hardware settings were changed. No GPU, distributed-training, agent-model, driver or thermal experiment ran. Existing CPU test results remain historical validation records rather than being re-certified here.
 
 The stale freshness issue contains synthetic `.example` attack fixtures and access-refused pages as well as genuine link leads. Do not delete deliberate red-team fixtures to reduce a link count, and do not treat a 403 as proof a paper is obsolete. This pass checked selected primary sources, not every external URL in the repository. Inaccessible URLs and the release API discrepancy are disclosed in the relevant report.
+
+## Follow-up: CMP-2 source identity — 2026-11-08
+
+The [compute source-identity supplement](../llm-compute-systems-course/references/vllm_source_identity_2026_11.md) resolves the v0.33.0 annotated tag, verifies the PyPI sdist digest and embedded commit, and matches two pinned NIXL files. Deck 35's EN/ZH evidence diagram distinguishes these checks from runtime qualification. The release REST 404 remains a separate observation. No wheel was inspected/installed, no target was qualified and no connector/benchmark ran; the rest of CMP-2 remains open and all historical trackers/pins stay intact. PR #120 still completes only AGT-2's teaching/protocol portion, not its measured memory benchmark.
