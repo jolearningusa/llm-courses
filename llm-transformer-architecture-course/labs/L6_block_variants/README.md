@@ -65,3 +65,47 @@ Read them like a paper's table:
    across seeds?
 5. Double `--steps` and the number of seeds. Does any 4-layer difference become larger than its spread?
    State what you would need to claim one variant is better.
+
+
+## Optional Mamba-3 algebra supplement
+
+Used with deck 23 slides 9–10. This is separate from the decoder-only model and historical training table above. `ssm_recurrence.py` uses Python 3.9+ and the standard library; it neither imports PyTorch nor installs Mamba.
+
+```bash
+python -m unittest test_ssm_recurrence.py -v
+python ssm_recurrence.py
+```
+
+### Contract and independent reference
+
+For a projected input `v=B*x`, study `h[t]=alpha[t]*h[t-1]+beta[t]*v[t-1]+gamma[t]*v[t]`. The real fixture uses `alpha=exp(delta*A)`, `beta=(1-lambda)*delta*alpha`, `gamma=lambda*delta`. Its complex variant multiplies alpha by `exp(i*phase)`; `phase` is already a discrete per-step angle. See the paper's equations (5)–(6); the toy has one complex coordinate, equivalent to two real coordinates, rather than a learned full layer.
+
+The new local implementation has two independent evaluation paths: `stream()` feeds state forward; `reference()` recomputes each output from the initial state and weighted prior inputs with explicit products of alpha (O(T²)). It is not the optimized SSD/chunked training algorithm. Coefficients are supplied fixture inputs, not learned projections. Initial state and previous input default to zero and can be set explicitly.
+
+The chunk carry is **both `(state, previous projected input)`**. Forgetting the previous input loses the boundary contribution when beta is nonzero. The tests preserve it across 257 inputs in chunks of 17, then deliberately omit it to expose the error. With lambda=1, beta=0, so that previous-input contribution disappears. No arbitrary-lambda claim of second-order ODE accuracy is made: the paper's error-order condition is narrower than its learned parameterization.
+
+For the literal real fixture delta=1, A=0, lambda=0.5, inputs [2,4] and zero carry, the states must be [1,4]. For a fixed 128-step random complex fixture (seed 17), streamed and independently unrolled values differed by at most **6.69e-16** in the executed Python 3.9.6 run. Tests use explicit `abs(error) <= 1e-11 + 1e-11*abs(reference)`; that double-precision fixture tolerance is not a mixed-precision kernel or learned-quality criterion.
+
+### Separate MIMO shape exercise
+
+`mimo_update()` and `mimo_read()` isolate the one-step real algebra `H'=a*H+B*X^T`, `Y=H'^T*C`. They omit the trapezoidal previous-drive term, phase rotations, learned projections, biases/norms, residual/gate and output projection. Do not chain these helpers and call the result a reproduced Mamba-3 block.
+
+| Quantity | Shape in the isolated fixture |
+|---|---|
+| Core recurrent state H | N × P |
+| Current projected B, X, C | N × R, P × R, N × R |
+| Intermediate read output Y | P × R |
+
+One shared state receives R outer-product terms; R is a per-token rank, not R future tokens. Increasing rank does not replicate this core state, but it increases input/read work and other storage. For N=P=2, the literal rank-two test gives updated H `[[17.5,24],[40.5,55]]`; identity C reads its transpose. Rank-one and rank-two states both contain four scalars. This is shape/algebra evidence only.
+
+### What to measure next
+
+- Read the [pinned author module](https://github.com/state-spaces/mamba/blob/e9594ce1c732d97440f0332fdc43170a2294dbfa/mamba_ssm/modules/mamba3.py). Trace `step`, including the phase/SSM/K/V caches, and list every allocated tensor and dtype. Its K cache depends on rank; core-state size alone is not total cache bytes. The step comment describes H100 testing, not universal device support.
+- Before comparing kernels, freeze batch, sequence lengths, rank, state/head dimensions, precision, shapes and numerical tolerance. Record supported hardware/source/build identity and separate prefill/decode. Count state traffic, projections, rotations, auxiliary caches and workspace. Match quality/parameter budgets before interpreting model comparisons.
+- State tracking and retrieval need trained-checkpoint tasks. The rotation identity and random recurrence agreement do not demonstrate learned parity, recall or perplexity. No paper gain, GPU latency, arithmetic-intensity measurement or production speedup was reproduced here.
+
+Validation: eight new tests passed on Python 3.9.6. All six existing L6 model tests plus the eight new tests also passed on Python 3.12.14 / torch 2.9.1 CPU (one thread); PyTorch warned NumPy was absent, but no NumPy call was used. This is not a re-run of the historical 400-step/three-seed training tables.
+
+### Original paper-critique questions
+
+The revised closing pages retain these questions here: why does time invariance fail selective copying? What do very large/small delta do? Why does selection require a scan, and how is it parallelized? What does Mamba-2 trade away by making A scalar? Give a bounded-state recall task and state the finite-precision/state-capacity assumptions behind an estimated failure length. Original Mamba/Mamba-2 evidence remains on deck 23 slides 6–8; hybrids and Gated DeltaNet remain decks 24–25.

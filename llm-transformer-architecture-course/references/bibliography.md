@@ -132,3 +132,14 @@ released `config.json`.
 | 08–10, 15 | RULER: What’s the Real Context Size of Your Long-Context Language Models? | Hsieh, 2024 | [arXiv:2404.06654](https://arxiv.org/html/2404.06654v1) |
 
 Reading scope: v1 task families, effective-length methodology and error analysis; [author code](https://github.com/NVIDIA/RULER). The course fixture grid is original and much smaller, not RULER or a reproduction of its reported model results. Historical results are not current model rankings.
+
+
+## Optional Mamba-3 supplement — verified 2026-11-08
+
+| Deck / lab | Paper | First author, year | Source / reading target |
+|---|---|---|---|
+| 23 / L6 optional algebra | Mamba-3: Improved Sequence Modeling using State Space Principles | Lahoti, 2026 | [arXiv:2603.15569](https://arxiv.org/html/2603.15569v1) (v1), §§3.1–3.3, Appendix C; §§4 / G for separately scoped experiments |
+
+Additional code reading: [author Mamba3 module at e9594ce](https://github.com/state-spaces/mamba/blob/e9594ce1c732d97440f0332fdc43170a2294dbfa/mamba_ssm/modules/mamba3.py), `step` and `allocate_inference_cache`. Its core SSM cache omits the rank dimension while the auxiliary K cache includes it; phase and V caches are also present. The step comment limits its tested hardware to H100 at this revision. Source inspection is not a local compatibility or speed test.
+
+The new diagrams are original teaching schematics. No new paper result table or speed ratio is reproduced. The local scalar/complex recurrence and separate MIMO matrix fragments are mathematical fixtures, not a full learned architecture or the author's kernel.

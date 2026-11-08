@@ -32,3 +32,8 @@ All projects/edits above are proposed. A prior-art review and a fixed experiment
 ## ARC-3 teaching/fixture update prepared for review — 2026-11-07
 
 Deck 10 slide 9 and deck 15 slide 10, with Chinese twins, now separate a length/placement/task matrix from the distinct position-math, cache and learned-quality oracles. L3 adds 81 small record-based fixtures and seven construction/scoring tests; L5 links to the tokenized model-evaluation protocol. Records are not model tokens, the debug solver is not a model, and no trained-checkpoint quality or target performance is measured. The original math/attention implementations are unchanged. Screenshots accompany review; explicit approval is required before merge.
+
+
+## ARC-1 mechanism/algebra update prepared for review — 2026-11-08
+
+Deck 23 slides 9/10 and Chinese twins add optional two-endpoint/complex recurrence and shared-state MIMO diagrams after the existing Mamba-2 evidence. L6 adds an original standard-library streamed/unrolled fixture, chunk carry with a previous-input negative control, complex/real rotation and literal MIMO shape checks. Eight new tests pass on Python 3.9.6; all fourteen L6 tests also pass in the existing torch 2.9.1 CPU environment. The author implementation reading is pinned to e9594ce, separating rank-independent core SSM state from rank-dependent auxiliary cache. Original model/training code and paper result pages are unchanged. This completes a bounded mechanism/algebra supplement, not learned Mamba-3 quality, optimized SSD equivalence or target-kernel validation.
