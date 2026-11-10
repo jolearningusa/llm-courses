@@ -169,3 +169,12 @@ scaling laws, Chinchilla, multi-token prediction) are cited from there and not r
 | 26, 28 / L7 | Demystifying Reinforcement Learning Post-Training of Language Models | Clay, 2026 | [arXiv:2608.24949](https://arxiv.org/html/2608.24949v1) (v1), §§4.1–4.3 and 5.1–5.2 |
 
 The paper motivates separating base-distribution, reward and prompt controls. Its controlled dense-reward results do not establish that arbitrary shaping improves general reasoning. L7's right-width proxy is a deliberately weak local counterexample, not the paper's edit-distance reward or PRM, and its arithmetic run is not a replication. DAPO §3.2 and Chen et al. §2.1 / Appendix A (already listed above) were also reread for zero-signal groups and the pass@k estimator.
+
+## Environment and experiment reporting (checked 2026-11-09)
+
+- [PyTorch 2.9 reproducibility notes](https://docs.pytorch.org/docs/2.9/notes/randomness.html): RNG controls and limits of cross-release/platform/device replay.
+- [NumPy 2.3 RNG compatibility policy](https://numpy.org/doc/2.3/reference/random/compatibility.html): generator/call-sequence/build/environment conditions.
+
+These primary documents support deck 32's environment boundary and deck 33's execution/selection record. The [course evidence note](cpu_environment_evidence_2026_11.md) separates 18 executed existing CPU unit tests, historical tables, data-overlap observations and still-unqualified installation/GPU/distributed lanes. No new training-quality or timing result is inferred from documentation or package versions.
+
+Both new inline SVGs are original course schematics; no upstream artwork is copied and no measured timeline is implied.

@@ -151,6 +151,8 @@ llm-training-course/
 │   │   └── test_eval.py
 │   └── README.md                    # Lab index
 ├── references/
+│   ├── cpu_environment_evidence_2026_11.md
+│   ├── cpu_lane_manifest_2026_11.json
 │   ├── research_audit_2026_11.md
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-06
 ├── slides/

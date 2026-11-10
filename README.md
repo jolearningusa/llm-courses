@@ -28,6 +28,9 @@ llm-courses/
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
 │   ├── reviews/
+│   │   ├── training-environment-evidence/
+│   │   │   ├── README.md
+│   │   │   └── changes.png
 │   │   ├── agentos-memory-repair/
 │   │   │   ├── README.md
 │   │   │   ├── en.png
