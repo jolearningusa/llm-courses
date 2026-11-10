@@ -245,8 +245,7 @@
 </section>
 
 <!-- 9 -->
-<section class="slide">
-  <h2><small>Context</small>Injection scanning of instructions, memory and skills</h2>
+<section class="slide"><h2><small>Experiment and boundaries</small>Persistent memory: label, gate and repair</h2><svg viewBox="0 0 1100 390" role="img" aria-label="Persistent memory: label, gate and repair" style="width:100%;height:390px"><title>Persistent memory: label, gate and repair</title><rect x="12" y="18" width="234" height="140" rx="10" fill="#161d2e" stroke="#7be0b8"/><text x="24" y="52" font-size="22" fill="#7be0b8">Host source label</text><text x="24" y="87" font-size="22" fill="#e8ecf4">user / tool:*</text><text x="24" y="122" font-size="22" fill="#e8ecf4">Label ≠ verification</text><rect x="292" y="18" width="234" height="140" rx="10" fill="#161d2e" stroke="#7be0b8"/><text x="304" y="52" font-size="22" fill="#7be0b8">Write policy</text><text x="304" y="87" font-size="22" fill="#e8ecf4">Accept / reject</text><text x="304" y="122" font-size="22" fill="#e8ecf4">Record the decision</text><rect x="572" y="18" width="234" height="140" rx="10" fill="#161d2e" stroke="#7be0b8"/><text x="584" y="52" font-size="22" fill="#7be0b8">Persistent claim log</text><text x="584" y="87" font-size="22" fill="#e8ecf4">Multiple active claims</text><text x="584" y="122" font-size="22" fill="#e8ecf4">Trace IDs before/after</text><rect x="852" y="18" width="234" height="140" rx="10" fill="#161d2e" stroke="#7be0b8"/><text x="864" y="52" font-size="22" fill="#7be0b8">Retrieve → propose</text><text x="864" y="87" font-size="22" fill="#e8ecf4">Latest active claim</text><text x="864" y="122" font-size="22" fill="#e8ecf4">Propose only; no send</text><text x="254" y="100" font-size="28" fill="#7be0b8">→</text><text x="534" y="100" font-size="28" fill="#7be0b8">→</text><text x="814" y="100" font-size="28" fill="#7be0b8">→</text><rect x="12" y="195" width="1074" height="88" rx="10" fill="#161d2e" stroke="#ffb86b"/><text x="32" y="229" font-size="23" fill="#ffb86b">Negative control: delete only the latest poison → an older poison is retrieved</text><text x="32" y="263" font-size="22" fill="#e8ecf4">Purge or explicit supersession repairs this state; future writes still need a gate.</text><text x="12" y="326" font-size="23" fill="#e8ecf4">Also check: can a legitimate user correction still change the next proposal?</text><text x="12" y="372" font-size="21" fill="#9aa6bd">This is an offline fixed-rule state fixture, not an LLM defense success rate.</text></svg><p class="muted" style="font-size:18px">Separate episodic claim log, not Lab 4’s single-active profile slot. Source labels are host supplied.</p><div class="cite"><a style="color:var(--accent)" href="https://arxiv.org/html/2604.15774v1">MemEvoBench §§3–4.3</a> · <a style="color:var(--accent)" href="../references/memory_repair_controls_2026_11.md">Experiment and limits</a> · <a style="color:var(--accent)" href="../labs/kit/handouts/lab06_access_control.html">Lab 6</a></div><aside class="notes" style="display:none"><div data-original-explanation="true">
   <div class="cols">
     <div>
       <ul style="font-size:18px">
@@ -268,7 +267,7 @@
     </div>
   </div>
   <div class="cite">Hermes security docs ("context file scanning"); OpenClaw security docs ("prompt injection"); Module 4 memory-security sources.</div>
-</section>
+</div></aside></section>
 
 <!-- 10 -->
 <section class="slide">
@@ -361,8 +360,7 @@
 </section>
 
 <!-- 14 -->
-<section class="slide">
-  <h2><small>Exercise</small>Red-team your own agent</h2>
+<section class="slide"><h2><small>Experiment and boundaries</small>Memory repair: safety, utility and recontamination</h2><svg viewBox="0 0 1100 390" role="img" aria-label="Memory repair: safety, utility and recontamination" style="width:100%;height:390px"><title>Memory repair: safety, utility and recontamination</title><text x="14" y="28" font-size="20" fill="#7be0b8">Control</text><text x="300" y="28" font-size="20" fill="#7be0b8">Correct after repair? ↑</text><text x="570" y="28" font-size="20" fill="#7be0b8">Benign update works? ↑</text><text x="830" y="28" font-size="20" fill="#7be0b8">Wrong after new poison? ↓</text><text x="14" y="77" font-size="22" fill="#e8ecf4">labels_only</text><text x="350" y="77" font-size="23" fill="#e8ecf4">no</text><text x="625" y="77" font-size="23" fill="#e8ecf4">yes</text><text x="900" y="77" font-size="23" fill="#e8ecf4">yes</text><text x="14" y="122" font-size="22" fill="#ffb86b">deny_all</text><text x="350" y="122" font-size="23" fill="#ffb86b">no</text><text x="625" y="122" font-size="23" fill="#ffb86b">no</text><text x="900" y="122" font-size="23" fill="#ffb86b">no</text><text x="14" y="167" font-size="22" fill="#e8ecf4">source_gate</text><text x="350" y="167" font-size="23" fill="#e8ecf4">yes</text><text x="625" y="167" font-size="23" fill="#e8ecf4">yes</text><text x="900" y="167" font-size="23" fill="#e8ecf4">no</text><text x="14" y="212" font-size="22" fill="#ffb86b">delete_latest</text><text x="350" y="212" font-size="23" fill="#ffb86b">no</text><text x="625" y="212" font-size="23" fill="#ffb86b">yes</text><text x="900" y="212" font-size="23" fill="#ffb86b">yes</text><text x="14" y="257" font-size="22" fill="#e8ecf4">purge_tool</text><text x="350" y="257" font-size="23" fill="#e8ecf4">yes</text><text x="625" y="257" font-size="23" fill="#e8ecf4">yes</text><text x="900" y="257" font-size="23" fill="#e8ecf4">yes</text><text x="14" y="302" font-size="22" fill="#e8ecf4">supersede</text><text x="350" y="302" font-size="23" fill="#e8ecf4">yes</text><text x="625" y="302" font-size="23" fill="#e8ecf4">yes</text><text x="900" y="302" font-size="23" fill="#e8ecf4">yes</text><text x="12" y="353" font-size="21" fill="#ffb86b">Deny-all has no wrong proposals but no utility. One-time repair does not gate new poison.</text><text x="12" y="385" font-size="20" fill="#9aa6bd">Executed: 6 deterministic controls of one constructed history; no model or real delivery.</text></svg><p class="muted" style="font-size:18px">Poison → repair → benign correction → poison again; retain write decisions, retrieved IDs and proposal checks.</p><div class="cite"><a style="color:var(--accent)" href="https://arxiv.org/html/2604.15774v1">MemEvoBench §§3–4.3</a> · <a style="color:var(--accent)" href="../references/memory_repair_controls_2026_11.md">Experiment and limits</a> · <a style="color:var(--accent)" href="../labs/kit/handouts/lab06_access_control.html">Lab 6</a></div><aside class="notes" style="display:none"><div data-original-explanation="true">
   <div class="cols">
     <div>
       <ol style="font-size:19px;padding-left:24px">
@@ -382,7 +380,7 @@
       </ul>
     </div>
   </div>
-</section>
+</div></aside></section>
 
 <!-- 15 -->
 <section class="slide">

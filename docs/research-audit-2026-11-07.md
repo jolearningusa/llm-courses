@@ -69,3 +69,7 @@ The [compute GEMM supplement](../llm-compute-systems-course/references/tilelang_
 ## Follow-up: CMP-3 FA4 source reading — 2026-11-09
 
 The [FA4 SM100 source supplement](../llm-compute-systems-course/references/fa4_sm100_walkthrough_2026_11.md) completes the source-reading pair with TileLang. EN/ZH deck 12 diagrams trace score/probability/old-output readiness and distinguish candidate device contracts from L5's CPU scope. The scalar rescale identity and two deliberate omissions were exercised; no FA4 installation, target compilation, device numerics/safety or benchmark ran. Those remaining CMP-3 gates stay open, as does AGT-2's measured benchmark beyond PR #120's teaching/protocol work.
+
+## Follow-up: AGT-3 memory state and recovery controls — 2026-11-09
+
+The [AgentOS experiment](../llm-agentos-course/references/memory_repair_controls_2026_11.md) executes six deterministic arms with write decisions, retrieval/action-proposal checks, benign corrections and recontamination. Newest-only deletion and deny-all serve as negative controls; purge/supersession restore this fixture's state but do not block new bad writes. EN/ZH access-control diagrams and Lab 6 connect the executed trace to explicit limits. No LLM, real action, semantic verification or production repair was measured; the AGT-3 state-fixture portion is complete and broader model/persistence studies remain open. PR #120 still does not complete the AGT-2 measured memory benchmark.

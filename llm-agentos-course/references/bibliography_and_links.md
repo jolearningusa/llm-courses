@@ -364,3 +364,7 @@ Star and fork counts were read from each repository page on 2026-10-26.
   - *How AI agents work in one lecture* (ML 2025): https://youtu.be/M2Yg1kwPpts
 - **Yun-Nung (Vivian) Chen (NTU), Applied Deep Learning, ADL 8.1: LLM Adaptation** (2023, slides credited to Hung-yi Lee):
   https://www.youtube.com/watch?v=DLHCC8Biiqo. Background on adapting / fine-tuning LLMs; not agent-specific.
+
+## Multi-round memory provenance and repair (reviewed 2026-11-09)
+
+**MemEvoBench: Benchmarking Memory MisEvolution in LLM Agents**, Xie et al., arXiv:2604.15774 (v1). [Paper](https://arxiv.org/html/2604.15774v1), §§3–4.3: multi-round contamination and correction tools motivate the course's [independent state fixture](memory_repair_controls_2026_11.md). No paper benchmark, judge or model rates were reproduced. Access-control slides 9/14 use original inline SVGs for the write/read/repair chain and the six executed deterministic controls. The diagrams are not author artwork; outcome cells come from the linked CPU trace, with explicit limitations. Existing vendor guidance from those pages is retained in hidden original explanations.
