@@ -240,3 +240,7 @@ Deck 23 slide 18 (EN/ZH) contains a new original inline SVG separating the histo
 ## Dated source-identity evidence diagram (2026-11-08)
 
 Deck 35 slide 20 has an additional original inline SVG in each language, outside the 164-concept/328-asset managed inventory above. It diagrams the archive/tag/file checks in the [vLLM source-identity note](vllm_source_identity_2026_11.md), followed by explicitly not-run runtime gates. It is an evidence schematic, not an upstream illustration or benchmark. Preserve it when regenerating the managed figures.
+
+## Pinned GEMM walkthrough diagrams (2026-11-09)
+
+Deck 40 slides 19 and 21 add two original concepts (four localized inline SVGs), outside the 164-concept/328-asset managed inventory. The [pinned author-source reading](tilelang_gemm_walkthrough_2026_11.md) supports the storage/dataflow schematic and the full/tail/small-M validation worksheet. Byte counts and tile counts are derived arithmetic; arrows do not represent a measured schedule. No author artwork is copied. Preserve these pages when regenerating the managed illustration set.
