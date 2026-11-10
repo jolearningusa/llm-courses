@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "captured_date": "2026-11-09",
+  "scope": "TRN-4 environment observations and existing unit-suite outcomes in two separate CPU environments; not a lock or historical-table reproduction",
+  "wrapper": "Standard unittest default loader and verbose TextTestRunner; cwd prepended to sys.path as with python -m unittest. Metadata/warnings captured around imports; no seed override or test modifications.",
+  "not_run": [
+    "fresh installation/resolver test",
+    "joint PyTorch+NumPy environment",
+    "historical L1 600/1500-step tables",
+    "historical L9 demo tables",
+    "other lab suites",
+    "GPU/MPS execution",
+    "distributed training",
+    "cross-platform bitwise replay"
+  ],
+  "lanes": [
+    {
+      "lane": "L1-torch",
+      "scope": "existing CPU unit suite only; no historical training-table reproduction or fresh install",
+      "python": "3.12.14",
+      "implementation": "CPython",
+      "system": "Darwin",
+      "machine": "arm64",
+      "source_commit": "01bec479d4aa5d682304cf53b0414fc73a4982f3",
+      "command": "OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 python -m unittest test_pretraining -v",
+      "cwd": "labs/L1_pretraining_loop",
+      "environment_overrides": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1"
+      },
+      "packages": {
+        "torch": "2.9.1",
+        "numpy": null
+      },
+      "source_sha256": {
+        "labs/L1_pretraining_loop/model.py": "70ffcd2e597b6a2f2370eba75bd41c6a42b64022097175d42e59a4e76c1c7768",
+        "labs/L1_pretraining_loop/optim.py": "65efed3c06b4d5ba45caa7cfb6f44b2bc839b1095d3136aab98fa5099eeaa89d",
+        "labs/L1_pretraining_loop/schedules.py": "bb864e165eb0bb881689f1ab3439c2653082ddbdc126754e13938fdefee56805",
+        "labs/L1_pretraining_loop/test_pretraining.py": "35aea37fd407f7357430940f0fd209a0644466e23d6ccc7f4396ee6b80487a99",
+        "labs/L1_pretraining_loop/train.py": "046de05bef7fe4de9a73f6d6e7fd6885803c11020c52f334f34e7587d65fdc6d"
+      },
+      "runtime": {
+        "device": "cpu",
+        "default_dtype": "torch.float32",
+        "threads": 1,
+        "deterministic_algorithms": false,
+        "torch_git_version": "5811a8d7da873dd699ff6687092c225caffcf1bb",
+        "cuda_build": null,
+        "version": "2.9.1"
+      },
+      "test_ids": [
+        "test_pretraining.TestAdamW.test_bias_correction_first_step",
+        "test_pretraining.TestAdamW.test_matches_torch",
+        "test_pretraining.TestModel.test_causal",
+        "test_pretraining.TestModel.test_z_loss",
+        "test_pretraining.TestMuon.test_newton_schulz_flattens_singular_values",
+        "test_pretraining.TestMuon.test_update_rms_matches_adamw_scale",
+        "test_pretraining.TestSchedules.test_cosine_ends_at_min",
+        "test_pretraining.TestSchedules.test_warmup_reaches_peak",
+        "test_pretraining.TestSchedules.test_wsd_is_flat_then_cools_down",
+        "test_pretraining.TestTraining.test_loss_falls"
+      ],
+      "training_test_contract": {
+        "runs": [
+          "adamw-wsd",
+          "muon-wsd"
+        ],
+        "model_seed": 0,
+        "steps_per_run": 120,
+        "lr": 0.003,
+        "weight_decay": 0.1,
+        "warmup_fraction": 0.05,
+        "train": {
+          "lines": 20000,
+          "generator_seed": 1,
+          "text_sha256": "bccddf3ac2e88a6f7b1b679fb90fa1d08df79e3383385fdc729a86647ccdc5f4"
+        },
+        "validation": {
+          "lines": 2000,
+          "generator_seed": 2,
+          "text_sha256": "541973d6057a5509560009dca6864472a06019df0fbb8b62e9fbd3bfdf73ef07"
+        },
+        "search_budget": "none; both prespecified unit-test configurations execute",
+        "selection_rule": "final-step validation loss checked; no winner selected; no held-out model-quality test",
+        "split_overlap": {
+          "definition": "exact generated semicolon-delimited example strings; does not merge a+b with b+a",
+          "train_unique": 19777,
+          "validation_unique": 1998,
+          "intersection_unique": 43,
+          "strictly_disjoint": false
+        }
+      },
+      "result": {
+        "tests_run": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": [],
+        "status": "passed"
+      },
+      "log": "test_bias_correction_first_step (test_pretraining.TestAdamW.test_bias_correction_first_step) ... ok\ntest_matches_torch (test_pretraining.TestAdamW.test_matches_torch) ... ok\ntest_causal (test_pretraining.TestModel.test_causal) ... ok\ntest_z_loss (test_pretraining.TestModel.test_z_loss) ... ok\ntest_newton_schulz_flattens_singular_values (test_pretraining.TestMuon.test_newton_schulz_flattens_singular_values) ... ok\ntest_update_rms_matches_adamw_scale (test_pretraining.TestMuon.test_update_rms_matches_adamw_scale) ... ok\ntest_cosine_ends_at_min (test_pretraining.TestSchedules.test_cosine_ends_at_min) ... ok\ntest_warmup_reaches_peak (test_pretraining.TestSchedules.test_warmup_reaches_peak) ... ok\ntest_wsd_is_flat_then_cools_down (test_pretraining.TestSchedules.test_wsd_is_flat_then_cools_down) ... ok\ntest_loss_falls (test_pretraining.TestTraining.test_loss_falls) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 2.148s\n\nOK\n",
+      "warnings": [
+        {
+          "category": "UserWarning",
+          "message": "Failed to initialize NumPy: No module named 'numpy' (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/torch/csrc/utils/tensor_numpy.cpp:84.)"
+        }
+      ],
+      "os_release": "27.0.0",
+      "macos_version": "27.0.1",
+      "lab_python_unchanged_from_source_commit": true
+    },
+    {
+      "lane": "L9-numpy",
+      "scope": "existing CPU unit suite only; no historical training-table reproduction or fresh install",
+      "python": "3.12.14",
+      "implementation": "CPython",
+      "system": "Darwin",
+      "machine": "arm64",
+      "source_commit": "01bec479d4aa5d682304cf53b0414fc73a4982f3",
+      "command": "OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 python -m unittest test_eval -v",
+      "cwd": "labs/L9_evaluation",
+      "environment_overrides": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1"
+      },
+      "packages": {
+        "torch": null,
+        "numpy": "2.3.5"
+      },
+      "source_sha256": {
+        "labs/L9_evaluation/contamination.py": "0c23637bcedc335c00bdc21cd14b93bc1e1e35f4cdb5b131683fa95ce830a9ab",
+        "labs/L9_evaluation/passk.py": "d28f290ea05e379fdf73aa5f1e35307d0819f446da6bd5cccc8c868319b1235d",
+        "labs/L9_evaluation/ratings.py": "95db4895985187f294f9b742b1fa813661caaae3fe7b275a6f0bd3539e60bd43",
+        "labs/L9_evaluation/test_eval.py": "c26441fb1d96339e44fec56020d9e79a9e8b7b413a85cda7e8272af619648fbd"
+      },
+      "runtime": {
+        "device": "cpu",
+        "blas": {
+          "name": "accelerate",
+          "version": "unknown"
+        },
+        "version": "2.3.5"
+      },
+      "test_ids": [
+        "test_eval.TestContamination.test_clean_model_passes_both_checks",
+        "test_eval.TestContamination.test_one_ordered_copy_is_detected",
+        "test_eval.TestContamination.test_shuffled_copy_escapes_the_permutation_test",
+        "test_eval.TestPassAtK.test_matches_brute_force",
+        "test_eval.TestPassAtK.test_unbiased_in_expectation",
+        "test_eval.TestRatings.test_bt_ignores_order_elo_does_not",
+        "test_eval.TestRatings.test_bt_is_a_maximum",
+        "test_eval.TestRatings.test_bt_recovers_strengths"
+      ],
+      "evaluation_test_contract": {
+        "data": "synthetic fixtures and brute-force/closed-form checks in hashed source",
+        "split": "not a trained-model split",
+        "seeds": "as fixed by the hashed test and helper sources; no wrapper override",
+        "search_budget": "none",
+        "selection_rule": "all prespecified assertions; no configuration selected"
+      },
+      "result": {
+        "tests_run": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": [],
+        "status": "passed"
+      },
+      "log": "test_clean_model_passes_both_checks (test_eval.TestContamination.test_clean_model_passes_both_checks) ... ok\ntest_one_ordered_copy_is_detected (test_eval.TestContamination.test_one_ordered_copy_is_detected) ... ok\ntest_shuffled_copy_escapes_the_permutation_test (test_eval.TestContamination.test_shuffled_copy_escapes_the_permutation_test) ... ok\ntest_matches_brute_force (test_eval.TestPassAtK.test_matches_brute_force) ... ok\ntest_unbiased_in_expectation (test_eval.TestPassAtK.test_unbiased_in_expectation) ... ok\ntest_bt_ignores_order_elo_does_not (test_eval.TestRatings.test_bt_ignores_order_elo_does_not) ... ok\ntest_bt_is_a_maximum (test_eval.TestRatings.test_bt_is_a_maximum) ... ok\ntest_bt_recovers_strengths (test_eval.TestRatings.test_bt_recovers_strengths) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 1.139s\n\nOK\n",
+      "warnings": [],
+      "os_release": "27.0.0",
+      "macos_version": "27.0.1",
+      "lab_python_unchanged_from_source_commit": true
+    }
+  ]
+}

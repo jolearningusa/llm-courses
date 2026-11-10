@@ -3,6 +3,8 @@
 CPU-only labs, each checked against a reference value, a closed form or a definition. The
 [syllabus](../SYLLABUS.md) lists all ten and the week each is used.
 
+The Needs column lists broad prerequisites, not a lock or the exact environments used for historical tables. Observed L1/L9 lanes are recorded below.
+
 | Lab | Topic | Decks | Needs |
 |---|---|---|---|
 | [L0](L0_training_budget/) | A training budget: FLOPs, Chinchilla tokens, days at an MFU, ZeRO and activation memory, pipeline bubbles, batch-size trade-off | 01, 02, 04, 09–11 | Python 3.10+ |
@@ -17,3 +19,7 @@ CPU-only labs, each checked against a reference value, a closed form or a defini
 | [L9](L9_evaluation/) | Evaluation estimators: unbiased pass@k, Bradley-Terry ratings from pairwise votes against Elo, n-gram overlap and a permutation test for contamination | 32, 33 | Python 3.10+, NumPy |
 
 Run every lab's checks from the lab directory with `python -m unittest`.
+
+## Observed CPU lanes and reporting
+
+The [2026-11-09 environment evidence and worksheet](../references/cpu_environment_evidence_2026_11.md) records exact versions and 18 passing existing tests across **two separate L1/L9 environments**. It is not a tested lock or qualification of all ten labs. The historical result tables remain historical; L1's seed-generated validation cohort is not strictly disjoint. Fill the selection/data/seed/search-budget fields before larger runs.

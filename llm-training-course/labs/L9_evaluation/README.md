@@ -98,3 +98,17 @@ one copy, and their threshold was about four.
    log-likelihood in each, and combine with a t-test. How many shards give the most power at one copy?
 5. Replace exact 8-gram matching with matching after lowercasing-style normalization (map each token to
    token // 10). How much of the reworded contamination does it recover, and at what false-positive rate?
+
+## Environment evidence and lecture checkpoint — 2026-11-09
+
+The [CPU manifest and selected-configuration worksheet](../../references/cpu_environment_evidence_2026_11.md) records 8 existing L9 tests passing on CPython 3.12.14 / NumPy 2.3.5, Darwin arm64, with PyTorch absent. This separate existing lane does not recreate the historical NumPy 2.5 demo tables above, establish a joint Torch/NumPy installation or measure a real model. Source hashes, test IDs, BLAS observations and exact commands are recorded.
+
+Deck 32's original closing questions remain useful alongside its new environment-evidence figure:
+
+1. With n=10 and c=3, compute unbiased and plug-in pass@1 and pass@5. Which is larger?
+2. Why report pass@1 and pass@100 at different temperatures?
+3. If a judge reverses its preference when answer order changes, what should you record?
+4. Why are Bradley-Terry ratings invariant to vote order while online Elo ratings are not?
+5. If leaked examples are shuffled, which contamination check catches them and what inputs does it need?
+
+For a selected-configuration report, distinguish mathematical unit checks from a searched/selected model, disclose data roles/overlap, and freeze the selection metric/checkpoint/tie rule before held-out evaluation.

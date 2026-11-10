@@ -73,3 +73,7 @@ The [FA4 SM100 source supplement](../llm-compute-systems-course/references/fa4_s
 ## Follow-up: AGT-3 memory state and recovery controls — 2026-11-09
 
 The [AgentOS experiment](../llm-agentos-course/references/memory_repair_controls_2026_11.md) executes six deterministic arms with write decisions, retrieval/action-proposal checks, benign corrections and recontamination. Newest-only deletion and deny-all serve as negative controls; purge/supersession restore this fixture's state but do not block new bad writes. EN/ZH access-control diagrams and Lab 6 connect the executed trace to explicit limits. No LLM, real action, semantic verification or production repair was measured; the AGT-3 state-fixture portion is complete and broader model/persistence studies remain open. PR #120 still does not complete the AGT-2 measured memory benchmark.
+
+## Follow-up: TRN-4 CPU environment and selection evidence — 2026-11-09
+
+The [training-course manifest/reporting supplement](../llm-training-course/references/cpu_environment_evidence_2026_11.md) records 18 passing existing unit tests in two separate CPU lanes, exact versions/source hashes, fixed configuration/seed/data roles and a concrete selection worksheet. It also records 43 shared exact L1 train/validation examples rather than calling independent seeds disjoint. Decks 32/33 visualize those boundaries. This is the bounded manifest/reporting portion, not a fresh tested lock, historical-table rerun or GPU/distributed qualification. PR #120 still leaves AGT-2's measured benchmark pending.

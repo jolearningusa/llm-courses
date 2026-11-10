@@ -1,6 +1,6 @@
 # Lab L1: a tiny pre-training loop
 
-Used with decks 01 to 04. CPU only, PyTorch 2 (`pip install torch`).
+Used with decks 01 to 04. CPU only. PyTorch 2 (`pip install torch`) is a broad prerequisite, not an exact reproduction recipe; see the [observed environment and its limits](../../references/cpu_environment_evidence_2026_11.md).
 
 The parts of a pre-training recipe that a model card summarizes in one line (the optimizer, its
 settings, the learning-rate schedule, the stability tricks) are each a few lines of code. This lab writes
@@ -77,3 +77,9 @@ Read them like a paper's table, three seeds each:
 5. Remove Moonlight's 0.2·sqrt(max(A, B)) factor from `Muon.step` and find Muon's best learning rate again.
    How far is it from AdamW's? Moonlight adds the factor so that AdamW's learning rate and weight decay
    can be reused unchanged.
+
+## Environment and split evidence — 2026-11-09
+
+The [TRN-4 manifest and reporting worksheet](../../references/cpu_environment_evidence_2026_11.md) records 10 existing L1 tests passing on CPython 3.12.14 / PyTorch 2.9.1, CPU, one thread, with NumPy absent (import warning retained). This is an observed existing environment, not a fresh-install lock or reproduction of the historical PyTorch 2.15 tables above. The training assertions use two fixed 120-step configurations and select no winner.
+
+In this Python 3.12.14 run, the generated train/validation cohorts (seeds 1/2) share **43 unique exact examples**; different seeds do not make them strictly disjoint. Their content hashes and overlap definition are in the manifest. Treat this as a toy mechanism/validation check, not a clean held-out generalization study. Freeze a disjoint split and a selection rule before conducting such a study; do not silently alter the historical experiment.
