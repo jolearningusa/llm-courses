@@ -76,3 +76,7 @@ The generator updates four matching slides in each deck in place and preserves e
 ## Additional authored diagrams — 2026-11-08
 
 Deck 05 slides 9/10 (EN/ZH) add original inline SVGs: three independent acceptance dimensions and the executed CPU control matrix. The first is a schematic gate; the second summarizes the nine named cases in `labs/examples/execution_coverage_report.json`. No box width represents timing, risk or statistical coverage. They sit outside the 32 managed bilingual diagram concepts above and must survive regeneration. The [pinned ComputeEval reading](bibliography_and_links.md#execution-coverage-supplement-verified-2026-11-08) motivates the protocol; no upstream artwork was copied and no GPU run is depicted.
+
+## Additional authored diagrams — 2026-11-10
+
+Deck 06 slides 2/4 (EN/ZH) add original inline SVGs outside the 32 managed concepts: execution-stage versus check-outcome axes, and the actual L6 bytecode/model/not-run matrix. Source reading: [Twister introduction](https://docs.zephyrproject.org/latest/develop/twister/index.html) and [native statuses](https://docs.zephyrproject.org/latest/develop/twister/twister_statuses.html). These are course terms, not Twister schema copies. No upstream artwork is redistributed. Geometry is schematic; the actual rows summarize `labs/examples/qualification_report.json`, not device data. These slides must survive illustration regeneration.

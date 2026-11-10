@@ -33,3 +33,7 @@ See the [figure-source inventory](figure_sources.md) for direct links to the ins
 [ComputeEval README at 00fbad91b63957a002b501f33a06510cd25beaae](https://github.com/NVIDIA/compute-eval/blob/00fbad91b63957a002b501f33a06510cd25beaae/README.md#compute-sanitizer): sanitizer checking is opt-in; its hidden harness supplies run-associated launch evidence separately from candidate stdout. Missing required evidence yields an invalid sanitizer result, with ordinary correctness reported separately. The course's L5 CPU controls adapt the trust/coverage distinction; they do not execute that framework or its CUDA path.
 
 [Compute Sanitizer manual](https://docs.nvidia.com/compute-sanitizer/ComputeSanitizer/index.html), tool descriptions and command-line options: launch filters/summaries, execution scope and finding policy matter in a real run. Memory, shared-memory hazard, initialization and synchronization checks remain separate. No new claim of a clean GPU-tool run is made.
+
+## Qualification reporting supplement — verified 2026-11-10
+
+[Twister introduction](https://docs.zephyrproject.org/latest/develop/twister/index.html) and [native status reference](https://docs.zephyrproject.org/latest/develop/twister/twister_statuses.html): build-only and execution coverage are distinct; retain native outcomes in any future adapter. The [course execution note](qualification_matrix_2026_11.md) explains why its broader not-run vocabulary is not a Twister status mapping, and documents the actual CPU report and unavailable-board controls. No Twister or device path was run.

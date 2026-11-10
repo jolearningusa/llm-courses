@@ -53,7 +53,8 @@ ai-accelerator-software-course/
 ├── labs/
 │   ├── examples/
 │   │   ├── functional_report.json
-│   │   └── execution_coverage_report.json
+│   │   ├── execution_coverage_report.json
+│   │   └── qualification_report.json
 │   ├── handouts/
 │   │   ├── lab00_abi.md
 │   │   ├── lab01_queue_dma.md
@@ -65,17 +66,20 @@ ai-accelerator-software-course/
 │   │   └── lab07_capstone.md
 │   ├── tests/
 │   │   ├── test_virtual_accelerator.py
-│   │   └── test_execution_coverage.py
+│   │   ├── test_execution_coverage.py
+│   │   └── test_qualification_matrix.py
 │   ├── ABI.md
 │   ├── AI_PROMPTS.md
 │   ├── README.md
 │   ├── TARGET_EVIDENCE.md
 │   ├── experiments.py
 │   ├── execution_coverage.py
+│   ├── qualification_matrix.py
 │   └── virtual_accelerator.py
 ├── references/
 │   ├── bibliography_and_links.md
 │   ├── figure_sources.md
+│   ├── qualification_matrix_2026_11.md
 │   └── research_audit_2026_11.md
 ├── slides/
 │   ├── illustrations/
