@@ -48,6 +48,7 @@ make suite TRIALS=3 NAME=baseline   # the basic tier on your model (set NANOOS_B
 | `sched_experiment.py`, `sched_replay.py` | Lab 2's policy comparison on simulated workloads, and a replay against vLLM | Provided |
 | `memory_eval.py` | Lab 4's exercise: one store, read paths none / auto / tool / both, on the fixtures in `tasks/memory.py` | Provided |
 | `cache_experiment.py` | Lab 5's exercise: the cache-breaking variants of a 20-turn session, simulated or on a vLLM server | Provided |
+| `memory_repair_eval.py` | AGT-3: six deterministic provenance/repair controls, with benign correction and recontamination; no model or delivery | Provided |
 | `redteam_eval.py` | Lab 6's exercise: the red-team tasks in `tasks/redteam/` under each defense | Provided |
 | `tools_eval.py` | Lab 7's exercise: five ticket questions with a vague search tool (v1) or a designed one (v2), shell in a sandbox | Provided |
 | `skills_eval.py` | Lab 8's exercise: incident reports with no skills, one skill or 50 installed; pass@1, pass^k, activation | Provided |
@@ -92,3 +93,7 @@ and `--price-out` (USD per million tokens) to fill in the cost column.
 The plan numbers labs by lecture deck, 0 to 14. The three labs that already exist keep their folder names for
 now (`../lab1_memory_plugins/`, `../lab2_aios_kv_cache/`, `../lab3_google_harness2/`); in the plan they are
 Labs 12, 5 and 14. New handouts use two-digit numbers (`lab00_...`) to keep the two apart.
+
+## Optional memory-repair state fixture
+
+`python3 memory_repair_eval.py` prints a reproducible six-arm trace. `python3 -m unittest tests.test_memory_repair -v` checks the independent state/negative controls. See the [protocol and recorded results](../../references/memory_repair_controls_2026_11.md). It is independent of the student Lab 4 store: multiple episodic claims can be active, retrieval is latest-active, source labels and verified repair values are supplied by the fixture. No model, network or real delivery is involved.

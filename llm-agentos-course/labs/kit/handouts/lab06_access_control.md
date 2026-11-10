@@ -129,3 +129,7 @@ Hand in one page from [`report_template.md`](../report_template.md).
 - **An adaptive attack.** Rewrite one injection so the `reader` filter misses it. The offline filter already
   misses one sentence of the page injection; find it in the reader's output. Then report how your model
   behaves with that injection.
+
+## Optional multi-round memory state controls — 2026-11-09
+
+Run `python3 memory_repair_eval.py > memory-repair.json` and `python3 -m unittest tests.test_memory_repair -v` from the kit. Follow the [protocol and recorded results](../../../references/memory_repair_controls_2026_11.md) with access-control deck slides 9/14. Predict what remains retrievable after deleting only the newest of two bad claims; compare full purge and supersession; then introduce a legitimate owner correction and a new misleading tool result. Submit write decisions, retrieved IDs, proposal checks and both safety/utility outcomes. The provided episodic fixture leaves Lab 4's student TODOs intact and runs no LLM, authentication, semantic retrieval or real tool action. A source label is not verified truth, and one-time repair is not a write gate. The prior per-turn red-team exercise remains a separate experiment.

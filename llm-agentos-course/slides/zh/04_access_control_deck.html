@@ -245,8 +245,7 @@
 </section>
 
 <!-- 9 -->
-<section class="slide">
-  <h2><small>上下文</small>对指令、记忆和技能的注入扫描</h2>
+<section class="slide"><h2><small>实验与边界</small>持久记忆：来源、写入门禁与修复</h2><svg viewBox="0 0 1100 390" role="img" aria-label="持久记忆：来源、写入门禁与修复" style="width:100%;height:390px"><title>持久记忆：来源、写入门禁与修复</title><rect x="12" y="18" width="234" height="140" rx="10" fill="#161d2e" stroke="#7be0b8"/><text x="24" y="52" font-size="22" fill="#7be0b8">宿主标注来源</text><text x="24" y="87" font-size="22" fill="#e8ecf4">user / tool:*</text><text x="24" y="122" font-size="22" fill="#e8ecf4">标签本身不验证真伪</text><rect x="292" y="18" width="234" height="140" rx="10" fill="#161d2e" stroke="#7be0b8"/><text x="304" y="52" font-size="22" fill="#7be0b8">写入策略</text><text x="304" y="87" font-size="22" fill="#e8ecf4">接受 / 拒绝</text><text x="304" y="122" font-size="22" fill="#e8ecf4">保留写入决定</text><rect x="572" y="18" width="234" height="140" rx="10" fill="#161d2e" stroke="#7be0b8"/><text x="584" y="52" font-size="22" fill="#7be0b8">持久声明日志</text><text x="584" y="87" font-size="22" fill="#e8ecf4">可有多个活跃声明</text><text x="584" y="122" font-size="22" fill="#e8ecf4">修复前后记录 ID</text><rect x="852" y="18" width="234" height="140" rx="10" fill="#161d2e" stroke="#7be0b8"/><text x="864" y="52" font-size="22" fill="#7be0b8">检索 → 提议</text><text x="864" y="87" font-size="22" fill="#e8ecf4">最新活跃声明</text><text x="864" y="122" font-size="22" fill="#e8ecf4">仅提议，绝不发送</text><text x="254" y="100" font-size="28" fill="#7be0b8">→</text><text x="534" y="100" font-size="28" fill="#7be0b8">→</text><text x="814" y="100" font-size="28" fill="#7be0b8">→</text><rect x="12" y="195" width="1074" height="88" rx="10" fill="#161d2e" stroke="#ffb86b"/><text x="32" y="229" font-size="23" fill="#ffb86b">负对照：只删最新污染 → 更早的污染再次被检索</text><text x="32" y="263" font-size="22" fill="#e8ecf4">删除所有污染或显式 supersede 能恢复此状态；之后仍需写入门禁。</text><text x="12" y="326" font-size="23" fill="#e8ecf4">还要检查：合法用户纠正是否仍能改变后续提议？</text><text x="12" y="372" font-size="21" fill="#9aa6bd">本图是固定规则的离线状态实验，不是 LLM 防御成功率。</text></svg><p class="muted" style="font-size:18px">独立的 episodic 声明日志；不是 Lab 4 的单活跃 profile-slot 实现。来源由宿主固定提供。</p><div class="cite"><a style="color:var(--accent)" href="https://arxiv.org/html/2604.15774v1">MemEvoBench §§3–4.3</a> · <a style="color:var(--accent)" href="../../references/memory_repair_controls_2026_11.md">实验与限制</a> · <a style="color:var(--accent)" href="../../labs/kit/handouts/lab06_access_control.html">Lab 6</a></div><aside class="notes" style="display:none"><div data-original-explanation="true">
   <div class="cols">
     <div>
       <ul style="font-size:18px">
@@ -268,7 +267,7 @@
     </div>
   </div>
   <div class="cite">Hermes 安全文档 ("context file scanning")；OpenClaw 安全文档 ("prompt injection")；模块 4 记忆安全资料。</div>
-</section>
+</div></aside></section>
 
 <!-- 10 -->
 <section class="slide">
@@ -361,8 +360,7 @@
 </section>
 
 <!-- 14 -->
-<section class="slide">
-  <h2><small>练习</small>对你自己的智能体做红队测试</h2>
+<section class="slide"><h2><small>实验与边界</small>记忆修复：安全、效用与再次污染</h2><svg viewBox="0 0 1100 390" role="img" aria-label="记忆修复：安全、效用与再次污染" style="width:100%;height:390px"><title>记忆修复：安全、效用与再次污染</title><text x="14" y="28" font-size="20" fill="#7be0b8">策略</text><text x="300" y="28" font-size="20" fill="#7be0b8">修复后正确？ ↑</text><text x="570" y="28" font-size="20" fill="#7be0b8">合法纠正有效？ ↑</text><text x="830" y="28" font-size="20" fill="#7be0b8">新污染后越权？ ↓</text><text x="14" y="77" font-size="22" fill="#e8ecf4">只记录标签</text><text x="350" y="77" font-size="23" fill="#e8ecf4">否</text><text x="625" y="77" font-size="23" fill="#e8ecf4">是</text><text x="900" y="77" font-size="23" fill="#e8ecf4">是</text><text x="14" y="122" font-size="22" fill="#ffb86b">拒绝所有写入</text><text x="350" y="122" font-size="23" fill="#ffb86b">否</text><text x="625" y="122" font-size="23" fill="#ffb86b">否</text><text x="900" y="122" font-size="23" fill="#ffb86b">否</text><text x="14" y="167" font-size="22" fill="#e8ecf4">来源写入门禁</text><text x="350" y="167" font-size="23" fill="#e8ecf4">是</text><text x="625" y="167" font-size="23" fill="#e8ecf4">是</text><text x="900" y="167" font-size="23" fill="#e8ecf4">否</text><text x="14" y="212" font-size="22" fill="#ffb86b">只删最新污染</text><text x="350" y="212" font-size="23" fill="#ffb86b">否</text><text x="625" y="212" font-size="23" fill="#ffb86b">是</text><text x="900" y="212" font-size="23" fill="#ffb86b">是</text><text x="14" y="257" font-size="22" fill="#e8ecf4">清除工具声明</text><text x="350" y="257" font-size="23" fill="#e8ecf4">是</text><text x="625" y="257" font-size="23" fill="#e8ecf4">是</text><text x="900" y="257" font-size="23" fill="#e8ecf4">是</text><text x="14" y="302" font-size="22" fill="#e8ecf4">显式 supersede</text><text x="350" y="302" font-size="23" fill="#e8ecf4">是</text><text x="625" y="302" font-size="23" fill="#e8ecf4">是</text><text x="900" y="302" font-size="23" fill="#e8ecf4">是</text><text x="12" y="353" font-size="21" fill="#ffb86b">拒绝所有写入：没有越权提议，也没有正确提议。一次性修复不阻止新污染。</text><text x="12" y="385" font-size="20" fill="#9aa6bd">实测：同一构造历史的 6 个确定性对照；不是随机试验、模型评测或真实发送。</text></svg><p class="muted" style="font-size:18px">先污染 → 修复 → 合法纠正 → 再污染；同时记录写入决定、检索 ID、提议与正确目标。</p><div class="cite"><a style="color:var(--accent)" href="https://arxiv.org/html/2604.15774v1">MemEvoBench §§3–4.3</a> · <a style="color:var(--accent)" href="../../references/memory_repair_controls_2026_11.md">实验与限制</a> · <a style="color:var(--accent)" href="../../labs/kit/handouts/lab06_access_control.html">Lab 6</a></div><aside class="notes" style="display:none"><div data-original-explanation="true">
   <div class="cols">
     <div>
       <ol style="font-size:19px;padding-left:24px">
@@ -382,7 +380,7 @@
       </ul>
     </div>
   </div>
-</section>
+</div></aside></section>
 
 <!-- 15 -->
 <section class="slide">

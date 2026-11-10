@@ -124,6 +124,7 @@ llm-agentos-course/
 │   │   ├── export_task.py                     # Write one task's files to a folder to run it in another harness
 │   │   ├── sched_experiment.py                # Lab 2: compare scheduling policies on simulated workloads
 │   │   ├── sched_replay.py                    # Lab 2: replay a simulated workload against a vLLM server
+│   │   ├── memory_repair_eval.py              # Provided AGT-3 state/repair controls; no model or real delivery
 │   │   ├── memory_eval.py                     # Lab 4: one memory store, two read paths, 40 questions
 │   │   ├── cache_experiment.py                # Lab 5: break the prefix cache on purpose, simulated or on vLLM
 │   │   ├── redteam_eval.py                    # Lab 6: red-team the agent with and without each defense
@@ -208,6 +209,7 @@ llm-agentos-course/
 │   │   │               └── fill_report.py     # Its script: prints the report for one incident
 │   │   ├── tests/
 │   │   │   ├── __init__.py
+│   │   │   ├── test_memory_repair.py          # Independent state/repair negative controls
 │   │   │   ├── test_kit.py                    # The kit's own tests
 │   │   │   ├── test_lab00.py                  # Lab 0 autograder tests
 │   │   │   ├── test_lab01.py                  # Lab 1 autograder tests
@@ -252,6 +254,8 @@ llm-agentos-course/
 │       ├── run_harness2_demo.sh               # Quickstart for google-research/harness2
 │       └── sample_lesson_entry.jsonl          # Course schema for an evidence-backed lesson record
 └── references/
+    ├── memory_repair_controls_2026_11.md
+    ├── memory_repair_cpu_2026_11.json
     ├── research_audit_2026_11.md
     ├── bibliography_and_links.md              # Papers (2023–2026), repos, docs and video lectures
     └── tracked_sources.json                   # Fast-moving sources (MCP spec, vLLM, LMCache, ...) and the version last checked

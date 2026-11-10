@@ -1,0 +1,11 @@
+# AgentOS memory state and repair — visual review, 2026-11-09
+
+Prepared from latest main `dd3c4b5` after confirmed merge of PR #131. No overlapping open PR was present. One bounded AGT-3 state-fixture/teaching update, awaiting user approval; no auto-merge.
+
+[English before/after](en.png) and [Simplified Chinese before/after](zh.png): before left, after right; rows are access-control deck slides 9/14. Eight native 1280×720 frames, active slide numbers/element/SVG bounds checked; all four final layouts visually inspected. Citation contrast was improved before final capture. Both twins retain 15 slides, with only pages 9/14 changed. Original explanations are retained in hidden notes. The SVGs are original schematics/results of this fixture, not paper artwork.
+
+Executed: six deterministic arms of one constructed multi-round history, with full write/read/repair snapshots. The recorded JSON exactly reproduces a fresh run. Ten new transition/outcome tests plus 36 existing provided-kit tests pass (46 total) on Python 3.12.14 / Darwin. Existing local HTTP fixtures were rerun with loopback-listener permission after the restricted run denied their binds. No external service was contacted. No model, semantic retriever, real delivery, latency or production repair effectiveness was measured. Source labels and verified repair values are host-supplied; oracle correctness is explicitly outside the fixture. Lab 4's student TODOs and all nanoos modules remain unchanged.
+
+The controls demonstrate older contamination after newest-only deletion, deny-all utility loss, successful state restoration by purge/supersession, legitimate correction retention, and renewed contamination when repairs do not gate future writes. They are not six independent model samples or an ASR estimate. PR #120 still does not contain AGT-2's measured memory benchmark.
+
+Validation: course consistency — six courses, zero problems; site build/check — 1,127 pages, zero broken relative links/unlisted decks/missing home links; browser slide check — 271 decks, zero problems. All trackers and requirement files stay identical to main. Primary research reviewed: MemEvoBench 2604.15774v1 §§3–4.3; the course experiment is an independent state-control exercise, not a benchmark reproduction.
