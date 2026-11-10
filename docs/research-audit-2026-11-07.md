@@ -61,3 +61,7 @@ The stale freshness issue contains synthetic `.example` attack fixtures and acce
 ## Follow-up: CMP-2 source identity — 2026-11-08
 
 The [compute source-identity supplement](../llm-compute-systems-course/references/vllm_source_identity_2026_11.md) resolves the v0.33.0 annotated tag, verifies the PyPI sdist digest and embedded commit, and matches two pinned NIXL files. Deck 35's EN/ZH evidence diagram distinguishes these checks from runtime qualification. The release REST 404 remains a separate observation. No wheel was inspected/installed, no target was qualified and no connector/benchmark ran; the rest of CMP-2 remains open and all historical trackers/pins stay intact. PR #120 still completes only AGT-2's teaching/protocol portion, not its measured memory benchmark.
+
+## Follow-up: CMP-3 TileLang source reading — 2026-11-09
+
+The [compute GEMM supplement](../llm-compute-systems-course/references/tilelang_gemm_walkthrough_2026_11.md) follows a fixed TileLang author revision and adds EN/ZH memory-flow and edge-validation diagrams to deck 40, with an L4 handoff. Only source inspection and integer coverage were executed. This is the TileLang source portion, not full CMP-3 completion: FA4/CuTeDSL, generated device code, numerical/tail validation and matched target benchmarks remain pending.

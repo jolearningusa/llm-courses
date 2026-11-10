@@ -271,6 +271,7 @@ llm-compute-systems-course/
 │   ├── executorch_monitoring_2026_11.md
 │   ├── vllm_source_identity_2026_11.md
 │   ├── vllm_source_identity_2026_11.json
+│   ├── tilelang_gemm_walkthrough_2026_11.md
 │   ├── figure_sources.md
 │   ├── inference_bottlenecks_review.md
 │   ├── project_research_review.md

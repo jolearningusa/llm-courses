@@ -51,3 +51,7 @@ Expected: `serial_us 32 pipeline_us 23`, then `speedup 1.391`. Compute intervals
 Submit your prediction, annotated schedule, arithmetic output and one reason measured overlap may fail. For the C/D target extension, point to actual producer commit, consumer wait and consumer release operations at a pinned source revision. The [CUDA pipeline guide](https://docs.nvidia.com/cuda/cuda-programming-guide/04-special-topics/pipelines.html) defines the producer/consumer protocol; this constructed arithmetic does not execute that API, model resource contention or measure GPU speed. More staging can consume resources and reduce occupancy; investigate rather than assume monotonic improvement.
 
 中文提示：先画双缓冲的所有权，再计算四块的完成时间；23 μs 包含启动与排空，5 μs 只是稳态周期。提交预测、时序、输出及一个可能破坏重叠的条件。
+
+## Optional pinned TileLang source dossier — 2026-11-09
+
+Follow the [full-kernel worksheet](../../../references/tilelang_gemm_walkthrough_2026_11.md) with deck 40 slides 19/21. Submit (a) the fixed commit and BM/BN/BK contract, (b) launch/K-step coverage for full, irregular and small-M shapes, and (c) the exact generated-code, tail, synchronization and numerical evidence you would collect on an eligible target. Integer coverage alone does not execute TileLang. The CPU K-tiled helper's input-dtype accumulation must not silently substitute for the pinned kernel's FP32 fragment accumulation. Target compilation, safety/numerical checks and matched benchmarks are still optional **not-run hardware extensions** until actually performed.
