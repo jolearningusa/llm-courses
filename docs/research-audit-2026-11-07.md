@@ -77,3 +77,7 @@ The [AgentOS experiment](../llm-agentos-course/references/memory_repair_controls
 ## Follow-up: TRN-4 CPU environment and selection evidence — 2026-11-09
 
 The [training-course manifest/reporting supplement](../llm-training-course/references/cpu_environment_evidence_2026_11.md) records 18 passing existing unit tests in two separate CPU lanes, exact versions/source hashes, fixed configuration/seed/data roles and a concrete selection worksheet. It also records 43 shared exact L1 train/validation examples rather than calling independent seeds disjoint. Decks 32/33 visualize those boundaries. This is the bounded manifest/reporting portion, not a fresh tested lock, historical-table rerun or GPU/distributed qualification. PR #120 still leaves AGT-2's measured benchmark pending.
+
+## Follow-up: AGT-4 session handoff and pending operations — 2026-11-09
+
+The [AgentOS recovery fixture](../llm-agentos-course/references/session_handoff_controls_2026_11.md) uses a new Python interpreter for each of nine fixed cases, checking preserved goals/progress, pending operations and fake-tool receipts. Context-manager EN/ZH diagrams show the acknowledgement-loss boundary and actual controls under an equal byte cap. This is deterministic state transfer, not a model-token quality comparison or production exactly-once/crash durability result. The bounded AGT-4 fixture is implemented; model/service/concurrency qualification remains open. PR #120 still does not include AGT-2's measured benchmark.

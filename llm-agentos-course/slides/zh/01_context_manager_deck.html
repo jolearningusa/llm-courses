@@ -299,8 +299,7 @@ def register(ctx):
 </section>
 
 <!-- 12 -->
-<section class="slide">
-  <h2><small>度量</small>上下文管理器在尽职吗？</h2>
+<section class="slide"><h2><small>会话恢复实验</small>重启恢复需要任务状态与工具回执</h2><svg viewBox="0 0 1100 400" role="img" aria-label="重启恢复需要任务状态与工具回执" style="width:100%;height:400px"><title>重启恢复需要任务状态与工具回执</title><rect x="12" y="10" width="516" height="135" rx="10" fill="#161d2e" stroke="#7be0b8"/><rect x="570" y="10" width="516" height="135" rx="10" fill="#161d2e" stroke="#7be0b8"/><text x="32" y="47" font-size="24" fill="#7be0b8">交接检查点</text><text x="32" y="84" font-size="22" fill="#e8ecf4">task / goal / completed / pending</text><text x="32" y="121" font-size="22" fill="#e8ecf4">pending 保留稳定 key 与 payload</text><text x="590" y="47" font-size="24" fill="#7be0b8">配合去重的模拟工具日志</text><text x="590" y="84" font-size="22" fill="#e8ecf4">相同 key + payload → 已有回执</text><text x="590" y="121" font-size="22" fill="#e8ecf4">相同 key、不同 payload → 拒绝</text><text x="12" y="193" font-size="23" fill="#e8ecf4">新 Python 进程：读取交接 → 复用 key → 核对回执 → 更新已完成工作</text><rect x="12" y="225" width="338" height="92" rx="10" fill="#161d2e" stroke="#ffb86b"/><text x="26" y="260" font-size="23" fill="#ffb86b">中断 1：调用前</text><text x="26" y="295" font-size="22" fill="#e8ecf4">尚无模拟效果</text><rect x="380" y="225" width="338" height="92" rx="10" fill="#161d2e" stroke="#ffb86b"/><text x="394" y="260" font-size="23" fill="#ffb86b">中断 2：效果已保存</text><text x="394" y="295" font-size="22" fill="#e8ecf4">确认尚未写入交接</text><rect x="748" y="225" width="338" height="92" rx="10" fill="#161d2e" stroke="#ffb86b"/><text x="762" y="260" font-size="23" fill="#ffb86b">中断 3：确认已保存</text><text x="762" y="295" font-size="22" fill="#e8ecf4">恢复后无需再次调用</text><text x="12" y="362" font-size="22" fill="#e8ecf4">交接文件不能单独保证只执行一次；还取决于工具的幂等与回执契约。</text><text x="12" y="389" font-size="20" fill="#9aa6bd">仅固定边界与本地模拟日志；未测试断电、并发、真实服务或文件写入原子性。</text></svg><p class="muted" style="font-size:18px">实际使用独立 Python 进程重新加载；不是已验证的生产级 exactly-once 或 LLM 恢复能力。</p><div class="cite"><a style="color:var(--accent)" href="../../references/session_handoff_controls_2026_11.md">协议、来源与结果</a> · <a style="color:var(--accent)" href="../../labs/kit/handouts/lab03_context_engines.html">Lab 3</a></div><aside class="notes" style="display:none"><div data-original-explanation="true">
   <div class="cols">
     <div>
       <ul style="font-size:19px">
@@ -322,11 +321,10 @@ def register(ctx):
     </div>
   </div>
   <div class="cite">指标：06_observability_evaluation_deck.html; OpenClaw OpenTelemetry 文档。</div>
-</section>
+</div></aside></section>
 
 <!-- 13 -->
-<section class="slide">
-  <h2><small>练习</small>比较两种上下文引擎</h2>
+<section class="slide"><h2><small>会话恢复实验</small>相同预算下，记录状态恢复与模拟效果</h2><svg viewBox="0 0 1100 400" role="img" aria-label="相同预算下，记录状态恢复与模拟效果" style="width:100%;height:400px"><title>相同预算下，记录状态恢复与模拟效果</title><text x="12" y="30" font-size="22" fill="#7be0b8">固定中断点</text><text x="395" y="30" font-size="22" fill="#7be0b8">结构化交接：调用 / 总效果</text><text x="805" y="30" font-size="22" fill="#7be0b8">长日志尾部</text><text x="12" y="83" font-size="22" fill="#e8ecf4">调用前</text><text x="490" y="83" font-size="24" fill="#e8ecf4">1 / 1</text><text x="805" y="83" font-size="22" fill="#e8ecf4">停止 / 0</text><text x="12" y="128" font-size="22" fill="#e8ecf4">效果已保存、确认未存</text><text x="490" y="128" font-size="24" fill="#e8ecf4">1 / 1</text><text x="805" y="128" font-size="22" fill="#e8ecf4">停止 / 1</text><text x="12" y="173" font-size="22" fill="#e8ecf4">确认已保存</text><text x="490" y="173" font-size="24" fill="#e8ecf4">0 / 1</text><text x="805" y="173" font-size="22" fill="#e8ecf4">停止 / 1</text><text x="12" y="212" font-size="21" fill="#7be0b8">三处交接都保留目标与已完成工作，并解决待确认操作。</text><rect x="12" y="230" width="1074" height="89" rx="10" fill="#161d2e" stroke="#ffb86b"/><text x="32" y="263" font-size="22" fill="#ffb86b">短日志负对照：三处均恢复；证明同一个读取器能处理完整日志。</text><text x="32" y="299" font-size="22" fill="#e8ecf4">换新重试 key 的负对照：丢失确认后出现 2 个模拟效果。</text><text x="12" y="357" font-size="22" fill="#e8ecf4">每个输入均为 512 ASCII 字节；不是实际模型 token 预算，也不是独立任务样本。</text><text x="12" y="389" font-size="20" fill="#9aa6bd">6 个主对照 + 3 个短日志对照；长日志缺字段时停止，不猜测目标或重复操作。</text></svg><p class="muted" style="font-size:18px">“调用”是恢复后工具尝试次数；“效果”是模拟日志的总数。另需真实模型与实际服务验证。</p><div class="cite"><a style="color:var(--accent)" href="../../references/session_handoff_controls_2026_11.md">协议、来源与结果</a> · <a style="color:var(--accent)" href="../../labs/kit/handouts/lab03_context_engines.html">Lab 3</a></div><aside class="notes" style="display:none"><div data-original-explanation="true">
   <div class="cols">
     <div>
       <ol style="font-size:19px;padding-left:24px">
@@ -347,7 +345,7 @@ def register(ctx):
       </ul>
     </div>
   </div>
-</section>
+</div></aside></section>
 
 <!-- 14 -->
 <section class="slide">

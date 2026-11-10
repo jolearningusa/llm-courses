@@ -72,3 +72,9 @@ Hand in one page from [`report_template.md`](../report_template.md).
   tool that brings one chunk back.
 - **Port an engine to Hermes or OpenClaw**: wrap your engine in Hermes's `ContextEngine` interface or
   OpenClaw's context-engine slot; [Lab 12](lab12_harness_plugins.md) does this.
+
+## Optional CPU handoff and pending-operation controls — 2026-11-09
+
+Before a live-model restart study, run `python3 session_handoff_eval.py > session-handoff.json` and `python3 -m unittest tests.test_session_handoff -v` from the kit. The [protocol and captured cases](../../../references/session_handoff_controls_2026_11.md) use a fresh Python worker at three fixed session boundaries. Compare explicit state with a whole-event transcript tail under a **512-ASCII-byte cap**, including a short-tail control that succeeds. Report current goal, completed work, pending operation, retained operation key, post-restart attempts and total fake effects. This is not a real model-token budget or a production service/crash-atomicity test.
+
+Predict what happens when the fake tool effect exists but the client has not saved its receipt. Then check same-key receipt replay, changed-key duplicate effects and changed-payload rejection. Preserve the original A/B compaction exercises and the token/cache/cost/recall/task-success metrics above as separate model experiments; this provided fixture does not fill any student TODO or spend API budget.

@@ -1,0 +1,11 @@
+# AgentOS session handoff and receipt identity — visual review, 2026-11-09
+
+Prepared from latest main `2d0d1d8` after confirmed merge of PR #133. No overlapping open PR was present. One bounded AGT-4 deterministic session-boundary update, awaiting user approval; no auto-merge.
+
+[English before/after](en.png) and [Simplified Chinese before/after](zh.png): before left, after right; rows are context-manager slides 12/13. Eight native 1280×720 frames, active slide/element/SVG-text bounds checked; all four final layouts inspected. Diagram bottom margins were corrected before final capture. Both twins retain 14 slides, with only pages 12/13 changed. Original explanations remain in hidden notes and Lab 3 retains its long-task metrics/model experiment. SVGs are original logical schematics and fixture results, not upstream artwork.
+
+Executed: six main cases and three short-tail controls, with a new Python interpreter loading saved context/receipts in every case. All contexts are exactly 512 ASCII bytes, explicitly not model tokens. Goal/completed progress/pending state recover at all three handoff cuts, with one total fake effect. Noisy tail blocks after required fields are evicted; the short-tail control succeeds at all three cuts. Unit controls show a new retry key produces a second fake effect, changed payload under the same key is rejected, missing state blocks attempts, and no-pending alone is not completion.
+
+Twelve new tests, ten prior memory-repair tests and 36 provided-kit tests pass (58 total), Python 3.12.14 / Darwin. A fresh run exactly matches the recorded nine cases and fixture SHA-256. Existing local HTTP fixtures contact no external service. No LLM, live tool, concurrency, torn-write, power-loss or production exactly-once result is claimed. Student nanoos modules, all requirement files and trackers remain unchanged. PR #120 still does not include AGT-2's measured memory benchmark.
+
+Validation: course consistency — six courses, zero problems; site build/check — 1,133 pages, zero broken relative links/unlisted decks/missing home links; browser slide check — 271 decks, zero problems. Primary sources reviewed: Anthropic's long-running harness study and Amazon Builders' Library on idempotent APIs. The fake JSON service does not implement their production durability requirements.
