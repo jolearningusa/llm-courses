@@ -244,3 +244,7 @@ Deck 35 slide 20 has an additional original inline SVG in each language, outside
 ## Pinned GEMM walkthrough diagrams (2026-11-09)
 
 Deck 40 slides 19 and 21 add two original concepts (four localized inline SVGs), outside the 164-concept/328-asset managed inventory. The [pinned author-source reading](tilelang_gemm_walkthrough_2026_11.md) supports the storage/dataflow schematic and the full/tail/small-M validation worksheet. Byte counts and tile counts are derived arithmetic; arrows do not represent a measured schedule. No author artwork is copied. Preserve these pages when regenerating the managed illustration set.
+
+## FA4 SM100 dependency and qualification diagrams (2026-11-09)
+
+Deck 12 slides 15/17 add two original inline concepts in EN/ZH (four SVGs), outside the managed 164-concept/328-asset inventory. The [fixed author-source worksheet](fa4_sm100_walkthrough_2026_11.md) supports the S/P/old-O readiness dependency diagram and candidate-contract validation sequence. The diagrams are logical schematics, not measured timelines or copied author artwork. Preserve them when regenerating the managed set.
