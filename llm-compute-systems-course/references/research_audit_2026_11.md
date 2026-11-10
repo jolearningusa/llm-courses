@@ -48,3 +48,7 @@ No GPU or distributed experiment, new model run, hardware purchase recommendatio
 ## CMP-3 progress — TileLang source portion, 2026-11-09
 
 The [pinned GEMM walkthrough](tilelang_gemm_walkthrough_2026_11.md) maps launch, shared/fragment layout responsibilities, K staging, synchronization ownership and edge checks to one exact author revision. Deck 40 slides 19/21 and both reference handouts now provide diagrams and a concrete full/tail/small-M worksheet; L4 links the same contract. Integer coverage arithmetic ran, with no tensor/compiler/device execution. This completes only the bounded TileLang source-reading supplement. Generated code, irregular-shape/numerical checks on target, performance, FA4/CuTeDSL and cross-backend evidence remain open. No package pin or tracker date changed.
+
+## CMP-3 progress — FA4 source portion, 2026-11-09
+
+The [FA4 SM100 walkthrough](fa4_sm100_walkthrough_2026_11.md) pins one ordinary forward path, interface guards and softmax/correction sources. Deck 12 slides 15/17 now visualize two-way readiness and candidate full/tail/small-N validation in EN/ZH; L5 links a scalar checkpoint with two failing omissions. Only text inspection and standard-library scalar arithmetic ran. Together with the TileLang supplement this completes the bounded source-reading pair, not CMP-3's generated-code/device safety/numerical/performance or cross-backend work. No tracker or dependency changes.

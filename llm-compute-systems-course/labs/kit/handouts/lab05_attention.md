@@ -24,3 +24,7 @@ The Python reference demonstrates the online state update, not a fused FlashAtte
 On supported hardware select a framework SDPA, cuDNN, FlashAttention or FlashInfer path. Record actual backend, version, dtype, mask and shape support. Validate the same contract before timing. Compare short/long lengths and uniform/ragged workloads, then inspect traffic, planning and stage balance. For training, include backward and saved/recomputed state. A causal mask or precision change must not be hidden inside a speed comparison.
 
 Without hardware, complete A–C plus a paper evaluation critique: identify device, library baseline, mask, dtype and timing scope. Distinguish an older published result from your current unmeasured target. Submit the [report](../../report_template.md), raw CPU results and explicit extension limits.
+
+## E. Pinned FA4 SM100 source exercise — 2026-11-09
+
+Use the [FA4 source/pipeline worksheet](../../../references/fa4_sm100_walkthrough_2026_11.md) with deck 12 slides 15/17. Trace S-ready and P/old-O-ready signals, then run the independent scalar rescale checkpoint and explain its two failing omissions. It is not an author-kernel test. On an eligible device, save actual dispatch/configuration and validate the proposed full/tail/small-N contracts before profiling; otherwise record them as not-run. The existing CPU reference remains single-head FP32/64 square attention and does not qualify multi-head CUDA, GQA/MLA or decode offsets.

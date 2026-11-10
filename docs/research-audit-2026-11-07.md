@@ -65,3 +65,7 @@ The [compute source-identity supplement](../llm-compute-systems-course/reference
 ## Follow-up: CMP-3 TileLang source reading — 2026-11-09
 
 The [compute GEMM supplement](../llm-compute-systems-course/references/tilelang_gemm_walkthrough_2026_11.md) follows a fixed TileLang author revision and adds EN/ZH memory-flow and edge-validation diagrams to deck 40, with an L4 handoff. Only source inspection and integer coverage were executed. This is the TileLang source portion, not full CMP-3 completion: FA4/CuTeDSL, generated device code, numerical/tail validation and matched target benchmarks remain pending.
+
+## Follow-up: CMP-3 FA4 source reading — 2026-11-09
+
+The [FA4 SM100 source supplement](../llm-compute-systems-course/references/fa4_sm100_walkthrough_2026_11.md) completes the source-reading pair with TileLang. EN/ZH deck 12 diagrams trace score/probability/old-output readiness and distinguish candidate device contracts from L5's CPU scope. The scalar rescale identity and two deliberate omissions were exercised; no FA4 installation, target compilation, device numerics/safety or benchmark ran. Those remaining CMP-3 gates stay open, as does AGT-2's measured benchmark beyond PR #120's teaching/protocol work.
