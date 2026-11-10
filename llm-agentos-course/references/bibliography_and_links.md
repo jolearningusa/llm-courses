@@ -368,3 +368,10 @@ Star and fork counts were read from each repository page on 2026-10-26.
 ## Multi-round memory provenance and repair (reviewed 2026-11-09)
 
 **MemEvoBench: Benchmarking Memory MisEvolution in LLM Agents**, Xie et al., arXiv:2604.15774 (v1). [Paper](https://arxiv.org/html/2604.15774v1), §§3–4.3: multi-round contamination and correction tools motivate the course's [independent state fixture](memory_repair_controls_2026_11.md). No paper benchmark, judge or model rates were reproduced. Access-control slides 9/14 use original inline SVGs for the write/read/repair chain and the six executed deterministic controls. The diagrams are not author artwork; outcome cells come from the linked CPU trace, with explicit limitations. Existing vendor guidance from those pages is retained in hidden original explanations.
+
+## Session handoff and retry identity (reviewed 2026-11-09)
+
+- [Anthropic, Effective harnesses for long-running agents](https://www.anthropic.com/research/effective-harnesses-for-long-running-agents): progress artifacts and startup checks across finite sessions.
+- [Malcolm Featonby, Amazon Builders' Library, Making retries safe with idempotent APIs](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/): caller request identity, equivalent responses, changed parameters and server-side atomicity requirements.
+
+Context-manager slides 12/13 use original inline SVGs for the [independent handoff fixture](session_handoff_controls_2026_11.md). No author artwork or production service code is reproduced. Nine fixed CPU cases and unit controls do not establish a model-token comparison, arbitrary crash durability or real-service exactly-once behavior. Original context-engine metrics/exercises remain in Lab 3 and hidden original explanations.

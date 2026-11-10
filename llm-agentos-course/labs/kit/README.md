@@ -48,6 +48,7 @@ make suite TRIALS=3 NAME=baseline   # the basic tier on your model (set NANOOS_B
 | `sched_experiment.py`, `sched_replay.py` | Lab 2's policy comparison on simulated workloads, and a replay against vLLM | Provided |
 | `memory_eval.py` | Lab 4's exercise: one store, read paths none / auto / tool / both, on the fixtures in `tasks/memory.py` | Provided |
 | `cache_experiment.py` | Lab 5's exercise: the cache-breaking variants of a 20-turn session, simulated or on a vLLM server | Provided |
+| `session_handoff_eval.py` | AGT-4: fresh-process handoff and fake-receipt controls under an equal byte cap; no model/service | Provided |
 | `memory_repair_eval.py` | AGT-3: six deterministic provenance/repair controls, with benign correction and recontamination; no model or delivery | Provided |
 | `redteam_eval.py` | Lab 6's exercise: the red-team tasks in `tasks/redteam/` under each defense | Provided |
 | `tools_eval.py` | Lab 7's exercise: five ticket questions with a vague search tool (v1) or a designed one (v2), shell in a sandbox | Provided |

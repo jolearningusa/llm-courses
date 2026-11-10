@@ -299,8 +299,7 @@ def register(ctx):
 </section>
 
 <!-- 12 -->
-<section class="slide">
-  <h2><small>Measure</small>Is the context manager doing its job?</h2>
+<section class="slide"><h2><small>Session recovery experiment</small>Restart needs task state and tool receipts</h2><svg viewBox="0 0 1100 400" role="img" aria-label="Restart needs task state and tool receipts" style="width:100%;height:400px"><title>Restart needs task state and tool receipts</title><rect x="12" y="10" width="516" height="135" rx="10" fill="#161d2e" stroke="#7be0b8"/><rect x="570" y="10" width="516" height="135" rx="10" fill="#161d2e" stroke="#7be0b8"/><text x="32" y="47" font-size="24" fill="#7be0b8">Handoff checkpoint</text><text x="32" y="84" font-size="22" fill="#e8ecf4">task / goal / completed / pending</text><text x="32" y="121" font-size="22" fill="#e8ecf4">Pending retains stable key + payload</text><text x="590" y="47" font-size="24" fill="#7be0b8">Cooperating fake-tool ledger</text><text x="590" y="84" font-size="22" fill="#e8ecf4">Same key + payload → saved receipt</text><text x="590" y="121" font-size="22" fill="#e8ecf4">Same key, different payload → reject</text><text x="12" y="193" font-size="23" fill="#e8ecf4">Fresh Python worker: load handoff → reuse key → reconcile receipt → update progress</text><rect x="12" y="225" width="338" height="92" rx="10" fill="#161d2e" stroke="#ffb86b"/><text x="26" y="260" font-size="23" fill="#ffb86b">Cut 1: before call</text><text x="26" y="295" font-size="22" fill="#e8ecf4">No simulated effect yet</text><rect x="380" y="225" width="338" height="92" rx="10" fill="#161d2e" stroke="#ffb86b"/><text x="394" y="260" font-size="23" fill="#ffb86b">Cut 2: effect saved</text><text x="394" y="295" font-size="22" fill="#e8ecf4">Receipt not in handoff yet</text><rect x="748" y="225" width="338" height="92" rx="10" fill="#161d2e" stroke="#ffb86b"/><text x="762" y="260" font-size="23" fill="#ffb86b">Cut 3: receipt saved</text><text x="762" y="295" font-size="22" fill="#e8ecf4">No new call on resume</text><text x="12" y="362" font-size="22" fill="#e8ecf4">A handoff file alone cannot ensure one effect; the tool’s retry contract also matters.</text><text x="12" y="389" font-size="20" fill="#9aa6bd">Fixed boundaries + local fake receipts only; no power-loss, concurrency or atomic-write test.</text></svg><p class="muted" style="font-size:18px">A separate Python process reloads state; this does not qualify production exactly-once or LLM recovery.</p><div class="cite"><a style="color:var(--accent)" href="../references/session_handoff_controls_2026_11.md">Protocol, sources and results</a> · <a style="color:var(--accent)" href="../labs/kit/handouts/lab03_context_engines.html">Lab 3</a></div><aside class="notes" style="display:none"><div data-original-explanation="true">
   <div class="cols">
     <div>
       <ul style="font-size:19px">
@@ -322,11 +321,10 @@ def register(ctx):
     </div>
   </div>
   <div class="cite">Metrics: 06_observability_evaluation_deck.html; OpenClaw OpenTelemetry docs.</div>
-</section>
+</div></aside></section>
 
 <!-- 13 -->
-<section class="slide">
-  <h2><small>Exercise</small>Compare two context engines</h2>
+<section class="slide"><h2><small>Session recovery experiment</small>At the same budget, report state and effects</h2><svg viewBox="0 0 1100 400" role="img" aria-label="At the same budget, report state and effects" style="width:100%;height:400px"><title>At the same budget, report state and effects</title><text x="12" y="30" font-size="22" fill="#7be0b8">Fixed cut</text><text x="395" y="30" font-size="22" fill="#7be0b8">Handoff: calls / total effects</text><text x="805" y="30" font-size="22" fill="#7be0b8">Noisy tail</text><text x="12" y="83" font-size="22" fill="#e8ecf4">Before tool</text><text x="490" y="83" font-size="24" fill="#e8ecf4">1 / 1</text><text x="805" y="83" font-size="22" fill="#e8ecf4">blocked / 0</text><text x="12" y="128" font-size="22" fill="#e8ecf4">Effect saved, ACK missing</text><text x="490" y="128" font-size="24" fill="#e8ecf4">1 / 1</text><text x="805" y="128" font-size="22" fill="#e8ecf4">blocked / 1</text><text x="12" y="173" font-size="22" fill="#e8ecf4">Receipt saved</text><text x="490" y="173" font-size="24" fill="#e8ecf4">0 / 1</text><text x="805" y="173" font-size="22" fill="#e8ecf4">blocked / 1</text><text x="12" y="212" font-size="21" fill="#7be0b8">Handoff preserves goal + completed work and resolves pending at all three cuts.</text><rect x="12" y="230" width="1074" height="89" rx="10" fill="#161d2e" stroke="#ffb86b"/><text x="32" y="263" font-size="22" fill="#ffb86b">Short-tail control: all three cuts recover with the same reader when records fit.</text><text x="32" y="299" font-size="22" fill="#e8ecf4">New-key retry control: lost acknowledgement can produce 2 simulated effects.</text><text x="12" y="357" font-size="22" fill="#e8ecf4">Each input is 512 ASCII bytes, not model tokens or independent task samples.</text><text x="12" y="389" font-size="20" fill="#9aa6bd">6 main + 3 short-tail cases; missing state blocks progress rather than inventing a goal.</text></svg><p class="muted" style="font-size:18px">Calls are post-restart attempts; effects are total fake-ledger entries. Model/service qualification remains separate.</p><div class="cite"><a style="color:var(--accent)" href="../references/session_handoff_controls_2026_11.md">Protocol, sources and results</a> · <a style="color:var(--accent)" href="../labs/kit/handouts/lab03_context_engines.html">Lab 3</a></div><aside class="notes" style="display:none"><div data-original-explanation="true">
   <div class="cols">
     <div>
       <ol style="font-size:19px;padding-left:24px">
@@ -347,7 +345,7 @@ def register(ctx):
       </ul>
     </div>
   </div>
-</section>
+</div></aside></section>
 
 <!-- 14 -->
 <section class="slide">

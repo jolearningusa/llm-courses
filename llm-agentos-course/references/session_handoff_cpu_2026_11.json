@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "experiment": "AGT-4 session-boundary controls",
+  "environment": {
+    "python": "3.12.14",
+    "system": "Darwin"
+  },
+  "fixture_sha256": "089805fea4257087e25e0f8e9dcec9df55a8ec8b731bd8d6b032bc0ecd7eb2cd",
+  "limits": "One fixed task; fresh Python worker per case; 512 ASCII bytes, not model tokens. No LLM, external tool, concurrent caller, power-loss or atomic persistence qualification.",
+  "cases": [
+    {
+      "mode": "handoff",
+      "cut": "before_tool",
+      "noise_events": 16,
+      "budget_ascii_bytes": 512,
+      "context_bytes": 512,
+      "retained_json_bytes": 197,
+      "context": "{\"completed\":[\"prepare\"],\"goal\":\"prepare and publish one local report\",\"pending\":{\"key\":\"task-1/publish/v1\",\"payload\":\"report-v1\",\"step\":\"publish\"},\"steps\":[\"prepare\",\"publish\"],\"task_id\":\"task-1\"}                                                                                                                                                                                                                                                                                                                           ",
+      "effects_before_restart": 0,
+      "worker_exit_code": 0,
+      "goal_preserved": true,
+      "completed_progress_preserved": true,
+      "pending_resolved": true,
+      "result": {
+        "status": "complete",
+        "state": {
+          "completed": [
+            "prepare",
+            "publish"
+          ],
+          "goal": "prepare and publish one local report",
+          "pending": null,
+          "steps": [
+            "prepare",
+            "publish"
+          ],
+          "task_id": "task-1"
+        },
+        "tool_attempts": 1,
+        "receipt_replayed": false,
+        "simulated_effects": 1
+      }
+    },
+    {
+      "mode": "handoff",
+      "cut": "after_effect_before_receipt",
+      "noise_events": 16,
+      "budget_ascii_bytes": 512,
+      "context_bytes": 512,
+      "retained_json_bytes": 197,
+      "context": "{\"completed\":[\"prepare\"],\"goal\":\"prepare and publish one local report\",\"pending\":{\"key\":\"task-1/publish/v1\",\"payload\":\"report-v1\",\"step\":\"publish\"},\"steps\":[\"prepare\",\"publish\"],\"task_id\":\"task-1\"}                                                                                                                                                                                                                                                                                                                           ",
+      "effects_before_restart": 1,
+      "worker_exit_code": 0,
+      "goal_preserved": true,
+      "completed_progress_preserved": true,
+      "pending_resolved": true,
+      "result": {
+        "status": "complete",
+        "state": {
+          "completed": [
+            "prepare",
+            "publish"
+          ],
+          "goal": "prepare and publish one local report",
+          "pending": null,
+          "steps": [
+            "prepare",
+            "publish"
+          ],
+          "task_id": "task-1"
+        },
+        "tool_attempts": 1,
+        "receipt_replayed": true,
+        "simulated_effects": 1
+      }
+    },
+    {
+      "mode": "handoff",
+      "cut": "after_receipt",
+      "noise_events": 16,
+      "budget_ascii_bytes": 512,
+      "context_bytes": 512,
+      "retained_json_bytes": 145,
+      "context": "{\"completed\":[\"prepare\",\"publish\"],\"goal\":\"prepare and publish one local report\",\"pending\":null,\"steps\":[\"prepare\",\"publish\"],\"task_id\":\"task-1\"}                                                                                                                                                                                                                                                                                                                                                                               ",
+      "effects_before_restart": 1,
+      "worker_exit_code": 0,
+      "goal_preserved": true,
+      "completed_progress_preserved": true,
+      "pending_resolved": true,
+      "result": {
+        "status": "complete",
+        "state": {
+          "completed": [
+            "prepare",
+            "publish"
+          ],
+          "goal": "prepare and publish one local report",
+          "pending": null,
+          "steps": [
+            "prepare",
+            "publish"
+          ],
+          "task_id": "task-1"
+        },
+        "tool_attempts": 0,
+        "receipt_replayed": false,
+        "simulated_effects": 1
+      }
+    },
+    {
+      "mode": "tail",
+      "cut": "before_tool",
+      "noise_events": 16,
+      "budget_ascii_bytes": 512,
+      "context_bytes": 512,
+      "retained_json_bytes": 501,
+      "context": "[{\"log\":\"noise-11:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"},{\"log\":\"noise-12:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"},{\"log\":\"noise-13:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"},{\"log\":\"noise-14:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"},{\"log\":\"noise-15:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}]           ",
+      "effects_before_restart": 0,
+      "worker_exit_code": 0,
+      "goal_preserved": false,
+      "completed_progress_preserved": false,
+      "pending_resolved": false,
+      "result": {
+        "status": "blocked",
+        "reason": "missing handoff fields",
+        "tool_attempts": 0,
+        "simulated_effects": 0
+      }
+    },
+    {
+      "mode": "tail",
+      "cut": "after_effect_before_receipt",
+      "noise_events": 16,
+      "budget_ascii_bytes": 512,
+      "context_bytes": 512,
+      "retained_json_bytes": 501,
+      "context": "[{\"log\":\"noise-11:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"},{\"log\":\"noise-12:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"},{\"log\":\"noise-13:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"},{\"log\":\"noise-14:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"},{\"log\":\"noise-15:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}]           ",
+      "effects_before_restart": 1,
+      "worker_exit_code": 0,
+      "goal_preserved": false,
+      "completed_progress_preserved": false,
+      "pending_resolved": false,
+      "result": {
+        "status": "blocked",
+        "reason": "missing handoff fields",
+        "tool_attempts": 0,
+        "simulated_effects": 1
+      }
+    },
+    {
+      "mode": "tail",
+      "cut": "after_receipt",
+      "noise_events": 16,
+      "budget_ascii_bytes": 512,
+      "context_bytes": 512,
+      "retained_json_bytes": 501,
+      "context": "[{\"log\":\"noise-11:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"},{\"log\":\"noise-12:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"},{\"log\":\"noise-13:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"},{\"log\":\"noise-14:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"},{\"log\":\"noise-15:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}]           ",
+      "effects_before_restart": 1,
+      "worker_exit_code": 0,
+      "goal_preserved": false,
+      "completed_progress_preserved": false,
+      "pending_resolved": false,
+      "result": {
+        "status": "blocked",
+        "reason": "missing handoff fields",
+        "tool_attempts": 0,
+        "simulated_effects": 1
+      }
+    }
+  ],
+  "short_tail_controls": [
+    {
+      "mode": "tail",
+      "cut": "before_tool",
+      "noise_events": 0,
+      "budget_ascii_bytes": 512,
+      "context_bytes": 512,
+      "retained_json_bytes": 203,
+      "context": "[{\"goal\":\"prepare and publish one local report\",\"steps\":[\"prepare\",\"publish\"],\"task_id\":\"task-1\"},{\"completed\":[\"prepare\"]},{\"pending\":{\"key\":\"task-1/publish/v1\",\"payload\":\"report-v1\",\"step\":\"publish\"}}]                                                                                                                                                                                                                                                                                                                     ",
+      "effects_before_restart": 0,
+      "worker_exit_code": 0,
+      "goal_preserved": true,
+      "completed_progress_preserved": true,
+      "pending_resolved": true,
+      "result": {
+        "status": "complete",
+        "state": {
+          "goal": "prepare and publish one local report",
+          "steps": [
+            "prepare",
+            "publish"
+          ],
+          "task_id": "task-1",
+          "completed": [
+            "prepare",
+            "publish"
+          ],
+          "pending": null
+        },
+        "tool_attempts": 1,
+        "receipt_replayed": false,
+        "simulated_effects": 1
+      }
+    },
+    {
+      "mode": "tail",
+      "cut": "after_effect_before_receipt",
+      "noise_events": 0,
+      "budget_ascii_bytes": 512,
+      "context_bytes": 512,
+      "retained_json_bytes": 203,
+      "context": "[{\"goal\":\"prepare and publish one local report\",\"steps\":[\"prepare\",\"publish\"],\"task_id\":\"task-1\"},{\"completed\":[\"prepare\"]},{\"pending\":{\"key\":\"task-1/publish/v1\",\"payload\":\"report-v1\",\"step\":\"publish\"}}]                                                                                                                                                                                                                                                                                                                     ",
+      "effects_before_restart": 1,
+      "worker_exit_code": 0,
+      "goal_preserved": true,
+      "completed_progress_preserved": true,
+      "pending_resolved": true,
+      "result": {
+        "status": "complete",
+        "state": {
+          "goal": "prepare and publish one local report",
+          "steps": [
+            "prepare",
+            "publish"
+          ],
+          "task_id": "task-1",
+          "completed": [
+            "prepare",
+            "publish"
+          ],
+          "pending": null
+        },
+        "tool_attempts": 1,
+        "receipt_replayed": true,
+        "simulated_effects": 1
+      }
+    },
+    {
+      "mode": "tail",
+      "cut": "after_receipt",
+      "noise_events": 0,
+      "budget_ascii_bytes": 512,
+      "context_bytes": 512,
+      "retained_json_bytes": 254,
+      "context": "[{\"goal\":\"prepare and publish one local report\",\"steps\":[\"prepare\",\"publish\"],\"task_id\":\"task-1\"},{\"completed\":[\"prepare\"]},{\"pending\":{\"key\":\"task-1/publish/v1\",\"payload\":\"report-v1\",\"step\":\"publish\"}},{\"completed\":[\"prepare\",\"publish\"],\"pending\":null}]                                                                                                                                                                                                                                                                  ",
+      "effects_before_restart": 1,
+      "worker_exit_code": 0,
+      "goal_preserved": true,
+      "completed_progress_preserved": true,
+      "pending_resolved": true,
+      "result": {
+        "status": "complete",
+        "state": {
+          "goal": "prepare and publish one local report",
+          "steps": [
+            "prepare",
+            "publish"
+          ],
+          "task_id": "task-1",
+          "completed": [
+            "prepare",
+            "publish"
+          ],
+          "pending": null
+        },
+        "tool_attempts": 0,
+        "receipt_replayed": false,
+        "simulated_effects": 1
+      }
+    }
+  ]
+}
