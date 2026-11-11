@@ -10,6 +10,8 @@
 
 Resolve conflicting source values explicitly; do not silently choose a larger rate. Preserve dense/sparse and datatype footnotes. A marketing speedup needs baseline/model/sequence/power/quality conditions, not just a multiple.
 
+For each rate, also name the exact table column and resource boundary (GPU, Superchip, NVL4/NVL72 or fleet), direction convention and any rounding. Record availability separately with source/publication/access dates and evidence class; vendor production status is not local qualification. The [selected Rubin example](../../references/rubin_spec_evidence_2026_11.md) leaves unresolved source differences explicit. A PDF metadata timestamp is not automatically its publication date.
+
 ## Two dataflows
 
 Draw a training step (input → forward/backward → collective → optimizer → checkpoint) and an agentic serving task (queue → prefill/decode → tool wait → resume). Label CPU, GPU/HBM, scale-up, scale-out and storage boundaries. Map each operation to an implementation/library and a validation source. Identify state identity/lifetime and the critical path.

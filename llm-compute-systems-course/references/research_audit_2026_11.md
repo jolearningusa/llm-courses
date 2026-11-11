@@ -52,3 +52,7 @@ The [pinned GEMM walkthrough](tilelang_gemm_walkthrough_2026_11.md) maps launch,
 ## CMP-3 progress — FA4 source portion, 2026-11-09
 
 The [FA4 SM100 walkthrough](fa4_sm100_walkthrough_2026_11.md) pins one ordinary forward path, interface guards and softmax/correction sources. Deck 12 slides 15/17 now visualize two-way readiness and candidate full/tail/small-N validation in EN/ZH; L5 links a scalar checkpoint with two failing omissions. Only text inspection and standard-library scalar arithmetic ran. Together with the TileLang supplement this completes the bounded source-reading pair, not CMP-3's generated-code/device safety/numerical/performance or cross-backend work. No tracker or dependency changes.
+
+## CMP-4 selected Rubin rows — 2026-11-10
+
+The [dated evidence ledger](rubin_spec_evidence_2026_11.md) rechecks product/PDF/architecture units, footnotes, workload comparisons and vendor-reported status. EN/ZH deck 24 slides 6/7 now separate GPU/Superchip/NVL72, the PDF's NVL4 column, sparse/dense peaks and conditioned versus locally measured performance. The 19.2/3 versus 22/3.6 TB/s source discrepancy remains unresolved; no SKU/clock explanation is invented. This completes only the bounded Rubin claim review. Other vendors, actual library support and hardware/workload validation remain open.
