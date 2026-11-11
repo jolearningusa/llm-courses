@@ -1,0 +1,21 @@
+{
+  "device": "cpu",
+  "environment": {
+    "MKL_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "limits": "Two selected existing model checks only; no optimizer sweep, training-table rerun or GPU qualification",
+  "log": "test_causal (test_pretraining.TestModel.test_causal) ... ok\ntest_z_loss (test_pretraining.TestModel.test_z_loss) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.038s\n\nOK\n",
+  "numpy": "not installed in this lane",
+  "passed": 2,
+  "python": "3.12.14",
+  "source_sha256": {
+    "model.py": "70ffcd2e597b6a2f2370eba75bd41c6a42b64022097175d42e59a4e76c1c7768",
+    "test_pretraining.py": "35aea37fd407f7357430940f0fd209a0644466e23d6ccc7f4396ee6b80487a99",
+    "train.py": "046de05bef7fe4de9a73f6d6e7fd6885803c11020c52f334f34e7587d65fdc6d"
+  },
+  "tests": 2,
+  "threads": 1,
+  "torch": "2.9.1",
+  "warning": "PyTorch warned: Failed to initialize NumPy: No module named numpy"
+}

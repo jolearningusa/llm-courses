@@ -2,6 +2,8 @@
 
 Used with decks 01 to 04. CPU only. PyTorch 2 (`pip install torch`) is a broad prerequisite, not an exact reproduction recipe; see the [observed environment and its limits](../../references/cpu_environment_evidence_2026_11.md).
 
+Prerequisite bridge: the [shared shape/gradient/causality worksheet](../../../ml101-neural-networks-course/references/decoder_bridge_worksheet_2026_11.md) distinguishes derivative checks, residual dimensions, prefix invariance and next-token target shifting. Its separate torch 2.9.1 CPU record reruns only this lab's two existing `TestModel` cases; it does not reproduce the training tables below or establish correct target packing/shift by prefix invariance alone.
+
 The parts of a pre-training recipe that a model card summarizes in one line (the optimizer, its
 settings, the learning-rate schedule, the stability tricks) are each a few lines of code. This lab writes
 them out and trains a small decoder-only model with each.

@@ -35,3 +35,7 @@ Deck 06 slide 10 and deck 19 slides 4/10 now show executed float64 step/error pl
 ## FND-2 teaching/protocol update prepared for review — 2026-11-07
 
 Deck 08 slide 10 and deck 09 slide 7 now show independent per-optimizer tuning and a search/refit/evaluation budget. The L2 worksheet declares controlled splits/seeds, validation selection, held-out boundaries, failed trials and actual cost. A six-trial command reuses existing optimizers on a deterministic quadratic; it is optimization-only and does not establish held-out model quality. Original optimizer implementations and reference results are unchanged. This completes the teaching/protocol addition; a student validation-selected learning experiment remains to be run. Screenshots accompany review and explicit user approval is required before merge.
+
+## FND-3 shared validation bridge — 2026-11-10
+
+Deck 20 slides 9/10 and the [shared worksheet](decoder_bridge_worksheet_2026_11.md) connect MLP/residual shape and gradient contracts to architecture/training L1. Ten reused NumPy baseline cases pass, with two smooth residual numerical checks and an identity-path control. A temporary all-allowed decoder mask makes the exact existing future-invariance test fail while attention-definition equivalence still passes; restoring it passes again. Two selected existing PyTorch model tests pass in a separate lane. The bounded integration/expected-failure acceptance is implemented, not full Transformer gradient coverage, target-shift/packing verification, new training or learned-quality validation.

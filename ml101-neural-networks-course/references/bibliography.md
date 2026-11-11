@@ -114,3 +114,7 @@ of these sources; numbers that come from the course's own labs say so on the sli
 - Stanford CS231n, [Neural Networks Part 3: Learning](https://cs231n.github.io/neural-networks-3/), gradient checks: centered differences, step-size tradeoffs, kinks and scale-aware error. Used in decks 06/19 and L1. Course curves are executed toy float64 calculations, not copied upstream figures; the mixed tolerance is fixture-specific.
 
 Fair-comparison supplement checked 2026-11-07: Google Tuning Playbook, experimental design / scientific, nuisance and fixed hyperparameters. Decks 08/09 and the L2 worksheet adapt these principles into an original study diagram and a constructed update-budget example; neither is a measured optimizer ranking.
+
+## Shape/gradient/causality bridge — checked 2026-11-10
+
+Deck 20 and the [shared worksheet](decoder_bridge_worksheet_2026_11.md) recheck [CS231n gradient-check guidance](https://cs231n.github.io/neural-networks-3/) and [Attention Is All You Need, arXiv:1706.03762](https://arxiv.org/html/1706.03762v7), §§3.1–3.3. Numerical derivatives, residual dimensions, decoder masking and the output offset have distinct contracts. The original course diagrams and executed mask-removal control do not reproduce a paper result or establish learned quality. Course blocks use pre-LN; the paper uses post-LN.

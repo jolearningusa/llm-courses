@@ -76,6 +76,8 @@ ml101-neural-networks-course/
 │   ├── L1_autograd_mlp/
 │   │   ├── README.md
 │   │   ├── autograd.py              # Reverse-mode autodiff on NumPy arrays
+│   │   ├── decoder_bridge.py        # Shared derivative / mask-removal controls
+│   │   ├── decoder_bridge_report.json
 │   │   ├── gradient_diagnostics.py # Step-size, kink and near-zero checks
 │   │   ├── test_gradient_diagnostics.py
 │   │   ├── figures-report.json
@@ -107,6 +109,8 @@ ml101-neural-networks-course/
 │   └── README.md                    # Lab index
 ├── references/
 │   ├── research_audit_2026_11.md
+│   ├── decoder_bridge_worksheet_2026_11.md
+│   ├── bridge_training_checks_2026_11.json
 │   └── bibliography.md              # Every source, grouped by deck; checked 2026-11-06
 ├── slides/
 │   ├── 00_course_map.html           # Course map deck
