@@ -39,7 +39,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from check_course import ROOT, TEXT_SUFFIXES, course_files, courses, read  # noqa: E402
 
 URL_RE = re.compile(r"""https?://[^\s<>"'`)\]|]+""")
-SKIP_URL_RE = re.compile(r"localhost|127\.0\.0\.1|0\.0\.0\.0|example\.(?:com|org)|\$\{|\{\{|<", re.I)
+# Local, reserved (RFC 2606 example domains and the .example TLD) and code-template URLs are not links to check,
+# and neither are XML namespace names in inline SVG (xmlns, xlink, RDF/Dublin Core metadata).
+SKIP_URL_RE = re.compile(r"localhost|127\.0\.0\.1|0\.0\.0\.0|example\.(?:com|org)|\.example(?:[/:?]|$)|\{|<"
+                         r"|^http://(?:www\.w3\.org/(?:2000/svg|1999/xlink|1999/02/22-rdf-syntax-ns)"
+                         r"|purl\.org/dc/|creativecommons\.org/ns)", re.I)
 SOFT_CODES = {401, 403, 429}
 HOST_DELAY = 1.0  # seconds between requests to the same host
 MAX_RETRY_AFTER = 30  # longest Retry-After wait honored on a 429
@@ -165,9 +169,14 @@ def probe_host(urls: list[str]) -> list[tuple[str, str | None, bool]]:
 def check_links() -> tuple[list[str], list[str], int]:
     links = external_links()
     by_host: dict[str, list[str]] = {}
-    for url in sorted(links):
-        by_host.setdefault(urlsplit(url).netloc.lower(), []).append(url)
     broken, refused = [], []
+    for url in sorted(links):
+        try:
+            host = urlsplit(url).netloc.lower()
+        except ValueError as e:  # a malformed URL is reported, not allowed to stop the whole run
+            broken.append(f"| {url} | {e} | {', '.join(f'`{p}`' for p in sorted(links[url]))} |")
+            continue
+        by_host.setdefault(host, []).append(url)
     with ThreadPoolExecutor(max_workers=8) as pool:  # hosts in parallel, each host sequential
         results = sorted(r for host_results in pool.map(probe_host, by_host.values()) for r in host_results)
         for url, problem, soft in results:
