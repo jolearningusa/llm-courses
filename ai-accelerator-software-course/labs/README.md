@@ -9,6 +9,7 @@ python3 experiments.py explore
 python3 experiments.py fuzz --seed 17 --steps 300
 python3 experiments.py report --output result.json
 python3 execution_coverage.py --output coverage-new.json
+PYTHONHASHSEED=0 python3 qualification_matrix.py --output qualification-new.json
 ```
 
 `result.json` must not already exist; reports are created exclusively to avoid overwriting a previous run. Save raw JSON plus exact source/environment identity. The report contains model ticks, CPU execution provenance and explicit hardware/power-thermal `not_run` fields. A scope gate accepts only the supported functional evidence; this is a teaching decision, not a signed attestation or hardware qualification.
@@ -32,3 +33,5 @@ Seeded state exercising is not coverage-guided fuzzing. The abstract explorer is
 
 
 The separate [L5 execution-evidence controls](handouts/lab05_state_exploration.md#execution-coverage-controls) use the same virtual worker to distinguish a legal run, no launch, invalid channels and observed failures. They add eight tests (32 total) and an executed reference report. They do not change `experiments.py`'s older functional gate or authenticate that report. GPU and Compute Sanitizer remain not-run.
+
+[L6's qualification matrix](handouts/lab06_qualification.md#executed-matrix-and-policy-controls) adds nine policy tests (41 total) and an actual bytecode-build/CPU-model report. It retains unavailable device rows as not-run. Fabricated device records are policy controls only; no target adapter or physical experiment is implemented.

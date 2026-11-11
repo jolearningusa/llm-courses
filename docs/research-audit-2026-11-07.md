@@ -81,3 +81,7 @@ The [training-course manifest/reporting supplement](../llm-training-course/refer
 ## Follow-up: AGT-4 session handoff and pending operations — 2026-11-09
 
 The [AgentOS recovery fixture](../llm-agentos-course/references/session_handoff_controls_2026_11.md) uses a new Python interpreter for each of nine fixed cases, checking preserved goals/progress, pending operations and fake-tool receipts. Context-manager EN/ZH diagrams show the acknowledgement-loss boundary and actual controls under an equal byte cap. This is deterministic state transfer, not a model-token quality comparison or production exactly-once/crash durability result. The bounded AGT-4 fixture is implemented; model/service/concurrency qualification remains open. PR #120 still does not include AGT-2's measured benchmark.
+
+## Follow-up: ACC-2 qualification reporting and policy controls — 2026-11-10
+
+The [accelerator execution note](../ai-accelerator-software-course/references/qualification_matrix_2026_11.md) records an actual bytecode-build/CPU-model matrix and nine new policy tests (41 total). EN/ZH deck 06 separates stage from outcome; unavailable-board and build/model promotion controls cannot earn physical acceptance. This implements bounded reporting/acceptance controls, not a target adapter, authenticated execution, firmware/HIL run or physical qualification. ACC-3 remains open. PR #120 still leaves AGT-2's measured benchmark pending.
