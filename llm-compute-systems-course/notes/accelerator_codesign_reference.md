@@ -2,6 +2,8 @@
 
 Companion to [deck 40](../slides/40_inference_accelerator_architectures.html) · [简体中文](zh/accelerator_codesign_reference.md). Optional reference, reviewed 2026-11-01. See the [evidence review](../references/accelerator_architectures_review.md) for primary sources, rejected media claims and roadmap provenance. No accelerator/compiler benchmark was run.
 
+**Selected Google recheck, 2026-11-11:** The [new evidence ledger](../references/ironwood_spec_evidence_2026_11.md) supersedes the interpretation of the Google row: one chip has two separate memory spaces; a 4-chip VM exposes 8 JAX devices; usable HBM is below nominal capacity. The cause of the table/prose bandwidth difference is not established; rounding is not a verified explanation. The service log records preview 2025-11-24 and GA 2026-03-31. No local TPU/framework qualification ran. The original review date remains historical.
+
 ## Source-documented hardware limits
 
 | Device | Documented fact | Boundary |

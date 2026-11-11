@@ -56,3 +56,7 @@ The [FA4 SM100 walkthrough](fa4_sm100_walkthrough_2026_11.md) pins one ordinary 
 ## CMP-4 selected Rubin rows — 2026-11-10
 
 The [dated evidence ledger](rubin_spec_evidence_2026_11.md) rechecks product/PDF/architecture units, footnotes, workload comparisons and vendor-reported status. EN/ZH deck 24 slides 6/7 now separate GPU/Superchip/NVL72, the PDF's NVL4 column, sparse/dense peaks and conditioned versus locally measured performance. The 19.2/3 versus 22/3.6 TB/s source discrepancy remains unresolved; no SKU/clock explanation is invented. This completes only the bounded Rubin claim review. Other vendors, actual library support and hardware/workload validation remain open.
+
+## CMP-4 selected Ironwood rows — 2026-11-11
+
+The [Google evidence ledger](ironwood_spec_evidence_2026_11.md) rechecks chip/chiplet/JAX-device counts, nominal versus usable HBM, bandwidth units and service preview/GA milestones. Deck 40 slide 13 has synchronized original EN/ZH diagrams. The source table/prose rate difference is retained without an invented explanation. This completes the bounded Google claim review, not target/software qualification or all CMP-4 vendors. No runtime or benchmark ran. PR #120 still leaves AGT-2's measured benchmark pending.

@@ -28,6 +28,10 @@ llm-courses/
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
 │   ├── reviews/
+│   │   ├── compute-ironwood-spec-evidence/
+│   │   │   ├── README.md
+│   │   │   ├── en.png
+│   │   │   └── zh.png
 │   │   ├── compute-rubin-spec-evidence/
 │   │   │   ├── README.md
 │   │   │   ├── en.png

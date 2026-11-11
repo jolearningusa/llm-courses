@@ -252,3 +252,7 @@ Deck 12 slides 15/17 add two original inline concepts in EN/ZH (four SVGs), outs
 ## Additional authored Rubin source diagrams — 2026-11-10
 
 Deck 24 slides 6/7 (EN/ZH) embed original SVGs outside the 164 managed concepts: published GPU/Superchip/NVL72 scope, unresolved rate pairs, sparse/dense compute contracts, conditioned vendor comparisons and unexecuted local validation. [Sources and exact PDF identity](rubin_spec_evidence_2026_11.md) cite the vendor product table, datasheet printed pp. 3/8/9, architecture article and availability statement. Numbers are specifications/claims, not measured course results. No vendor image is copied; preserve these manual slides during regeneration.
+
+## Ironwood chip and device boundaries — 2026-11-11
+
+Deck 40 slide 13 (EN/ZH): original inline SVG, authored from the [selected Google evidence ledger](ironwood_spec_evidence_2026_11.md). Two chiplets represent separate memory/device exposure, not a physical floorplan. Counts, peak units and source discrepancies are distinct from application performance. Manual figure outside the 164 managed concepts; no vendor artwork copied.

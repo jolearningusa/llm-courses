@@ -101,3 +101,7 @@ The [training supplement](../llm-training-course/references/rollout_consistency_
 ## Follow-up: CMP-4 selected Rubin specification evidence — 2026-11-10
 
 The [compute source ledger](../llm-compute-systems-course/references/rubin_spec_evidence_2026_11.md) rechecks selected Rubin units, precision/sparsity, vendor comparison conditions and availability statements. Original bilingual diagrams replace deck 24 slides 6/7. The vendor-linked PDF was hashed and relevant full pages visually inspected; its third configuration column differs from the web table. Published rate discrepancies remain unresolved and no physical/software qualification is implied. Other CMP-4 vendor rows remain open. PR #120 still does not supply AGT-2's measured benchmark.
+
+## CMP-4 selected Ironwood rows — 2026-11-11
+
+The [Google evidence ledger](../llm-compute-systems-course/references/ironwood_spec_evidence_2026_11.md) rechecks chip/chiplet/JAX-device counts, nominal versus usable HBM, bandwidth units and service preview/GA milestones. Deck 40 slide 13 has synchronized original EN/ZH diagrams. The source table/prose rate difference is retained without an invented explanation. This completes the bounded Google claim review, not target/software qualification or all CMP-4 vendors. No runtime or benchmark ran. PR #120 still leaves AGT-2's measured benchmark pending.
