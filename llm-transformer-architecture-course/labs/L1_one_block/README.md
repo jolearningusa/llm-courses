@@ -35,3 +35,7 @@ python -m unittest test_transformer.py
 Attention matches a one-query-at-a-time loop; the decoder's output at position i does not change when later
 tokens change; the encoder's and the encoder-decoder's outputs do; unmasked attention without positions is
 permutation-equivariant; and the sinusoidal encoding of position p + k is a rotation of that of p.
+
+## Shared prerequisite bridge
+
+The [foundations worksheet](../../../ml101-neural-networks-course/references/decoder_bridge_worksheet_2026_11.md) links MLP derivative/shape checks to this block and training L1. Its runner reuses all six tests here and temporarily supplies an all-allowed decoder mask: the existing attention-definition test still passes while the exact existing future-invariance test fails. It then restores the mask and verifies the causal check. Original source and tests are unchanged; numerical derivatives and causal data dependence need separate oracles.

@@ -89,3 +89,7 @@ The [accelerator execution note](../ai-accelerator-software-course/references/qu
 ## Follow-up: ARC-2 byte/chunk reading and accounting — 2026-11-10
 
 The [architecture supplement](../llm-transformer-architecture-course/references/byte_chunk_accounting_2026_11.md) adds pinned BLT/H-Net readings, EN/ZH mechanism diagrams and an L2 CPU fixture. Twelve same-byte segmentation rows retain round-trip and causal controls; 15 tests pass. Declared local/global/router/head positions are distinct from executed bookkeeping and unmeasured FLOPs/latency. This is the bounded reading/fixture portion, not trained dynamic chunking, author-kernel validation, model BPB/quality or a GPU speedup. Those ARC-2 extensions remain open. PR #120 still does not include AGT-2's measured benchmark.
+
+## Follow-up: FND-3 shapes, derivatives and decoder causality — 2026-11-10
+
+The [shared worksheet](../ml101-neural-networks-course/references/decoder_bridge_worksheet_2026_11.md) and foundations deck 20 diagrams link three existing course labs. Reused checks distinguish numerical derivatives, operator equivalence and decoder data dependence; an in-process missing-mask control triggers exactly the existing causality assertion, then restoration passes. Ten NumPy baseline cases and two separate selected PyTorch cases pass; no old model/test implementation is edited. The bounded integration is complete, with label-shift/packing, full backward coverage and learned quality explicitly outside its evidence. PR #120 still leaves AGT-2's measured benchmark pending.

@@ -28,6 +28,9 @@ llm-courses/
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
 │   ├── reviews/
+│   │   ├── foundations-decoder-bridge/
+│   │   │   ├── README.md
+│   │   │   └── changes.png
 │   │   ├── architecture-byte-chunk/
 │   │   │   ├── README.md
 │   │   │   ├── en.png

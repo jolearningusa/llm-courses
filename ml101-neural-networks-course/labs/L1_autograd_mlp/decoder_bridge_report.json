@@ -1,0 +1,89 @@
+{
+  "baseline": {
+    "errors": [],
+    "failures": [],
+    "passed": 10,
+    "successful": true,
+    "tests": 10
+  },
+  "causal": {
+    "changed_positions": [
+      5,
+      6,
+      7
+    ],
+    "prefix_max_abs_delta": 0.0,
+    "shape": [
+      8,
+      50
+    ]
+  },
+  "expected_mutant_rejected": true,
+  "limits": "Random-weight CPU fixtures, no learned quality, new training run, GPU timing, universal gradient tolerance or full-course qualification.",
+  "mutant": {
+    "errors": [],
+    "failures": [
+      {
+        "test": "test_transformer.OneBlockThreeFamilies.test_decoder_never_sees_the_future",
+        "trace": "Traceback (most recent call last):\n  File \"<repo>/llm-transformer-architecture-course/labs/L1_one_block/test_transformer.py\", line 37, in test_decoder_never_sees_the_future\n    np.testing.assert_allclose(a[:5], b[:5], rtol=1e-12)\n  File \"/Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/numpy/testing/_private/utils.py\", line 1711, in assert_allclose\n    assert_array_compare(compare, actual, desired, err_msg=str(err_msg),\n  File \"/Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/numpy/testing/_private/utils.py\", line 919, in assert_array_compare\n    raise AssertionError(msg)\nAssertionError: \nNot equal to tolerance rtol=1e-12, atol=0\n\nMismatched elements: 250 / 250 (100%)\nMax absolute difference among violations: 1.73564254\nMax relative difference among violations: 110.26683347\n ACTUAL: array([[  8.724263,  -5.576409,  -4.088539,  28.777363,   2.381236,\n          0.696273,  -5.329941,   7.790179,  -1.012061,   2.405174,\n          2.684742,  -1.669304,  -1.472768,  -4.485473,   4.803518,...\n DESIRED: array([[ 8.619277e+00, -5.504904e+00, -3.759984e+00,  2.872836e+01,\n         3.024684e+00,  1.130030e+00, -5.143390e+00,  7.627155e+00,\n        -1.302703e+00,  1.780264e+00,  2.364868e+00, -1.727361e+00,...\n"
+      }
+    ],
+    "passed": 1,
+    "successful": false,
+    "tests": 2
+  },
+  "numpy": "2.3.5",
+  "python": "3.12.14",
+  "residual": {
+    "branch_shape": [
+      2,
+      3
+    ],
+    "formula": "y=x+tanh(x@W), loss=sum(y)",
+    "identity_path_gradient": [
+      [
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "input_shape": [
+      2,
+      3
+    ],
+    "max_relative_error": {
+      "input": 6.579845033234949e-11,
+      "weight": 2.850676600720781e-10
+    },
+    "seed": 7,
+    "step": 1e-06
+  },
+  "restored": {
+    "errors": [],
+    "failures": [],
+    "passed": 1,
+    "successful": true,
+    "tests": 1
+  },
+  "schema": 1,
+  "source_sha256": {
+    "llm-transformer-architecture-course/labs/L1_one_block/test_transformer.py": "c4352ead87d2fca1c83b14d9031c33178dc3aec57cb3b6f14f23c0dd3146b216",
+    "llm-transformer-architecture-course/labs/L1_one_block/transformer.py": "7ac7db05251c3063ef6e9c1141b2dd5edef50ab5823f6be2f1fc641f8aca748f",
+    "ml101-neural-networks-course/labs/L1_autograd_mlp/autograd.py": "6ec40044593617663a469db439305a9ae5d620d9562bd1a80ec549f6656564bf",
+    "ml101-neural-networks-course/labs/L1_autograd_mlp/decoder_bridge.py": "90c5d83e5a38822ee4c2c952644ec28091b3da31abaa50a48abdd1ad2c150c1c",
+    "ml101-neural-networks-course/labs/L1_autograd_mlp/mlp.py": "24713a368006018b088ca640c2b617b32885e76a7a626a09fa1858787df42753",
+    "ml101-neural-networks-course/labs/L1_autograd_mlp/test_mlp.py": "2fd6878289b1025e5c01da347f261a8b44ae549edc1d6326f1135253b29d903b"
+  },
+  "unmasked": {
+    "changed_positions": [
+      5,
+      6,
+      7
+    ],
+    "prefix_max_abs_delta": 1.7356425383462888,
+    "shape": [
+      8,
+      50
+    ]
+  }
+}

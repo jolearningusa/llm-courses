@@ -71,3 +71,7 @@ Submit predictions, raw JSON, both error plots, an accepted smooth control, a re
 The former deck 06 closing questions remain useful: backpropagate through `(sigmoid(wx+b)−y)²`; derive matrix-product gradient shapes; explain accumulated gradients for reused values and reverse-mode memory cost. The debugging checklist still includes initial near-uniform loss under small logits, activation/gradient scales, single-batch overfitting and fair multi-seed comparisons. Diagnose large initial loss rather than assuming one universal cause; controlled initial-logit assumptions matter.
 
 Primary reading: [Stanford CS231n learning notes, gradient-check section](https://cs231n.github.io/neural-networks-3/). Curves and fixtures are original course calculations informed by those numerical-check principles.
+
+## Optional bridge: derivatives versus decoder causality
+
+Use the [shared shape/gradient/causality worksheet](../../references/decoder_bridge_worksheet_2026_11.md) with deck 20 and the architecture/training L1 labs. Run `python decoder_bridge.py --output bridge-new.json` from this directory in the full repository checkout, using a NumPy environment. The [actual report](decoder_bridge_report.json) retains ten reused passing baseline cases, smooth residual derivatives, an expected existing causality-test failure under a temporary all-allowed mask, and successful restoration. No original implementation or test is edited. This is CPU integration evidence, not a complete Transformer gradient check, training run or model-quality result.
