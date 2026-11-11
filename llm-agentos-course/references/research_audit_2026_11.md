@@ -61,3 +61,12 @@ The open question above (no matching source revision for 0.33.0) is now settled:
 | Metrics `vllm:prefix_cache_queries`, `vllm:kv_cache_usage_perc`, `vllm:time_to_first_token_seconds` | present | unchanged |
 
 No slide or lab text changes. The tracker now records 0.33.0. This is a source-level check: Lab 5 was not re-run on a GPU, and the compute course keeps its own 0.32.0 cohort until its runtime gates pass.
+
+## OpenClaw 2026.11.3 contract check — 2026-11-11
+
+The npm packages for 2026.10.7 and 2026.11.3 ship their docs, so the context-engine and manifest pages were compared directly (`docs/concepts/context-engine.md`, `docs/plugins/architecture-internals/context-engines.md`, `docs/plugins/manifest.md`).
+
+- Unchanged: `api.registerContextEngine`, `plugins.slots.contextEngine` with `"legacy"` as the default, manifest `kind: "context-engine"` and `configSchema`, `info.acceptedHostParams`, `assemble()` receiving `availableTools` / `citationsMode`, `contextProjection`, `openclaw plugins install -l`, `delegateCompactionToRuntime` and `buildMemorySystemPromptAddition` in `openclaw/plugin-sdk/core`, and the quarantine rule (an engine that throws is quarantined for the Gateway process and turns fall back to `legacy`).
+- Changed: `ownsCompaction: true` still turns off the built-in auto-compaction, but no longer turns off the host's pre-prompt check. The runtime now checks every outgoing request, including the first, against its own estimate; a request over budget enters recovery before it reaches the provider, and the engine's `estimatedTokens` no longer decides this. `promptAuthority` now only affects diagnostics.
+
+Course change: the kit's `OpenClawHost` (`labs/kit/nanoos/hosts.py`) now counts the assembled request itself instead of trusting `estimatedTokens` before calling `compact()`. Slide, handout and Lab 12B text stay as they are (they only say that owning compaction turns the built-in compactor off). With the reference solutions, the Lab 12 and kit tests pass as before; Lab 12B was not run against a live Gateway.

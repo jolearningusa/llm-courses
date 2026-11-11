@@ -209,8 +209,10 @@ class OpenClawHost:
     Every message added to the session is ingest()ed. Before each model call, assemble() with the token
     budget and no messages (the engine answers from its own store) gives the request. If the engine does not
     own compaction, this host does what the runtime's built-in compactor would at its simplest: it sends
-    only the newest messages that fit the budget. If assemble() reports more tokens than the budget, the host
-    calls compact() and assembles again. afterTurn() follows each turn. If any engine call raises, the engine
+    only the newest messages that fit the budget. If it does, the host still counts the assembled request
+    itself before sending it (OpenClaw 2026.11 checks every outgoing request; the engine's estimatedTokens does
+    not decide this): a request over the budget enters recovery, compact() and a fresh assemble().
+    afterTurn() follows each turn. If any engine call raises, the engine
     is quarantined for the rest of the session and the host falls back to the "legacy" behavior: the whole
     transcript, cut to the budget.
     """
@@ -252,7 +254,7 @@ class OpenClawHost:
             for _ in range(self.max_steps):
                 params = {"sessionId": sid, "sessionKey": sid, "messages": [], "tokenBudget": self.token_budget}
                 out = self._engine("assemble", params)
-                if out and owns and out.get("estimatedTokens", 0) > self.token_budget:
+                if out and owns and count_tokens(out["messages"]) > self.token_budget:  # host's own count
                     compacted = self._engine("compact", {"sessionId": sid, "tokenBudget": self.token_budget})
                     if compacted and compacted.get("compacted"):
                         r.compressions += 1
