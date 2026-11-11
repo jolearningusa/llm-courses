@@ -127,3 +127,24 @@ Percentages below are from the complete ledger, not chosen checkpoints. Positive
 | 2 | 40 | width_proxy | 1.88% → 1.56% | 7.44% → 4.94% | 95.1% | 72.9% |
 
 Across the three seeds, final held-out pass@1 ranges from 0–0.31% (10/sparse), 0–0.31% (10/width), 0–2.50% (40/sparse), and 0–1.56% (40/width). These ranges describe this run, not statistical significance.
+
+## Optional rollout / learner consistency
+
+Use the [pinned verl reading and CPU evidence note](../../references/rollout_consistency_2026_11.md) with deck 20's closing slides. This adds probability-contract controls without changing `policy.py`, `grpo.py`, earlier ablations or their tests.
+
+```sh
+OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 python rollout_consistency.py --output rollout-new.json
+OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 python -m unittest \
+  test_rollout_consistency test_grpo.TestReward test_grpo.TestGroupAdvantages \
+  test_grpo.TestLengthNormalization test_coverage -v
+```
+
+Use a fresh output path. The [actual report](rollout_consistency_report.json) records sampled responses, observed sampling logits as selected log-probs, independent rescoring, masks, three policy identities, strict rewards, a synthetic-advantage update and single CPU phase intervals. Nineteen selected tests pass (eight new); the longer `TestTraining` case and historical tables are not rerun by this command.
+
+1. Draw `q` (rollout), `p_old` (fixed anchor), `p_theta` (current learner). Identify the denominator of PPO's ratio separately from decoupled rollout correction. A KL-reference policy is not automatically either denominator.
+2. Predict when identical weights can yield a ratio other than one: different temperature/filters, tokens/shift, mask or backend/precision. Reproduce the temperature and previous-token negative controls. Check the mask independently; ratio one alone does not detect a wrongly excluded EOS.
+3. Compare token ratios `[2,3]`, their sequence product `6`, and the exponential of mean log-ratio. Explain why reductions cannot be silently exchanged.
+4. Explain why the four zero strict rewards cannot supply the signed advantages used for the isolated update. Inspect the changed learner hash and unchanged rollout/anchor hashes without calling it a quality gain.
+5. Design a real-backend ledger: sample/weight versions, valid masks, queue depth, completed work and stage timing. The local synchronous batch counts and CPU intervals are not Ray/vLLM throughput or async evidence.
+
+The observer and fingerprints are reproduction aids, not authenticated runtime attestations. The new finite-ratio helper's padding control is scoped to that helper; no blanket nonfinite-input robustness claim is made for the original policy loss. Retained deck 20 questions: helpfulness/safety reward separation, rating margins, KL versus early stopping, and comparing alignment-tax/bonus study setups. Historical questions and prose also remain in slide notes.

@@ -93,3 +93,7 @@ The [architecture supplement](../llm-transformer-architecture-course/references/
 ## Follow-up: FND-3 shapes, derivatives and decoder causality — 2026-11-10
 
 The [shared worksheet](../ml101-neural-networks-course/references/decoder_bridge_worksheet_2026_11.md) and foundations deck 20 diagrams link three existing course labs. Reused checks distinguish numerical derivatives, operator equivalence and decoder data dependence; an in-process missing-mask control triggers exactly the existing causality assertion, then restoration passes. Ten NumPy baseline cases and two separate selected PyTorch cases pass; no old model/test implementation is edited. The bounded integration is complete, with label-shift/packing, full backward coverage and learned quality explicitly outside its evidence. PR #120 still leaves AGT-2's measured benchmark pending.
+
+## Follow-up: TRN-2 rollout / learner probability contracts — 2026-11-10
+
+The [training supplement](../llm-training-course/references/rollout_consistency_2026_11.md) combines pinned verl source reading with actual L7 sampler/learner rescoring and same-contract ratio controls. Role diagrams separate PPO and rollout-correction denominators. Nineteen selected CPU controls pass; one synthetic-advantage update demonstrates version/ratio drift, not learned quality. Actual distributed/backend/queue qualification remains pending. An unrelated open freshness-script PR was inspected for file overlap before this independent item. PR #120 still leaves AGT-2's measured benchmark pending.

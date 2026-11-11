@@ -1,0 +1,27 @@
+{
+  "verified": "2026-11-10",
+  "revision": "2b4ed6826a39205838d0ca004bdd942334dbe4b6",
+  "execution": "text inspection only; not installed/imported",
+  "files": [
+    {
+      "path": "verl/trainer/ppo/ray_trainer.py",
+      "url": "https://github.com/verl-project/verl/blob/2b4ed6826a39205838d0ca004bdd942334dbe4b6/verl/trainer/ppo/ray_trainer.py",
+      "sha256": "f1d9cc9b2bc95d5beeb328435ede87deed64253a056339e29d50fe7eef4e33d8"
+    },
+    {
+      "path": "verl/trainer/ppo/rollout_corr_helper.py",
+      "url": "https://github.com/verl-project/verl/blob/2b4ed6826a39205838d0ca004bdd942334dbe4b6/verl/trainer/ppo/rollout_corr_helper.py",
+      "sha256": "8dec16b29b13b115566aeea3beb28023df0f76367457e04d52b09e5469f7abb0"
+    },
+    {
+      "path": "verl/trainer/ppo/core_algos.py",
+      "url": "https://github.com/verl-project/verl/blob/2b4ed6826a39205838d0ca004bdd942334dbe4b6/verl/trainer/ppo/core_algos.py",
+      "sha256": "369b614f239f237a04a38a40b1877cd6fd14aa7bd5f9ff4fe4d7758b682a6948"
+    },
+    {
+      "path": "docs/algo/rollout_corr.md",
+      "url": "https://github.com/verl-project/verl/blob/2b4ed6826a39205838d0ca004bdd942334dbe4b6/docs/algo/rollout_corr.md",
+      "sha256": "ff28e1d7f3aba632a33d673e8389a0c06ea71f26265e4ff3a10c05c32da1b387"
+    }
+  ]
+}
