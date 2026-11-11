@@ -28,6 +28,10 @@ llm-courses/
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
 │   ├── reviews/
+│   │   ├── architecture-byte-chunk/
+│   │   │   ├── README.md
+│   │   │   ├── en.png
+│   │   │   └── zh.png
 │   │   ├── accelerator-qualification/
 │   │   │   ├── README.md
 │   │   │   ├── en.png

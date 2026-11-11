@@ -143,3 +143,12 @@ Reading scope: v1 task families, effective-length methodology and error analysis
 Additional code reading: [author Mamba3 module at e9594ce](https://github.com/state-spaces/mamba/blob/e9594ce1c732d97440f0332fdc43170a2294dbfa/mamba_ssm/modules/mamba3.py), `step` and `allocate_inference_cache`. Its core SSM cache omits the rank dimension while the auxiliary K cache includes it; phase and V caches are also present. The step comment limits its tested hardware to H100 at this revision. Source inspection is not a local compatibility or speed test.
 
 The new diagrams are original teaching schematics. No new paper result table or speed ratio is reproduced. The local scalar/complex recurrence and separate MIMO matrix fragments are mathematical fixtures, not a full learned architecture or the author's kernel.
+
+## Byte/chunk supplement — verified 2026-11-10
+
+| Deck / lab | Paper | First author, year | Reading target |
+|---|---|---|---|
+| 07 / L2 optional | Byte Latent Transformer: Patches Scale Better Than Tokens | Pagnoni, 2024 | [arXiv:2412.09871](https://arxiv.org/html/2412.09871v1) (v1), §§2–4, Fig. 3/5 |
+| 07 / L2 optional | Dynamic Chunking for End-to-End Hierarchical Sequence Modeling | Hwang, 2025 | [arXiv:2507.07955](https://arxiv.org/html/2507.07955v1) (v1), §§2.2/2.4, Fig. 1/2 |
+
+The [dated source/execution note](byte_chunk_accounting_2026_11.md) pins inspected author files, records their hashes, attributes the original inline diagrams, and separates actual CPU segmentation/algebra from declared neural-stage counts and unmeasured model quality/performance. No author implementation was executed.

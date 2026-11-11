@@ -1,0 +1,898 @@
+{
+  "actual_merges": 64,
+  "config": {
+    "bpe_merges": 64,
+    "entropy_prior": "Laplace one, 256 bytes, document-local prefix counts",
+    "entropy_threshold_bits": 7.99,
+    "max_patch_bytes": 8
+  },
+  "corpus_sha256": {
+    "de.txt": "d17e02ff041005e26533b5f71ffa8244fd37fbae776a94dbaa4c1d011629d5a0",
+    "en.txt": "aa5803a794eee1461235d7885ac5ab72a2c989357fb523fd75b2aeae3ab53704",
+    "es.txt": "0b1998a1506b44e5ff107b7921f0e709f0a7c5f1ae1be6c959bb43805b78e0e9",
+    "zh.txt": "633d4bc23888941d305bd4ea51ea08fcc2ebaa6ee393c09ecadff818e8e26e1a"
+  },
+  "limits": "Only tokenization, boundaries, byte round trips and scalar algebra executed. Architecture position ledger is declared, not profiled. No trained BLT/H-Net, model quality, BPB, FLOPs, memory or device timing measured.",
+  "merge_pairs": [
+    [
+      101,
+      110
+    ],
+    [
+      101,
+      114
+    ],
+    [
+      32,
+      116
+    ],
+    [
+      105,
+      110
+    ],
+    [
+      32,
+      115
+    ],
+    [
+      32,
+      100
+    ],
+    [
+      32,
+      97
+    ],
+    [
+      111,
+      107
+    ],
+    [
+      101,
+      115
+    ],
+    [
+      111,
+      114
+    ],
+    [
+      263,
+      256
+    ],
+    [
+      101,
+      108
+    ],
+    [
+      228,
+      184
+    ],
+    [
+      32,
+      112
+    ],
+    [
+      32,
+      99
+    ],
+    [
+      111,
+      100
+    ],
+    [
+      97,
+      115
+    ],
+    [
+      232,
+      175
+    ],
+    [
+      32,
+      108
+    ],
+    [
+      32,
+      109
+    ],
+    [
+      105,
+      101
+    ],
+    [
+      116,
+      101
+    ],
+    [
+      104,
+      101
+    ],
+    [
+      105,
+      122
+    ],
+    [
+      120,
+      116
+    ],
+    [
+      258,
+      266
+    ],
+    [
+      32,
+      119
+    ],
+    [
+      97,
+      110
+    ],
+    [
+      32,
+      84
+    ],
+    [
+      111,
+      110
+    ],
+    [
+      114,
+      101
+    ],
+    [
+      32,
+      101
+    ],
+    [
+      99,
+      104
+    ],
+    [
+      258,
+      278
+    ],
+    [
+      101,
+      280
+    ],
+    [
+      117,
+      110
+    ],
+    [
+      154,
+      132
+    ],
+    [
+      188,
+      140
+    ],
+    [
+      229,
+      136
+    ],
+    [
+      231,
+      292
+    ],
+    [
+      239,
+      293
+    ],
+    [
+      273,
+      141
+    ],
+    [
+      279,
+      257
+    ],
+    [
+      135,
+      230
+    ],
+    [
+      256,
+      116
+    ],
+    [
+      261,
+      101
+    ],
+    [
+      32,
+      102
+    ],
+    [
+      32,
+      105
+    ],
+    [
+      32,
+      110
+    ],
+    [
+      32,
+      291
+    ],
+    [
+      97,
+      100
+    ],
+    [
+      97,
+      108
+    ],
+    [
+      227,
+      128
+    ],
+    [
+      229,
+      143
+    ],
+    [
+      262,
+      110
+    ],
+    [
+      297,
+      229
+    ],
+    [
+      32,
+      118
+    ],
+    [
+      101,
+      100
+    ],
+    [
+      113,
+      117
+    ],
+    [
+      114,
+      97
+    ],
+    [
+      260,
+      101
+    ],
+    [
+      271,
+      267
+    ],
+    [
+      287,
+      259
+    ],
+    [
+      308,
+      130
+    ]
+  ],
+  "python": "3.12.14",
+  "rows": [
+    {
+      "bytes": 23,
+      "characters": 23,
+      "entropy_details": null,
+      "input_hex": "62616e616e612062616e616e61212062616e616e613f0a",
+      "input_sha256": "370938e583c5ae4c275f94905c941bb4946ddc389c2dd953fb12d37e379741e3",
+      "method": "bytes",
+      "piece_hex": [
+        "62",
+        "61",
+        "6e",
+        "61",
+        "6e",
+        "61",
+        "20",
+        "62",
+        "61",
+        "6e",
+        "61",
+        "6e",
+        "61",
+        "21",
+        "20",
+        "62",
+        "61",
+        "6e",
+        "61",
+        "6e",
+        "61",
+        "3f",
+        "0a"
+      ],
+      "pieces": 23,
+      "positions": {
+        "byte_output_positions": 0,
+        "flops": "not_measured",
+        "global_positions": 23,
+        "latency": "not_measured",
+        "local_decoder_positions": 0,
+        "local_encoder_positions": 0,
+        "memory": "not_measured",
+        "model_execution": "not_run",
+        "router_positions": 0,
+        "token_or_byte_head_positions": 23
+      },
+      "round_trip": true,
+      "sample": "repeat"
+    },
+    {
+      "bytes": 23,
+      "characters": 23,
+      "entropy_details": null,
+      "input_hex": "62616e616e612062616e616e61212062616e616e613f0a",
+      "input_sha256": "370938e583c5ae4c275f94905c941bb4946ddc389c2dd953fb12d37e379741e3",
+      "method": "bpe64",
+      "piece_hex": [
+        "62",
+        "616e",
+        "616e",
+        "61",
+        "20",
+        "62",
+        "616e",
+        "616e",
+        "61",
+        "21",
+        "20",
+        "62",
+        "616e",
+        "616e",
+        "61",
+        "3f",
+        "0a"
+      ],
+      "pieces": 17,
+      "positions": {
+        "byte_output_positions": 0,
+        "flops": "not_measured",
+        "global_positions": 17,
+        "latency": "not_measured",
+        "local_decoder_positions": 0,
+        "local_encoder_positions": 0,
+        "memory": "not_measured",
+        "model_execution": "not_run",
+        "router_positions": 0,
+        "token_or_byte_head_positions": 17
+      },
+      "round_trip": true,
+      "sample": "repeat"
+    },
+    {
+      "bytes": 23,
+      "characters": 23,
+      "entropy_details": null,
+      "input_hex": "62616e616e612062616e616e61212062616e616e613f0a",
+      "input_sha256": "370938e583c5ae4c275f94905c941bb4946ddc389c2dd953fb12d37e379741e3",
+      "method": "fixed8",
+      "piece_hex": [
+        "62616e616e612062",
+        "616e616e61212062",
+        "616e616e613f0a"
+      ],
+      "pieces": 3,
+      "positions": {
+        "byte_output_positions": 23,
+        "flops": "not_measured",
+        "global_positions": 3,
+        "latency": "not_measured",
+        "local_decoder_positions": 23,
+        "local_encoder_positions": 23,
+        "memory": "not_measured",
+        "model_execution": "not_run",
+        "router_positions": 0,
+        "token_or_byte_head_positions": 0
+      },
+      "round_trip": true,
+      "sample": "repeat"
+    },
+    {
+      "bytes": 23,
+      "characters": 23,
+      "entropy_details": {
+        "boundaries": [
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false
+        ],
+        "distribution_evaluations": 23,
+        "entropy_bits": [
+          8.0,
+          7.997842448026564,
+          7.995723379454261,
+          7.993642264520532,
+          7.988695168789364,
+          7.983807241764034,
+          7.977106637025376,
+          7.975212192706129,
+          7.970493456463277,
+          7.962605472172209,
+          7.956167668671864,
+          7.947345135783096,
+          7.9396925375438645,
+          7.930138896270366,
+          7.928608143602669,
+          7.924322842338495,
+          7.918286324959885,
+          7.9082716904561146,
+          7.8999858694331895,
+          7.8894914901594,
+          7.880496569207343,
+          7.8696062349826175,
+          7.8684890838550166
+        ],
+        "probability_bins": 5888
+      },
+      "input_hex": "62616e616e612062616e616e61212062616e616e613f0a",
+      "input_sha256": "370938e583c5ae4c275f94905c941bb4946ddc389c2dd953fb12d37e379741e3",
+      "method": "prefix_entropy_toy",
+      "piece_hex": [
+        "62",
+        "61",
+        "6e",
+        "616e612062616e61",
+        "6e61212062616e61",
+        "6e613f0a"
+      ],
+      "pieces": 6,
+      "positions": {
+        "byte_output_positions": 23,
+        "flops": "not_measured",
+        "global_positions": 6,
+        "latency": "not_measured",
+        "local_decoder_positions": 23,
+        "local_encoder_positions": 23,
+        "memory": "not_measured",
+        "model_execution": "not_run",
+        "router_positions": 23,
+        "token_or_byte_head_positions": 0
+      },
+      "round_trip": true,
+      "sample": "repeat"
+    },
+    {
+      "bytes": 18,
+      "characters": 11,
+      "entropy_details": null,
+      "input_hex": "e7bc93e5ad9820636163686520f09f99820a",
+      "input_sha256": "f08793ccdc80de0cf23c4ec615ba627d6134660973859773ba60c03cfeaf448c",
+      "method": "bytes",
+      "piece_hex": [
+        "e7",
+        "bc",
+        "93",
+        "e5",
+        "ad",
+        "98",
+        "20",
+        "63",
+        "61",
+        "63",
+        "68",
+        "65",
+        "20",
+        "f0",
+        "9f",
+        "99",
+        "82",
+        "0a"
+      ],
+      "pieces": 18,
+      "positions": {
+        "byte_output_positions": 0,
+        "flops": "not_measured",
+        "global_positions": 18,
+        "latency": "not_measured",
+        "local_decoder_positions": 0,
+        "local_encoder_positions": 0,
+        "memory": "not_measured",
+        "model_execution": "not_run",
+        "router_positions": 0,
+        "token_or_byte_head_positions": 18
+      },
+      "round_trip": true,
+      "sample": "multilingual"
+    },
+    {
+      "bytes": 18,
+      "characters": 11,
+      "entropy_details": null,
+      "input_hex": "e7bc93e5ad9820636163686520f09f99820a",
+      "input_sha256": "f08793ccdc80de0cf23c4ec615ba627d6134660973859773ba60c03cfeaf448c",
+      "method": "bpe64",
+      "piece_hex": [
+        "e7",
+        "bc",
+        "93",
+        "e5",
+        "ad",
+        "98",
+        "2063",
+        "61",
+        "63",
+        "6865",
+        "20",
+        "f0",
+        "9f",
+        "99",
+        "82",
+        "0a"
+      ],
+      "pieces": 16,
+      "positions": {
+        "byte_output_positions": 0,
+        "flops": "not_measured",
+        "global_positions": 16,
+        "latency": "not_measured",
+        "local_decoder_positions": 0,
+        "local_encoder_positions": 0,
+        "memory": "not_measured",
+        "model_execution": "not_run",
+        "router_positions": 0,
+        "token_or_byte_head_positions": 16
+      },
+      "round_trip": true,
+      "sample": "multilingual"
+    },
+    {
+      "bytes": 18,
+      "characters": 11,
+      "entropy_details": null,
+      "input_hex": "e7bc93e5ad9820636163686520f09f99820a",
+      "input_sha256": "f08793ccdc80de0cf23c4ec615ba627d6134660973859773ba60c03cfeaf448c",
+      "method": "fixed8",
+      "piece_hex": [
+        "e7bc93e5ad982063",
+        "6163686520f09f99",
+        "820a"
+      ],
+      "pieces": 3,
+      "positions": {
+        "byte_output_positions": 18,
+        "flops": "not_measured",
+        "global_positions": 3,
+        "latency": "not_measured",
+        "local_decoder_positions": 18,
+        "local_encoder_positions": 18,
+        "memory": "not_measured",
+        "model_execution": "not_run",
+        "router_positions": 0,
+        "token_or_byte_head_positions": 0
+      },
+      "round_trip": true,
+      "sample": "multilingual"
+    },
+    {
+      "bytes": 18,
+      "characters": 11,
+      "entropy_details": {
+        "boundaries": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "distribution_evaluations": 18,
+        "entropy_bits": [
+          8.0,
+          7.997842448026564,
+          7.995723379454261,
+          7.993642264520532,
+          7.991598582259224,
+          7.989591820324674,
+          7.987621474819893,
+          7.985687050128804,
+          7.983788058752395,
+          7.981924021148676,
+          7.977256542635912,
+          7.9754716339266425,
+          7.973720207240744,
+          7.969195540979201,
+          7.967520134071841,
+          7.96587680886558,
+          7.964265139028549,
+          7.962684705006566
+        ],
+        "probability_bins": 4608
+      },
+      "input_hex": "e7bc93e5ad9820636163686520f09f99820a",
+      "input_sha256": "f08793ccdc80de0cf23c4ec615ba627d6134660973859773ba60c03cfeaf448c",
+      "method": "prefix_entropy_toy",
+      "piece_hex": [
+        "e7",
+        "bc",
+        "93",
+        "e5",
+        "ad98206361636865",
+        "20f09f99820a"
+      ],
+      "pieces": 6,
+      "positions": {
+        "byte_output_positions": 18,
+        "flops": "not_measured",
+        "global_positions": 6,
+        "latency": "not_measured",
+        "local_decoder_positions": 18,
+        "local_encoder_positions": 18,
+        "memory": "not_measured",
+        "model_execution": "not_run",
+        "router_positions": 18,
+        "token_or_byte_head_positions": 0
+      },
+      "round_trip": true,
+      "sample": "multilingual"
+    },
+    {
+      "bytes": 23,
+      "characters": 23,
+      "entropy_details": null,
+      "input_hex": "64656620662878293a2072657475726e2078202b20310a",
+      "input_sha256": "7c4267eaf115e7c8323162b03314f1074ec45a5a114f14ce7f0b01f2878070ca",
+      "method": "bytes",
+      "piece_hex": [
+        "64",
+        "65",
+        "66",
+        "20",
+        "66",
+        "28",
+        "78",
+        "29",
+        "3a",
+        "20",
+        "72",
+        "65",
+        "74",
+        "75",
+        "72",
+        "6e",
+        "20",
+        "78",
+        "20",
+        "2b",
+        "20",
+        "31",
+        "0a"
+      ],
+      "pieces": 23,
+      "positions": {
+        "byte_output_positions": 0,
+        "flops": "not_measured",
+        "global_positions": 23,
+        "latency": "not_measured",
+        "local_decoder_positions": 0,
+        "local_encoder_positions": 0,
+        "memory": "not_measured",
+        "model_execution": "not_run",
+        "router_positions": 0,
+        "token_or_byte_head_positions": 23
+      },
+      "round_trip": true,
+      "sample": "code"
+    },
+    {
+      "bytes": 23,
+      "characters": 23,
+      "entropy_details": null,
+      "input_hex": "64656620662878293a2072657475726e2078202b20310a",
+      "input_sha256": "7c4267eaf115e7c8323162b03314f1074ec45a5a114f14ce7f0b01f2878070ca",
+      "method": "bpe64",
+      "piece_hex": [
+        "64",
+        "65",
+        "66",
+        "2066",
+        "28",
+        "78",
+        "29",
+        "3a",
+        "20",
+        "7265",
+        "74",
+        "75",
+        "72",
+        "6e",
+        "20",
+        "78",
+        "20",
+        "2b",
+        "20",
+        "31",
+        "0a"
+      ],
+      "pieces": 21,
+      "positions": {
+        "byte_output_positions": 0,
+        "flops": "not_measured",
+        "global_positions": 21,
+        "latency": "not_measured",
+        "local_decoder_positions": 0,
+        "local_encoder_positions": 0,
+        "memory": "not_measured",
+        "model_execution": "not_run",
+        "router_positions": 0,
+        "token_or_byte_head_positions": 21
+      },
+      "round_trip": true,
+      "sample": "code"
+    },
+    {
+      "bytes": 23,
+      "characters": 23,
+      "entropy_details": null,
+      "input_hex": "64656620662878293a2072657475726e2078202b20310a",
+      "input_sha256": "7c4267eaf115e7c8323162b03314f1074ec45a5a114f14ce7f0b01f2878070ca",
+      "method": "fixed8",
+      "piece_hex": [
+        "6465662066287829",
+        "3a2072657475726e",
+        "2078202b20310a"
+      ],
+      "pieces": 3,
+      "positions": {
+        "byte_output_positions": 23,
+        "flops": "not_measured",
+        "global_positions": 3,
+        "latency": "not_measured",
+        "local_decoder_positions": 23,
+        "local_encoder_positions": 23,
+        "memory": "not_measured",
+        "model_execution": "not_run",
+        "router_positions": 0,
+        "token_or_byte_head_positions": 0
+      },
+      "round_trip": true,
+      "sample": "code"
+    },
+    {
+      "bytes": 23,
+      "characters": 23,
+      "entropy_details": {
+        "boundaries": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false
+        ],
+        "distribution_evaluations": 23,
+        "entropy_bits": [
+          8.0,
+          7.997842448026564,
+          7.995723379454261,
+          7.993642264520532,
+          7.991598582259224,
+          7.986699531044354,
+          7.9847402248116355,
+          7.982816755443771,
+          7.980928636395714,
+          7.97907538906504,
+          7.974418619695448,
+          7.972644339911049,
+          7.968086718418628,
+          7.966389267736957,
+          7.964724254434199,
+          7.960305683388358,
+          7.9587144956302875,
+          7.952593541994979,
+          7.948325696067629,
+          7.9409998430189646,
+          7.939578114448129,
+          7.931325830262255,
+          7.9299866662019936
+        ],
+        "probability_bins": 5888
+      },
+      "input_hex": "64656620662878293a2072657475726e2078202b20310a",
+      "input_sha256": "7c4267eaf115e7c8323162b03314f1074ec45a5a114f14ce7f0b01f2878070ca",
+      "method": "prefix_entropy_toy",
+      "piece_hex": [
+        "64",
+        "65",
+        "66",
+        "20",
+        "662878293a207265",
+        "7475726e2078202b",
+        "20310a"
+      ],
+      "pieces": 7,
+      "positions": {
+        "byte_output_positions": 23,
+        "flops": "not_measured",
+        "global_positions": 7,
+        "latency": "not_measured",
+        "local_decoder_positions": 23,
+        "local_encoder_positions": 23,
+        "memory": "not_measured",
+        "model_execution": "not_run",
+        "router_positions": 23,
+        "token_or_byte_head_positions": 0
+      },
+      "round_trip": true,
+      "sample": "code"
+    }
+  ],
+  "scalar_dechunk": {
+    "output": [
+      10.0,
+      10.0,
+      10.0,
+      20.0,
+      20.0
+    ],
+    "probabilities": [
+      1,
+      0.5
+    ],
+    "starts": [
+      0,
+      3
+    ],
+    "values": [
+      10,
+      30
+    ]
+  },
+  "schema": 1,
+  "source_sha256": {
+    "bpe.py": "7ae16906a82de562839279d000e8a6773aceb5b4b8a57c4f06b611e03020ea2d",
+    "chunk_accounting.py": "de1c97156a58754e00d6c0ed631fe9b1b062fb7484df76eeb1fa531195b0312f"
+  }
+}

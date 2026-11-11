@@ -85,3 +85,7 @@ The [AgentOS recovery fixture](../llm-agentos-course/references/session_handoff_
 ## Follow-up: ACC-2 qualification reporting and policy controls — 2026-11-10
 
 The [accelerator execution note](../ai-accelerator-software-course/references/qualification_matrix_2026_11.md) records an actual bytecode-build/CPU-model matrix and nine new policy tests (41 total). EN/ZH deck 06 separates stage from outcome; unavailable-board and build/model promotion controls cannot earn physical acceptance. This implements bounded reporting/acceptance controls, not a target adapter, authenticated execution, firmware/HIL run or physical qualification. ACC-3 remains open. PR #120 still leaves AGT-2's measured benchmark pending.
+
+## Follow-up: ARC-2 byte/chunk reading and accounting — 2026-11-10
+
+The [architecture supplement](../llm-transformer-architecture-course/references/byte_chunk_accounting_2026_11.md) adds pinned BLT/H-Net readings, EN/ZH mechanism diagrams and an L2 CPU fixture. Twelve same-byte segmentation rows retain round-trip and causal controls; 15 tests pass. Declared local/global/router/head positions are distinct from executed bookkeeping and unmeasured FLOPs/latency. This is the bounded reading/fixture portion, not trained dynamic chunking, author-kernel validation, model BPB/quality or a GPU speedup. Those ARC-2 extensions remain open. PR #120 still does not include AGT-2's measured benchmark.

@@ -120,6 +120,9 @@ llm-transformer-architecture-course/
 │   │   │   └── zh.txt
 │   │   ├── README.md
 │   │   ├── bpe.py                   # Byte-level BPE: train, encode, decode
+│   │   ├── chunk_accounting.py      # Optional causal boundaries and declared position ledger
+│   │   ├── chunk_accounting_report.json
+│   │   ├── test_chunk_accounting.py
 │   │   └── test_bpe.py
 │   ├── L3_positions/
 │   │   ├── context_probes.py         # Controlled record-based context fixtures; no model calls
@@ -157,6 +160,7 @@ llm-transformer-architecture-course/
 │   └── README.md                    # Lab index
 ├── references/
 │   ├── research_audit_2026_11.md
+│   ├── byte_chunk_accounting_2026_11.md
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-01
 ├── slides/
 │   ├── 00_course_map.html           # Course map deck
