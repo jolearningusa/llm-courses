@@ -70,3 +70,14 @@ The npm packages for 2026.10.7 and 2026.11.3 ship their docs, so the context-eng
 - Changed: `ownsCompaction: true` still turns off the built-in auto-compaction, but no longer turns off the host's pre-prompt check. The runtime now checks every outgoing request, including the first, against its own estimate; a request over budget enters recovery before it reaches the provider, and the engine's `estimatedTokens` no longer decides this. `promptAuthority` now only affects diagnostics.
 
 Course change: the kit's `OpenClawHost` (`labs/kit/nanoos/hosts.py`) now counts the assembled request itself instead of trusting `estimatedTokens` before calling `compact()`. Slide, handout and Lab 12B text stay as they are (they only say that owning compaction turns the built-in compactor off). With the reference solutions, the Lab 12 and kit tests pass as before; Lab 12B was not run against a live Gateway.
+
+## Hermes Agent v0.23.0 contract check — 2026-11-11
+
+Compared `agent/memory_provider.py`, `agent/context_engine.py` and the docs pages `developer-guide/memory-provider-plugin.md`, `developer-guide/context-engine-plugin.md` and `user-guide/features/skills.md` at tags `v0.22.5` and `v0.23.0` (raw files from GitHub).
+
+- `ContextEngine` is unchanged: `should_compress`, `compress`, `select_context`, `clone_for_agent`, `threshold_percent` default 0.75.
+- `MemoryProvider` only gained optional hooks: `on_profile_created`, `on_profile_renamed`, and `read_config_fields` / `write_config_fields` for providers that own their config storage. Every method Lab 12 implements keeps its signature. `spawn_context_thread` (already in v0.22.5) is the documented way to start background work; the Lab 12 handout already asks students to use it.
+- Manual `/compress` on every surface now calls the engine's `compress(force=True)` and then `on_session_start(..., boundary_reason="compression")`.
+- Skills: `skills_list` / `skill_view` / `skill_manage`, the skill roots and the gating frontmatter on the skills deck are unchanged; v0.23.0 adds `hermes curator lock <skill>` and more trusted vendor skill repos.
+
+No slide or lab change is needed; the tracker moves to v0.23.0.

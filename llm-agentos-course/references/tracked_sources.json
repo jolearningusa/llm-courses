@@ -58,12 +58,12 @@
     },
     {
       "name": "Hermes Agent",
-      "version": "v0.22.5",
-      "verified": "2026-10-26",
+      "version": "v0.23.0",
+      "verified": "2026-11-11",
       "upstream": {"type": "github_release", "repo": "NousResearch/hermes-agent"},
       "compare": 2,
       "used_in": ["labs/lab1_memory_plugins/hermes_custom_memory.py", "labs/kit/nanoos/ports.py", "slides/05_opensource_plugin_apis_slides.html", "slides/05_skills_deck.html"],
-      "notes": "Lab 12 (1A) matches the memory-provider and context-engine plugin docs as of v0.22.5 (select_context, clone_for_agent; the docs ask for spawn_context_thread, not yet in the main branch on 2026-10-27). Check MemoryProvider and ContextEngine in the plugin docs."
+      "notes": "Lab 12 (1A) matches agent/memory_provider.py, agent/context_engine.py and the memory-provider and context-engine plugin docs at v0.23.0 (select_context, clone_for_agent; spawn_context_thread is in agent.memory_provider and the handout asks students to use it). v0.23.0 only added optional MemoryProvider hooks (on_profile_created, on_profile_renamed, read_config_fields, write_config_fields) and routes manual /compress to the engine's compress(force=True). Check MemoryProvider and ContextEngine in the plugin docs."
     }
   ]
 }
