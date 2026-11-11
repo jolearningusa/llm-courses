@@ -49,8 +49,8 @@
     },
     {
       "name": "OpenClaw",
-      "version": "2026.10.7",
-      "verified": "2026-10-26",
+      "version": "2026.11.3",
+      "verified": "2026-11-11",
       "upstream": {"type": "npm", "package": "openclaw"},
       "compare": 2,
       "used_in": ["labs/lab1_memory_plugins/openclaw_context_engine.ts", "labs/kit/nanoos/ports.py", "slides/05_opensource_plugin_apis_slides.html", "slides/05_extension_layer_deck.html"],
