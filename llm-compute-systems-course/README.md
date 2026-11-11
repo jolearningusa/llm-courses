@@ -265,6 +265,8 @@ llm-compute-systems-course/
 │   └── optimization-engine.svg
 ├── references/
 │   ├── research_audit_2026_11.md
+│   ├── rubin_spec_evidence_2026_11.md
+│   ├── rubin_spec_evidence_2026_11.json
 │   ├── accelerator_architectures_review.md
 │   ├── ai_development_verification.md
 │   ├── bibliography_and_links.md

@@ -97,3 +97,7 @@ The [shared worksheet](../ml101-neural-networks-course/references/decoder_bridge
 ## Follow-up: TRN-2 rollout / learner probability contracts — 2026-11-10
 
 The [training supplement](../llm-training-course/references/rollout_consistency_2026_11.md) combines pinned verl source reading with actual L7 sampler/learner rescoring and same-contract ratio controls. Role diagrams separate PPO and rollout-correction denominators. Nineteen selected CPU controls pass; one synthetic-advantage update demonstrates version/ratio drift, not learned quality. Actual distributed/backend/queue qualification remains pending. An unrelated open freshness-script PR was inspected for file overlap before this independent item. PR #120 still leaves AGT-2's measured benchmark pending.
+
+## Follow-up: CMP-4 selected Rubin specification evidence — 2026-11-10
+
+The [compute source ledger](../llm-compute-systems-course/references/rubin_spec_evidence_2026_11.md) rechecks selected Rubin units, precision/sparsity, vendor comparison conditions and availability statements. Original bilingual diagrams replace deck 24 slides 6/7. The vendor-linked PDF was hashed and relevant full pages visually inspected; its third configuration column differs from the web table. Published rate discrepancies remain unresolved and no physical/software qualification is implied. Other CMP-4 vendor rows remain open. PR #120 still does not supply AGT-2's measured benchmark.

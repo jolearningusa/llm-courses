@@ -2,6 +2,8 @@
 
 **Source-check date: 2026-10-27.** Use NVIDIA's technical descriptions for the architecture and library support matrices for deployability. No Rubin hardware was benchmarked for this course blueprint. The classroom questions and projections below are proposed experiments.
 
+**Selected specification recheck, 2026-11-10:** the [dated units/footnotes/status supplement](../references/rubin_spec_evidence_2026_11.md) and [ledger](../references/rubin_spec_evidence_2026_11.json) recheck deck 24's selected product rows and vendor comparison conditions. The product and PDF tables have different third columns; the HBM/NVLink source discrepancy remains unresolved. Original 2026-10-27 observations below are retained as history, not silently re-dated or replaced by the larger rates. Vendor-reported availability is separate from local hardware/software qualification.
+
 Vera Rubin supports training and inference, with agentic AI and sustained reasoning/inference a major design emphasis. Its relevance to AgentOS comes from the workload, rather than a requirement to run a particular agent operating system. See the [agentic cache topic](agentic_caching.md).
 
 ## Establish the system boundary

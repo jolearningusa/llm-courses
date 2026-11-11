@@ -1,0 +1,100 @@
+{
+  "checked_local_date": "2026-11-10",
+  "timezone": "America/Los_Angeles",
+  "scope": "selected Rubin CMP-4 source rows only; no device or software qualification",
+  "sources": {
+    "product": {
+      "url": "https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/",
+      "columns": [
+        "NVL72",
+        "Superchip",
+        "GPU"
+      ],
+      "vendor_status": "Available Now",
+      "selected_rows": {
+        "gpu_count": [
+          72,
+          2,
+          1
+        ],
+        "vera_cpu_count": [
+          36,
+          1,
+          null
+        ],
+        "hbm_capacity_as_published": [
+          "20.7 TB",
+          "576 GB",
+          "288 GB"
+        ],
+        "hbm_bandwidth_TB_s": [
+          1400,
+          38.5,
+          19.2
+        ],
+        "nvlink_bandwidth_TB_s": [
+          216,
+          6,
+          3
+        ],
+        "sparse_NVFP4_inference_PFLOPS": [
+          3600,
+          100,
+          50
+        ],
+        "dense_FP16_BF16_PFLOPS": [
+          288,
+          8,
+          4
+        ]
+      },
+      "footnotes": {
+        "2": "sparse specification",
+        "3": "dense specification",
+        "4": "bi-directional bandwidth; attached to networking row, not every bandwidth row"
+      }
+    },
+    "datasheet": {
+      "url": "https://dam-cdn.nvd.orangelogic.com/AssetLink/56p68o47y6f1yucpubl0ump1c0aif422.pdf",
+      "bytes": 1172802,
+      "sha256": "6b04af369412dc707d3be14a8fed5d981b7987a411f542245f9094321e452f3d",
+      "pages": 11,
+      "visually_inspected_printed_pages": [
+        3,
+        8,
+        9
+      ],
+      "page_8_columns": [
+        "NVL72",
+        "Superchip",
+        "NVL4"
+      ],
+      "publication_date": "not established; PDF metadata is not a publication assertion"
+    },
+    "architecture": {
+      "url": "https://developer.nvidia.com/blog/inside-nvidia-rubin-gpu-architecture-powering-the-era-of-agentic-ai/",
+      "published": "2026-07-21",
+      "up_to_hbm_TB_s": 22,
+      "nvlink_TB_s": 3.6,
+      "rate_difference_explanation": "unresolved by this source review"
+    },
+    "status_release": {
+      "url": "https://nvidianews.nvidia.com/news/vera-rubin-full-production-agentic-ai-factory",
+      "published": "2026-05-31",
+      "vendor_statement": "ramping into full production",
+      "local_delivery_or_lab_validation": "not established"
+    }
+  },
+  "arithmetic_only": {
+    "hbm_72_times_288_GB_in_decimal_TB": 20.736,
+    "hbm_72_times_19_2_TB_s": 1382.4,
+    "nvlink_72_times_3_TB_s": 216,
+    "interpretation": "Arithmetic comparisons only; published aggregate values do not establish one allocation, kernel bandwidth, network bisection or the reason for numeric differences"
+  },
+  "unexecuted": [
+    "Rubin hardware benchmark",
+    "driver/toolkit/library qualification",
+    "delivery verification",
+    "model accuracy, latency and power measurement"
+  ]
+}

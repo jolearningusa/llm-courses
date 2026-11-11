@@ -248,3 +248,7 @@ Deck 40 slides 19 and 21 add two original concepts (four localized inline SVGs),
 ## FA4 SM100 dependency and qualification diagrams (2026-11-09)
 
 Deck 12 slides 15/17 add two original inline concepts in EN/ZH (four SVGs), outside the managed 164-concept/328-asset inventory. The [fixed author-source worksheet](fa4_sm100_walkthrough_2026_11.md) supports the S/P/old-O readiness dependency diagram and candidate-contract validation sequence. The diagrams are logical schematics, not measured timelines or copied author artwork. Preserve them when regenerating the managed set.
+
+## Additional authored Rubin source diagrams — 2026-11-10
+
+Deck 24 slides 6/7 (EN/ZH) embed original SVGs outside the 164 managed concepts: published GPU/Superchip/NVL72 scope, unresolved rate pairs, sparse/dense compute contracts, conditioned vendor comparisons and unexecuted local validation. [Sources and exact PDF identity](rubin_spec_evidence_2026_11.md) cite the vendor product table, datasheet printed pp. 3/8/9, architecture article and availability statement. Numbers are specifications/claims, not measured course results. No vendor image is copied; preserve these manual slides during regeneration.
