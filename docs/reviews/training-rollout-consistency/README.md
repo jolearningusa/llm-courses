@@ -1,0 +1,13 @@
+# Training rollout / learner consistency — 2026-11-10
+
+Base `b82f894` (main after this chat's merged #137). One bounded TRN-2 source/CPU-contract update. Deck 20 remains ten English slides; only slides 9/10 change. This course has no translated deck folder. Original closing prose/questions remain in notes and the lab handout.
+
+[Before/after contact sheet](changes.png): before left / after right, slide 9 top and slide 10 bottom. Native frames 1280×720; sheet 2560×1520. All four frames pass active-slide and slide/SVG text bounds checks, and the final sheet was visually inspected. Diagrams are original, not copied author artwork.
+
+The [source/execution note](../../../llm-training-course/references/rollout_consistency_2026_11.md) and manifest pin four verl files at `2b4ed6826a39205838d0ca004bdd942334dbe4b6`. Only selected source paths were inspected; no verl package, worker, engine, Ray or GPU ran. The diagrams distinguish rollout behavior, fixed proximal anchor and evolving learner, including different PPO/correction denominators.
+
+Actual L7 work: original sampler logits observed during four responses, 32 sampled slots / 25 valid tokens, literal independent first-EOS mask, batched/stepwise rescoring, policy hashes and one synthetic-advantage SGD update. Same-contract anchor/rollout ratio error is ~4.44e-16; after one controlled update, learner/anchor ratios span ~0.98085–1.00586. Strict rewards are all zero; signed advantages are explicitly synthetic and no quality gain is inferred. The original policy, GRPO loss, prior ablation code/tests and historical tables are unchanged.
+
+Python 3.12.14 / torch 2.9.1 CPU, float64, one thread. NumPy is absent and its startup warning is disclosed. Eight new tests plus eleven existing selected non-long-training controls pass (19 total). The longer `TestTraining` case is not included. Two fresh reports match all deterministic evidence after excluding four single-run CPU timing intervals; source hashes are verified. Local synchronous queue counts and phase windows do not measure distributed queues, throughput or backend mismatch. Complete worker/config/backend and distributed timing qualification remain open.
+
+Validation: course consistency (6 courses), site build/link check (1,150 pages), all-deck browser check (271 decks), unchanged-source/pin checks, exact slide 9/10 diff and count, repeated CPU evidence, frame bounds, visual inspection and `git diff --check`. Open PR #138 was verified to belong to a separate session and modify only `scripts/check_freshness.py`; no overlap. Explicit approval is required before merge; auto-merge must remain disabled.

@@ -65,7 +65,7 @@ Classic architectures such as MLPs, CNNs, RNNs and LSTMs, and the basics of trai
 | **Part VII. Reward models and RLHF** | |
 | [18 Learning from human preferences](slides/18_human_preferences.html) (10 slides) | Week 9: reward models from pairwise choices, the Bradley-Terry loss, the KL penalty, summarization from feedback; lab L5 |
 | [19 PPO and InstructGPT](slides/19_ppo_instructgpt.html) (10 slides) | Week 9: GAE, the clipped objective, four models in memory, SFT then reward model then PPO, the alignment tax; lab L5 |
-| [20 RLHF at scale: Anthropic HH, Llama 2-Chat and overoptimization](slides/20_rlhf_at_scale.html) (10 slides) | Week 10: online rounds, helpfulness and safety reward models, rejection sampling, the gold-reward peak; lab L5 |
+| [20 RLHF at scale: Anthropic HH, Llama 2-Chat and overoptimization](slides/20_rlhf_at_scale.html) (10 slides) | Week 10: online rounds, helpfulness and safety reward models, rejection sampling, the gold-reward peak; lab L5, with optional L7 rollout/learner probability contracts |
 | [21 AI feedback: Constitutional AI and RLAIF](slides/21_constitutional_ai_rlaif.html) (9 slides) | Week 10: critique and revision, AI preference labels, RLAIF against RLHF, what makes a good AI labeler; lab L5 |
 | **Part VIII. Direct preference methods** | |
 | [22 Direct Preference Optimization](slides/22_dpo.html) (9 slides) | Week 11: the closed-form RLHF optimum, the implicit reward, the DPO loss and its gradient; lab L6 |
@@ -135,6 +135,9 @@ llm-training-course/
 │   │   ├── policy.py                # Tiny autoregressive policy: masked log-probs and sampling
 │   │   ├── grpo.py                  # Group advantages, GRPO and Dr. GRPO losses, SFT warm-up, RL loop
 │   │   ├── test_grpo.py
+│   │   ├── rollout_consistency.py   # Observed sampler / learner log-probability contracts
+│   │   ├── test_rollout_consistency.py
+│   │   ├── rollout_consistency_report.json
 │   │   ├── coverage_ablation.py     # Fixed-split SFT-coverage × reward controls and strict evaluation
 │   │   ├── test_coverage.py         # Split, oracle, shaping-attack, pass@k and trace checks
 │   │   └── coverage_reference.json  # All twelve CPU runs, per-step ledger, configuration and hashes
@@ -154,6 +157,8 @@ llm-training-course/
 │   ├── cpu_environment_evidence_2026_11.md
 │   ├── cpu_lane_manifest_2026_11.json
 │   ├── research_audit_2026_11.md
+│   ├── rollout_consistency_2026_11.md
+│   ├── verl_reading_manifest_2026_11.json
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-06
 ├── slides/
 │   ├── 00_course_map.html           # Course map deck

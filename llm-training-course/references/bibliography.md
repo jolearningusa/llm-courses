@@ -178,3 +178,7 @@ The paper motivates separating base-distribution, reward and prompt controls. It
 These primary documents support deck 32's environment boundary and deck 33's execution/selection record. The [course evidence note](cpu_environment_evidence_2026_11.md) separates 18 executed existing CPU unit tests, historical tables, data-overlap observations and still-unqualified installation/GPU/distributed lanes. No new training-quality or timing result is inferred from documentation or package versions.
 
 Both new inline SVGs are original course schematics; no upstream artwork is copied and no measured timeline is implied.
+
+## Rollout / learner consistency — verified 2026-11-10
+
+Deck 20 / L7 optional supplement: [verl at 2b4ed6826a39205838d0ca004bdd942334dbe4b6](https://github.com/verl-project/verl/tree/2b4ed6826a39205838d0ca004bdd942334dbe4b6), selected standard trainer path, rollout correction helpers and vanilla policy loss; [author correction documentation](https://github.com/verl-project/verl/blob/2b4ed6826a39205838d0ca004bdd942334dbe4b6/docs/algo/rollout_corr.md). The [dated reading/execution note](rollout_consistency_2026_11.md) and [file manifest](verl_reading_manifest_2026_11.json) specify source scope and hashes. Original diagrams distinguish three policy roles and actual local CPU controls; no upstream framework, kernel or distributed throughput result is reproduced.
