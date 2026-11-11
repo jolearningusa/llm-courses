@@ -44,3 +44,20 @@ The [memory provenance/repair fixture](memory_repair_controls_2026_11.md) execut
 ## AGT-4 bounded session-boundary fixture — 2026-11-09
 
 The [handoff/receipt experiment](session_handoff_controls_2026_11.md) executes six main cases plus three short-tail controls, each in a fresh Python worker. At three fixed boundaries it checks goal, completed work, pending operations and simulated effects. Both inputs receive an exact 512-ASCII-byte cap, explicitly not a real tokenizer budget. Negative controls cover short-tail success, changed-key duplication, payload conflicts and missing/incomplete state. Context slides 12/13 are synchronized in EN/ZH; Lab 3's student code and real-model compaction exercise remain intact. This completes the bounded deterministic fixture, not LLM/production-harness recovery, concurrency, write atomicity or power-loss qualification. AGT-2's measured benchmark remains pending beyond PR #120.
+
+## vLLM 0.33.0 source check — 2026-11-11
+
+The open question above (no matching source revision for 0.33.0) is now settled: the compute course's [source-identity record](../../llm-compute-systems-course/references/vllm_source_identity_2026_11.md) ties the PyPI 0.33.0 sdist to tag `v0.33.0`, commit `4ba787ec9`. The 0.32.0 and 0.33.0 sdists from PyPI were then compared for every vLLM interface this course teaches (KV-cache deck, plugin-APIs deck slide 9, Lab 5):
+
+| Interface | 0.32.0 | 0.33.0 |
+|---|---|---|
+| `--enable-prefix-caching`, `--prefix-caching-hash-algo` (default `sha256`; `sha256_cbor`, `xxhash`, `xxhash_cbor`) | present | unchanged |
+| `--kv-cache-dtype fp8` | present | unchanged (new non-FP8 options added) |
+| `--kv-offloading-backend` (`native`, `lmcache`), `--kv-offloading-size`, `--disable-hybrid-kv-cache-manager` | present | unchanged |
+| `LMCacheConnectorV1`, `NixlConnector`, `MultiConnector`, `OffloadingConnector` in the connector factory | registered | unchanged |
+| `NixlConnector` warning that `kv_role="kv_both"` is deprecated | present | unchanged |
+| `VLLM_NIXL_SIDE_CHANNEL_HOST` / `_PORT` defaults `localhost` / `5600` | present | unchanged |
+| `MultiConnector` save-to-all / load-from-first-hit | present | unchanged; adds sleep-mode support and tolerates children without Prometheus metrics |
+| Metrics `vllm:prefix_cache_queries`, `vllm:kv_cache_usage_perc`, `vllm:time_to_first_token_seconds` | present | unchanged |
+
+No slide or lab text changes. The tracker now records 0.33.0. This is a source-level check: Lab 5 was not re-run on a GPU, and the compute course keeps its own 0.32.0 cohort until its runtime gates pass.
