@@ -13,12 +13,12 @@
     },
     {
       "name": "vLLM",
-      "version": "0.32.0",
-      "verified": "2026-10-26",
+      "version": "0.33.0",
+      "verified": "2026-11-11",
       "upstream": {"type": "pypi", "package": "vllm"},
       "compare": 2,
       "used_in": ["labs/lab2_aios_kv_cache/", "slides/03_kv_cache_deck.html", "slides/05_opensource_plugin_apis_slides.html"],
-      "notes": "Check KVTransferConfig, MultiConnector and --kv-offloading-backend in the release notes."
+      "notes": "Check KVTransferConfig, MultiConnector and --kv-offloading-backend in the release notes. 0.33.0 was checked against the PyPI sdist source, because the GitHub release page returned 404 on 2026-11-08; see references/research_audit_2026_11.md. Lab 5 itself was not re-run on a GPU."
     },
     {
       "name": "LMCache",
