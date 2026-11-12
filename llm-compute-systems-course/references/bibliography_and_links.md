@@ -257,3 +257,7 @@ Deck 24 / L15 selected rows: [NVL72 product table](https://www.nvidia.com/en-us/
 ## Selected AMD support reading — 2026-11-12 UTC
 
 [Evidence and response identities](amd_support_evidence_2026_11.md): [ROCm 10.1.0 matrix](https://rocm.docs.amd.com/en/docs-10.1.0/compatibility/compatibility-matrix.html), [AMD GPU specification table](https://rocm.docs.amd.com/en/latest/reference/gpu-specs.html), [hipBLASLt precision](https://rocm.docs.amd.com/projects/hipBLASLt/en/docs-10.1.0/reference/data-type-support.html) and [installation](https://rocm.docs.amd.com/projects/hipBLASLt/en/docs-10.1.0/install/install.html). Selected target/type scope, no installed stack or measured kernel.
+
+## Selected Ascend mode review — 2026-11-12 UTC
+
+[Reading cohort and response identities](ascend_mode_evidence_2026_11.md): [Ascend C Basic Architecture, CE/850](https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/850/opdevg/Ascendcopdevg/atlas_ascendc_10_0008.html) and [earlier TBE AI Core overview, commercial/800](https://www.hiascend.com/doc_center/source/en/canncommercial/800/opdevg/tbeaicpudevg/atlasopdev_10_0008.html). Selected mode/product scope, not latest SDK or target qualification.

@@ -68,3 +68,7 @@ The [Alibaba evidence ledger](zhenwu_claim_evidence_2026_11.md) rechecks the M89
 ## CMP-4 selected AMD support example — 2026-11-12 UTC
 
 The [target/library ledger](amd_support_evidence_2026_11.md) records ROCm 10.1.0 matrix conditions, hipBLASLt 1.4.1, selected MI300X/MI350X hardware rows and the documented FP8/FNUZ restriction. Deck 24 slide 14 has synchronized EN/ZH diagrams and a documentation counterexample; no runtime rejection or GPU result is implied. This is a bounded source-support example, not an installed qualified stack or all CMP-4 vendor/library completion. Other rows and actual execution remain open. PR #120 still leaves AGT-2's measured benchmark pending.
+
+## CMP-4 selected Ascend mode evidence — 2026-11-12 UTC
+
+The [CANN reading ledger](ascend_mode_evidence_2026_11.md) distinguishes coupled/separated Scalar ownership, symbolic 1:N groups and product/programming-mode scope. EN/ZH deck 40 slide 14 uses an original diagram and preserves earlier TBE reading as background. The newer English page timed out; the inspected CE/850 cohort is not promoted to current SDK qualification. No device query, installation, compilation or NPU result ran. This completes the bounded mode clarification; other vendor/library gates and target validation remain open. PR #120 still leaves AGT-2's measured benchmark pending.
