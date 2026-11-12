@@ -117,3 +117,7 @@ The [target/library ledger](../llm-compute-systems-course/references/amd_support
 ## CMP-4 selected Ascend mode evidence — 2026-11-12 UTC
 
 The [CANN reading ledger](../llm-compute-systems-course/references/ascend_mode_evidence_2026_11.md) distinguishes coupled/separated Scalar ownership, symbolic 1:N groups and product/programming-mode scope. EN/ZH deck 40 slide 14 uses an original diagram and preserves earlier TBE reading as background. The newer English page timed out; the inspected CE/850 cohort is not promoted to current SDK qualification. No device query, installation, compilation or NPU result ran. This completes the bounded mode clarification; other vendor/library gates and target validation remain open. PR #120 still leaves AGT-2's measured benchmark pending.
+
+## FND-2 validation-selected learning study — 2026-11-12 UTC
+
+The [executed NumPy study](../ml101-neural-networks-course/references/heldout_optimizer_study_2026_11.md) reuses L0 regression loss/gradient and L2 optimizers on disjoint fixed train/validation/test IDs. Eighteen complete fits use 2,700 updates per optimizer; committed validation selection precedes six held-out scores with no refit. All 16 L2 tests pass, including leakage/selection/overflow/checkpoint controls. Deck 08 slide 10 visualizes actual outcomes. This completes the bounded FND-2 reference learning experiment, not a universal ranking or classroom pilot. Other audit items and AGT-2's measured benchmark beyond PR #120 remain open.

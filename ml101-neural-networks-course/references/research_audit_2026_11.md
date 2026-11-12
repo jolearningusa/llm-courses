@@ -39,3 +39,7 @@ Deck 08 slide 10 and deck 09 slide 7 now show independent per-optimizer tuning a
 ## FND-3 shared validation bridge — 2026-11-10
 
 Deck 20 slides 9/10 and the [shared worksheet](decoder_bridge_worksheet_2026_11.md) connect MLP/residual shape and gradient contracts to architecture/training L1. Ten reused NumPy baseline cases pass, with two smooth residual numerical checks and an identity-path control. A temporary all-allowed decoder mask makes the exact existing future-invariance test fail while attention-definition equivalence still passes; restoring it passes again. Two selected existing PyTorch model tests pass in a separate lane. The bounded integration/expected-failure acceptance is implemented, not full Transformer gradient coverage, target-shift/packing verification, new training or learned-quality validation.
+
+## FND-2 validation-selected learning study — 2026-11-12 UTC
+
+The [executed NumPy study](heldout_optimizer_study_2026_11.md) reuses L0 regression loss/gradient and L2 optimizers on disjoint fixed train/validation/test IDs. Eighteen complete fits use 2,700 updates per optimizer; committed validation selection precedes six held-out scores with no refit. All 16 L2 tests pass, including leakage/selection/overflow/checkpoint controls. Deck 08 slide 10 visualizes actual outcomes. This completes the bounded FND-2 reference learning experiment, not a universal ranking or classroom pilot. Other audit items and AGT-2's measured benchmark beyond PR #120 remain open.

@@ -1,0 +1,52 @@
+{
+  "protocol_sha256": "632585092a8308107cf47b68dc3fd346018b4edaf39eb78f424fac68067ac462",
+  "search_artifact_sha256": "04382a70847babec436c772cfdd05a0e5a2a84f6a8409f31967279c7a7577999",
+  "selection_sha256": "aa2f397b68fda5f8cd21d667732e1ffb0c7ca1cc36c3eeb24ba3fb50bdeaa559",
+  "heldout": [
+    {
+      "optimizer": "sgd",
+      "lr": 0.03,
+      "seed": 11,
+      "weights_sha256": "6ba202f1f461738aca0d2f20fa2421936baa045be3d38ce1427bdb0c48fd0cbc",
+      "test_mse": 0.31343168538793503
+    },
+    {
+      "optimizer": "sgd",
+      "lr": 0.03,
+      "seed": 23,
+      "weights_sha256": "7cc37da7c96ae7e340e12f0a37c3aff7f0a3cc7e0017582761703a0dc8dd0dbe",
+      "test_mse": 0.3134855989091148
+    },
+    {
+      "optimizer": "sgd",
+      "lr": 0.03,
+      "seed": 37,
+      "weights_sha256": "3268074ced312b1c1accf424aa5416008b614faf0f24bcfd6ec2e884dfc8fbcf",
+      "test_mse": 0.28979067928532254
+    },
+    {
+      "optimizer": "adam",
+      "lr": 0.01,
+      "seed": 11,
+      "weights_sha256": "c2511e75e4411fc72b3613f2733427eaa2c4a169982e73810bc901cc3fb3ea27",
+      "test_mse": 0.3036766591613333
+    },
+    {
+      "optimizer": "adam",
+      "lr": 0.01,
+      "seed": 23,
+      "weights_sha256": "2320118406a0497cc92e7247ffb2c1b25ad7d7277394c74c494186114a6cb628",
+      "test_mse": 0.3048164666984486
+    },
+    {
+      "optimizer": "adam",
+      "lr": 0.01,
+      "seed": 37,
+      "weights_sha256": "534cf8b7c141447393734c3de7f09aa8195acf97eacf4549cb61ed60415bb89b",
+      "test_mse": 0.3040700834988415
+    }
+  ],
+  "test_metric_calls": 6,
+  "additional_fit_updates": 0,
+  "test_seconds": 0.0001956248888745904
+}
