@@ -2,6 +2,8 @@
 
 配套[第 40 讲](../../slides/zh/40_inference_accelerator_architectures.html) · [English](../accelerator_codesign_reference.md)。可选参考，核验于 2026-11-01。一手来源、排除的媒体参数与路线图取舍见[证据审查](../../references/accelerator_architectures_review.md)。未执行加速器或编译器基准。
 
+**Google 行复核，2026-11-11：** [新增证据表](../../references/ironwood_spec_evidence_2026_11.md)更新该行的解读：单芯片分为两个独立内存空间，4 芯片 VM 在 JAX 中暴露 8 个设备；可用 HBM 低于标称值。7,380 GB/s 与正文约 7.37 TB/s 的差异原因未建立，不能把取整当作已验证解释。服务记录分别给出 2025-11-24 预览和 2026-03-31 GA；无本地 TPU / 框架资格验证。上面的日期保留为历史复核范围。
+
 ## 有来源的硬件边界
 
 | 设备 | 文档确认的事实 | 边界 |

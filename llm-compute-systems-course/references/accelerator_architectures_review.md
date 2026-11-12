@@ -2,6 +2,8 @@
 
 Reviewed **2026-11-01** for [deck 40](../slides/40_inference_accelerator_architectures.html) and its [Chinese twin](../slides/zh/40_inference_accelerator_architectures.html). This is a source review and analytical teaching supplement. No accelerator, compiler backend or cross-vendor benchmark was executed.
 
+**Selected Google recheck, 2026-11-11:** The [new evidence ledger](ironwood_spec_evidence_2026_11.md) supersedes the interpretation of the Google row: one chip has two separate memory spaces; a 4-chip VM exposes 8 JAX devices; usable HBM is below nominal capacity. The cause of the table/prose bandwidth difference is not established; rounding is not a verified explanation. The service log records preview 2025-11-24 and GA 2026-03-31. No local TPU/framework qualification ran. The original review date remains historical.
+
 ## Architecture is a workload decision
 
 “Non-GPU inference chips are winning” is not a universal measured conclusion. A regular tensor datapath can trade generality for local reuse and simpler control. A contemporary GPU already combines flexible SIMT execution with specialized matrix hardware; caches and scheduling can help irregular workloads. Deployment choices also depend on software support, procurement and utilization.

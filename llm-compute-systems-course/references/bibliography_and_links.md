@@ -245,3 +245,7 @@ The [dated worksheet](fa4_sm100_walkthrough_2026_11.md) fixes author commit `c05
 ## Rubin specification / claim recheck — 2026-11-10
 
 Deck 24 / L15 selected rows: [NVL72 product table](https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/), [vendor-linked datasheet](https://dam-cdn.nvd.orangelogic.com/AssetLink/56p68o47y6f1yucpubl0ump1c0aif422.pdf) printed pp. 3/8/9, [July 21 architecture article](https://developer.nvidia.com/blog/inside-nvidia-rubin-gpu-architecture-powering-the-era-of-agentic-ai/), and [May 31 production-ramp release](https://nvidianews.nvidia.com/news/vera-rubin-full-production-agentic-ai-factory). The [dated source ledger](rubin_spec_evidence_2026_11.md) preserves conflicting rate scopes, table-column differences, sparse/dense and workload conditions. Vendor status is not local qualification. Other hardware/library rows remain separate audit work; the original 2026-10-27 case study stays dated as history.
+
+## Selected Ironwood source recheck — 2026-11-11
+
+[Evidence ledger](ironwood_spec_evidence_2026_11.md): [TPU7x system documentation](https://docs.cloud.google.com/tpu/docs/tpu7x), [service release notes](https://docs.cloud.google.com/tpu/docs/release-notes), and [2025-11-06 vendor announcement](https://cloud.google.com/blog/products/compute/ironwood-tpus-and-new-axion-based-vms-for-your-ai-workloads). Selected unit/exposure/status claims only; no installed runtime or hardware qualification.
