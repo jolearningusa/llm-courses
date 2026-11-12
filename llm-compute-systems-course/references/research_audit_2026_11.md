@@ -60,3 +60,7 @@ The [dated evidence ledger](rubin_spec_evidence_2026_11.md) rechecks product/PDF
 ## CMP-4 selected Ironwood rows — 2026-11-11
 
 The [Google evidence ledger](ironwood_spec_evidence_2026_11.md) rechecks chip/chiplet/JAX-device counts, nominal versus usable HBM, bandwidth units and service preview/GA milestones. Deck 40 slide 13 has synchronized original EN/ZH diagrams. The source table/prose rate difference is retained without an invented explanation. This completes the bounded Google claim review, not target/software qualification or all CMP-4 vendors. No runtime or benchmark ran. PR #120 still leaves AGT-2's measured benchmark pending.
+
+## CMP-4 selected Zhenwu claims — 2026-11-12 UTC
+
+The [Alibaba evidence ledger](zhenwu_claim_evidence_2026_11.md) rechecks the M890/V900 announcements, 810E deployment template, capacity/link scope and two vendor 3× claims. EN/ZH deck 40 slides 15/16 distinguish documentation, announcements and forecast. The old keynote timed out twice; no fresh product-family classification is inferred from it. This completes the bounded selected Zhenwu review, not SAIL/toolchain qualification, matched performance or all CMP-4 vendor rows. No runtime or benchmark ran. PR #120 still leaves AGT-2's measured benchmark pending.

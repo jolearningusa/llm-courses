@@ -256,3 +256,7 @@ Deck 24 slides 6/7 (EN/ZH) embed original SVGs outside the 164 managed concepts:
 ## Ironwood chip and device boundaries — 2026-11-11
 
 Deck 40 slide 13 (EN/ZH): original inline SVG, authored from the [selected Google evidence ledger](ironwood_spec_evidence_2026_11.md). Two chiplets represent separate memory/device exposure, not a physical floorplan. Counts, peak units and source discrepancies are distinct from application performance. Manual figure outside the 164 managed concepts; no vendor artwork copied.
+
+## Zhenwu specification and comparison boundaries — 2026-11-12 UTC
+
+Deck 40 slides 15/16 (EN/ZH): original inline SVG evidence cards, based on the [selected claim ledger](zhenwu_claim_evidence_2026_11.md). Boxes separate deployment templates, announced parameters, forecast and vendor ratios without encoding measured performance. Manual additions outside the 164 managed concepts; no vendor artwork copied.
