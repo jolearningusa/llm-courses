@@ -6,6 +6,8 @@ Reviewed **2026-11-01** for [deck 40](../slides/40_inference_accelerator_archite
 
 **Selected Zhenwu recheck, 2026-11-12 UTC:** The [new claim ledger](zhenwu_claim_evidence_2026_11.md) checks the May/September announcements and PAI 810E+SGLang template. Keep GB and inter-chip GB/s; infer no HBM type, usable capacity, direction or common 3× benchmark. V900 Q1 2027 remains a vendor forecast. The older keynote timed out twice, so its GPU-family wording is not freshly verified. Original dates/explanations remain historical; no hardware/software compatibility run occurred.
 
+**Selected Ascend recheck, 2026-11-12 UTC:** The [working-mode ledger](ascend_mode_evidence_2026_11.md) separates shared-Scalar coupling from independent-Scalar separation. Obtain N from platform information; no fixed ratio is supplied. The Atlas 200I/500 A2 hardware/programming-mode caveat prevents an all-A2 generalization. This is the CE/850 reading cohort, not newest SDK support or a device query/install/run. The original review date remains historical.
+
 ## Architecture is a workload decision
 
 “Non-GPU inference chips are winning” is not a universal measured conclusion. A regular tensor datapath can trade generality for local reuse and simpler control. A contemporary GPU already combines flexible SIMT execution with specialized matrix hardware; caches and scheduling can help irregular workloads. Deployment choices also depend on software support, procurement and utilization.

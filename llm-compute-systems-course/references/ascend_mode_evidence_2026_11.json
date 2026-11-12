@@ -1,0 +1,36 @@
+{
+  "observed_date_utc": "2026-11-12",
+  "sources": {
+    "tbe_800": {
+      "url": "https://www.hiascend.com/doc_center/source/en/canncommercial/800/opdevg/tbeaicpudevg/atlasopdev_10_0008.html",
+      "resolved_url": "https://www.hiascend.com/doc_center/source/en/canncommercial/800/opdevg/tbeaicpudevg/atlasopdev_10_0008.html",
+      "http_status": 200,
+      "bytes": 33424,
+      "sha256": "8267f31dd397beb07eb0d473605d91cb64604e9d405141449c0e544a1fe3afd3"
+    },
+    "ascendc_850": {
+      "url": "https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/850/opdevg/Ascendcopdevg/atlas_ascendc_10_0008.html",
+      "resolved_url": "https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/850/opdevg/Ascendcopdevg/atlas_ascendc_10_0008.html",
+      "http_status": 200,
+      "bytes": 34967,
+      "sha256": "be98d1e69ae21c7152bfbbf1501a0b33a04f3e81f16e696ea375bd52cac6a0a6"
+    }
+  },
+  "scope": "CANN CE/850 Ascend C basic-architecture guide versus earlier commercial/800 TBE overview; neither installed",
+  "selected_claims": {
+    "coupled": "Cube and Vector share Scalar scheduler",
+    "separated": "Independent Scalar schedulers; Cube Core to Vector Core ratio 1:N",
+    "N": "Obtain from hardware platform information API; no number queried here",
+    "counting": "Selected guide counts grouped AI Cores by Cube Core",
+    "atlas_A2_A3_training_inference": "Separated in selected Ascend C guide",
+    "atlas_200I_500_A2": "Hardware can use both modes; selected Ascend C guide supports coupled only"
+  },
+  "newer_910_english_page": "Web reader timeout; not used to assert latest SDK support",
+  "executed": {
+    "sdk_install": false,
+    "platform_query": false,
+    "compile": false,
+    "npu_run": false,
+    "performance_test": false
+  }
+}
