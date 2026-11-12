@@ -260,3 +260,7 @@ Deck 40 slide 13 (EN/ZH): original inline SVG, authored from the [selected Googl
 ## Zhenwu specification and comparison boundaries — 2026-11-12 UTC
 
 Deck 40 slides 15/16 (EN/ZH): original inline SVG evidence cards, based on the [selected claim ledger](zhenwu_claim_evidence_2026_11.md). Boxes separate deployment templates, announced parameters, forecast and vendor ratios without encoding measured performance. Manual additions outside the 164 managed concepts; no vendor artwork copied.
+
+## AMD target/type support boundary — 2026-11-12 UTC
+
+Deck 24 slide 14 EN/ZH: original inline SVG, based on the [selected source ledger](amd_support_evidence_2026_11.md). Cards show documented GPU/type rows, not performance proportions or a complete supported environment. The crossed-contract example is a documentation contradiction, not a runtime trace. Manual addition outside the 164 managed concepts; no vendor artwork copied.

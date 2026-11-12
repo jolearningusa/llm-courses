@@ -265,6 +265,8 @@ llm-compute-systems-course/
 │   └── optimization-engine.svg
 ├── references/
 │   ├── research_audit_2026_11.md
+│   ├── amd_support_evidence_2026_11.md
+│   ├── amd_support_evidence_2026_11.json
 │   ├── zhenwu_claim_evidence_2026_11.md
 │   ├── ironwood_spec_evidence_2026_11.md
 │   ├── rubin_spec_evidence_2026_11.md

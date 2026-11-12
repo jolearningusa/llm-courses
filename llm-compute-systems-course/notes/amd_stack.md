@@ -46,3 +46,7 @@ The current AITER README additionally describes FlyDSL/OPUS and Iris-based commu
 ## Programming-model comparison (2026-10-28)
 
 [Deck 33](../slides/33_programming_models_beyond_cuda.html) places HIP next to the other vendors' answers to CUDA (SYCL, Metal, Pallas, NKI) and the portable tile DSLs (Triton, TileLang). It records the HIP execution-group width (64 on CDNA, 32 on RDNA), AMD's layered kernel options (HIP, CK Tile, FlyDSL, Triton, TileLang, AITER) and the three routes for running CUDA code on AMD (HIPIFY, SCALE, ZLUDA). Sources are in the [bibliography](../references/bibliography_and_links.md#programming-models-beyond-cuda-reviewed-2026-10-28).
+
+## Selected target/library evidence — 2026-11-12 UTC
+
+The [ROCm/hipBLASLt worked dossier](../references/amd_support_evidence_2026_11.md) records one versioned matrix cohort and selected GPU/type restrictions. MI300X gfx942 and MI350X gfx950 do not imply identical supported FP8 representations. Its FNUZ-on-gfx950 counterexample is documentation-based, not an executed failing call. The earlier responsibility map remains historical/general; no AITER/CK/RCCL/rocSHMEM requalification or AMD installation occurred.

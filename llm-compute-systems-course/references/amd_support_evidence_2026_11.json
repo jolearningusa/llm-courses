@@ -1,0 +1,82 @@
+{
+  "observed_date_utc": "2026-11-12",
+  "scope": "Selected AMD documentation rows, not an installed or qualified environment",
+  "sources": {
+    "matrix": {
+      "requested_url": "https://rocm.docs.amd.com/en/docs-10.1.0/compatibility/compatibility-matrix.html",
+      "resolved_url": "https://rocm.docs.amd.com/en/docs-10.1.0/compatibility/compatibility-matrix.html",
+      "http_status": 200,
+      "bytes": 166618,
+      "sha256": "0f80076bf2225597025485da5545008f6c30360a139c19101861a8944396a5e6"
+    },
+    "gpu_specs": {
+      "requested_url": "https://rocm.docs.amd.com/en/latest/reference/gpu-specs.html",
+      "resolved_url": "https://rocm.docs.amd.com/en/latest/reference/gpu-specs.html",
+      "http_status": 200,
+      "bytes": 89571,
+      "sha256": "9fa0f8ae19d465e079599ab34dfb492c9b488f6d6f645972fc39ee437f0354bb"
+    },
+    "hipblaslt_precision": {
+      "requested_url": "https://rocm.docs.amd.com/projects/hipBLASLt/en/docs-10.1.0/reference/data-type-support.html",
+      "resolved_url": "https://rocm.docs.amd.com/projects/hipBLASLt/en/docs-10.1.0/reference/data-type-support.html",
+      "http_status": 200,
+      "bytes": 38979,
+      "sha256": "f456fa67cb35adfb34bc8962af351735d0cc5a19c6ca3a601e574cae06de4eef"
+    },
+    "hipblaslt_install": {
+      "requested_url": "https://rocm.docs.amd.com/projects/hipBLASLt/en/docs-10.1.0/install/install.html",
+      "resolved_url": "https://rocm.docs.amd.com/projects/hipBLASLt/en/docs-10.1.0/install/install.html",
+      "http_status": 200,
+      "bytes": 33237,
+      "sha256": "f71b45fdcbfba0297442e1667fafeae294fd24dd2cc32494879cb1b94674041c"
+    }
+  },
+  "selected_matrix": {
+    "rocm_documentation": "10.1.0",
+    "matrix_displayed_date": "2026-08-26",
+    "family_selector": "instinct",
+    "gpu_selector": "amd-instinct-mi350x",
+    "architecture_selector": "gfx950",
+    "os_selector": "ubuntu",
+    "inspected_os_entry": "Ubuntu 24.04.5",
+    "inspected_kernel_entry": "GA 6.8",
+    "hipblaslt_component": "1.4.1",
+    "driver_and_firmware_qualified": false
+  },
+  "hardware_rows": [
+    {
+      "name": "MI300X",
+      "architecture": "CDNA3",
+      "llvm_target": "gfx942",
+      "vram_GiB": 192,
+      "wavefront_size": 64
+    },
+    {
+      "name": "MI350X",
+      "architecture": "CDNA4",
+      "llvm_target": "gfx950",
+      "vram_GiB": 288,
+      "wavefront_size": 64
+    }
+  ],
+  "selected_library_restriction": {
+    "hipblaslt_version": "1.4.1",
+    "hipblaslt_f8_fnuz_and_bf8_fnuz": "gfx942 only",
+    "hipblaslt_f8_and_bf8": "gfx950 and gfx12 only",
+    "invalid_dossier_example": "Claiming hipblaslt_f8_fnuz support on gfx950",
+    "negative_control_type": "documentation counterexample; no runtime rejection executed"
+  },
+  "execution": {
+    "package_install": false,
+    "gpu_call": false,
+    "numeric_test": false,
+    "performance_test": false
+  },
+  "remaining_fields": [
+    "exact firmware/driver and installed artifact identity",
+    "full A/B/C/D/compute/scale contract",
+    "shape/strides/layout/transpose/alignment/workspace",
+    "chosen algorithm/backend",
+    "numerical and matched performance evidence"
+  ]
+}

@@ -64,3 +64,7 @@ The [Google evidence ledger](ironwood_spec_evidence_2026_11.md) rechecks chip/ch
 ## CMP-4 selected Zhenwu claims — 2026-11-12 UTC
 
 The [Alibaba evidence ledger](zhenwu_claim_evidence_2026_11.md) rechecks the M890/V900 announcements, 810E deployment template, capacity/link scope and two vendor 3× claims. EN/ZH deck 40 slides 15/16 distinguish documentation, announcements and forecast. The old keynote timed out twice; no fresh product-family classification is inferred from it. This completes the bounded selected Zhenwu review, not SAIL/toolchain qualification, matched performance or all CMP-4 vendor rows. No runtime or benchmark ran. PR #120 still leaves AGT-2's measured benchmark pending.
+
+## CMP-4 selected AMD support example — 2026-11-12 UTC
+
+The [target/library ledger](amd_support_evidence_2026_11.md) records ROCm 10.1.0 matrix conditions, hipBLASLt 1.4.1, selected MI300X/MI350X hardware rows and the documented FP8/FNUZ restriction. Deck 24 slide 14 has synchronized EN/ZH diagrams and a documentation counterexample; no runtime rejection or GPU result is implied. This is a bounded source-support example, not an installed qualified stack or all CMP-4 vendor/library completion. Other rows and actual execution remain open. PR #120 still leaves AGT-2's measured benchmark pending.

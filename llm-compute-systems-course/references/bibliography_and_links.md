@@ -253,3 +253,7 @@ Deck 24 / L15 selected rows: [NVL72 product table](https://www.nvidia.com/en-us/
 ## Selected Zhenwu source recheck — 2026-11-12 UTC
 
 [Claim ledger](zhenwu_claim_evidence_2026_11.md): [May M890 announcement](https://www.alibabacloud.com/en/press-room/alibaba-announces-comprehensive-full-stack-ai?_p_lc=1), [September V900 roadmap](https://www.alibabacloud.com/en/press-room/alibaba-unveils-roadmap-on-full-stack-ai-strategy), [PAI 810E deployment guide](https://www.alibabacloud.com/help/en/pai/use-cases/one-click-deploy-deepseek). Old keynote fetch remains unresolved; no installed runtime or measured performance qualification.
+
+## Selected AMD support reading — 2026-11-12 UTC
+
+[Evidence and response identities](amd_support_evidence_2026_11.md): [ROCm 10.1.0 matrix](https://rocm.docs.amd.com/en/docs-10.1.0/compatibility/compatibility-matrix.html), [AMD GPU specification table](https://rocm.docs.amd.com/en/latest/reference/gpu-specs.html), [hipBLASLt precision](https://rocm.docs.amd.com/projects/hipBLASLt/en/docs-10.1.0/reference/data-type-support.html) and [installation](https://rocm.docs.amd.com/projects/hipBLASLt/en/docs-10.1.0/install/install.html). Selected target/type scope, no installed stack or measured kernel.
