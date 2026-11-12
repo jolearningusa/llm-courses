@@ -4,6 +4,8 @@ Companion to [deck 40](../slides/40_inference_accelerator_architectures.html) ·
 
 **Selected Google recheck, 2026-11-11:** The [new evidence ledger](../references/ironwood_spec_evidence_2026_11.md) supersedes the interpretation of the Google row: one chip has two separate memory spaces; a 4-chip VM exposes 8 JAX devices; usable HBM is below nominal capacity. The cause of the table/prose bandwidth difference is not established; rounding is not a verified explanation. The service log records preview 2025-11-24 and GA 2026-03-31. No local TPU/framework qualification ran. The original review date remains historical.
 
+**Selected Zhenwu recheck, 2026-11-12 UTC:** The [new claim ledger](../references/zhenwu_claim_evidence_2026_11.md) checks the May/September announcements and PAI 810E+SGLang template. Keep GB and inter-chip GB/s; infer no HBM type, usable capacity, direction or common 3× benchmark. V900 Q1 2027 remains a vendor forecast. The older keynote timed out twice, so its GPU-family wording is not freshly verified. Original dates/explanations remain historical; no hardware/software compatibility run occurred.
+
 ## Source-documented hardware limits
 
 | Device | Documented fact | Boundary |
