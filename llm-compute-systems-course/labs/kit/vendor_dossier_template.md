@@ -34,3 +34,7 @@ Record useful tokens/tasks, complete observation time, failures/retries/repeated
 ## Decision and evidence gaps
 
 State one proposed optimization, the expected trace signature, numerical/quality gate, resource/search budget and rejection rule. List unavailable hardware/software evidence and what experiment would resolve it. Do not label an analytical Rubin projection a local benchmark.
+
+### Worked AMD support counterexample — 2026-11-12 UTC
+
+Use the [selected matrix/library ledger](../../references/amd_support_evidence_2026_11.md) to distinguish documentation from execution. Record the selector conditions and exact ROCm/library/target/OS/kernel cohort. Explain why a FNUZ-on-gfx950 support claim contradicts the selected hipBLASLt note, then leave runtime rejection, firmware/driver, operation contract, dispatch and numerical evidence unmeasured until actually tested. Do not fill local qualification from a general platform listing.
