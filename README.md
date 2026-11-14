@@ -28,6 +28,7 @@ llm-courses/
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
 │   ├── reviews/
+│   │   ├── agentos-openclaw-host-errors/ # Python first-compaction error before/after captures
 │   │   ├── agentos-openclaw-context-runtime/
 │   │   │   ├── README.md
 │   │   │   ├── en.png

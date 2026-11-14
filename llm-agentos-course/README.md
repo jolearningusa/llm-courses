@@ -28,7 +28,7 @@ Each row links the English deck and, on that same row, the Simplified Chinese de
 | [Harness deep-dives](slides/05_opensource_plugin_apis_slides.html) (slides 22–31) · [简体中文](slides/zh/05_opensource_plugin_apis_slides.html) | Hermes Agent, OpenClaw (measured registry error/abort controls), Letta, AIOS, Rust runtimes, plugin APIs, vLLM KV connectors, Harness² |
 | [The agent loop](slides/01_agent_loop_deck.html) · [简体中文](slides/zh/01_agent_loop_deck.html) | Module 1 lecture: turns, budgets, retries, interrupts, compaction, hooks |
 | [The scheduler](slides/01_scheduler_deck.html) · [简体中文](slides/zh/01_scheduler_deck.html) | Module 1 lecture: lanes and queues, delegation limits, engine and program-aware scheduling |
-| [The context manager](slides/01_context_manager_deck.html) · [简体中文](slides/zh/01_context_manager_deck.html) | Module 1 lecture: context rot, prompt assembly, cache-stable prefixes, compaction, isolation, Hermes and OpenClaw context engines |
+| [The context manager](slides/01_context_manager_deck.html) · [简体中文](slides/zh/01_context_manager_deck.html) | Module 1 lecture: context rot, prompt assembly, cache-stable prefixes, compaction, isolation, Hermes and OpenClaw context engines; tested Python compaction-error boundary |
 | [Long-term memory](slides/02_long_term_memory_deck.html) · [简体中文](slides/zh/02_long_term_memory_deck.html) | Module 2 lecture: write path, indexes, retrieval, how harnesses build memory, RAG tooling |
 | [The KV-cache plane](slides/03_kv_cache_deck.html) · [简体中文](slides/zh/03_kv_cache_deck.html) | Module 3 lecture: KV-cache sizing, prefix caching in vLLM, provider prompt caching for agents, disaggregation and tiered offload, MLA and FP8 KV, a cache hygiene checklist |
 | [Access control and safety](slides/04_access_control_deck.html) · [简体中文](slides/zh/04_access_control_deck.html) | Module 4 lecture: the lethal trifecta and Rule of Two, OWASP agentic top 10, permission models in OpenClaw / Hermes / Codex, prompt-injection design patterns (CaMeL), audit |
@@ -218,6 +218,7 @@ llm-agentos-course/
 │   │   │           └── scripts/
 │   │   │               └── fill_report.py     # Its script: prints the report for one incident
 │   │   ├── tests/
+│   │   │   ├── test_openclaw_host_errors.py # First compact error, assembly fallback, successful compact
 │   │   │   ├── __init__.py
 │   │   │   ├── test_session_handoff.py        # Restart, budget, receipt and incomplete-state controls
 │   │   │   ├── test_memory_repair.py          # Independent state/repair negative controls
@@ -267,6 +268,12 @@ llm-agentos-course/
 │       ├── run_harness2_demo.sh               # Quickstart for google-research/harness2
 │       └── sample_lesson_entry.jsonl          # Course schema for an evidence-backed lesson record
 └── references/
+    ├── openclaw_host_errors_2026_11.md
+    ├── openclaw_host_errors_2026_11/       # Raw before/after/kit logs and validation identities
+    │   ├── validation.json
+    │   ├── before.log
+    │   ├── after.log
+    │   └── kit.log
     ├── openclaw_context_runtime_2026_11.md
     ├── openclaw_context_artifacts_2026_11/
     │   ├── 2026.10.7-dependencies.lock.json

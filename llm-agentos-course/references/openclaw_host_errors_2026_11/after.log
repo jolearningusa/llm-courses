@@ -1,0 +1,8 @@
+test_assembly_error_still_falls_back_on_same_attempt (test_openclaw_host_errors.OpenClawHostErrorTests.test_assembly_error_still_falls_back_on_same_attempt) ... ok
+test_first_compaction_error_visible_before_model_then_quarantined_retry (test_openclaw_host_errors.OpenClawHostErrorTests.test_first_compaction_error_visible_before_model_then_quarantined_retry) ... ok
+test_successful_compaction_keeps_normal_reply_and_accounting (test_openclaw_host_errors.OpenClawHostErrorTests.test_successful_compaction_keeps_normal_reply_and_accounting) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.007s
+
+OK

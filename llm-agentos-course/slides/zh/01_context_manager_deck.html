@@ -349,6 +349,23 @@ def register(ctx):
 
 <!-- 14 -->
 <section class="slide">
+  <h2><small>AGT-1 · Python host · 2026-11-14 UTC</small>压缩失败必须到达调用方</h2>
+  <svg viewBox="0 0 1136 270" role="img" aria-label="压缩失败必须到达调用方" style="width:100%;height:270px;flex-shrink:0">
+    <rect x="0" y="0" width="550" height="180" rx="12" fill="#161d2e" stroke="#ff7a85"/>
+    <rect x="586" y="0" width="550" height="180" rx="12" fill="#161d2e" stroke="#7be0b8"/>
+    <g font-size="22"><text x="24" y="36" fill="#ff7a85">旧 Python host</text><text x="610" y="36" fill="#7be0b8">修复后的 Python host</text>
+    <text x="24" y="78">compact() 抛错</text><text x="610" y="78">compact() 抛错</text>
+    <text x="24" y="120">隔离 → 回退 → 模型回复</text><text x="610" y="120">隔离 → 原样重新抛出</text>
+    <text x="24" y="158" fill="#ff7a85">原始错误被隐藏</text><text x="610" y="158" fill="#7be0b8">模型请求数：0</text>
+    <text x="24" y="220" fill="#6ea8ff">稍后显式发起新 run() → 预算裁剪回退</text></g>
+    <text x="24" y="255" font-size="19" fill="#9aa6bd">新 run 不会自动续接失败任务或恢复其历史。</text>
+  </svg>
+  <p style="font-size:21px;margin:14px 0 8px">回归对照：修复前 2/3；修复后 3/3；原有 kit 36/36。</p>
+  <p style="font-size:20px;margin:0 0 12px">正常压缩仍计数一次；assemble 失败仍在当次回退。</p>
+  <p class="muted" style="font-size:18px;margin:0">范围：仅修正首次 compact 失败；未验证完整 Gateway、取消策略或持久恢复。</p>
+  <div class="cite">Source: npm OpenClaw 2026.10.7 / 2026.11.3 registry guards; references/openclaw_host_errors_2026_11.md. Original course diagram.</div>
+  <aside style="display:none">Prior reference slide retained for reading:
+
   <h2><small>参考文献</small>延伸阅读</h2>
   <div class="cols">
     <ul style="font-size:15px">
@@ -366,6 +383,7 @@ def register(ctx):
       <li>所有链接：<code>references/bibliography_and_links.md</code> §5b</li>
     </ul>
   </div>
+</aside>
 </section>
 </div>
 <div id="hint">← / → 翻页 · 按 F 全屏</div>

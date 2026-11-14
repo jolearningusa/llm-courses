@@ -212,9 +212,10 @@ class OpenClawHost:
     only the newest messages that fit the budget. If it does, the host still counts the assembled request
     itself before sending it (OpenClaw 2026.11 checks every outgoing request; the engine's estimatedTokens does
     not decide this): a request over the budget enters recovery, compact() and a fresh assemble().
-    afterTurn() follows each turn. If any engine call raises, the engine
-    is quarantined for the rest of the session and the host falls back to the "legacy" behavior: the whole
-    transcript, cut to the budget.
+    afterTurn() follows each turn. Engine errors quarantine this host session. A first compact() error
+    is re-raised to its caller before any model request; a later explicit run uses the budget-cut fallback.
+    Other engine failures keep the immediate fallback used by this small teaching host. This models the
+    tested first-compaction-error boundary, not the full Gateway, process-wide registry or abort policy.
     """
 
     def __init__(self, model: Model, tools: Any, engine: Any, token_budget: int = 6000, *, session_id: str = "s1",
@@ -230,8 +231,10 @@ class OpenClawHost:
             return None
         try:
             return self.engine.call(method, params)
-        except Exception as e:  # noqa: BLE001 - OpenClaw isolates engine failures from the reply path
+        except Exception as e:  # noqa: BLE001 - retain quarantine before exposing a failed compaction
             self.quarantined = f"{method}: {e}"
+            if method == "compact":
+                raise
             return None
 
     def run(self, user_turns: list[str]) -> HostResult:

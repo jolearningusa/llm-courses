@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-14 UTC",
+  "base_commit": "1d981c5",
+  "qualified_test_python": "CPython 3.12.14 /private/tmp/trn4-cpu-lock-20261114/bin/python",
+  "primary_source": "https://registry.npmjs.org/openclaw/2026.11.3",
+  "npm_integrity_rechecked": "sha512-FBq/q0TCaoA2b7qfdV0q81fHhI6RBB1zAQfJQREc1u2TlK5khVgCUsAlXskLWthyVqRz5PWEj+oOmfYgK58dHg==",
+  "source_sha256": {
+    "labs/kit/nanoos/hosts.py": "f3c43d7b181dfa77d2510232350e4f76e50471a795388862e7c79fc495facb3e",
+    "labs/kit/tests/test_openclaw_host_errors.py": "a727bba9da5bc561dc3569808a5ef756149f5104dc1e4e38cd9c899f54ef2f06"
+  },
+  "log_sha256": {
+    "kit.log": "48317a9dd72205b8f48677aa59d2e5adf004f1f402fe44c5346478312d6f4640",
+    "before.log": "b001a46d9690d5a1e7cea2376ed3690f95d42d7d2389668842a80fd823f6caa3",
+    "after.log": "78522f28f5b3cf5be8b019bf40db93af045fd25af8ccfa7d635dffd99eb4f54c"
+  },
+  "results": {
+    "before": {
+      "pass": 2,
+      "fail": 1,
+      "failure": "RuntimeError not raised"
+    },
+    "after": {
+      "pass": 3,
+      "fail": 0
+    },
+    "existing_kit": {
+      "pass": 36,
+      "fail": 0
+    }
+  }
+}

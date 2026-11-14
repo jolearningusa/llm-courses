@@ -349,6 +349,23 @@ def register(ctx):
 
 <!-- 14 -->
 <section class="slide">
+  <h2><small>AGT-1 · Python host · 2026-11-14 UTC</small>A failed compaction must reach the caller</h2>
+  <svg viewBox="0 0 1136 270" role="img" aria-label="A failed compaction must reach the caller" style="width:100%;height:270px;flex-shrink:0">
+    <rect x="0" y="0" width="550" height="180" rx="12" fill="#161d2e" stroke="#ff7a85"/>
+    <rect x="586" y="0" width="550" height="180" rx="12" fill="#161d2e" stroke="#7be0b8"/>
+    <g font-size="22"><text x="24" y="36" fill="#ff7a85">Old Python host</text><text x="610" y="36" fill="#7be0b8">Corrected Python host</text>
+    <text x="24" y="78">compact() throws</text><text x="610" y="78">compact() throws</text>
+    <text x="24" y="120">quarantine → fallback → model reply</text><text x="610" y="120">quarantine → rethrow same error</text>
+    <text x="24" y="158" fill="#ff7a85">original error hidden</text><text x="610" y="158" fill="#7be0b8">Model requests: 0</text>
+    <text x="24" y="220" fill="#6ea8ff">Later explicit new run() → budget-cut fallback</text></g>
+    <text x="24" y="255" font-size="19" fill="#9aa6bd">A new run does not continue the failed task or restore its history.</text>
+  </svg>
+  <p style="font-size:21px;margin:14px 0 8px">Regression controls: old 2/3; fixed 3/3; existing kit 36/36.</p>
+  <p style="font-size:20px;margin:0 0 12px">Valid compaction still counts once; assembly failure still falls back immediately.</p>
+  <p class="muted" style="font-size:18px;margin:0">Scope: first compact failure only; full Gateway, caller abort and durable recovery unqualified.</p>
+  <div class="cite">Source: npm OpenClaw 2026.10.7 / 2026.11.3 registry guards; references/openclaw_host_errors_2026_11.md. Original course diagram.</div>
+  <aside style="display:none">Prior reference slide retained for reading:
+
   <h2><small>References</small>Read next</h2>
   <div class="cols">
     <ul style="font-size:15px">
@@ -366,6 +383,7 @@ def register(ctx):
       <li>All links: <code>references/bibliography_and_links.md</code> §5b</li>
     </ul>
   </div>
+</aside>
 </section>
 </div>
 <div id="hint">← / → to navigate · F for full screen</div>
