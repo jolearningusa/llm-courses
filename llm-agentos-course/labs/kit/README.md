@@ -106,3 +106,7 @@ The [actual-interface import / clone check](../../references/hermes_import_contr
 ## Measured standalone pilot — 2026-11-14 UTC
 
 The [real-model pilot](../../references/measured_memory_pilot_2026_11.md) now supplies all four standalone conditions and measured write/answer records for eight matched synthetic questions. It does not use the student MemoryStore TODOs or the scripted answer model. The frozen primary strict scores are all 0/8; inspect the raw text, formatting false negatives and factual errors before interpreting them. Use the separate `memory_pilot.py` write/answer phases with the pinned protocol; the broader semantic/human/large-cohort benchmark remains open.
+
+## Optional pinned OpenClaw runtime controls — 2026-11-14 UTC
+
+The [two-cohort registry probe](../../references/openclaw_context_runtime_2026_11.md) executes packaged OpenClaw registry/proxy code with deterministic callbacks, separately from the Python bridge and live Gateway exercise. Both versions pass ten groups. In the tested ordinary resolver, assembly failure falls back immediately; the first compaction failure is rethrown while quarantining; later fallback and explicit re-registration recovery are separate events. Caller cancellation propagates without quarantine. No full Gateway/model compaction, provider/budget or profile/persistence qualification follows. Keep the live tasks above and student TODOs intact.

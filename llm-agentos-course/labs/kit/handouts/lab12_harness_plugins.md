@@ -152,3 +152,9 @@ Hand in one page from [`report_template.md`](../report_template.md).
 ## Hermes import evidence — 2026-11-14 UTC
 
 The [actual-interface import / clone check](../../../references/hermes_import_contracts_2026_11.md) runs two pinned upstream source cohorts in isolated venvs and supplies five loading-boundary controls. Offline stand-ins apply only when `agent` is absent; a broken installed package must expose its original error. This does not complete the student compaction/memory TODOs or qualify a real failed/retried Hermes session.
+
+## Optional pinned OpenClaw runtime controls — 2026-11-14 UTC
+
+The [two-cohort registry probe](../../../references/openclaw_context_runtime_2026_11.md) executes packaged OpenClaw registry/proxy code with deterministic callbacks, separately from the Python bridge and live Gateway exercise. Both versions pass ten groups. In the tested ordinary resolver, assembly failure falls back immediately; the first compaction failure is rethrown while quarantining; later fallback and explicit re-registration recovery are separate events. Caller cancellation propagates without quarantine. No full Gateway/model compaction, provider/budget or profile/persistence qualification follows. Keep the live tasks above and student TODOs intact.
+
+The existing Python `OpenClawHost._engine` uses a broad catch-and-fallback model. It does not reproduce the actual registry’s first-compaction-error and caller-abort policies above; distinguish its teaching trace from the packaged-runtime result.

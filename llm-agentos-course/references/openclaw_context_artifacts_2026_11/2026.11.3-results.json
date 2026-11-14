@@ -1,0 +1,3589 @@
+{
+  "version": "2026.11.3",
+  "node": "v24.22.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "protocol_sha256": "921bbbecb6e733c3101cbe977d65b7f7ce143e775e68ae3b5740ffaa33c9e0f6",
+  "runner_sha256": "210c4adcce9ac921e04b8dea7407e898af191492a2741c6ca447813e6358ecb8",
+  "npm_integrity": "sha512-FBq/q0TCaoA2b7qfdV0q81fHhI6RBB1zAQfJQREc1u2TlK5khVgCUsAlXskLWthyVqRz5PWEj+oOmfYgK58dHg==",
+  "tarball_sha256": "dae4c4f7549561db2fe5ac43af7ba0c9491f876380f070f7ffb87bf9721a10df",
+  "callback_scope": "deterministic course-owned fake context engine and fake legacy-id fallback, no real summarizer, Gateway or provider; actual npm runtime registry/proxy/health modules imported unchanged",
+  "state_directory": "/private/tmp/agt1-openclaw-runtime/state-2026.11.3",
+  "cases": [
+    {
+      "case": "reserved_owner_and_duplicate_guard",
+      "outcome": "passed",
+      "seconds": 0.00003166699999999878,
+      "evidence": {
+        "reserved": {
+          "ok": false,
+          "existingOwner": "core"
+        },
+        "duplicate": {
+          "ok": false,
+          "existingOwner": "plugin:owner-control"
+        },
+        "sameOwner": {
+          "ok": false,
+          "existingOwner": "plugin:owner-control"
+        }
+      }
+    },
+    {
+      "case": "accepted_host_param_projection",
+      "outcome": "passed",
+      "seconds": 0.0007548750000000268,
+      "evidence": {
+        "assemble_keys": [
+          "customMarker",
+          "messages",
+          "sessionKey"
+        ],
+        "compact_keys": [
+          "abortSignal",
+          "customMarker",
+          "messages",
+          "sessionKey"
+        ],
+        "compact_abort_signal_same_object": true
+      }
+    },
+    {
+      "case": "fresh_factory_state_isolation",
+      "outcome": "passed",
+      "seconds": 0.0001274580000000185,
+      "evidence": {
+        "factory_instances": 2,
+        "first_memory": [
+          "session-A-only"
+        ],
+        "second_memory": [],
+        "scope": "fresh registry factories, not Gateway session cloning"
+      }
+    },
+    {
+      "case": "assembly_error_quarantine_and_fallback",
+      "outcome": "passed",
+      "seconds": 0.354713208,
+      "evidence": {
+        "raw_calls": 1,
+        "factory_calls": 1,
+        "first_result": {
+          "messages": [],
+          "estimatedTokens": 0,
+          "marker": "legacy"
+        },
+        "quarantine": {
+          "engineId": "assembly-fail",
+          "operation": "assemble",
+          "reason": "course-assembly-failure"
+        }
+      }
+    },
+    {
+      "case": "compaction_error_rethrow_then_fallback_and_explicit_recovery",
+      "outcome": "passed",
+      "seconds": 0.002997124999999983,
+      "evidence": {
+        "first_error": "course-compaction-failure",
+        "first_error_identity_preserved": true,
+        "raw_calls": 1,
+        "next_result": {
+          "ok": true,
+          "compacted": true,
+          "summary": "",
+          "marker": "legacy"
+        },
+        "quarantine_before_recovery": {
+          "engineId": "compact-fail",
+          "operation": "compact",
+          "reason": "course-compaction-failure"
+        },
+        "explicit_reregistration_recovered": true
+      }
+    },
+    {
+      "case": "invalid_factory_contract",
+      "outcome": "passed",
+      "seconds": 0.0015818329999999605,
+      "evidence": {
+        "fallback_id": "legacy",
+        "quarantine": {
+          "engineId": "invalid-contract",
+          "operation": "contract-validation",
+          "reason": "Context engine \"invalid-contract\" factory returned an invalid ContextEngine: missing compact()."
+        }
+      }
+    },
+    {
+      "case": "abort_before_call_no_quarantine",
+      "outcome": "passed",
+      "seconds": 0.00086200000000008,
+      "evidence": {
+        "raw_calls": 0,
+        "error": "course-owner-abort-before",
+        "same_error_object": true,
+        "quarantined": false
+      }
+    },
+    {
+      "case": "abort_during_compact_no_quarantine_and_retry",
+      "outcome": "passed",
+      "seconds": 0.0008817500000000109,
+      "evidence": {
+        "raw_calls": 2,
+        "error": "course-owner-abort-during",
+        "quarantined": false,
+        "retry": {
+          "ok": true,
+          "compacted": true,
+          "marker": "healthy-after-owner-abort"
+        }
+      }
+    },
+    {
+      "case": "discovery_only_fallback_without_quarantine",
+      "outcome": "passed",
+      "seconds": 0.0007277919999999085,
+      "evidence": {
+        "factory_calls": 0,
+        "fallback_id": "legacy",
+        "quarantined": false
+      }
+    },
+    {
+      "case": "idempotent_disposal",
+      "outcome": "passed",
+      "seconds": 0.0000434579999999869,
+      "evidence": {
+        "raw_disposals": 1
+      }
+    }
+  ],
+  "events": [],
+  "imported_module_scope": "main-process resolution only; dynamically spawned health-store worker closure is not instrumented",
+  "full_gateway_or_model_compaction": "not_run",
+  "full_installation_qualification": "not_run",
+  "final_quarantines": [
+    {
+      "engineId": "assembly-fail",
+      "operation": "assemble",
+      "reason": "course-assembly-failure"
+    },
+    {
+      "engineId": "invalid-contract",
+      "operation": "contract-validation",
+      "reason": "Context engine \"invalid-contract\" factory returned an invalid ContextEngine: missing compact()."
+    }
+  ],
+  "status": "passed",
+  "network_attempts": 0,
+  "seconds": 0.514160666,
+  "main_process_resolved_files": [
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/absolute-path.js",
+      "sha256": "5248d48b4cee904921745400288a959e78304e6602a20d9f132ca033c582a8dc",
+      "bytes": 11180
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/advanced.js",
+      "sha256": "50238ea47086a579f4c14203ecdae934087eb59addf6f711ced476b58dd5d363",
+      "bytes": 3992
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/async-lock.js",
+      "sha256": "5550bfc7729a21b9bccb00eedba9ef6fe735bdba9f84c03ef5e3c1da101e62da",
+      "bytes": 381
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/atomic-io.js",
+      "sha256": "e6ceee5dc8f9e510ab0463555d6e9ba869cc5dafe5bc0fc6c942237d06c55ce3",
+      "bytes": 8569
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/bounded-read.js",
+      "sha256": "3f70e6995a89d9559393bdd5f7abd24ca5c00d4eeffad2df957492fe2948477f",
+      "bytes": 6843
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/byte-budget.js",
+      "sha256": "ce3affd8e4bd59fb130abcb297a8033de8c391726eb239785d2ff4e80e505a99",
+      "bytes": 406
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/byte-view.js",
+      "sha256": "39a14ac4b82614f8a6cc158a86ca6719cd9437399b578e4aafaf79dcaf4ab06d",
+      "bytes": 751
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/clone-metadata.js",
+      "sha256": "a1a6079de04974be4526574c8971fa4d5ced6da8e4a463581b70e4c90377c730",
+      "bytes": 1787
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/copy-file-input.js",
+      "sha256": "fc852260580943e6f3ded7bd9dd4d6fcdf24165a884be9a5223c3aefbf72e71c",
+      "bytes": 3587
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/copy-link.js",
+      "sha256": "2d0c197b8fbc3783607419c5e87cc5a4c0a771c944caf8c86cbcbad65f534764",
+      "bytes": 8846
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/copy-metadata.js",
+      "sha256": "9d0e3e364555681e6c0b345cb1661942b3a58be41f824a2c716b96f7d371f818",
+      "bytes": 1752
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/copy-path-admission.js",
+      "sha256": "c24a7754df1036507ab29e6220764b64f41d1dac05b299d046cddb7676dd7f74",
+      "bytes": 6903
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/copy-policy.js",
+      "sha256": "17315691632a07b537cc1c7d4c1b90913805e666e63eb3c544f78594c9ea712f",
+      "bytes": 361
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/copy-publication.js",
+      "sha256": "9effa323f98ac428a3321f18ca1d255bbc0a0080d4d822eed1871b72aede25b9",
+      "bytes": 1308
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/copy-root-file-sync.js",
+      "sha256": "cd349605610e14bfc192f220a72fd24e3ab7d47b577c810c1a8441755956bb0f",
+      "bytes": 10115
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/copy-tree-portable.js",
+      "sha256": "43eb56fe6d1bf24181f3466920f0989bdcb7395a9e3f7d9fa7c4303d6e729d27",
+      "bytes": 10598
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/copy.js",
+      "sha256": "50bf87a966df2ddaaf5ce78b0cfaf4332815c38841983962cbd08b7217c2ba2b",
+      "bytes": 6268
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/create-owned-file.js",
+      "sha256": "00bce231a25cc3046e8c8b1856c2f4da333036b49c296a35c29c96a4e8dd41b9",
+      "bytes": 441
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/create.js",
+      "sha256": "fd4f7327df68557843d633984eb20707c7eaa8b5ea6fda8c4949950d91817e41",
+      "bytes": 19542
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/creation-boundary.js",
+      "sha256": "1c32a5bcf4c0c87333e6b4d699cafb97e66249d15d3b4a6cd7440cf8db659a50",
+      "bytes": 17530
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/deny-mutation-match.js",
+      "sha256": "1f914f2c78ea69fe4cb07f5ff585791ded95c15292563d4b707a2b8aab81e2a6",
+      "bytes": 3839
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/deny-mutations.js",
+      "sha256": "b00897cc914bc70dfab132e464c310ac7d755acae6e54eba40961b5535512995",
+      "bytes": 4859
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/device-path.js",
+      "sha256": "da2f1223469785af3605bbd6ef1df384d39438c5a2b24776fccfe373c68dabf4",
+      "bytes": 4580
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/directory-durability.js",
+      "sha256": "1344b73f9e2fb9fe042b7f78420b41a5c3bc5691acd6ad312a8cf57dc7e9cb5f",
+      "bytes": 11141
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/directory-entry-path.js",
+      "sha256": "306c01781f932f9ada9316dd22bf4753ef4b9e4a7992997996bf206af6486a99",
+      "bytes": 1021
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/directory-guard.js",
+      "sha256": "991c4b3c6ec2b507d8e875a589a237e19be7c39696242b757e33a497d35bc6af",
+      "bytes": 9114
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/directory-mode-node.js",
+      "sha256": "bfafe94e64a9728e9bc51fcc0ec95e09085e504902a359beead64ec671674849",
+      "bytes": 13232
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/directory-receipt.js",
+      "sha256": "98a4646b18ecbc5af61bb0f63c3bd33ec27efd652ddaf8cba7961c27ca7cd4be",
+      "bytes": 6675
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/durability.js",
+      "sha256": "2a9c105a960e36d3e4a429020e9bb7f77ffdf72a284e533d4208546e58655583",
+      "bytes": 317
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/effective-uid.js",
+      "sha256": "7a703d316bb601660517a21321cceb959a1c304f37ca22adb992b046f57d7be2",
+      "bytes": 571
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/entry-publication.js",
+      "sha256": "a0b4040dd0d83d55c57fb7c6986eace3975be30652e294176865c0534b486657",
+      "bytes": 14410
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/error-detail.js",
+      "sha256": "4cc4daa79ecce9454f464bd1d66c37bd1800950587a80cc65e8f6a050fbff7c2",
+      "bytes": 638
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/errors.js",
+      "sha256": "7957fc20e33f5f2813c0228419647a1be6c4aad0b71bbb82a44ef25171fd7707",
+      "bytes": 1000
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/exact-identity.js",
+      "sha256": "74b8796b07828c5132518a9b9ab8d0d91a5e5774a43950e52a0270712a136b3b",
+      "bytes": 1448
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/exclusive-create.js",
+      "sha256": "66c88449f6de46f025fb17eec6792cc6b8ce7753beb3342022376b538e058bd1",
+      "bytes": 781
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-cleanup.js",
+      "sha256": "2c9b37ad0fea791ac93fac8922ef0839c685f19b86afa2de057ed7d7dd772cbc",
+      "bytes": 2785
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-contents.js",
+      "sha256": "775d54bd705c20fa185c997c8adb78bc7b973713864aedbfbfe6e3f9c566f982",
+      "bytes": 1952
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-handle-transfer.js",
+      "sha256": "9dbd37e3bb07f95d3fd7b57f24e14c5eb24a2a3665f8cf3b7243e471599582f7",
+      "bytes": 9325
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-hash.js",
+      "sha256": "bc26b6bcb816052d517e23ace176b19b68fcf4af53fcac9ec573dce86d247a7b",
+      "bytes": 12459
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-identity.js",
+      "sha256": "3e60fa00ad296253da837ed36454bd8def31c9ee373b903c8575827be3d1d4da",
+      "bytes": 3293
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-lock-sync-acquisition.js",
+      "sha256": "1c68f11fccd2c9742c06f72d2d0957b9f1ec7f1cbca683eeb3c4f0966881696e",
+      "bytes": 3488
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-lock-sync-admission.js",
+      "sha256": "2e64523347a326f4a72c3ee923cf99195d47e36f62eaea64258b1aa5c62d4a66",
+      "bytes": 2492
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-lock-sync-root-acquire.js",
+      "sha256": "f4da188de5019c5985b1ce65c53f8d21b831df663c840b1541cbd531474e6223",
+      "bytes": 17048
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-lock-sync-root-held.js",
+      "sha256": "4bf1fdf926bb8a1ac940ddea61cf85a81efbfd154a71c2e4fbab67857c0eba1b",
+      "bytes": 15877
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-lock-sync-root-io.js",
+      "sha256": "7e1e231c37fcf0971cb4aee6140e4769a8e75495a2013884f887ec45b20d57f0",
+      "bytes": 8915
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-lock-sync-root-mutation.js",
+      "sha256": "ddd5b93e66795e84707e0c4b67d01c5343ac9f651d30944d5b78365349131c12",
+      "bytes": 12961
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-lock-sync-root-options.js",
+      "sha256": "a82983d5ebf93700f2b335bde99fece2d59124c940eb0fe2372bfa904a4d4ec1",
+      "bytes": 2565
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-lock-sync-root-registration.js",
+      "sha256": "00cfbeb953f568ba6e1409ef6bd86f72cc51900920753c17229078b8a3562a31",
+      "bytes": 4384
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-lock-sync-root.js",
+      "sha256": "4f1a351417c43a0f65d9fa5a4019abf62a6e00c8070cd486cb30c4ba748a12a5",
+      "bytes": 13536
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-lock-sync-stale-admission.js",
+      "sha256": "f1bdcc69f38a345a397babfc902ed851f5263032b82a0ab1fa2ec911dd793732",
+      "bytes": 6174
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-lock-sync.js",
+      "sha256": "7d5098998718ee81a6ae5c61a891c2deb6870eda5bd731273f80c39ffab29d28",
+      "bytes": 15228
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-lock.js",
+      "sha256": "64f6ff9644a252dc503ec04249c841247431b4778677691e81b65eef1fcf0e3e",
+      "bytes": 2796
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-observation.js",
+      "sha256": "2b53ff0f253462eed943c2e9003e261d2c257509b48c160299ba181892476d93",
+      "bytes": 792
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-sync.js",
+      "sha256": "6d7485625782f21d32ec8efa4cfaab5fa897afa1fcea5acbeea9c41c2910c8f4",
+      "bytes": 410
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/file-write-lease.js",
+      "sha256": "5b4b8bca1e4cda22622ff3f0a8141027919ae8e750507ebacb7ffb31947549d2",
+      "bytes": 1574
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/filename.js",
+      "sha256": "b123cd79e49a5fa47656b3814a77880d17d7c339abe5be15a275378cc767b520",
+      "bytes": 5947
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/fs.js",
+      "sha256": "38a6b910e379739364f2d3ad26de3c753f8d28bccd707ccb61d2993aff53cbfa",
+      "bytes": 571
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/guarded-mkdir.js",
+      "sha256": "c50b202cfee7c2efa40cc903ee5f30db8ba01971c8ba5e4a711a124562171aaf",
+      "bytes": 13043
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/guarded-mutation.js",
+      "sha256": "18ee02c09fce3717eb3007c7d4ef269f40278f9f04cde42abdc3d97a5ae87473",
+      "bytes": 3381
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/hardlink-fallback.js",
+      "sha256": "f222911abd9e53100987589ed86b34b1a76993c251a56529c94606a62870d23d",
+      "bytes": 300
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/home-dir.js",
+      "sha256": "529f2c66f42fcc907f9f220dfa7c09494990fccb96505575a17d7a236b866939",
+      "bytes": 6197
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/install-path.js",
+      "sha256": "7ed73baa6846d2ca8a1505af07590a6050a93e5b9ba348e3a6d59482640428a8",
+      "bytes": 5693
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/json-stringify.js",
+      "sha256": "5f7a2769a58f3ddf602658f53d23f61aa9c28a2ed3ea35c45f2ae7210d0690ec",
+      "bytes": 260
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/json.js",
+      "sha256": "62cbbb5c5ab9ebb7a48b5cf9025b8bcd0ac9b7610c22b056b132468dd789fd7a",
+      "bytes": 10124
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/local-file-access.js",
+      "sha256": "7530a957ca9d56f56deba8da1dd06be03c894c6f6472bc8571080937b57bfda8",
+      "bytes": 3135
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/local-file-descriptor.js",
+      "sha256": "7fe423a5df3d5a4a392e08e8f379e8c70962fa831e8f8050cbacf50e02cda2ed",
+      "bytes": 4356
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/local-roots.js",
+      "sha256": "e51824a8bd62a84d87bb036aaae8d2cb16b04b53ffd5b031211e254d71f2e3c0",
+      "bytes": 6313
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/lock-config.js",
+      "sha256": "bb9b589dc68a4841af6cb042f76441c30291156630a283297d38cc971fe88c29",
+      "bytes": 503
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/mutation-authority.js",
+      "sha256": "ff1eb74ee03dacdd978f75899ae88acedaff7b30003329c59eb2cd54973654b0",
+      "bytes": 1808
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-binding.js",
+      "sha256": "0e08d01eb6eee9bc2ccd3bcb855393302cd18f0f91f398069f1f63b9c7d8f720",
+      "bytes": 386
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-config.js",
+      "sha256": "8d21560dfc3e9bcce4a84c6880cec9219ee025b5ceb6abe871519d755f5d3092",
+      "bytes": 1705
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-directory-observation.js",
+      "sha256": "54c464be201eb723cae732cafecaa3a7641b23804d38b82e89b7f70f7c74fc0a",
+      "bytes": 1966
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-fallback-warning.js",
+      "sha256": "a655eac1fc6929361f3ee34f49a3c1b2adf19254e97909d86fa61f536bc8d50d",
+      "bytes": 2056
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-guidance.js",
+      "sha256": "9d7af0374a09497139739571f2142cd33e8ad68a550603619887ddf6a86b3ff7",
+      "bytes": 1274
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-move-fallback.js",
+      "sha256": "41154730132ddce651030a060db64c1e063ed207533d6c523d2eaeb552c82965",
+      "bytes": 2742
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-noreplace.js",
+      "sha256": "5cd5192a667b1c7fe078c72cc25d7e0ebac1f898a2af5e1fd747335824ad60cd",
+      "bytes": 2430
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-operations.js",
+      "sha256": "7523d2608b8cf07ed700aa5df860b8441e91ec75556874adc9ecdd3b3fde3696",
+      "bytes": 4121
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-parent-admission.js",
+      "sha256": "f1a2a8f996196652acfc12067395567e66bdce67da3d937ee803af45735d36d7",
+      "bytes": 10700
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-pinned-write-windows.js",
+      "sha256": "6437a1b2b0af62b3d0cda3d2fa91897e254300787c47dceb16770c7bbb10e77a",
+      "bytes": 13506
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-pinned-write.js",
+      "sha256": "8d6911ec2b9c61e076a0075537cb94f13a1b6bc0db819d7f293bb75204b234e2",
+      "bytes": 9619
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-policy-directory-observation.js",
+      "sha256": "465026d4737b4555218eec58afb04315e147edc88e6f6fcea85fc0cf60a4fccf",
+      "bytes": 2923
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-policy-parent-windows.js",
+      "sha256": "99c43ff3469e9c86742321e4cfe5ceb35844827dcc066ad0861abc799bea9411",
+      "bytes": 2923
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-policy-parent.js",
+      "sha256": "fe75487bea16d324b18a8c08588b7c5ae257181b1e4b17bea349af712fe9660b",
+      "bytes": 21325
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-rename-outcome.js",
+      "sha256": "77fb863013de66a1b0ac541776e67a070de5b80cac70940998b73abdcc52559a",
+      "bytes": 636
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-staged-file-metadata.js",
+      "sha256": "4fd9ad9f695e6e40cbe9299f440f2be5acd2a51721763a1226fa624d629a356b",
+      "bytes": 897
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-staged-file.js",
+      "sha256": "17b8568f46b84d4dcc3358233a1587bc69ed7c59444c2a5b4c5173cd092ef924",
+      "bytes": 24119
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-staged-symlink.js",
+      "sha256": "c6083ffb40ff1a79dc2d13d1ac5ea915584991c10c63d4b52fce50e08e67aa0a",
+      "bytes": 11785
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native-stat-identity.js",
+      "sha256": "fd0c28075b2e59fbed208afe6cda7b2f01d0febd6029daec863ca1f2b052204e",
+      "bytes": 375
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/native.js",
+      "sha256": "60b46305af2cc9d210b9138b4e90d1802b436231cfb2a341e6595f0217f669a0",
+      "bytes": 12633
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/opened-file-failure.js",
+      "sha256": "6416a0f25bcecda5ba6b19b1061023a71ac6b3cd1d74eb7a9c30ac3aa78dd86e",
+      "bytes": 2225
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/opened-realpath.js",
+      "sha256": "01d97984c419ed9118de09ca369c79e698b89951cb8a1813a6ee85ed9ef2c87a",
+      "bytes": 4565
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/output.js",
+      "sha256": "8e10202aebff9d5653643ea7d96066c888cfa94389be3baffe2090775c11a5cd",
+      "bytes": 5921
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/overwrite-file-handle.js",
+      "sha256": "dbedfc385ec50e5a0ac86e3e9cd2e88897fdaf464546fde27186392f393e8e5e",
+      "bytes": 2473
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/path-case.js",
+      "sha256": "4b9d03312967f0e5085e8e7efacb4e6b484459cb5119002617f7b52274b7ff84",
+      "bytes": 5297
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/path-policy.js",
+      "sha256": "f911844d8d79e63d52ebad46b99c34cc90ac95292c612479dcc1d250d3e5de26",
+      "bytes": 1680
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/path-prefix.js",
+      "sha256": "e6e1d4fd341694910861cde089f6673245cb721a931f443c26072594821bc6a2",
+      "bytes": 5075
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/path-scope-lexical.js",
+      "sha256": "0ccfa7d8fcbebeb8e5174655ae0818c01cf3606b2f1385ea9cd112e6a46dd51d",
+      "bytes": 2092
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/path-segment-route.js",
+      "sha256": "306e6db03c31f89de8e0b772eb03670e7d242640d25ea1e0c59dc8aaba2adfae",
+      "bytes": 1214
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/path-suffix-aliases.js",
+      "sha256": "ca5386ccf1867ef8a84f0383e745c4cbd7f8570599b63c75cd2ecf85c38f85cd",
+      "bytes": 16673
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/path.js",
+      "sha256": "6240df9a4313a6ae5038f1a600a4954ea813fa459b64d2cfd1c298ce072e6483",
+      "bytes": 8313
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/permission-exec.js",
+      "sha256": "c6c78549a42db79739e8089e2c8dbc6631e3991b2cc47cf4e961eb48d2fbb334",
+      "bytes": 9076
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/permissions-windows.js",
+      "sha256": "9ed40ed54bff216ebdd9a4274e408fb1a41e240511c539f78200a1f1dddfc17b",
+      "bytes": 17096
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/permissions.js",
+      "sha256": "3bfb1fe0cdd435dc0897856224c7a3563c54af81b275e076cf746fa85b1a3207",
+      "bytes": 4599
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/pinned-mutation-admission.js",
+      "sha256": "44e84e25aeab3980bc40e130f1931fb35aa401e5cf36a16aebb6e9bed571f157",
+      "bytes": 20881
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/pinned-mutation-observation.js",
+      "sha256": "225cb9e991008fe394283c20d88ac788e53e1486c090f52f70719f61d9473479",
+      "bytes": 9611
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/pinned-mutation-shared-route.js",
+      "sha256": "48a5404a2c39460b496ccf3b57a3c5685668be3c3460be7c44c2f640b91a81e8",
+      "bytes": 3488
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/pinned-open.js",
+      "sha256": "fe40f9f82fe4f4452084155a82d4a9033fcce2830358e52b658a6cc9e081093f",
+      "bytes": 4529
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/pinned-operation.js",
+      "sha256": "e5cb1d79cecdc9efeaae188a93cc48c84d063259b173a91b6e234132575df0f3",
+      "bytes": 855
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/pinned-write-input.js",
+      "sha256": "e80565142c49edaca15d58b25b46d8b65577211f07b0dc83c0f6d26b1ef51f11",
+      "bytes": 2810
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/pinned-write-mode.js",
+      "sha256": "ef2371a16b1d6ff4e98887c6099a86bad5737c02f0e0b6be7b993502dd0e56e6",
+      "bytes": 1473
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/pinned-write-staged.js",
+      "sha256": "6f38b8dc85b27939931c4779a43f194836f58d9b490b609dacc9126a649f25fa",
+      "bytes": 10115
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/pinned-write.js",
+      "sha256": "20fa7df1c907c6445d74db8c106f5250c3523c96d40133557d03c556c2aa49af",
+      "bytes": 14871
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/positional-read.js",
+      "sha256": "c8834f261283273ca3fc5fad52a1037b1e8f0a2e7881142d2bdb75b2daebb122",
+      "bytes": 1536
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/private-producer-handoff-sync.js",
+      "sha256": "1dc61c14412dc4630873ea0bd27aedff5635448a30c31f7faf6252d3e5c6daa1",
+      "bytes": 3014
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/private-producer-handoff.js",
+      "sha256": "a25e1fd92e70ffbd2a271cbeb70598da2f88bf9ba367e2e898e095edffcb4ad5",
+      "bytes": 14253
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/publish-copy-stage.js",
+      "sha256": "d066ed2fcfd50166852dfb07b49f5efdd17aa205eee4cadfc0226a5315ed01d9",
+      "bytes": 6416
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/publish-file-failure.js",
+      "sha256": "eaae2bec27dde4808982034217e40d03a35a5853c5f59db5d337c17f344920b2",
+      "bytes": 1443
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/publish-file.js",
+      "sha256": "0c0ea882998d4bed2c44360a2e6a138e3cd192bda16f1a8d2285e6738b1bbf65",
+      "bytes": 18980
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/read-open-flags.js",
+      "sha256": "3f55efd546ebab437d8365fa828e683836dd1385d0f3d6fc434aa68c79b92075",
+      "bytes": 521
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/read-opened-file.js",
+      "sha256": "393573ad1273437d13385667278e96d893c6a604cacf131246471c906d8bdcfb",
+      "bytes": 811
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/realpath.js",
+      "sha256": "bff2ee8b900d0f22347b320e565ea09dd709f2e6f6403b16b1d79fffa9c82949",
+      "bytes": 3470
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/recursive-mkdir-path.js",
+      "sha256": "b30dd60fa97e203778e00b00ec2b01ce22849f62e2c1262616100e61aeadaf76",
+      "bytes": 495
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/regular-file.js",
+      "sha256": "c65a0841b4a49fdc1b7b84a27fccc4000a67d159806f006ae2e3bb349d59bf66",
+      "bytes": 12035
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/replace-file-buffer.js",
+      "sha256": "030ce9a386e891a19177ba0b5ec82eb9def86db71da607bab9fcb3ae42353e78",
+      "bytes": 826
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/replace-file-copy-fallback.js",
+      "sha256": "e9ac5b93b5fae9855e06db31728f3675745816256a9779b257f49b7ff68898c1",
+      "bytes": 9715
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/replace-file-copy-source.js",
+      "sha256": "17de635f9f9953910a52a8f042f4c89d086915c6cb9d07273c81e7d3fe5f7d1b",
+      "bytes": 2473
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/replace-file-descriptor.js",
+      "sha256": "27424cf7a84bf4c799a28b9c74da84e42bf806decd1e8ddced5774f2824ef513",
+      "bytes": 6295
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/replace-file-destination.js",
+      "sha256": "6f6a681cc807fafa8b0b3ceaed01252c5d6ad2396c7b84a75856e725cd079655",
+      "bytes": 3530
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/replace-file-mode.js",
+      "sha256": "0b14605c39e40066ffa2a1e6d67adf3a8f1a5b579ec2f3efdfaafd2a4fc42aae",
+      "bytes": 391
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/replace-file-mutation.js",
+      "sha256": "1666361c7f42382aed355fa73b9b0bb4b7115d71bdb71e9874d9a783c9e4e295",
+      "bytes": 1439
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/replace-file-rename-policy.js",
+      "sha256": "eb5b2e4c6f2de549f5426d0953105110119493e1739af6920d88a4df7d698940",
+      "bytes": 1340
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/replace-file-temp-owner.js",
+      "sha256": "04c7a40d5b52f387f86d9960b366d3479d5a4b4e23f9bd69c1863b1d99c5fd34",
+      "bytes": 8654
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/replace-file.js",
+      "sha256": "b02256c407103a8f91c99ea01140f05f5b810c747eddfbec6622522f6ac86d7c",
+      "bytes": 9923
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/retained-file.js",
+      "sha256": "5f9913eaba454776e95012d4e8940b8401a6e36f02131fab70ce19d5062e256f",
+      "bytes": 5932
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-boundary.js",
+      "sha256": "7839e0ef8d24683ab973e882541863db11c9543e4cdaa2f20cd140ce1dcd82b6",
+      "bytes": 7245
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-context.js",
+      "sha256": "21b9429816fbe7bd376e9ee2278d640533d5cb8d1e879e387a380c59ffde24bf",
+      "bytes": 10555
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-copy.js",
+      "sha256": "d12748ba63169c166976a34384e8f2b21292bfd80ec372eb4897d5835a8c6d04",
+      "bytes": 7149
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-create-input.js",
+      "sha256": "dead797e7ce1642668b83303057d9ef3f30891c0dcbd3f4b9c47a10d36ddbc61",
+      "bytes": 3881
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-create-native.js",
+      "sha256": "2ea9e353732811850f19cfa8b620281417107ed29a342c342ccdd796ac279542",
+      "bytes": 28593
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-directory-creation.js",
+      "sha256": "e7ec085b90c154a0ea234fab2ec5f4aaec8fb5d65bacade21716b125d5c61c75",
+      "bytes": 10172
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-directory-list.js",
+      "sha256": "aaa2637f3d031bf05b2418b25411f4a34b02ca4f6762f220fb04d170be80f624",
+      "bytes": 19390
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-directory.js",
+      "sha256": "f51e4ecaa0368586b7aaed17c2bb7f099657644e0cb2768e8c2867d1b6874f4f",
+      "bytes": 6294
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-entries.js",
+      "sha256": "f6277d10db6b3f2207faa7d47a62391a085f21dcbb021e81f77a276b387837cc",
+      "bytes": 2326
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-errors.js",
+      "sha256": "c193b5a539d7eaa21dd73fa410b37749839d181c880c4a539033f16fb3f782f2",
+      "bytes": 6431
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-file-final-admission.js",
+      "sha256": "3ebe544714de5a610b8fde4b586dfec09b62d8916425357fbbde19dd4adbb748",
+      "bytes": 3754
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-file-open-batch-sync.js",
+      "sha256": "eb651f6775070da3cb2d7755ef37b39c6c220d7da44d1b3e644c3e7a0b705a86",
+      "bytes": 5334
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-file.js",
+      "sha256": "86be03e48a924531710eb8a57c36a8a02f39a039a3103c32fe54eb4e25fd64bd",
+      "bytes": 8404
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-handle-context.js",
+      "sha256": "f3c57f2b0d469ba509d406543271a682ddc9325c1427e4a3326b4dc36c265f13",
+      "bytes": 474
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-impl.js",
+      "sha256": "f3ee57101a803eaae97c33045886e1c6de206e656c1f91d41a13068589f776e8",
+      "bytes": 72603
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-mkdir-native.js",
+      "sha256": "507850e359ca5dc703a2b44c622d4fc00a706ded5ff6250a5fad820d7cbccfe4",
+      "bytes": 11114
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-move-noreplace.js",
+      "sha256": "346c03dc2d438a636d8f61ca660a68d4efacc531f80dd5f651d47f90ab9dccff",
+      "bytes": 12404
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-native-creation-path.js",
+      "sha256": "0f8cb5ebc92c5ceaec372a612b5eedff5178734974cc3b486d4dd034b2464277",
+      "bytes": 2819
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-observed-path.js",
+      "sha256": "a87b807c36da355a0182b480600ebadbe3f311ca3256e0b9fb5f1a13b9b97f64",
+      "bytes": 4241
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-options.js",
+      "sha256": "3b929da3867d7833a64092f1cb34bb169127d1d75640f2860ac67a1bbfcba094",
+      "bytes": 730
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-path-errors.js",
+      "sha256": "b8d9849c9e884713c21c44570596acde986d2897f618072a393fd28e2d9c3354",
+      "bytes": 909
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-path-existing.js",
+      "sha256": "cb7f6fcbb01f0ce050f88a144b162bf962c988f52436aa88b530acb014298350",
+      "bytes": 7626
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-path-observation.js",
+      "sha256": "70c1381ef4861a9f91c422defd66279054029fd83ec5e7524fc866ad63fc0a1f",
+      "bytes": 7934
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-path-stat.js",
+      "sha256": "a0e26ebb6aeaafe3a0e63d6d0414768ad5f65d5bd776b9cbe26ed07b9b8f2488",
+      "bytes": 7248
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-path.js",
+      "sha256": "730b324ee8e868b72b05dfcb46a88e7d6f66792f9aad60ae8b22c8c8e8621edb",
+      "bytes": 21130
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-paths-lexical.js",
+      "sha256": "aabd69db2fe07d6204106666b8e7b18d1b5f1ab70f6c2870f352b2df1a3eabb1",
+      "bytes": 1060
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-paths.js",
+      "sha256": "54cc7c43f86e8d4831da72a599f147d0fca4bd4045c548d4ad5474dea1847d35",
+      "bytes": 11458
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-read-admission.js",
+      "sha256": "8888979ca9386959bea4e93fa1667f17e04b75a0226411c80360b7a600feab15",
+      "bytes": 4108
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-remove-identity.js",
+      "sha256": "bab8e25d0c692404d49b46ec407bd913fb8f24cb5c6e0d3053475b2375981456",
+      "bytes": 3585
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-remove-native.js",
+      "sha256": "ea55520f0bd34be45888c7088d28f8fbf93d8ac66b6db0de8145376dd5731018",
+      "bytes": 17729
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-remove-receipt.js",
+      "sha256": "cdb914530b697bce07c134ca37547f6ef861cd5e15f16efe712b9c460d5de555",
+      "bytes": 1573
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-remove.js",
+      "sha256": "cd3e190615ebc1ea27fead1bf6b8ccbeea85c1965798341fe8330323dd275ad9",
+      "bytes": 21497
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-symlink-policy.js",
+      "sha256": "927ee3c723ad833469a8a024bce0cc642e74078880954726918376a0154b755b",
+      "bytes": 1326
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-walk.js",
+      "sha256": "085626ff675bbdf08bb8e34f79537a0511806d6e3a9e7a2a451e9b7b96ca9c46",
+      "bytes": 10711
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-write-admission.js",
+      "sha256": "ca0d63f6590c858c8882200374e461be662e95bf64916592074de3d47c066a80",
+      "bytes": 13264
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-write-compatibility.js",
+      "sha256": "7ad579be86e29ce5534b773f56bb01752053368120ada4e1152f79b271bb39d1",
+      "bytes": 1109
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-write-complete-parent.js",
+      "sha256": "6f153395ad9f84aba043eb8bc5a3506b78bb01726765f081e87c54120e51e68b",
+      "bytes": 8213
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-write-lock-binding.js",
+      "sha256": "e1919743ac464d500437def7bf295ccebf4eb0f7833936872b5d663f464ccec9",
+      "bytes": 7402
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-write-mode.js",
+      "sha256": "33cfe17392a7275c5d8b545d91fc16b0d89e60e0991495f708b33a2024d27e14",
+      "bytes": 3324
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-write-publication.js",
+      "sha256": "598dcfeb14925942f04d391fe19aeb509f9f7725322a42d9ea54b23259065f11",
+      "bytes": 4340
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root-write-verification.js",
+      "sha256": "1cb9c3074e857ca7b3e660cbbd4d483b308f0a6fbe82dde0e8fd6ace99c124da",
+      "bytes": 5409
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/root.js",
+      "sha256": "c13b886e66b7684d1025acb4993da8a11f07a82dd811241f14a47f84c2ed72dd",
+      "bytes": 142
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/safe-path-segment.js",
+      "sha256": "c0ebc02594f7cfaf6186204eaf3687cf66fd7c0b01f16057fa3f50962cb13410",
+      "bytes": 3215
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/secure-file-windows.js",
+      "sha256": "7936d5cd8fa0395cd02745bfc98f32270b74a788dc6a81f950ceaf4062e21379",
+      "bytes": 3582
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/secure-file.js",
+      "sha256": "0fcd6a2e69a2419c537e30b34ecfb04dcf25610abf126f908c81143639f8cfd3",
+      "bytes": 14008
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/secure-temp-dir.js",
+      "sha256": "2f37e8e6b1bb31fcab349986d08f9a2da074b00500ac2e66ec7cc524dd83ff04",
+      "bytes": 10351
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/secure-temp-repair.js",
+      "sha256": "097934801db8ef99bb3062d55f5639953b347ee55b2db146751141dfffeedbac",
+      "bytes": 5052
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/sibling-staged-file.js",
+      "sha256": "2f33996ca72af3a7545709ddb219f31e6b86b67203c68c667fe9021d5f527a2f",
+      "bytes": 13359
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/sibling-temp.js",
+      "sha256": "20fb222ba30f8c97ae6e56b6ca54885c7e8e3cdc9785447a6421087d23a4f0f2",
+      "bytes": 6305
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/sidecar-lock-acquire.js",
+      "sha256": "bf5f404ec6cdfc6ca9f25c1e328527b2f3d8196cdfa6ac71e184bdcd42aa8b10",
+      "bytes": 23246
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/sidecar-lock-admission-context.js",
+      "sha256": "17aae5ad6d1c9ece976e8cd9d15213d305ac0eb23ddc18ab64e6fd4b2cd4a725",
+      "bytes": 2451
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/sidecar-lock-admission-parser.js",
+      "sha256": "d170586ffc1b24ab459a53541cecfd9a90995a9c1446d151ba2672342a62476e",
+      "bytes": 3796
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/sidecar-lock-handle.js",
+      "sha256": "a4812cbaba2e867eab92a965827e0b1b8a662bc3cef7c620fb23980d650ca622",
+      "bytes": 1562
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/sidecar-lock-policy.js",
+      "sha256": "ff64c266b6dbe8e769622f79dc4aff5056243e3856cb17a88f25e0edf0ee1d3f",
+      "bytes": 5241
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/sidecar-lock-reclaim.js",
+      "sha256": "45c25d365645eb4f7410d5971b1c101c8952bdec09be10ab957bdb2824c15a49",
+      "bytes": 14209
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/sidecar-lock-registration.js",
+      "sha256": "d2a641a0743dde804f698e40460d0944f07e009b91f12fbd90b015d428e375a7",
+      "bytes": 1605
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/sidecar-lock-retained.js",
+      "sha256": "7dd723f028e9ed918fb723824cc599c47855cc3433b600fc809a0ed8ca0d672f",
+      "bytes": 8094
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/sidecar-lock-root.js",
+      "sha256": "94c9bc047101a9196379c187b7162886855e1877e083b27e70b4292977054ba3",
+      "bytes": 3494
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/sidecar-lock-stale-admission.js",
+      "sha256": "0acaa9a4ebb30b6503683e1b74de7ab6328437cf0b2622dc499f5a7502c32625",
+      "bytes": 8015
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/sidecar-lock-target.js",
+      "sha256": "7b28818b9fcff397b42c9e22d0a7c07c761d02d7403ad92a575f847e5491fab5",
+      "bytes": 2674
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/sidecar-lock.js",
+      "sha256": "85f4847c5443350f30113859d6c51d9d363c6699da927bab277879d67afe35e9",
+      "bytes": 12157
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/staged-directory.js",
+      "sha256": "3f71d76f75e903a316badba7a1d2d4991ce5fdebc84d83295238ef20373aa420",
+      "bytes": 8385
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/staged-file-settlement.js",
+      "sha256": "aed80d6185486a360dd8a5c34427c43147bca013c95ae1c61438f6ee030ce3e0",
+      "bytes": 2596
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/stat-observation.js",
+      "sha256": "57939a92b2d5f8807db05fb5ad2e940316f1cd814a08e30e21857c23e86a0078",
+      "bytes": 2974
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/strict-file-identity.js",
+      "sha256": "6c6a03ceb1f4045b598a7f8f327a4c1c7049891b252f88bfe03d759b7abc1860",
+      "bytes": 3272
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/string-coerce.js",
+      "sha256": "235838e43b0bd41533f87c9ba36fd067c37ee07a9977f55b7b75bb5114d2f477",
+      "bytes": 528
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/suppressed-error.js",
+      "sha256": "12f7a3b6f12b1f735525e638dcf70f17a7eb9704e4a3bc3ef4b105b45da6d224",
+      "bytes": 544
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/symlink-parents.js",
+      "sha256": "e8f8329241a9286f0ee73ea677498677f55940b801cebd2ab390075691a32a79",
+      "bytes": 4936
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/temp-cleanup.js",
+      "sha256": "c8df17c898223abcf28729918fb9c2647e987dd412c6db60143bcc88e26b5467",
+      "bytes": 2480
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/temp-directory-diagnostics.js",
+      "sha256": "40cf564849891c7cb74ef4d1fe023cab89da3b7f05cd9ccca6681a554f57adb6",
+      "bytes": 1703
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/temp-target.js",
+      "sha256": "31d908321e6dfc55ce6a166ed6770d7d3edf3d87a78a66372269dbc251ace7e8",
+      "bytes": 10524
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/test-hooks.js",
+      "sha256": "17cc22c1a6e6230ea60c6e666305999ee13332dcf192321377b385c0ca23d9b7",
+      "bytes": 536
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/text-atomic.js",
+      "sha256": "03d6db979771948a6644e4463b6e082700bc56636a86b90e13ffc743849bcdc4",
+      "bytes": 805
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/timing.js",
+      "sha256": "6d5fc90b7c5d7cc4fa5cf2d9c7a1c2b55e804649be016466074f532985918101",
+      "bytes": 1997
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/trash.js",
+      "sha256": "4421c352513bafb14700cd44c25b5c7e75d6fe43263bb67371de5b3d194462d1",
+      "bytes": 11225
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/unicode-path.js",
+      "sha256": "aa20e4aab1eea107d62ae5b78c08033d2cf8c1c5c4fb69ffa55d527419aa1d7e",
+      "bytes": 842
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/walk.js",
+      "sha256": "2b5472c9bbd6774a63f1b60c75400a06ef91c5eeb736ac524ac2f4e3121a51d2",
+      "bytes": 8989
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/windows-appcontainer.js",
+      "sha256": "a01fad633a76ad5a4065f005e7a3a4b8de43843cd8d725988fad3dce0dd97703",
+      "bytes": 1521
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/windows-command.js",
+      "sha256": "ffb8a2e56d8901e11ee81f7594c0c2aa8dd56458188c142a5f5c3a09a140fa94",
+      "bytes": 1131
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/windows-owner.js",
+      "sha256": "56831f9c3d5f0dbfb9839b8e1e76596b3f59c81a881dd98fc9ef8749edb16722",
+      "bytes": 4484
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/windows-path-alias.js",
+      "sha256": "df4bb6e0dfbec67ff14dddee059d6744b3abd18ff3d028ca233f1336270a7272",
+      "bytes": 6120
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/windows-path-syntax.js",
+      "sha256": "5bdd0ba6f0ab662850547e41723f96af72b3e79b7f8a1d794c7fcd89c9249710",
+      "bytes": 3265
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/windows-security-command.js",
+      "sha256": "b0f05487159eecefcc23cc61b9a878d746e54060bbfd8a51fa1d6f2dc27a4c82",
+      "bytes": 19710
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/windows-security-facts.js",
+      "sha256": "8e6d93ebac2fa35641d394c1f6be3dfc0f223ab3e4ee1dbd37a44ce46a84152c",
+      "bytes": 5703
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/windows-security-helper.js",
+      "sha256": "988a15b5fa73af1d57f284214270d9f04c76541d988485b72801aa0faf5a7088",
+      "bytes": 378
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/windows-test-hooks.js",
+      "sha256": "d69213bd58b7318260488d96cd8d3d4dfdc60456de43c9219e035a2f85cdb295",
+      "bytes": 2060
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/write-file-handle.js",
+      "sha256": "0663361345a7be094093fb6de5509b36240074a031691bea7befeaf7a3b6743b",
+      "bytes": 2568
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/write-open-flags.js",
+      "sha256": "2be64d559cbf76c267393bef9fedfe95c77a4ae53be10dca83e684bfdff6eb1c",
+      "bytes": 1106
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/fs-safe/dist/write-queue.js",
+      "sha256": "87b49d5950578f7e38f6a4cec7bdbb376d0d1914399927dccff3a7b893f23c0c",
+      "bytes": 444
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/proc-safe-darwin-arm64/proc-safe-native.node",
+      "sha256": "5d27b7f7231b1504579900e630c0ee7036b6bcb8e12ab3c5e3762b06dc4649f9",
+      "bytes": 630520
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/proc-safe/dist/errors.js",
+      "sha256": "4b4cf778feb17561f84c731c3944d410bef7eb85033f79f00ba22422577177e9",
+      "bytes": 257
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/proc-safe/dist/identity-ancestry.js",
+      "sha256": "93b37e91614fc3a82ff47465dc76227ad05df7229d04995e7e5a4fd6dc35633c",
+      "bytes": 1665
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/proc-safe/dist/identity.js",
+      "sha256": "3cfdf16ea2d8ca061110eea71838642a608786c3c3b178b099bd28fa6de40429",
+      "bytes": 2005
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/proc-safe/dist/inspect.js",
+      "sha256": "8ce5de787ec16a19a3855ed7febbe2630a30d2b756036c384fc628f30cbec181",
+      "bytes": 4088
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/proc-safe/dist/native-error.js",
+      "sha256": "88e0d869574523c7d23b6636a2a4de1eadea7c73b3dc59b99f2d63feb135cc12",
+      "bytes": 1648
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/proc-safe/dist/native-load-error.js",
+      "sha256": "c8b9de58acfbb597bb965c39a262fc0085551bcc43f4f81a3b0b0abc98ab6c30",
+      "bytes": 511
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/@openclaw/proc-safe/dist/native.js",
+      "sha256": "c3c4c0fc234414f487bf3057cb12adbf11077056cec5b0bf40ca96a866129f31",
+      "bytes": 8507
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/chalk/source/index.js",
+      "sha256": "02abae0091d42e077f06e10c0918cf671707d1c73235bcb5d486ed66084ec7b4",
+      "bytes": 8334
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/chalk/source/utilities.js",
+      "sha256": "a58d81494366211509ea2c373328cf68a6365a94be8645f33c1ed49f1288650a",
+      "bytes": 1187
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/chalk/source/vendor/ansi-styles/index.js",
+      "sha256": "f28f1ede59be327626e4ae5f9f05387ab8072f298ba1ab7f9c9262d39923a25d",
+      "bytes": 6996
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/chalk/source/vendor/supports-color/index.js",
+      "sha256": "57f56bb90a586a6c7a65fc831cae47f0773b8f42edf11abb7c4f2273b82fb63e",
+      "bytes": 4465
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/json5/lib/index.js",
+      "sha256": "e7b7e397d488b168e08e867d599f2ea4ce8e64a65a94cb91bb26584df3234700",
+      "bytes": 143
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/json5/lib/parse.js",
+      "sha256": "a0a7c71884a9b55f336da99227c901993b5c4af975adfa21ad1af1e873e605ba",
+      "bytes": 22402
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/json5/lib/stringify.js",
+      "sha256": "2da4304f0fd2eeb02bde5914abc3ed03fad91f9f7972d96e407b927a8d209609",
+      "bytes": 6983
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/json5/lib/unicode.js",
+      "sha256": "13b9e922ff410bec1cc288cf229e6e3b30941ccd86e910cd507fb72a8eac7fe1",
+      "bytes": 15815
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/json5/lib/util.js",
+      "sha256": "2a72dabfd1dc982a11749b561809de1e4eb1f47a5baa17520633693bbce4679d",
+      "bytes": 885
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/classes/comparator.js",
+      "sha256": "054202956430d63d5ff4599fae09760ce465b489e4f0b5ef5ce7cc7ac21157ac",
+      "bytes": 3631
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/classes/range.js",
+      "sha256": "a6544485aa8575aa9854c67e2caa67726815de18a482d0ceb8a1003244de3bc1",
+      "bytes": 15647
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/classes/semver.js",
+      "sha256": "813b2c185512d30c9b931c2fed8140889d9d7490ceeeedc370da30337dc8ca57",
+      "bytes": 9891
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/clean.js",
+      "sha256": "4eadb0892844cf3ae295121a86163a66c73f89acd1b7f0b114ec115b4539512f",
+      "bytes": 205
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/cmp.js",
+      "sha256": "a63d74e87b73788e78e9ce0a4892b5333d6b809c0de88b31e4ed76cbf17f94b3",
+      "bytes": 961
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/coerce.js",
+      "sha256": "28a251c5ab210ddf9e97551b9f37a53329fcce91f0c3943dcbc02de1a1de915a",
+      "bytes": 2004
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/compare-build.js",
+      "sha256": "5ab651d5b40af289bd85c645a92b6d8cfe1a986dc413c797cfcc8d623d7c844c",
+      "bytes": 281
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/compare-loose.js",
+      "sha256": "07b6a3a1db0a5210ceb784c1708bd4679f3a94fc73a9c9eb349349e7070a6f78",
+      "bytes": 132
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/compare.js",
+      "sha256": "d404b5aa48aaddc8a654c5da8fb7d4443404b7948589b21ac4b045d1cee4e34c",
+      "bytes": 170
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/diff.js",
+      "sha256": "7a11fd39b987cdf06c65e928cb1aca49bec583feb86fb5c8fe47a6fd61d7de31",
+      "bytes": 1423
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/eq.js",
+      "sha256": "b6e30a7168e52723216fc163d300e2bbabf92ec0251f9ac5438bb6ccf57c8936",
+      "bytes": 126
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/gt.js",
+      "sha256": "135523704aa48cd98834dd170ee9f74f0e68043b379f32d021db11e6304c5c93",
+      "bytes": 124
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/gte.js",
+      "sha256": "991c5bbe48ecb210a562646872f05862ad9fc0d42186d85aa60bdc6fa323eb9d",
+      "bytes": 127
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/inc.js",
+      "sha256": "952069fc8690b7d3af0fe9d55f7c54fe2ac067b48c5e74f6a54f9ce19a334493",
+      "bytes": 478
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/lt.js",
+      "sha256": "1c897a9bc849320e2e9dc0f6c09555c01ee3ddf30734515d717b88ad7740ea25",
+      "bytes": 124
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/lte.js",
+      "sha256": "3a8d0b1d00423f60cc7cb810b36ab77b61330831ad237dbe73eb5cecfa412800",
+      "bytes": 127
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/major.js",
+      "sha256": "5c678480d882f511200fed2c16ec3847dfedb08a1d70328dc2f031d35d825276",
+      "bytes": 136
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/minor.js",
+      "sha256": "1b051794f1713adec2a236517196691687c35f82e0b596ff3316a78b3cc10ae6",
+      "bytes": 136
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/neq.js",
+      "sha256": "a662883751918822c162183b46b9e20d09489132f82686c92ab78bee67f3a127",
+      "bytes": 128
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/parse.js",
+      "sha256": "29a69e15b6d02fe381d573f861881a89590e9d0f0f0ca740c5f85eaf0234c4ad",
+      "bytes": 331
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/patch.js",
+      "sha256": "f02d3c1b059fe3d96ce124886f7eef321d381a95638fd3c4a8d5ccd8e76ffadd",
+      "bytes": 136
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/prerelease.js",
+      "sha256": "baedbf503d5610ad041bfb56071efa48feb331ca278295c399537d35d3ffb593",
+      "bytes": 234
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/rcompare.js",
+      "sha256": "84fa5e88adf08d15c993cac8cdec6d1a65045b7e95a9c55184230a7f807f4dc0",
+      "bytes": 132
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/rsort.js",
+      "sha256": "6ec659ce3b6c2b173c719286caab04409adba046c0917874ec3b5e36ddfbc7e3",
+      "bytes": 163
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/satisfies.js",
+      "sha256": "8cf5e122b757251671ed6c9d9680904b71cd375845853f05312e608cf2cc2946",
+      "bytes": 247
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/sort.js",
+      "sha256": "c2fe2d3ed0be8a4e9de8f02abdfd5d9c0d3bcc510d88e87af84185592882c4b8",
+      "bytes": 161
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/truncate.js",
+      "sha256": "e145833a250311927c92f424f56498c52f1b7bb1271ce6afbf006db87773ff43",
+      "bytes": 1021
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/functions/valid.js",
+      "sha256": "0de7ea736cb7807179d46dfac09c830a9338e02b6a07db12d7040cde2def6025",
+      "bytes": 176
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/index.js",
+      "sha256": "4b3e57d3d40e29e0706002eba113d09f35aea593578376bbeec83b777b9912ab",
+      "bytes": 2691
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/internal/constants.js",
+      "sha256": "38a112baf27ceca0260082ff26ac2fd7a9861cab1af12dd65e720277f68e6ce9",
+      "bytes": 873
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/internal/debug.js",
+      "sha256": "8a9f420572260f3cf944463b5090d62a60f0730589dc23a7ec4ca25e2ee41bb3",
+      "bytes": 240
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/internal/identifiers.js",
+      "sha256": "b4916b09dc7869ae0eb05e71c855c942a3a7365f7e6e89185d59a9e45a2451d7",
+      "bytes": 525
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/internal/lrucache.js",
+      "sha256": "14d087c87da87b6f5c36fc4cdd7d2d14077874b14a68e20fce5b6138fa2ca34f",
+      "bytes": 802
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/internal/parse-options.js",
+      "sha256": "fdf51d0de8d5442c35a997ef58cd530d239ce206f961d14c5121354451b01d01",
+      "bytes": 338
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/internal/re.js",
+      "sha256": "5833262888e2b5d843a69193f83c05e374818dbe55379b497819b5bf58e48cd8",
+      "bytes": 8139
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/ranges/gtr.js",
+      "sha256": "8fadad28e36d28e93d498ac7ac20badba2a407312845eabc18e82e90a0732b19",
+      "bytes": 231
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/ranges/intersects.js",
+      "sha256": "fe87ac5d3020010ad3ec00636dadbf0c669ff07d0f57e0a8165a8264f79a676f",
+      "bytes": 224
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/ranges/ltr.js",
+      "sha256": "e5186fcc03018acf9be6d968755d4c49727aeb0d981d179eb568ae5fbe983038",
+      "bytes": 227
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/ranges/max-satisfying.js",
+      "sha256": "e1a2c0d6144cc772cd20bbc8ecb9e8a3a4074e9172a3d8e794838b591cdeb416",
+      "bytes": 593
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/ranges/min-satisfying.js",
+      "sha256": "2681abf54098aa670f12826b76a6ec77a2441186ae4243afde3be8ae4908f7ca",
+      "bytes": 591
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/ranges/min-version.js",
+      "sha256": "fefba0a88c2bf74d5cede504b5ae50a8dc3edfd69cf0174a491e2cf3e442614b",
+      "bytes": 1514
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/ranges/outside.js",
+      "sha256": "3a2b0b23593d2f49419c06af2af75450cab103b0c25d665d48fe5bca495a21ca",
+      "bytes": 2204
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/ranges/simplify.js",
+      "sha256": "7b78581c13322bc68ece2088685386b2a9b51c15b94d0a2063bdf2546bd41934",
+      "bytes": 1355
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/ranges/subset.js",
+      "sha256": "ceb9eb6ed5bfc6c7ac7af7f47e5c3535444a4e66a0e2b58cdad4bd02a35d454d",
+      "bytes": 7478
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/ranges/to-comparators.js",
+      "sha256": "6c5e966210cff270fa2850668aaf8460fac7759f8d99f282521ef7a78f4564e9",
+      "bytes": 282
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/semver/ranges/valid.js",
+      "sha256": "5ef6f995af801868925940cf8df5735d565ebabb090b068695cae65218bcd3ac",
+      "bytes": 326
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/BaseLogger.js",
+      "sha256": "356d5537224b9ab32131438cd5d2df3abf0ff96ccbbccba5fcbbd1d6f628b936",
+      "bytes": 38928
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/core/asyncContext.js",
+      "sha256": "a63817feb0da3beebae8d3ff33107d14c6b75936cee0cfe8c0d329aeed3f6c7a",
+      "bytes": 5085
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/core/config.js",
+      "sha256": "01df0b2535581fecbd7301fc1f421cbff44ec60b4dd865d1af71d5da1a509f07",
+      "bytes": 2044
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/core/features.full.js",
+      "sha256": "49a613908c9e66f2aeb572e7222609beda2f1accd3a0f6e03bb338d03acc6c5b",
+      "bytes": 1022
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/core/fromEnv.js",
+      "sha256": "e130849c590debca2abf8f77f207db34d7b32813aa9a2f1c383445ec15fc0ea6",
+      "bytes": 1486
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/core/levelPersistence.js",
+      "sha256": "d798eed7c47b64c7668ed72b22668702a3c30d06db107916427b77df46178884",
+      "bytes": 2444
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/core/levels.js",
+      "sha256": "2cd5676c9718eeff75967e1ec02ebaf7980724195c66c5d62b7325e3ae41eb23",
+      "bytes": 4599
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/core/logObj.js",
+      "sha256": "a94b4eea3e956088da95a615f7fdc01a0392b22ee94db7454785cda7e5785406",
+      "bytes": 10350
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/core/masking.js",
+      "sha256": "050b66bc90addebd16a1d62d9a8c563173c7c3aa2d1ae0e2bcc9aaebcf7cc471",
+      "bytes": 34865
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/core/meta.js",
+      "sha256": "09fdb5696b6e44ab3d68040ee055b5fa05025ea9954e91731e626f6f113ed25d",
+      "bytes": 3429
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/core/pipeline.js",
+      "sha256": "b4d24f5c19960d990b7aa5cf88a907865ccc3a643af11205db858c8ee218ce5a",
+      "bytes": 11085
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/core/settings.js",
+      "sha256": "7a7164a74937536e5d6799409a76fa3b1d109e3fd4ba4c3a2441ac049db2370c",
+      "bytes": 24139
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/core/transports.js",
+      "sha256": "098ea93feaca26dfdb63ecf2fbe1943552f88246f546560c75d631fea6e1f144",
+      "bytes": 12350
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/env/environment.node.js",
+      "sha256": "514823724dec7ac8422edc5b76271857ded7073921fb29113fa635357b6c0e5a",
+      "bytes": 4410
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/env/providerBase.js",
+      "sha256": "5c0488811f3652a3df5ede162ac49874e312320379ed2ef04e1e57ea5eef4d8c",
+      "bytes": 14354
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/env/shared.js",
+      "sha256": "d082e78c513ba712b294573c294a4034f8d7ce21ddd0fb742a4dbe843e61e2d1",
+      "bytes": 25995
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/env/sourceMap.node.js",
+      "sha256": "94c968119bf1c2ef95290e7a4284e1d9ca72469736564a0a396afa3ddabf8a7f",
+      "bytes": 20304
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/env/stackTrace.js",
+      "sha256": "855f5ba8a397b6f4d634e72a2e5506aa43ed91f16b7c7623732c3118d5ab4a19",
+      "bytes": 6392
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/env/stdoutSink.node.js",
+      "sha256": "15d45cbd970763157b03ce8e1dd9caeb64e4110a4656ea7d52b344503e4292c1",
+      "bytes": 7926
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/formatNumberAddZeros.js",
+      "sha256": "30429c35c757ae1ad456af04d7b60547ae0b24026a8cda371392c0355cc3e966",
+      "bytes": 656
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/formatTemplate.js",
+      "sha256": "f5ff28748172077eeca965ae8cfca8c7039c0c0c5f2f06600b590604b4365dc7",
+      "bytes": 1418
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/index.node.js",
+      "sha256": "4b602d2203231dccdb27fec8c1fe910fba6087306b3111abd973f0cda807cd3f",
+      "bytes": 5759
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/interfaces.js",
+      "sha256": "0825f4615da58e1d50660e91c2ced5724d1192e6dccb285e750109cd8f3c1938",
+      "bytes": 482
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/internal/environment.js",
+      "sha256": "fbfe5ba3ab8150af4537cd0bf9af63aaff318efe9229a51281fecb469e049bcb",
+      "bytes": 4353
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/internal/errorUtils.js",
+      "sha256": "52dc7f169cefbd094adbf05fa24f73a85e8078228cf2ace217a1f8ed847930be",
+      "bytes": 4410
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/internal/exitHooks.js",
+      "sha256": "f8807391716a649f40269afebe2b104d484b8f56d0d28c095923a917312558f5",
+      "bytes": 3629
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/internal/jsonStringifyRecursive.js",
+      "sha256": "0e7ab0f4eb1cc931ef60e02dcb94d80a568e36f5a7c62f363420f60258764659",
+      "bytes": 615
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/internal/metaFormatting.js",
+      "sha256": "f7eb5055496c4f9bb9769ee18ea8197a172f67832a0cda5dad10b2f240add1e3",
+      "bytes": 5618
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/internal/nativeConsole.js",
+      "sha256": "13de38fa31627616a314657bf64587176664b78e692dc930507553a85e94b3ba",
+      "bytes": 1930
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/render/json.js",
+      "sha256": "0da91a50c652cea9813ffc7183da54b65e8099d6b6946b04978f1a77d2750a65",
+      "bytes": 45587
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/render/styles.js",
+      "sha256": "b6ccf5776cdab54d2672b3842d2de39b465a23cd24ec21f9970b755d9afe9db9",
+      "bytes": 9390
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/dependencies/node_modules/tslog/esm/urlToObj.js",
+      "sha256": "40c20e88f440ebeaca9e78dbea6393ca47835f8ac17e3f79b720e9bcb9ff5c1e",
+      "bytes": 454
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/abort-signal-C9DFO3n5.mjs",
+      "sha256": "6801168abaf9c637d69d4e6d765588da0edfea0ec3992d062ddb2fadebac0de6",
+      "bytes": 735
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/account-id-ifCOO7_9.mjs",
+      "sha256": "432ea94727c61e16e894381f9a161eb129ac15261248b72f3a8efc87d111f160",
+      "bytes": 1072
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/acquire-with-wait-JZafJKyw.mjs",
+      "sha256": "110d179ca805c76017525507009a0760789663d7ddd6a28f1d5e464ce34fe6dc",
+      "bytes": 784
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/agent-database-preparation-context-DK375nya.mjs",
+      "sha256": "468d6e44db5318682fdc1bf8c8c9b4979d08f932cb40a9a5a2f1865566803c4a",
+      "bytes": 595
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/agent-database-readers-DSwi8tar.mjs",
+      "sha256": "009dcd05e2f23355f1f2c3ea851737a10be427ce317334f965c12a4c3cbb1666",
+      "bytes": 4999
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/agent-events-Bf3Js0D3.mjs",
+      "sha256": "59d3f8b9aa854d1c60484c8af28f9a660e6e53063ccf3419f7b6ee5cdba6e4f6",
+      "bytes": 22222
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/agent-id-D1-Q6vR4.mjs",
+      "sha256": "0bfc668f6d2faddb17e5301d824375789f164041fbb0c6e2492dc5088545612d",
+      "bytes": 1274
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/agent-roster-gkYP38su.mjs",
+      "sha256": "845691c9815cf774393d06bd5e7e13e0ee98082494ad2a387190269c75dd057f",
+      "bytes": 3540
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/agent-run-registry-gmaPgO-n.mjs",
+      "sha256": "a38c1b6b97c4632c774213677c0fed825f30924791084868854b618da5f664d6",
+      "bytes": 35797
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/agent-run-terminal-outcome-CrMEEYuY.mjs",
+      "sha256": "84415bf572b1a1ba1df6b913932d70c05e3f4d96084172652177b1131019db6d",
+      "bytes": 6193
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/agent-scope-config-fjA2T9Gz.mjs",
+      "sha256": "c812cfc73f703de6f904a6de06216cbd5cca8c4596b69b002ff2ce37054d0e64",
+      "bytes": 21652
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/ansi-Xy3t0ZdY.mjs",
+      "sha256": "46903c82ec90c5ae116e08bdafc6e02c9433168fe4824102847ca51d3bc0b55e",
+      "bytes": 26457
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/approval-resolution-ref-DRRWcLCw.mjs",
+      "sha256": "4ecb744867792bd60a030cf90f2b211d0f1303cc81f96f8c17c5c979ddae970e",
+      "bytes": 605
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/artifact-preserving-state-reads-CSUBkGbZ.mjs",
+      "sha256": "21065b7e972a0c0c67c3cde347cd005878d6bc5d7c5eb55edd9b88ae9aa237c9",
+      "bytes": 1749
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/artifacts-C6u8F4sP.mjs",
+      "sha256": "ad96f6e4eaae95f911f5dbe0fc37ea720876fe655b3faa4ef6db551c5b1d41ff",
+      "bytes": 3549
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/async-work-scope-BH2yUdBz.mjs",
+      "sha256": "dfdb3d26942ba3414e88c1e137ac8e9f8c13015451cf932f2a7ac1d8fa781666",
+      "bytes": 5849
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/boolean-CFfzB3ix.mjs",
+      "sha256": "bf931134ad91b535069500b46df22dcfea2f843901ebcdf79b70cbfddb60302c",
+      "bytes": 757
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/boundary-file-read-CCth2Hwg.mjs",
+      "sha256": "96e4d64aa144af2533fce63368ef3c8c7a1fbe8697adfc224ac3bbab9679866e",
+      "bytes": 2768
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/boundary-path-CAv_plX7.mjs",
+      "sha256": "29a048e5e6609abcf311be38b8a458b32578aec68d5187ba41d3ec07163b00de",
+      "bytes": 1438
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/build-info.json",
+      "sha256": "9ddef81a8af5e0aa266b076e5316b49e4bb78c38313b2c50bfdf16fd66103367",
+      "bytes": 198
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/bun-sqlite-library-CYR1RYZS.mjs",
+      "sha256": "3ec3486dfd3c77f4d3cadb7fb46c444348d7d60323bf2d87777fff0d3de1d456",
+      "bytes": 9481
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/bundled-channel-catalog-read-CP-G92J1.mjs",
+      "sha256": "e316c6f6494cc859b30c5c6a0c9e2a8a5a948387e5248fc59c172feac2ef62c0",
+      "bytes": 4002
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/bundled-dir-LfC_CFuw.mjs",
+      "sha256": "d7b7a90b03edc362745673ca978bdda22bf9d43b09916f9d0890671beb9517c2",
+      "bytes": 18216
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/byte-size-H0Vvh27E.mjs",
+      "sha256": "5b6edab1e1076e8265f8ba12a7782c9c156388639173c8f21ef5cf9ab923f514",
+      "bytes": 918
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/channel-config-activation-C8WitDLu.mjs",
+      "sha256": "15be28bf2cd09e78ac33fe9ed79188dd37e70be863ee0b9d674e6ce70e5ce1df",
+      "bytes": 1284
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/channel-meta-Z2puM9_M.mjs",
+      "sha256": "54dcbb1c9a4f1d662918dc40c423a7c3630ef3d4c577427af86b5e76e391846f",
+      "bytes": 2265
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/child-DRcH2L5b.mjs",
+      "sha256": "dec307593528efb8b097b2a20cfb88d84fa446702877ab0d23d6a48b70b7dbf2",
+      "bytes": 7899
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/child-runtime-viability-X4GxYG5L.mjs",
+      "sha256": "a9545db2dc1bf5e88f94a5d55b2e5dc5ae28c0b7686896bf4c151f3785ccb7ef",
+      "bytes": 1556
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/cjk-chars-D02XG87t.mjs",
+      "sha256": "0f032507ee0ed869cc84b06e2c960307a2a825d9a83781e3ec635ae1afeca515",
+      "bytes": 3759
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/command-format-CYoE8cOC.mjs",
+      "sha256": "304acaa2025b5c3497bd104e9b62312a839fb56147b691c45c1d4ccab49925f3",
+      "bytes": 1305
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/config-env-vars-BHneg24Q.mjs",
+      "sha256": "828272f94257a08f63ac42db9e5ef8e93d27b740aa2e9264dd4052a57764b231",
+      "bytes": 23885
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/config-state-DkDfCu7E.mjs",
+      "sha256": "2b08949af8053219ae95ee0a4c6f7f34123932152a1d2908270a9a9815574feb",
+      "bytes": 19880
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/console-CML7QnOp.mjs",
+      "sha256": "2127a9cf0f2a51b3b76b7b7713846e5d77c2b0b4d56d418fa00be1d8499d885f",
+      "bytes": 8242
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/constants-BLghGsId.mjs",
+      "sha256": "c4719587fa24b1fc7d16571c51283f348f15c0b56f80cceb76f8d90564fec967",
+      "bytes": 6093
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/context-JTQRB4fe.mjs",
+      "sha256": "972383bf9934caab769f83b184f8d54ace525ca1f20b0d8854ccf4e072a06afd",
+      "bytes": 1606
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/crypto-digest-y6oZN-_F.mjs",
+      "sha256": "1bc726781ee8264ecdc5595e3881548a0cd0f85dec3916da2a4e5bdbeda3cc5f",
+      "bytes": 1211
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/current-plugin-metadata-state-jN_Zk4yK.mjs",
+      "sha256": "47c6cb1d563a4c9a1b5414b449d3ae8519544aec41d59c8f42534879b18de8a0",
+      "bytes": 4157
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/dedupe-5aqLNx3Q.mjs",
+      "sha256": "0b7bc50a5c544e32b262c9e72f38efc702a5d034183631f229092af5acabad4e",
+      "bytes": 2864
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/deep-merge-D15Q7TVh.mjs",
+      "sha256": "28afbc06f167e09cab85eaf790a3f906e4712188e67293cf985451c28aecfdf0",
+      "bytes": 1488
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/deferred-D0La5CRk.mjs",
+      "sha256": "e1ea2c9f3a12e70d6a62ecb61107cd43434d06718ff02e719577d6e623476188",
+      "bytes": 200
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/detached-async-context-D04NzekX.mjs",
+      "sha256": "56f82eafe8bd47bc9096aeb01874da38882c42f9bd1a76aa268629f0e28e51de",
+      "bytes": 695
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/diagnostic-events-C91J-XX8.mjs",
+      "sha256": "ddfab0343d252fad3b6d483381fa923b03d7b1274c7526e6d69c608dd40602b7",
+      "bytes": 35787
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/diagnostic-flags-CaSenm_x.mjs",
+      "sha256": "1020f9a8089417326d7152d335ae330e697935661c336b9dff1dfcc3d8dc615d",
+      "bytes": 1418
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/diagnostic-flags-env-7ynNTunv.mjs",
+      "sha256": "26f31c859c45f56b5f908fd4fe142051ebf3c48aa3e20559045c45f8ef00d6c7",
+      "bytes": 569
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/directory-durability-B2RKADOj.mjs",
+      "sha256": "dc09de4d43ec73d4db5bd2cc34c33c0a358d78ece0f14d8e6f54534b5dd45b62",
+      "bytes": 4026
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/disk-space-CtKhSv74.mjs",
+      "sha256": "fe398f2a9c4bf9c5f7b0191d62870c6f4371fe8d33169b8fd658ee3099f52c96",
+      "bytes": 2466
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/dot-path-CVD5Jolm.mjs",
+      "sha256": "ed6107848d5b563ccb0034bbbb6f27c23d89bef6fb27e022c2474343bec5f80b",
+      "bytes": 7212
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/env-DbG527wb.mjs",
+      "sha256": "4db52a5ff46e589a53cb424f39b8b54069f0dbfa5f11d7521cb30b61aac7fb84",
+      "bytes": 2854
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/env-substitution-4XQMuGXB.mjs",
+      "sha256": "021de4fe1e8008f5d95a7fec57611872e6809a3acf56387ed5b45646535c3df0",
+      "bytes": 4956
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/errno-FR4CRyya.mjs",
+      "sha256": "903b4d382f9418585b13aefcc9866a09a0063e2a2785b622f580c1bbbe511dfd",
+      "bytes": 429
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/error-coercion-BwMr25F8.mjs",
+      "sha256": "034dbe39e53570fceb4951e0002cfebd8335b7c4e7f710d5bad20ee8ea26b8d3",
+      "bytes": 8980
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/error-graph-internal-oQNz0sbj.mjs",
+      "sha256": "6c3cd8c13545c6715bab279af7b9d6dfcc1e62b71c6bf542b616622c35c33649",
+      "bytes": 516
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/errors-DPfGDWk1.mjs",
+      "sha256": "3a80ebb8fc1015a85eb87865cfcf703c7171e36a0677779aee6dd9e0d52132b4",
+      "bytes": 977
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/errors-WYf-uyBk.mjs",
+      "sha256": "abcd19dbb3fd1a4370f0d29cb2ce84d64f0a0db1508fa1b0ecc89128832cc292",
+      "bytes": 3306
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/event-ledger-bytes-BqV24T1W.mjs",
+      "sha256": "fba27b6e8bd70c40455af69f94ed94122174d6742657b271480e886f3b4e711a",
+      "bytes": 653
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/exec-result-Cb_mGBOW.mjs",
+      "sha256": "2963372a8c6a4b1de5e0ddc10769e8867637edc1dda20082ef4aba2015e26ba4",
+      "bytes": 5119
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/executable-path-hXcbMo0b.mjs",
+      "sha256": "5c9dfb294813a5b70b72d392e409a3e7b4ae68a167ccbc29c52a607563773b18",
+      "bytes": 6882
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/execution-frame-BIyHTHsH.mjs",
+      "sha256": "b22d2cfd802cc51ebb8750c3928eb90b5fd13181bca0184bf0f01b13dc699462",
+      "bytes": 1026
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/expect-lbe3Hgrh.mjs",
+      "sha256": "fd27dd055a0f029f86c50c1977bf508315e3ac2d30e5bc0b67d1327b8ed4d91d",
+      "bytes": 346
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/failover-reasons-Mjd0tFtT.mjs",
+      "sha256": "a07d5b5fa9584337544b00148969881955c6e0726a65b49deb57927e4a756abb",
+      "bytes": 396
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/file-descriptor-BWLpOgrg.mjs",
+      "sha256": "6cbc891da91654c6cbe39a85d28dcbcf870af1b8611704ec2eaedcc0d51e2f70",
+      "bytes": 3029
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/file-lock-manager-D-LVVqdD.mjs",
+      "sha256": "a368ea0952a85870af4aad1ea1b9f4c44e018402d51ec9cc6ee9ff7a50a2a95b",
+      "bytes": 360
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/format-C1IjPxxo.mjs",
+      "sha256": "f6d4e69f5ae2d13b1026cc118052ef80ca1d756fa6c9edb4faa2efa69a3904b9",
+      "bytes": 2610
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/fs-safe-6Z4UiMS4.mjs",
+      "sha256": "db04a2fc5e581341e3197808b4958a116b0ae9fdcb8470d5512282298db97fbf",
+      "bytes": 4439
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/fs-safe-env-wxBiM84C.mjs",
+      "sha256": "3030e3c4cebacb46d1a90b81115acbe9bf00559cceec0094f69afc2683fcd1fa",
+      "bytes": 2732
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/gateway-context-binding-owner-bQvbtsTz.mjs",
+      "sha256": "381f5f0d84bd4d6d06d69c7b57039e4a3a7091dccb9e45f58fdb28a0e31cbe92",
+      "bytes": 1022
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/gateway-request-scope-1BXD1G3l.mjs",
+      "sha256": "e97864c3b5a19e99bcf6255dea6975a75786a988c53d63e9e28ff2e14d1a26ed",
+      "bytes": 13689
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/gateway-scheduler-DzQtXKjV.mjs",
+      "sha256": "1af27caebd2778fee92a890de67c17ca86d293008a2e4c6451900aefab6e7581",
+      "bytes": 8341
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/gateway-state-owner-X3EqhtYx.mjs",
+      "sha256": "f528a1c1c9c3c604c8b10b60ef72dd3fd438abf2efde08bda1e6d796583b872b",
+      "bytes": 28147
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/gateway-state-owner-record-DMIM5DCR.mjs",
+      "sha256": "a7577171fab942d39e78425fa378c587ff4014d7dda6209acdca50a880c2a9be",
+      "bytes": 18789
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/gateway-supervision-CO5zyEkR.mjs",
+      "sha256": "5ca1e5d06c6f6e981fe5f2d4af787a33ed6b77bbb8d3c5378830f33d5fbae6cd",
+      "bytes": 3608
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/generation-state-BWMrcMOM.mjs",
+      "sha256": "94b3a23a5a09fc7c3574b7e0a5907f8a8a400255084f0bcd7402570e2e76dd42",
+      "bytes": 1185
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/git-commit-CtMnYvhe.mjs",
+      "sha256": "48cf5036324030ece3691893fbb17045c9115136d6c60b323f43704206242343",
+      "bytes": 5186
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/git-path-quote-DUm87W5B.mjs",
+      "sha256": "ecf5a6bd0edfe6e1b6644ccb92653a733c68ab1dd1e785921ddc6f0f64024cc9",
+      "bytes": 1129
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/git-root-toH5zPNI.mjs",
+      "sha256": "6ce0e3886bdc62cd1657ba8940643aa8c30831c98439f17266ccfc9605608e43",
+      "bytes": 13204
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/global-singleton-DrXvEBww.mjs",
+      "sha256": "72ca6aaa4ebe770f92ee9db387615859a0bacc04a256c231b65e8b61e805cc42",
+      "bytes": 3127
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/global-state-BAD7XgmL.mjs",
+      "sha256": "3dc2c6af9753ad39869fba7e5475e670790e5334b9b57cb72b36782acb50f8ac",
+      "bytes": 336
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/goals-operations.types-DnxMqPtA.mjs",
+      "sha256": "b69c5722ccac8a9d2050a3128ac6bd01289610003e7982a641014bacc40ab5ef",
+      "bytes": 488
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/home-dir-AB7ik58U.mjs",
+      "sha256": "c0e9bde6b10dee72d1fea2b2473e07627e4e4ea93f4bd93ffa3d5bb94a11ac32",
+      "bytes": 1679
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/home-dir-CtsdYvX3.mjs",
+      "sha256": "8ffcd28145d23198eb07c1c289f5fe069ea9d7c3f732a983a3e8028cdb9faccd",
+      "bytes": 3279
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/host-env-security-D0hvR517.mjs",
+      "sha256": "83c206f97f746b01b2cf71363a2ef39982b1ae49b69ba30b24b7c6dbab2dd856",
+      "bytes": 18443
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/host-hook-json-CvItNyy3.mjs",
+      "sha256": "fe85ffed31a4ccdc72bb180798a9dd2004d04cc20b053e31055bca96ab4ded74",
+      "bytes": 1605
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/host-lcL0oJAA.mjs",
+      "sha256": "eba85133823a7d790b695022e0ccdcb47a82be1a1eb426292468f59eac8c2869",
+      "bytes": 36392
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/http-path-CZf3mnhx.mjs",
+      "sha256": "1f47633396f05a4b167d2e8621b2f41ff4513465a4f2a85d15a9cbbfae42cc94",
+      "bytes": 1119
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/ids-DhLNdNuz.mjs",
+      "sha256": "aa9912b93edddc30ea2e053b5339384011b01d4009554a08a4ccf2c65ac57d32",
+      "bytes": 4119
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/immutable-data-DqJSDH8t.mjs",
+      "sha256": "749eab4d96cad08bfc33f889eb88a3007b84c09c01d794785aafe57ebf87f905",
+      "bytes": 2248
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/includes-rygJQufe.mjs",
+      "sha256": "4cb2d6921328e43b983898e9d012de6d55a6ab96dba7d497359db100783547f1",
+      "bytes": 15756
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/incognito-session-key-BWpn88lo.mjs",
+      "sha256": "2541c7ae2c877cee57e2142d01fa74ea638fa47881b584eb55cf6b17d1dc13ec",
+      "bytes": 1927
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/io.read-helpers-KYk5dB53.mjs",
+      "sha256": "1617900c313fd05f17f7f9ac8fddd6343062483b8cd4a0b8f277e10f45f43b99",
+      "bytes": 8588
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/io.snapshot-preparation-scope-CebMPnB-.mjs",
+      "sha256": "a72840e7aae8b8c1e7aa2c6ccf918755f5c31d7a8c6f23b81a0ef701db9f4056",
+      "bytes": 803
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/json-coercion-pfKbZnCJ.mjs",
+      "sha256": "ca2997de79968565b83e7b4f0fd5b8be0c800b87e8ace29dfd2312744da498aa",
+      "bytes": 583
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/json-console-line-BbfxS7ow.mjs",
+      "sha256": "8a95554a88a4589233326ddba04ff24c4edb28113534e9f0687a5e81c42c6062",
+      "bytes": 1552
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/json-schema-processors-C6KO_BFy.mjs",
+      "sha256": "378fbcb16414bea6b37618814fcc9d549f4d75cb39ede64d2e87152b90916e54",
+      "bytes": 187766
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/json-values-BQ6WshKk.mjs",
+      "sha256": "4c838784599fc19046aee428b520a5fbe8aa542b0c15ea21315291f692713d71",
+      "bytes": 5596
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/kill-tree-D8IW3UNJ.mjs",
+      "sha256": "5c9cb50dff33b719886656cef4266b2c90492699c46bac508632b551f338e19c",
+      "bytes": 13453
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/kysely-sync-9fPQaMlh.mjs",
+      "sha256": "205b82d1deb64129d3d1458faca23b17ef0294e0da32294d88ba9abae30ab8ca",
+      "bytes": 447315
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/kysely-sync-cache-state-Dc7tna9E.mjs",
+      "sha256": "920fc7341b527df4218f8c986341c5212e2acb3b34827d4af9ca9ac510b18728",
+      "bytes": 5743
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/lazy-promise-DGqyc4Y4.mjs",
+      "sha256": "322c44814888bf48c38deb8498f0d78bc7fe5e794b71f961b5f2adfdd7bd295a",
+      "bytes": 1660
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/lazy-runtime-CJrzFzqU.mjs",
+      "sha256": "5eeba0befb092fbdce60007bbfc2c08c8f18c5c9e7c28bf28f09ee6ab92d77d0",
+      "bytes": 1214
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/legacy-names-Cq8ruaO5.mjs",
+      "sha256": "c37f928b1d3c26225b529de6d365b4227b3043e0f4c6a8015488ef08f0ada972",
+      "bytes": 192
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/levels-C8pIGBKG.mjs",
+      "sha256": "1cac909c5b18f043ae62e5f316667ebdaf1868d5846ca3b35e711659a602456f",
+      "bytes": 917
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/linux-oom-score-BCVNjaDp.mjs",
+      "sha256": "24415d7d3ed725c2d50ea1afe2cc24c40d5131aea35611dd10e96efd5794a432",
+      "bytes": 5528
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/listeners-BogSNJ-R.mjs",
+      "sha256": "b03734b32c0f74c6637644269556ea46cff6d49d0fd604d66c43bc4e4793b4b3",
+      "bytes": 551
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/load-context-state-Dj3BDflJ.mjs",
+      "sha256": "8e24bbad26b393cccb14f5384dba814e9c28d913fd40c78d79b12a6844414897",
+      "bytes": 558
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/logger-DR3u4tgD.mjs",
+      "sha256": "bdf8c361281f61bf1ddefd52cbff29acd8ade2575fdee8ed33222ead2187976b",
+      "bytes": 33254
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/lru-cache-C3Xgvc4Q.mjs",
+      "sha256": "1ef6bd8a56ed4ae7e04a07f5e3000bcee2363c3834d719e9dd5ee9d5e07ac395",
+      "bytes": 1725
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/main-thread-stall-BJxVH-It.mjs",
+      "sha256": "6ac1f4818525a33f5a9acb5aa4ae9b7e2d38c62581a6631dd41daa4f954a5007",
+      "bytes": 2575
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/map-size-BlrH_CnE.mjs",
+      "sha256": "00a7b9f32826ad83e2fdfd3d222230a092f42c600e3405c9966eea84c26b1a13",
+      "bytes": 465
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/model-catalog-refs-D3xvQZh0.mjs",
+      "sha256": "865f2c9df95befd4e348d47b0dcd818aeb88c31114f7aa9789a8d68237752a19",
+      "bytes": 2214
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/model-policy-allowlist-migration-BErDvsnV.mjs",
+      "sha256": "28ce23a36bdb1edbf22922159e5b4cddf6df2593e2a41331c0de497ea7b7f720",
+      "bytes": 6422
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/mountinfo-path-BCOIljp0.mjs",
+      "sha256": "ece848a2a236a07d45e6196f4c595d87a6ae176091724e37f20d2ea8b57c3fc8",
+      "bytes": 396
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/node-compile-cache-D2yvJTzP.mjs",
+      "sha256": "6f02d3c3e67c94b9876aee195f49f7a0f465736e1399e11dc4f6c669ca5e9c36",
+      "bytes": 7391
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/node-compile-cache-env-BKjFxzRG.mjs",
+      "sha256": "746aeac65464070830c27fe7b5a54f1b4214adde04c4decad01f03090db8ee35",
+      "bytes": 981
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/node-crypto-BG4u3UnX.mjs",
+      "sha256": "ef7db8dcb6092c489d399c1baaf8e4e6a6503938550f5471cb4dacd92a97ccbe",
+      "bytes": 1539
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/node-sqlite-BvDyEHkZ.mjs",
+      "sha256": "ab48b3c5b68f5d33436605963d31c297e439c5c8a4d524f2be45d286d3f38b1e",
+      "bytes": 5869
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/node-sqlite-CYaq-2Hb.mjs",
+      "sha256": "f089cd3797b86039abffe6f593961117de21544a395245a4587a03b1a060eed6",
+      "bytes": 9124
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/node-version-BfT-yCVT.mjs",
+      "sha256": "1d2784923a6d54e26ce08ea59a98bb366204c5703def605f6b8033b8c63e18d9",
+      "bytes": 7641
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/non-fatal-cleanup-BoCq8AND.mjs",
+      "sha256": "7adbdea9e1d2724519bbfb0b6efa74fcac3dd601a4d28d244ca4e75f5ec2b452",
+      "bytes": 341
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/number-coercion-CkhMiRw8.mjs",
+      "sha256": "daa77f19cbc6fd3a8644d071fe03f99dd4f51d30d28a93f3f59e9e7d22324dd4",
+      "bytes": 11286
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/official-external-plugin-bundled-catalogs-5p0Tv8E2.mjs",
+      "sha256": "5ce4d3502e4a5afd28c7fd72340ed7d294a7d184afe41cbcd7f28bf4c61ea6c2",
+      "bytes": 79636
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/official-external-provider-catalog-sdq8ibGE.mjs",
+      "sha256": "8d1fcdf6598e768b10b8dd96733a01045be6ec6fbe369a6066c76919a09d3510",
+      "bytes": 60656
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/open-L_IbZFu2.mjs",
+      "sha256": "1952e2f208eedfb8a58c584507e5a2422823f81c115dc6132dfe486cd0685029",
+      "bytes": 28966
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-agent-db-metadata-90thy9YD.mjs",
+      "sha256": "8b0285055860960833cb51902da62a91b1fd8ac588113c26d95c5e55a619dcb3",
+      "bytes": 3303
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-agent-db-resources-DIwq7LM6.mjs",
+      "sha256": "d35a350bcd57bd11d47c4e527436a73b18859415de3dd0d4b58f8bd0bed44380",
+      "bytes": 25476
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-agent-db.paths-BGqL4GOe.mjs",
+      "sha256": "3959a20b0181858f64f1f4afbc16f423f3e4c8c2c10baf0918cc8184f41650ae",
+      "bytes": 10670
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-agent-schema-BKBD8edk.mjs",
+      "sha256": "3c6f0848e0cacb285743b7b814de9905b907ccf5a6e121f87fc6d606b1395fd0",
+      "bytes": 35934
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-exec-env-eyUZROLC.mjs",
+      "sha256": "b406cdc5b41bd69e443ec6d94e01955fd294da9c4ea64f376223b0f4bcfd38a3",
+      "bytes": 1048
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-quarantine-store-DTWp4-ja.mjs",
+      "sha256": "495f0a546e5912463ed5b9d75c0f69889e773ffe8cef87a4b8f11ae6907837d9",
+      "bytes": 12557
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-root-CPodxfi3.mjs",
+      "sha256": "cb11e81176dbd970a7792710fda688e63d2c2668c778f3e7928b5789e583a81a",
+      "bytes": 6385
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-BtDOU_3j.mjs",
+      "sha256": "8322ab12e97792bc1db2316f8ca6603c190478dcba0e8abc5bc508f7ea1acc21",
+      "bytes": 77628
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-async-lifecycle-CtHZ7B35.mjs",
+      "sha256": "fcbb316df59c341c74eda3d13c267aa4b4f77b4de0fdb3cbbe9e2cf9191783a6",
+      "bytes": 23371
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-cache-R1v7ogY0.mjs",
+      "sha256": "169ef75b88c6f6659eac6354d83ce752d58f11ea34c64bf368cf4b03d0da4e39",
+      "bytes": 47044
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-contract-QlwTsE6j.mjs",
+      "sha256": "9945dfa9241f65f75f345b0a8f92e119516364aba674e4cd77b97c10a493d424",
+      "bytes": 5379
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-doctor-schema-l6CS6yvq.mjs",
+      "sha256": "baa3c9673c78b39395b1f002e0dab25a6f0a2f2394e7f231a1fce35102314d4d",
+      "bytes": 2679
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-engine-DST3Q_pv.mjs",
+      "sha256": "ebe35bacf7200c77affec13ea62a2e6825dfcf82c5f33d8aa2edba0a67d7c125",
+      "bytes": 487085
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-existing-schema-BmPsgSiy.mjs",
+      "sha256": "d438483a96a172a429e6acc8c96012395ba30cb0ed17ce8bc72068fa460cde26",
+      "bytes": 3623
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-fast-path-D43QiPc4.mjs",
+      "sha256": "bb306d5989bca8b789dabd12f7b0e0541f9063391e42c1a308f53be0680d0b16",
+      "bytes": 214051
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-handle-B6qa1Bui.mjs",
+      "sha256": "5b973fc5a6a417393dd458bddf483028d9e9b5779688030a78636a6498842266",
+      "bytes": 5183
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-integrity-admission-BHpYd_s7.mjs",
+      "sha256": "f00d9eed6e55cf1f37b32e0cc4fac010da826b17bde010306026400cc1af91ea",
+      "bytes": 4754
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-legacy-backfills-DGJSWaXR.mjs",
+      "sha256": "6cbd19c2af27b21846c80b87604955f7f3e01c9e92615d0ddd6c144b615016de",
+      "bytes": 52264
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-read-connection-D53a_-IZ.mjs",
+      "sha256": "15239e66e94d256dc7faf9f00c84e935cb6a4eafb27cb9dab562bf6b4c8f0afb",
+      "bytes": 15011
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-readonly-DPndG9sn.mjs",
+      "sha256": "99bb68b799deab74c1f1ced6b6fac77c8fd219e8ebfd41c7acacc048f59c3738",
+      "bytes": 42478
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-schema-additive-Dk7csa7u.mjs",
+      "sha256": "8972a0e920196fdd4944ae6311ea56b343887ee3ea23be63e78fe76398471607",
+      "bytes": 12326
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-schema-helpers-C7eId980.mjs",
+      "sha256": "f4a34c3e336135d05f0af1b36005ff2ba7e0728c03aa3ce0e6fe0a22d5305f53",
+      "bytes": 4675
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-schema-migration-required-DmM7omMC.mjs",
+      "sha256": "0b9a000c341435367b0a8d60a04b2eee5b436d61611fe10819dc5d55c161cb0f",
+      "bytes": 1319
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-schema-policy-CuEyLsE2.mjs",
+      "sha256": "1f03c2554bfb5536647a17db5ca7b2f9db41a67408d87c637c58b49279803825",
+      "bytes": 5023
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-schema-version-CcCTuttF.mjs",
+      "sha256": "3280a5d9cef478422e80a52de8082733dfded4d4e41a0ad2127988ea3b4f2410",
+      "bytes": 10024
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-task-delivery-recovery-DFOfs6Y-.mjs",
+      "sha256": "3a6a3f2eaa8f5c2b110a9181bb8b5023b8ca994a35b2bf7e116c497a49003a65",
+      "bytes": 7835
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db-transaction-BR8tupS1.mjs",
+      "sha256": "11da8cd0da819783c6f5c72c41bfeb178e9ce3f42592cb33656d7a269cab4274",
+      "bytes": 1809
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-db.paths-D3nUb_uk.mjs",
+      "sha256": "d40856dd5471c20abfcc37156b1a786bc32e2dee87df3f167efb3e485f163d2f",
+      "bytes": 5423
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-feature-schema-CYc16G0w.mjs",
+      "sha256": "ab8d22b0de7f9a4b5a17c60e404ad0075ac4db15136af7778e68429d28bf5a10",
+      "bytes": 4444
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-lease-error-BPKnfJ8N.mjs",
+      "sha256": "7611b9176bff2f105fca8c25e56fff29b8c5d74b5c83f527548d4fe18a61f296",
+      "bytes": 2021
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-ownership-SRnMuR_a.mjs",
+      "sha256": "b035960674c0858db3957e4ee9c8c778ec1b67cebb1568f10bb4062f17f94cb8",
+      "bytes": 12816
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-read-worker-Bp1MZPYo.mjs",
+      "sha256": "0d702e9cc286d5506d721d302f7911b1ca4b636f63fff7b5e1eaffa97bb7e40a",
+      "bytes": 15465
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-schema-publication-C2fzjU88.mjs",
+      "sha256": "a28c72626bc8e127d03d9226f26e4b06ec06d599857cf721258f09b4a9c5a238",
+      "bytes": 3513
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-worker-context-BDhKaXgP.mjs",
+      "sha256": "12bbf9bc42a287efb9ab3a5af5eefeb9c52ca4736670f5b74d85e5dc2704bf15",
+      "bytes": 3675
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-worker-error-B93Lf_P2.mjs",
+      "sha256": "a5848c79cec06976913973b2a7784053d3b789523e18c4125306a5e339206063",
+      "bytes": 22946
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-worker-store-1jCE83ab.mjs",
+      "sha256": "e14840a9f90fa1f0c3dabe03b639c4596ca6be84de5dceef99fbdf08b7d3f662",
+      "bytes": 352
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-state-worker-store-C1iV_8xe.mjs",
+      "sha256": "0f58c174891a4d8ca75de661aafde50a5d56220421cec79bf2e2f3f94cdb3095",
+      "bytes": 32660
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/openclaw-update-schema-refusal-C8zbzbYZ.mjs",
+      "sha256": "2408c149b61ab7c2bc816e01f2f8a7e48efdac9075d45bfd5ee6106d7675e60b",
+      "bytes": 2039
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/owned-directory-observation-DGvnK2He.mjs",
+      "sha256": "6b8fa6704554a5805f6f338677bae60d66ddc7cba684defe6bfabba47b172847",
+      "bytes": 5302
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/package-entrypoints-DCjwjOnD.mjs",
+      "sha256": "d006fa180f28eabed9787c8c6a9dd5e83b2958c251ccf6541356be02e5d909f4",
+      "bytes": 1523
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/package-manifest-Zddwuhx3.mjs",
+      "sha256": "4b855c902b3b025b783b5fb1f15d51180b2759b06cc2ff2b2829d577fb66c307",
+      "bytes": 1567
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/parse-bytes-BaENXJY2.mjs",
+      "sha256": "cbc769cfb114b6373a86ecb89e95536420f5ebee5f0198d987ba10afcdfdc53d",
+      "bytes": 1248
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/parse-json-compat-BBtWoq5_.mjs",
+      "sha256": "fbd05d3ec8d3ad92c473d16e56c7bad54851f336947cef2e4179b34489b0eefa",
+      "bytes": 1495
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/path-array-index-CvEcUJa-.mjs",
+      "sha256": "d7b1e9f74382c6fa3a45923691f68a6f648b3de2e844019796ca34f87d71066c",
+      "bytes": 603
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/path-guards-CH7noY0Z.mjs",
+      "sha256": "096231f5b8efe70447b14a121b45c67645a0eb44c70ecb723835b9776d52ecab",
+      "bytes": 1520
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/path-safety-n0YlfCVt.mjs",
+      "sha256": "83af106852d842aa0fa74d54cc2be2ca852c450d380c5fedf8df8e63feb48821",
+      "bytes": 4573
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/paths-YgcBNLgG.mjs",
+      "sha256": "7ce534bdcc2c0cbd55b15da0eb03b00629a7f790c7a3ce10b3b02d94198a3e29",
+      "bytes": 11331
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/paths-orClZ-2Z.mjs",
+      "sha256": "e75e673e7eda24f4fb52e36f29291e5077080e6c2242f82617d4b157f251f59a",
+      "bytes": 10912
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/physical-facts-Cvtfrs3r.mjs",
+      "sha256": "96ca16f5229873e37b56d40b646a0a6224b3a5b1ff58c6e777af3a801d6e39ef",
+      "bytes": 16825
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/pid-alive-dd7OR8F6.mjs",
+      "sha256": "7af60a46a2f8bd3015dccc494ae5baa67d985fb4cde715426e54d6202e24c3cc",
+      "bytes": 10634
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/pipe-6isWb_IH.mjs",
+      "sha256": "8f5a8956bb7a73da7b97dee5f9b2e4cf19cf54cb359e3472e84567e2d6ac6c39",
+      "bytes": 2418
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plain-object-BFvGATnd.mjs",
+      "sha256": "4e8a4b3da5c895e6349c78df4458fd9213ab1fe173b90d6db757f71f5607cc57",
+      "bytes": 425
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-cache-BbahpD-b.mjs",
+      "sha256": "d72c5be25039c414ad452aadee65bb0dd0f7b43a00bbc3d89ed433a4ec324bc7",
+      "bytes": 21840
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-cache-files-VxWaav6j.mjs",
+      "sha256": "33a48685c900d0aa288577da10d624e147c6297b13aeb1c5d1d1d6240a390e5b",
+      "bytes": 11548
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-instance-invocation-DjfKDZW8.mjs",
+      "sha256": "9bb697496ed31c2e65ead87ace45cec9a9fbdc8c67a34adf9617a3df349d5316",
+      "bytes": 1926
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-instance-owned-values-CYiGr4Mn.mjs",
+      "sha256": "c3e1d04d06e2b301a7c7e88ff097cbcaf94ad2a92134fc0e5dcbb37de1ac72a1",
+      "bytes": 2609
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-instance-scope-BoTOTPL4.mjs",
+      "sha256": "79ba165bc74634b1e401f351b5978cc0418443a7896fbed4976b48a0c6c6b307",
+      "bytes": 4290
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-metadata-lifecycle-C2eV0eNq.mjs",
+      "sha256": "c1159896230a745d0b275de9eaa7a2491e6dd5611d0fd0960258aa66a3b0221d",
+      "bytes": 6758
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-metadata-snapshot-readers-BVwX7oya.mjs",
+      "sha256": "be3e4d2dc0c086096327d8d5e10b9796e57c2ed745654869c9cf98b1238fbff4",
+      "bytes": 1633
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-policy-id-1GfPFu0U.mjs",
+      "sha256": "6c1bb6cd3fc4a9effe42c423158f97c4b60a881b9d30e7aa4ffbf52552b6ae59",
+      "bytes": 769
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-source-capture-context-BeR5LVZ8.mjs",
+      "sha256": "84796bf0854f35289b86ca06fc10ad756978ae439cd064841207a1ddc56b92ed",
+      "bytes": 1855
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-source-capture-directory-uZgzXzIf.mjs",
+      "sha256": "36ed6c92d7da4221081f53197c6498f67c65d048d439d9c95d71c1ee0f4ea6a7",
+      "bytes": 22750
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-source-capture-path-D7PBfh7S.mjs",
+      "sha256": "56bcd7f69173b7dbbb2d409f22db3ed9d8c6f00b89e16de317b4f95217ef085f",
+      "bytes": 1563
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-state-error-Wxkh7e3f.mjs",
+      "sha256": "7827cd77cfbc041a7fbe02c6e712959d1863ed0a2ee4f1ca82a7b7902f106094",
+      "bytes": 3064
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-state-operation-error-Bu3MrkEU.mjs",
+      "sha256": "1788649626e4c6425e64a4285a2ceb89ba9210e1fe0f174ebfa83efffe2bcc12",
+      "bytes": 408
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-state-publication-CI0IKkN0.mjs",
+      "sha256": "7b67e8290df4111f06909d25dcbbfdd7afd730a373fea973b0adea2d25ee1134",
+      "bytes": 13139
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-state-store-DY4rDlss.mjs",
+      "sha256": "1cd23291da76ba574aabe5ed827e5a7f39d4a1463a568ebf6870b865315072ad",
+      "bytes": 41552
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-state-store.database-B2UsVeYf.mjs",
+      "sha256": "55fa88cbd62d588bb296f2ea33e0063ec9238350bf916d3022e469a59ec6ae7f",
+      "bytes": 4562
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-state-store.mutations-B1cPWhts.mjs",
+      "sha256": "6adee68f8b2e803c4564822855b5dedf78c810482ba4b74ee6e6763b1b26dd53",
+      "bytes": 13426
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-state-store.native-binding-77crF_5Y.mjs",
+      "sha256": "db662bf8ed89cdcd7cda86f4ec0488a34ff2e1b797383069a6362175e5323fb4",
+      "bytes": 719
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-state-store.reads-C4qSGT3_.mjs",
+      "sha256": "bda31a3aa21a4af41c7dcf9b4e9ff5b4d7b95b7cb38085379533077cc7950aa4",
+      "bytes": 9996
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-state-store.types-CLUTlkgE.mjs",
+      "sha256": "9495ebda6ba0b57a7acff07d8c760006ec693ffff2f6f60e65b544deea60d9ca",
+      "bytes": 11669
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-state-store.validation-CbLRb9U1.mjs",
+      "sha256": "4ab3938197265ecd799311c6901f62e32094e9327ccd7abcfb98bb2fa24185b2",
+      "bytes": 9547
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-state-worker-client-S8ldxtrq.mjs",
+      "sha256": "d0d040cb9d026b634c588c4f00450e897fd05f249d2e23eba9ebda24dddc8b7b",
+      "bytes": 20758
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-state-worker-contract-BsKBfdig.mjs",
+      "sha256": "8ee80f8f2e409f17aa3d849424dc656cde06ea5f291610601fd85b49dc50cbfc",
+      "bytes": 3349
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/plugin-state-worker-errors-CkFhXzlP.mjs",
+      "sha256": "25ff4b230298260aeab16ed7caaed9f7e0d63dbafcc601211b9e566a8ac49173",
+      "bytes": 3364
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/private-directory-creation-DNydTBRE.mjs",
+      "sha256": "42f1c4bc7aa9cbe40135a7fda3d603e3ad5f152c6953b6417c84f7bf9a592842",
+      "bytes": 604
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/process-env-BNjOnVtu.mjs",
+      "sha256": "66819a5ea4ae161221623d3cc5fb36c389ede7750199d719e3591e79528a42ee",
+      "bytes": 2744
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/profile-utils-Bt5nN5dt.mjs",
+      "sha256": "0319f4308d2fdee957cf59415520e8baede42e75ec1cc8e47dd98cb7d7d8885e",
+      "bytes": 1142
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/progress-line-Bn5MVCt6.mjs",
+      "sha256": "9eb86e2f42f9625420cda0d98a427f6e7b1cf7c0d4876a793400a6e47ee56800",
+      "bytes": 776
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/promise-like-D7-l5Fsp.mjs",
+      "sha256": "2f7e83c80d9a96a5bd72f605abcf9ee02fc5af8b371e30b96a86ad4146b30c51",
+      "bytes": 387
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/protocol-foRdUdX7.mjs",
+      "sha256": "7a9ab4d787d4c9ab8759990791219b6dbcca75213f5096003997963e5e5e216b",
+      "bytes": 480
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/prototype-keys-CuYw53fZ.mjs",
+      "sha256": "b7a3226a0b3fe908491b56ea1f17f266801e7172c88e21160c6c88b18b6fff09",
+      "bytes": 337
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/provider-id-D1VImdKk.mjs",
+      "sha256": "33b9ac06a284df3f6d3fb19927034482ee6e6e47f8402b85ccdc2f523c5de2bc",
+      "bytes": 1011
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/provider-model-id-normalization-C-mafmHb.mjs",
+      "sha256": "771539c934715ba7483bb90207b5cfaad3b642f39ab96ccc5799e6f624311cd2",
+      "bytes": 6289
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/provider-model-id-normalize-DjenOxD2.mjs",
+      "sha256": "b3b2ced945454519b7544c3b79856e40d749a012471e52b443f2bafeaed63a69",
+      "bytes": 1422
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/record-coerce-TIsquoVR.mjs",
+      "sha256": "2e10c9bb93d012791f9fa288da1a6c146f4da17214e87dba2ac11059e8d71a9e",
+      "bytes": 2058
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/redact-BcXJu5HP.mjs",
+      "sha256": "05666d5f8ffa1aeb1eb81f7a83923b1abc037b970cc9e3b4e2e016b680a93c76",
+      "bytes": 137174
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/redact-sensitive-url-C4n2JwGL.mjs",
+      "sha256": "245d22ed6d8d721614d93510eb3849d90a57f2ddd69e6779a5b5deb7750e9491",
+      "bytes": 13321
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/ref-contract-Bfd9_-Lp.mjs",
+      "sha256": "c2a7fd07cb39d36c32fc97b2448a9e637274c241ef9a20aec7df2f58c8228686",
+      "bytes": 6347
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/regexp-BZyMFTlj.mjs",
+      "sha256": "35bc25bc6ec71a81fbd9548a563731c410228d746be3daff57b833ab833632c4",
+      "bytes": 237
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/registry-CYtION1B.mjs",
+      "sha256": "4f82ce4a6f3544b43e15271c3d490e07150c49f4d3f20a3de052ad9ee65a3d2f",
+      "bytes": 37655
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/registry-DqsL4UWB.mjs",
+      "sha256": "1e00fc5da8d222ac3706e200c62e905df177faeffd6a2a4df48abeff5d49dc25",
+      "bytes": 3903
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/registry-empty-mS6HujHb.mjs",
+      "sha256": "026994b8613f10bff379b625e4ef0edbe0b3ef728d31b759eebb82c802b71432",
+      "bytes": 2074
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/registry-inspection-resources-CYeDl0IS.mjs",
+      "sha256": "2ec46ce3e73859c4744fb2d8341be51ba70f3e746974b83fa27c3f156ad972e9",
+      "bytes": 16143
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/registry-lifecycle-CTy7EMpL.mjs",
+      "sha256": "7aabc4d65b4a7bdbae61c06f389d91e3b7c017071b3be00baf2a9f0e0ecf13d7",
+      "bytes": 17784
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/registry-loaded-B-WQB-l0.mjs",
+      "sha256": "ada5151f98fa87bea91673ce8a0cf6665e4f4f6d9f119a46c95e8c6802bfe25a",
+      "bytes": 2763
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/registry-lookup-88y6FuGR.mjs",
+      "sha256": "913f13515252f50c368af28aa7f77960442d12b0a8e394002370e37852e926ca",
+      "bytes": 2944
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/resolution-facts-D_pto3MV.mjs",
+      "sha256": "5a2855c4da78bc6a87ef1741c2ecf47de8d2892e901aa08dda7fb564f48ecf4d",
+      "bytes": 7775
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/resource-protocol-Bh2jG53d.mjs",
+      "sha256": "ed6ba1ad3d41eda7cecda7f6593aa082339e0d13f7a45f1ddefabde5ef8a0b8e",
+      "bytes": 7844
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/restore-Cz8op5Oa.mjs",
+      "sha256": "3b508d617bdf0cc21000457710aa321df51749e8b9bff290ac0997e163f4f6c1",
+      "bytes": 1376
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/result-BQGgYouL.mjs",
+      "sha256": "a1ca6ae792ef0cc288f1a6321dd57f7d45cc97ecff0da30a106121d3f4b75bbe",
+      "bytes": 293
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/retained-operation-cDWsZqBc.mjs",
+      "sha256": "9e12b03d664a5a107577ac6ce014679a6a31b05872e69b3e87fe59a07d398678",
+      "bytes": 3836
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/rolldown-runtime-Dr7-SnC6.mjs",
+      "sha256": "54553d221bc7d87af7deb9379157ebf48a0abba7bccd09fe96485cac3cc6f181",
+      "bytes": 2091
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-BazLsT0s.mjs",
+      "sha256": "326b3a8c9edda7795e17ecb61188ee32678d9ac4ddc3e24a4ae170a85ca4d7ed",
+      "bytes": 3251
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-HVHHrRKt.mjs",
+      "sha256": "d650070b70e829e4701804c3ba22cb99bb138c97a8e383b4e2cb072e124aac23",
+      "bytes": 45951
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-binary-GM6c0Hou.mjs",
+      "sha256": "4a2261a3d64e018d485622a5d52b1fa6a9df68405b131ea06a061d59607d9f47",
+      "bytes": 4452
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-close-error-DOUCCb00.mjs",
+      "sha256": "3430cfa9ee0363264e71a7cb58292702943deef7653cc172ff546bf0bec02202",
+      "bytes": 1476
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-config-capture-state-CxduIFzk.mjs",
+      "sha256": "d0443fc3021ed568e435845e46326449cf7500db4b2fec04e97573dec5ab8896",
+      "bytes": 1188
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-config-publication-VikzJQm1.mjs",
+      "sha256": "d062c514e084b6173de4ba18f36af88fe16e4a39d492cc8cf14079b2f087d926",
+      "bytes": 228
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-health-records-BfEYoX08.mjs",
+      "sha256": "1e7cb3e42da11a295372c22bf784d46eef05fa6eb4f0fabb6e819171a9248107",
+      "bytes": 2579
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-process-entrypoints-BMmG9cQl.mjs",
+      "sha256": "c06ba843e61d4e0b36949760674ade773ace200d8c1553529fadc0511fa111b4",
+      "bytes": 389
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-process-manifest-CfRKFo2M.mjs",
+      "sha256": "1d435379414dec70546de253f6abbcbb9138b7adb6c28109b735018205d8df17",
+      "bytes": 7392
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-process-url-BCfqgqXF.mjs",
+      "sha256": "dd36f14165a19071a79d0b98145fde4cda0ee823cde7970bbb5d71e4ff9ff021",
+      "bytes": 630
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-snapshot-BBYDJbw9.mjs",
+      "sha256": "02a843bb504b31b2c4932dcb988c2f58ee106d1fdcdfd02c4a33cb2758c36e3d",
+      "bytes": 29573
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-state-Cd-Ga9cg.mjs",
+      "sha256": "ef4df60366a2bf2d1b0042af319f95919b843fc40cfd965db405401e5c21988b",
+      "bytes": 776
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-state-key-Cno8k69C.mjs",
+      "sha256": "283f1337ac8e89b15e4b09643edd637ea6b81e1112dbbba0537cf54cf7b476a5",
+      "bytes": 250
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-worker-generation-DvW-aFj2.mjs",
+      "sha256": "269d76ecdcd1bc66df63a60d64fe824794ef33bd788efcfbfb77d139463e15bb",
+      "bytes": 3179
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/runtime-worker-url-CvMrvFI1.mjs",
+      "sha256": "ca5a27bb071a28ffcd8904e071ad4a296bdafe0e67049c805a237b6a848ac8e8",
+      "bytes": 2795
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/safe-cwd-DOxDm8mD.mjs",
+      "sha256": "bec1a7e4e730003da9c757012afd3cd3e95ff6f768a29553ef62913ea3e42e66",
+      "bytes": 412
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/safe-regex-mjvTiaxD.mjs",
+      "sha256": "6e458a94426e8fb41de6c171c152367fa6e8a375768b56aeedfac8243dd2cd50",
+      "bytes": 6772
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/safe-text-BjmWJADa.mjs",
+      "sha256": "ec8cd8c9aa12c30112c8f6ddaa4fd2ee2d274e6aecc47c79dbf6f22c43f0a6d9",
+      "bytes": 591
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/schemas-BOYIvvln.mjs",
+      "sha256": "3bf74cbe86ed6c3f60f1af4ede5d615dc20f1b0183edc21ca37acce1f0acf595",
+      "bytes": 93279
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sdk-deprecation-DjTmOhOX.mjs",
+      "sha256": "4fbe4fad1e279cb7e882d3e339c6dad0f4b00d4a5a1c1b73b501ecaafa27bb67",
+      "bytes": 3575
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sdk-deprecation-usage-9yUlXToS.mjs",
+      "sha256": "3b194b18ca141aeeea45b287ff089eb7323ed653bdaf0b7dd93fefe6c50f75e0",
+      "bytes": 754
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sealed-runtime-registry-DDnWdfsn.mjs",
+      "sha256": "1eb8e3dc7ae02749903e6c35cf5e215b2a50c13a606d9b9767ed45a1bfb8e2e6",
+      "bytes": 170
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/secret-redaction-registry-C0-kg1Rg.mjs",
+      "sha256": "a33035360220b3b46b37582882126dc46e27d6d041344daf6bb38377421a03fe",
+      "bytes": 4101
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/security-path-BzEnq6yT.mjs",
+      "sha256": "8551d587e297b24d0e26c4f94897536179ed1f572a605f40414f7eb04f896b0c",
+      "bytes": 2148
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/semver-aYpwYdrQ.mjs",
+      "sha256": "8330a4355fd71f45a1b3d7555b53a40800c9d82a27ace1408a7bd64304d0191a",
+      "bytes": 1399
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/service-child-group-ownership-D1TLR2xv.mjs",
+      "sha256": "74b1d1462e9c34bd8186cbe7e65c231712283a755772621f897ff75e60e89c80",
+      "bytes": 10327
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/session-canonical-key-error-YHax-6is.mjs",
+      "sha256": "93af9327794bb4650c9d6ffc7c02f4bf4bc07a97247e2b3019a814b90013be42",
+      "bytes": 419
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/session-entry-current-admission-DvCCyjlG.mjs",
+      "sha256": "aef223bf7f644dd75fe963efa3fcb8140c73fb85de2758a8230ddd55fb1fd303",
+      "bytes": 3849
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/session-key-CSDERtm3.mjs",
+      "sha256": "ce1d2ed04cd22cfedaf92acefb59e32c9c522e5b75c6907fccf9f9d80df67299",
+      "bytes": 23967
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/session-metadata-unavailable-error-DwD7IuoE.mjs",
+      "sha256": "8247c103efe9c4090ad5ccb864b8ad1cf85110a33a268ad18c16d0e9d9369665",
+      "bytes": 481
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/session-mutation-conflict-error-CvNdAcA_.mjs",
+      "sha256": "dd6a716b0356e6a644f19cad345257c0ef2f52cf25adfed948630cfc27dcf9f5",
+      "bytes": 1366
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/session-row-changes-vFaNnKNM.mjs",
+      "sha256": "5ef68bbc8f4ff0a6eb9e068547fbbb8a8ad1812e0fc8bfa37ee1281704c25d4d",
+      "bytes": 6867
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/session-source-authority-fdILH-PW.mjs",
+      "sha256": "131186ea243be03cd7619f4647e51b085276beae17e831988b828c4135a02fc7",
+      "bytes": 9133
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/session-sqlite-target-paths-DufdR-Na.mjs",
+      "sha256": "552120652113361d34ace4143096b908eca12f2c63fcfd94f7a24a754e9b9c70",
+      "bytes": 3964
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/session-transcript-read-fence-error-DoYPfzaJ.mjs",
+      "sha256": "5eb10ecf19d7c63fd45a542cdd9dc2cb09d3bbb849e02d1d8c91f7184e231ad4",
+      "bytes": 288
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/session-transcript-writer-claim-error-eP-_sDN9.mjs",
+      "sha256": "0d23371d2b905518104c88a6b4bf47ab3d7480cbb13204102e9b29a55f169ed6",
+      "bytes": 1347
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/settle-within-DLEx44ea.mjs",
+      "sha256": "0647a610dacfa9f1e4a915ef9c2e7500a3a5faf0f72962798cfa3e90bbedbd57",
+      "bytes": 378
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/shell-inline-command-DKNYBguD.mjs",
+      "sha256": "20531ec320635accbb4ada6521d0df596c39564d8b064871a4283631cc661889",
+      "bytes": 12016
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/signal-exit-barrier-DtR3X_NN.mjs",
+      "sha256": "18e0fff1a95ad608befe3c162979cc2b909da5ac514ae67acd97fd27d8dd14b6",
+      "bytes": 6603
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/skill-library-error-z-Nwz4n5.mjs",
+      "sha256": "9280804e014542ed0fac9382b31627cfb93098ad2cc4dc7566d58a8aeb40f07a",
+      "bytes": 324
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sleep-BJ5slSa3.mjs",
+      "sha256": "72bcb5eb95add355862cc5739d2af94322a3d9402c72690311ad780505adceb8",
+      "bytes": 703
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/spawn-diagnostics-CvEKrJ76.mjs",
+      "sha256": "bcd2a389c998f3f2f609ffa61b754f7690c44c104a18df02ea81626d2c019c81",
+      "bytes": 7329
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sql-connection-DmQzXTVz.mjs",
+      "sha256": "3c558238e61092c20a497febb265d3c0386fdc1bf21dd380370e70046cc3e9b6",
+      "bytes": 1020
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-DAhWTcvk.mjs",
+      "sha256": "641b8a30235404792d123d438866f861dd39cbd08108b96937d6bdd867cf0baf",
+      "bytes": 4934
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-audit-record.kernel-BhQWS5ko.mjs",
+      "sha256": "9aa93f0b6a9854a546cbd38bc46c4355f51634b186c75e563ab70d7945fc914b",
+      "bytes": 6212
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-busy-timeout-COlIRjFZ.mjs",
+      "sha256": "aec6ebc292ab40c848c5e7381bb836e4df7ee73155252b1cdaf5fd6eb25e30b7",
+      "bytes": 3169
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-commit-receipt-DafgyYOc.mjs",
+      "sha256": "f90c65616a39478d4f72f4c3a67eecdd911d7e194c5d47d5eb8756a0215c5e2e",
+      "bytes": 1464
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-database-admission-CqdNF9iE.mjs",
+      "sha256": "e1d00c67a2205a2dcabbe850958b5abc8a0d36fa7d617a427cff62d7af1e8035",
+      "bytes": 171453
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-database-admission-key-CHKIncOy.mjs",
+      "sha256": "b477a1c91cb391e4ce9f917dd415d5658ec260448c58905827f114ca48ffa5c2",
+      "bytes": 193
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-database-admission-turn-BwijprYk.mjs",
+      "sha256": "b3e0c8829f3925dfacf2b170f32b99b2cf0a0152657ca2b3c8d7d9e9c53f2a02",
+      "bytes": 3374
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-error-diagnostics-BBfTUJBR.mjs",
+      "sha256": "3ec1806a29f71a8d36aa0ee7e3faadd541f208cd8c0c50acfcf3d9085e962301",
+      "bytes": 5706
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-file-generation-Cmk6kG35.mjs",
+      "sha256": "9407e7410fd5037e64e16217e806869b8d722dd1b305ccb3c05b24eeb40e3576",
+      "bytes": 11301
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-files-N5UzY_DG.mjs",
+      "sha256": "04921594bcf56d3805c4f6099cf5e4abd463b00c9184d676f0e56dc06ead492c",
+      "bytes": 5005
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-handle-lifecycle-dWd9h3ii.mjs",
+      "sha256": "147169a3cc9f3b60c26612c408e7f26111ddf342c63bf5264ef16648dceb91a5",
+      "bytes": 223
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-integrity-06TCB-az.mjs",
+      "sha256": "80a3f871c276f54552f6b4bd44e06a9a7d816f873f663a1004af36e7cc021e2a",
+      "bytes": 13632
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-lifecycle-errors-Ca_9goHE.mjs",
+      "sha256": "6d7e2b34f222bf08845f88543a4e15aaea6d831766848a60592f1f5b5b5c2403",
+      "bytes": 2838
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-maintenance-cache-AYpxl8JZ.mjs",
+      "sha256": "ace110d1b2c93624554cedbdaeab1736275f0a933414ca79b520114816b23199",
+      "bytes": 298
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-native-exclusion-BfIgwBu6.mjs",
+      "sha256": "014b5911adc94d696c8cf1b031c8c857a7fe0767fb51985e96cddcdef9ee8302",
+      "bytes": 464
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-number-DZt1m75H.mjs",
+      "sha256": "4dadb946e5473c8bd1ad49ea823c980272a7cdb50fe2bcf67848faa5150f8b5b",
+      "bytes": 847
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-post-commit-22SfWsLt.mjs",
+      "sha256": "3d71a53b3243e17be9f15084f9dcefc5529e895ac667dc892a48c7f769437c8c",
+      "bytes": 6292
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-reader-lifecycle-Cw11HwJP.mjs",
+      "sha256": "485fad4114cdd26b1dad90e28d5bd185fe1f4b574508fcf9b5b8fec522f8ff7e",
+      "bytes": 7519
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-readonly-location-Cz5jsVbC.mjs",
+      "sha256": "28eda99434387ec0d1cc2c1dc642833211a02267792295a123c9458966713f2f",
+      "bytes": 29275
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-readonly-location-cleanup-zmu6YCue.mjs",
+      "sha256": "28953054713fa0b007cf56849057135110a9d7df5491203c02e6aa955b0a3ee4",
+      "bytes": 18080
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-readonly-native-resource.types-DWL7LzZr.mjs",
+      "sha256": "05d9ec146a3157bcebad92f1b5171dca5c61c8f2f6be5f1b3ad154dbeb7d1d59",
+      "bytes": 7645
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-readonly-worker-C2DDLw_y.mjs",
+      "sha256": "b9be1496317435bf0069bbd936824f50e515bce2a1953e97096f9154fd3f00eb",
+      "bytes": 23109
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-readonly-worker-context-DNk9aB7C.mjs",
+      "sha256": "09fba1765201ecb3a109e6b9948bf001c439c0049df24931884de1bac259936d",
+      "bytes": 1946
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-readonly-worker-session-Bq0RBm36.mjs",
+      "sha256": "14d7e081bd7a0bb1acb82b8a51167c33f67b58ac192d3941b9ff48512f1d316e",
+      "bytes": 24304
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-schema-contract-C7_zBR7q.mjs",
+      "sha256": "9b0d0314b0081df362ccfdd816df68f48512237a2460d509bc9427db6f80ca5f",
+      "bytes": 18479
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-schema-ensure-CwIgvH1h.mjs",
+      "sha256": "a467684c504964fd404a79c0af3c50b169f9cc9574787fa011c8eb16041b8582",
+      "bytes": 1271
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-schema-facts-C8u_9Af1.mjs",
+      "sha256": "da5076ac5a05eea2b32d37405d3d4001796a767024ef87153ed544f9c24be645",
+      "bytes": 42279
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-schema-issues-BnRd2KGO.mjs",
+      "sha256": "c34c74e9feaa92603be367bbf558ac30801dfb1d039e47037d6939f27d6aceb4",
+      "bytes": 2644
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-snapshot-source-DQdkM3YQ.mjs",
+      "sha256": "283a632c3d1a6f08c6bfd1371cfde42c68fc9c07b82136acbe98c72adfb95b2c",
+      "bytes": 21595
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-snapshot-staging-B4VrWJSe.mjs",
+      "sha256": "3ae8be46eea3c47a781dbcc33b3b4a2442223ea85b0b639bf5af1f15ef677265",
+      "bytes": 10432
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-snapshot-staging-owner-42z7nqrk.mjs",
+      "sha256": "92bd73aecc985e2a2c9a4e52916b845f78339010b3e877a03602bd16b6f7d7db",
+      "bytes": 11034
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-source-handle-BWHiHQXK.mjs",
+      "sha256": "075324e3ce37c829f52bb8a8996b9caa79441d2801eafd26b0011ce138e62e2f",
+      "bytes": 1014
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-staging-token-8t4ufSRY.mjs",
+      "sha256": "4b83e61fc6f604fd61210f2fc309bae72662d4e8e5984566fb9fea42d64ce4a3",
+      "bytes": 4591
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-strict-CTENSqnV.mjs",
+      "sha256": "acfecc6996f2d127b1400731d108e292e8c617b5584cc9bcdca45ed49d35bf06",
+      "bytes": 11726
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-transaction-CpDyZPQ0.mjs",
+      "sha256": "2ab293c60f181e834f29436f2cd362c73ac0a2f76253b52aec5ef4093f8325e9",
+      "bytes": 17357
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-user-version-Q7gNRxhK.mjs",
+      "sha256": "cbdf73eca8e1e5c5a117c06c4ca1031ac0b859f7032c574beb1c0a2a5643df33",
+      "bytes": 2670
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-wal-D2XTertL.mjs",
+      "sha256": "b7a313594c78283d3d07d48ec9c012314ed14279396ba5640f231c9218a9af20",
+      "bytes": 30517
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-wal-checkpoint-CgnAfdqs.mjs",
+      "sha256": "e1f15e7bef4f9f7185fa0b33405b94d1382607f320d7b136ffaab3b534996454",
+      "bytes": 8398
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-wal-checksum-DGsWgS1f.mjs",
+      "sha256": "4c7d605fa9ad7d75789b63522876103c89de88150b126c56987b515faa734896",
+      "bytes": 789
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-wal-write-admission-Civ4GaI3.mjs",
+      "sha256": "4456c51a3d7a18514905e8e671b1741684a623649c8221c2e6f490e62ee28d74",
+      "bytes": 3430
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-worker-contract-DhDutMia.mjs",
+      "sha256": "617e8423ee5ca865c773d72abe94e25f432cebf21dada5ac6ddb984ef5fb139a",
+      "bytes": 4961
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-worker-database-admission-relay-CPqKkejS.mjs",
+      "sha256": "ac2971cab945fbcc290f3b55348d926f03400634513009ad8878490d1f079184",
+      "bytes": 2973
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-worker-identity-DLqVBf5J.mjs",
+      "sha256": "ca55429caa56704a97423e51c7d800000fb55fd4e80c2f9b9df54de0be1eb0d8",
+      "bytes": 6793
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-worker-operation-admission-DJeEhCu0.mjs",
+      "sha256": "435dc8b6989c4a7541cd4ed1deccb828d0bec88dfe17157bfe9c8be12fcb4440",
+      "bytes": 1044
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-worker-operation-admission-puNZKEvP.mjs",
+      "sha256": "37432404a7f648767b68b3ff3af8717fa84a0dbdfcd6d17e0a82740b7fa2c6f8",
+      "bytes": 24237
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-worker-request-custody-Bj59t02j.mjs",
+      "sha256": "19b26568591276415b2f1a0cda8924b3ef6e433bbae99dc679ca8f779cfaa503",
+      "bytes": 3109
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-worker-state-context-QuvwmAax.mjs",
+      "sha256": "80d0a10e9f3e2559fe9efce8a600aa9c236fdf104ba216e41a64391472f5e7c0",
+      "bytes": 3704
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-worker-store-BMFDZ5bx.mjs",
+      "sha256": "01f25337ab7bda412e68a17e794297c1c3e61c3ada576939f8828fd43958496e",
+      "bytes": 993
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-worker-store-Bzw_c0pA.mjs",
+      "sha256": "5afa3409a5ecc30527257dfec92f4e8713c0f1397c03952d3e5539f7a37f4147",
+      "bytes": 67916
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/sqlite-worker-transfer-BHUd6Qxu.mjs",
+      "sha256": "891b8f264090c03faffeb648f53aad398995d4e01c57b1a68822571bb62bd3cf",
+      "bytes": 6350
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/src-Bzfi3cQM.mjs",
+      "sha256": "43f3613e31a7f4e5f6ae55d206394a50f4631af28044153a3e79584079e6c3f8",
+      "bytes": 10097
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/src-Djeo9OvP.mjs",
+      "sha256": "8a12c54a219932193e688d9c9ce96371f0abc5a58c3ca82f837f7648cf58261a",
+      "bytes": 2847
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/src-NEpyeLp1.mjs",
+      "sha256": "2721159af839a9a7a2ff73f15c63260f3426da0851441826655cf8a787393be8",
+      "bytes": 49899
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/stable-stringify-Djn3uxNo.mjs",
+      "sha256": "6c21fa16cc4eff871e22adaf92de038503541e88b3e6e3974660929b80631dd3",
+      "bytes": 3423
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/stale-lock-file-BdSoQ5K8.mjs",
+      "sha256": "f628f4513eaaca7270515c992179e8bc73522be6af892d3669a4a71c4341d796",
+      "bytes": 2277
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/startup-maintenance-required-D0mOtveg.mjs",
+      "sha256": "209003bbdc95062fe3f66431c0fdd0194dda8674ee2dd22202766f80ba5b346f",
+      "bytes": 1406
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/state-UxwJeH7V.mjs",
+      "sha256": "0ed917c0a304b2c2d79219a19bbb9eb488e341b913c37340b9cdcca210b35742",
+      "bytes": 1034
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/state-database-maintenance-DQhfapFw.mjs",
+      "sha256": "b7f26afefd163e3e466c1d7cd0cfce7fc35a9d509e86cad501298a765d42cdd7",
+      "bytes": 2054
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/state-dir-C8s3cOPX.mjs",
+      "sha256": "03029530ea5168240dfe2ab326088b3c9103e39305b7ff73576cac97893a0f1e",
+      "bytes": 1247
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/store-writer-queue-AKR6NnXM.mjs",
+      "sha256": "df76778cc71eb4261c67647c1fb5cd3f63da7d0ecc620c810772e4831d484f11",
+      "bytes": 6357
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/string-coerce-1VuiLaaR.mjs",
+      "sha256": "0dea5cd027293a4f5cf9451d652563e91c44c62b534c4b0548b81cee61751229",
+      "bytes": 4674
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/string-normalization-D6DKCpwE.mjs",
+      "sha256": "954d41914e82db33e618da847f711ff4dea8508d4c7b268c77641410bae42ea7",
+      "bytes": 5492
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/structured-auth-redaction-DjjOr0Ju.mjs",
+      "sha256": "613bdae11eb17dbf09f08887e46346f6b817c63d0ff30ba37f159768ddbfd64e",
+      "bytes": 11047
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/subsystem-mStysHHC.mjs",
+      "sha256": "8ff0731a4237f75cbf456075d2f7547324fd30b956fa14b4ecbff1a8e3b53a22",
+      "bytes": 13272
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/tcp-port-B-4SirsX.mjs",
+      "sha256": "3a911196b51664874c7824fd424f8523138269cc0eb7df76d6ca5b8f0c12a002",
+      "bytes": 978
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/temp-artifact-cleanup-DIl8XLa9.mjs",
+      "sha256": "ea843cbc916a51c8d9425bbbe6b1c19692363fbc81129fa8ac4924e888c26eb9",
+      "bytes": 6869
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/timestamps-tLN31L4a.mjs",
+      "sha256": "040a9c3deb16a530added9bf0484dc3b52c89be3fe832d1f9cf86cfe12da9725",
+      "bytes": 2544
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/tmp-openclaw-dir-DR7bHNl9.mjs",
+      "sha256": "b48d4f39cfc7f14ca2fb16622248b74ef1043d5f79384cfec046b79f0b389aa1",
+      "bytes": 1546
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/transcript-file-names-BZ8jA63H.mjs",
+      "sha256": "7c6dc1522a72300d6d6d5d156242e554d8cba16027eafe3bf15daf787a571e72",
+      "bytes": 2342
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/types.secrets-Dgbd2kyP.mjs",
+      "sha256": "bc9a717d86dc104156ca258cc289dd4a89280d29f24b2dce8d01840279b34bb5",
+      "bytes": 6403
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/update-rehearsal-paths-CRhoE25Z.mjs",
+      "sha256": "d786645cc2a60bb80363efbe611ac70188093d82cf013eaa59320abf9e000fcb",
+      "bytes": 2771
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/update-run-timeouts-Byb-PlTk.mjs",
+      "sha256": "cbde45cc0a0a3e7da20a7b5ca392ae467f8fe37ec852ff51ac9bfb1e5f10e434",
+      "bytes": 510
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/usingCtx-BhiZp_rS.mjs",
+      "sha256": "280fbf38778577db2b7ede5359631d439b75fb49de24c7def867c37d6e30e48d",
+      "bytes": 1609
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/utf16-slice-D_ngcYKd.mjs",
+      "sha256": "bc9d5d05e504a8c51ede86fbda75f5079388e50e42ac6ecd3885146f0193e944",
+      "bytes": 1951
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/utf8-truncate-_hf7tp13.mjs",
+      "sha256": "40a2cf5ddbff0519fd46a7c3453df44476a4da280f11e8892988449f5f8cbd56",
+      "bytes": 1236
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/utils-gjJ-tD2q.mjs",
+      "sha256": "ac667ec4c88551d7e9cfae4035a02e023cdc00a22b820f21bddb9e249a2907e9",
+      "bytes": 4902
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/version-ByD9iTct.mjs",
+      "sha256": "e4514095b73d4fd4b099b83d583823dad6bac6f2cdb206c2efd32978fd4d61b9",
+      "bytes": 1427
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/version-jg_14gWz.mjs",
+      "sha256": "d9f8fb491d5303a586ca2a466974eb8ade0e532c06946ad91c89c5275e08b717",
+      "bytes": 4364
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/warning-filter-DEomBGoF.mjs",
+      "sha256": "2dd855637acb62056f55be550e692db51e95df84732a8e80345ef4a685ade28d",
+      "bytes": 2126
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/windows-private-directory-MPEowKNX.mjs",
+      "sha256": "35f32a9f1e5b584a4b1f55864ddd782694a8dc253619e7addceeb4b1d76094d3",
+      "bytes": 918
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/worker-cpu-c5lFIb1t.mjs",
+      "sha256": "4cce80a92c8e7fb727cbeeb2c2b21fddaa6dcb94122f0948bab0fbfd9ec67f2c",
+      "bytes": 13579
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/worker-diagnostic-script-DtBjzxq1.mjs",
+      "sha256": "bfb42b1338b5c04469a11c473e060174f454d584892b7457d8ea6562ad22e70b",
+      "bytes": 1049
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/worker-message-metrics-CcNXClPZ.mjs",
+      "sha256": "8824ab258e84e637d6d904fff3dd974ff66e38c20adc8c52861c22d11f2deeff",
+      "bytes": 4672
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/worker-native-lifecycle-BrCZRghB.mjs",
+      "sha256": "6593d950c68e34431d61a71b9be22eae7d85f0432a3472c25584461f63163f19",
+      "bytes": 29169
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/worker-pool-sizing-9MNT4hxr.mjs",
+      "sha256": "d72e82f135488cc401d41b768bd9137d6b2cf0d091c4ef139394194778657e9c",
+      "bytes": 1225
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/worker-request-diagnostics-BrY1pZl2.mjs",
+      "sha256": "7bf7a06d0e775bf4a68d01184db9bfda49cfb175bdf7b4460219252768872719",
+      "bytes": 8589
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/worker-task-native-sections-DVlyZQtL.mjs",
+      "sha256": "9f1bc22df62971479e080b1012db8e99b692f1c92827c62608f6ba788edf3512",
+      "bytes": 3393
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/worker-task-pool-D6ogd941.mjs",
+      "sha256": "40facb90b0dbbbd53a18cd0fbb3f43496441ad2f6b29305933b0033176454acd",
+      "bytes": 7559
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/worker-task-pool-registry-D6q0YAmu.mjs",
+      "sha256": "cc42898cc22cc1cd9dc360e65cd9723fc3993fc62f2af45d5d3ea92ea16eaa4b",
+      "bytes": 1541
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/worker-transfer-bytes-D_DP0IHa.mjs",
+      "sha256": "f94bcd5f3073f36b37cb557fcc50af24a19f8d91f25c7b1881f6c171550fa849",
+      "bytes": 514
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/workspace-default-BjEaT57h.mjs",
+      "sha256": "ac479d09f9b109303c88fe49a9ad10969c92d2738b7b4d031f817a3ceb466cc2",
+      "bytes": 343
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/workspace-default-path-BccyWLRI.mjs",
+      "sha256": "7d6341cd1d5471d4e0f8a9175f58a31dc52e4af6435bf70259ee8dd2c9c21c69",
+      "bytes": 1061
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/workspace-state-identity-hZ7UINpz.mjs",
+      "sha256": "b23a02c6bb34332c720b599f783ebac5e1414353b2ce741689eaefd65d127bfa",
+      "bytes": 3901
+    },
+    {
+      "path": "/private/tmp/agt1-openclaw-runtime/2026.11.3/package/dist/zod-parse-Bip-sZi_.mjs",
+      "sha256": "df7e3a3d50449e6aade850ba71001fb81897a0c59792e94ee8bff9d3ad0c3e60",
+      "bytes": 817
+    }
+  ]
+}

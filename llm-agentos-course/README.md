@@ -25,7 +25,7 @@ Each row links the English deck and, on that same row, the Simplified Chinese de
 | Deck | What it covers |
 |------|----------------|
 | [Master deck](slides/00_master_agentos_deck.html) (slides 1–21) · [简体中文](slides/zh/00_master_agentos_deck.html) | The AgentOS architecture, the nine components, and the map of all seven modules |
-| [Harness deep-dives](slides/05_opensource_plugin_apis_slides.html) (slides 22–31) · [简体中文](slides/zh/05_opensource_plugin_apis_slides.html) | Hermes Agent, OpenClaw, Letta, AIOS, Rust runtimes, plugin APIs, vLLM KV connectors, Harness² |
+| [Harness deep-dives](slides/05_opensource_plugin_apis_slides.html) (slides 22–31) · [简体中文](slides/zh/05_opensource_plugin_apis_slides.html) | Hermes Agent, OpenClaw (measured registry error/abort controls), Letta, AIOS, Rust runtimes, plugin APIs, vLLM KV connectors, Harness² |
 | [The agent loop](slides/01_agent_loop_deck.html) · [简体中文](slides/zh/01_agent_loop_deck.html) | Module 1 lecture: turns, budgets, retries, interrupts, compaction, hooks |
 | [The scheduler](slides/01_scheduler_deck.html) · [简体中文](slides/zh/01_scheduler_deck.html) | Module 1 lecture: lanes and queues, delegation limits, engine and program-aware scheduling |
 | [The context manager](slides/01_context_manager_deck.html) · [简体中文](slides/zh/01_context_manager_deck.html) | Module 1 lecture: context rot, prompt assembly, cache-stable prefixes, compaction, isolation, Hermes and OpenClaw context engines |
@@ -137,6 +137,8 @@ llm-agentos-course/
 │   │   ├── multiagent_eval.py                 # Lab 9: one agent against an orchestrator with workers
 │   │   ├── plugins_eval.py                    # Lab 10: a shell-guard plugin on a simulated shell
 │   │   ├── mcp_eval.py                        # Lab 11: mount an MCP server, measure tokens, requests and defenses
+│   │   ├── openclaw_context_eval.mjs          # Actual pinned bundled context-registry controls
+│   │   ├── openclaw_context_protocol.json
 │   │   ├── hermes_import_eval.py              # Actual pinned-interface construction / clone probe
 │   │   ├── ports_eval.py                      # Lab 12: your Lab 3 engines through Hermes and OpenClaw contracts
 │   │   ├── obs_eval.py                        # Lab 13: trace, grade and compare two configurations; calibrate a judge
@@ -265,6 +267,21 @@ llm-agentos-course/
 │       ├── run_harness2_demo.sh               # Quickstart for google-research/harness2
 │       └── sample_lesson_entry.jsonl          # Course schema for an evidence-backed lesson record
 └── references/
+    ├── openclaw_context_runtime_2026_11.md
+    ├── openclaw_context_artifacts_2026_11/
+    │   ├── 2026.10.7-dependencies.lock.json
+    │   ├── 2026.10.7-install.log
+    │   ├── 2026.10.7-npm-metadata.json
+    │   ├── 2026.10.7-results.json
+    │   ├── 2026.10.7-run.log
+    │   ├── 2026.11.3-dependencies.lock.json
+    │   ├── 2026.11.3-install.log
+    │   ├── 2026.11.3-npm-metadata.json
+    │   ├── 2026.11.3-results.json
+    │   ├── 2026.11.3-run.log
+    │   ├── initial-missing-dependency.log
+    │   ├── kit-tests.log
+    │   └── verification.json
     ├── measured_memory_pilot_2026_11.md
     ├── memory_pilot_artifacts_2026_11.json
     ├── memory_pilot_writes_2026_11.json
