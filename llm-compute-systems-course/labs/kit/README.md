@@ -122,3 +122,7 @@ The [diagnosis worksheet](inference_bottleneck_worksheet.md) connects L1/L8/L10 
 ## AI-assisted verification lab
 
 [CPU numerical and queue-trace exercise](handouts/lab_ai_verification.md) supports decks 37–39. Run `verification_lab.py` and its dedicated standard-library tests. Optional CUDA sanitizer and physical-target extensions remain unverified.
+
+## Fresh old/new CPU compatibility — 2026-11-14 UTC
+
+The [executed CMP-1 matrix](../../references/executorch_cpu_compatibility_2026_11.md) uses fresh 1.0.0/Torch 2.9.1 and 1.6.0/Torch 2.15.0 environments, one literal model/input fixture and four fresh-process producer/consumer cells. All three eligible inputs and before-native shape/dtype/stride guards pass in every cell. Actual delegate graphs, artifact/source/package hashes, warnings and raw timing samples are retained. The separate `executorch_compat.py` runner and candidate lock preserve this lab’s historical runner/default requirements. This qualifies the bounded unquantized CPU fixture, not all .pte formats, quantized/GPU/edge paths or stable performance.

@@ -1,0 +1,35 @@
+{
+  "frozen_utc": "2026-11-14",
+  "baseline": {
+    "executorch": "1.0.0",
+    "torch": "2.9.1",
+    "source_revision": "8c84780911e7f4e9eb19395181b04761392a4b56"
+  },
+  "candidate": {
+    "executorch": "1.6.0",
+    "torch": "2.15.0",
+    "source_revision": "4776f71b6f0daa5dfc7d758d5836fc1cc0d40154"
+  },
+  "contract": "CPU float32 contiguous static (3,8), Linear(8,16), ReLU, Linear(16,4)",
+  "fixture": "executorch_compat_fixture.json",
+  "rtol": 1e-05,
+  "atol": 1e-06,
+  "partitioner": "XnnpackPartitioner default options",
+  "required_delegate": "XnnpackBackend",
+  "export_shape_negative": [
+    4,
+    8
+  ],
+  "wrapper_negatives": [
+    "shape (4,8)",
+    "dtype float64",
+    "non-contiguous (3,8)"
+  ],
+  "matrix": "each of two trusted locally built .pte artifacts loaded in both consumer environments, one new process per cell",
+  "warmups": 3,
+  "warm_samples": 10,
+  "repeats": 1,
+  "timing_claim": "single tiny local host-call observation; cold means first process load/call, not OS cache eviction or portable speed",
+  "pin_policy": "preserve historical default 1.0.0 and tracker; record the candidate as a separate scoped cohort",
+  "scope": "unquantized synthetic MLP on this macOS arm64 CPU; no LLM, GPU, Core ML, edge deployment, quantization or broad ABI guarantee"
+}

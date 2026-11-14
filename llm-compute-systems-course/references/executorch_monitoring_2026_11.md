@@ -43,3 +43,7 @@ The new original SVG on deck 23 slide 18 separates these evidence lanes and gate
 ## Verification record for this correction
 
 The normal `--no-links` scan completed with **6 changed, 0 due, 0 unchecked** and exit 1, now including `L11 ExecuTorch CPU lab pin: 1.0.0 → 1.6.0`. The old threshold would suppress that row. Offline controls using the actual `significant()` implementation confirmed that 1.0.1 stays below this threshold, while 1.6.0 and 2.0.0 trigger review. All non-ExecuTorch tracker entries, the ExecuTorch baseline/date and both requirements files were checked unchanged against the parent main revision. No claim that other freshness findings are resolved.
+
+## Later qualified CPU cohort — 2026-11-14 UTC
+
+The [two-environment CPU matrix](executorch_cpu_compatibility_2026_11.md) now supplies the previously missing candidate export/lower/load/execute evidence for one frozen MLP and four actual producer/consumer cells. It uses pinned source documentation when the web-reader 1.6 page remains inaccessible. The earlier monitoring observations above are historical; the tested default remains 1.0.0 and the candidate has a separate scoped lock/report.

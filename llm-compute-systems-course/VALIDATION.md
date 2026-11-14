@@ -78,3 +78,7 @@ Course consistency: three courses, zero problems. Site audit: 818 pages, zero br
 - Course check: 4 courses, zero problems. Site build/link check: 956 pages, zero broken relative links/unlisted decks/missing home links. Slide check: 216 decks, zero problems. Presenter check: 98 canonical embedded copies and all behavior checks passed.
 - Rendered all 138 pages across the eight revised deck files at 1280×720; bounds check found no issues. Visually inspected EN/ZH contact sheets for the seven revised page positions and the retained deck-36 source/closure page. Regenerating the illustration library left all 82 compute HTML decks byte-identical.
 - Rechecked primary inference analysis, CUDA pipeline, vLLM prefix-cache and Compute Sanitizer documentation. No device benchmark, firmware execution, classroom timing or student comprehension claim added; checkpoint durations remain estimates.
+
+## Dated additional compatibility evidence — 2026-11-14 UTC
+
+The [CMP-1 CPU matrix](references/executorch_cpu_compatibility_2026_11.md) executes fresh old/new unquantized XNNPACK producer/consumer lanes for one frozen MLP. This supplements rather than re-certifies the original release validation; wider targets/models remain outside its evidence.

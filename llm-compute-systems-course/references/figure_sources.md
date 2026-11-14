@@ -268,3 +268,7 @@ Deck 24 slide 14 EN/ZH: original inline SVG, based on the [selected source ledge
 ## Ascend coupled/separated scheduling resources — 2026-11-12 UTC
 
 Deck 40 slide 14 EN/ZH: original inline SVG based on the [selected CANN cohort](ascend_mode_evidence_2026_11.md). Shared versus independent Scalar scheduling and symbolic 1:N composition, not a physical floorplan, fixed ratio or measured count. Manual addition outside 164 managed concepts; no vendor artwork copied.
+
+## Manual CMP-1 evidence diagram — 2026-11-14 UTC
+
+Deck 23 slide 18 (EN/ZH): original inline producer/consumer matrix from the [executed CPU pilot](executorch_cpu_compatibility_2026_11.md). It is outside the 164 managed mechanism figures; existing generated assets/generator and worked examples are unchanged. The earlier dated monitoring schematic remains in hidden teaching notes. No upstream artwork is copied and no speed comparison is inferred.
