@@ -21,3 +21,7 @@ Student dossier: draw two group memberships for one rank, identify a divisibilit
 ## Instructor prompts
 
 A correct report links a configuration to specific symbols at the recorded commit, explains a rejected configuration and distinguishes source-derived behavior from runtime evidence. Common failures: reading moving main while citing a frozen commit, conflating activation checkpointing with restart checkpoints, or claiming a GPU backend was observed from a configuration flag alone.
+
+## Two-rank CPU restart supplement — 2026-11-14 UTC
+
+The [new source/execution evidence](../../references/distributed_resume_2026_11.md) pins TorchTitan separately and adds `distributed_resume.py`: three seeds of actual two-rank CPU DDP/Gloo/DCP stop-and-new-process resume, full progress equality, RNG/optimizer/cursor omission controls, six artifact guards, raw checkpoints and measured save/load/work intervals. The first ineffective omission control and correction are retained. This clean restart does not qualify TorchTitan/FSDP2/GPU, SIGKILL, topology changes or crash durability. The earlier fixture and source cohort remain historical evidence.

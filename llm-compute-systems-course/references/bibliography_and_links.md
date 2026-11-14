@@ -265,3 +265,7 @@ Deck 24 / L15 selected rows: [NVL72 product table](https://www.nvidia.com/en-us/
 ## ExecuTorch CPU compatibility — checked 2026-11-14 UTC
 
 [1.0 getting started](https://docs.pytorch.org/executorch/1.0/getting-started.html); [1.6 source documentation at 4776f71](https://github.com/pytorch/executorch/blob/4776f71b6f0daa5dfc7d758d5836fc1cc0d40154/docs/source/getting-started.md), selected runtime and XNNPACK partitioner source, and version-specific PyPI artifacts. The [executed matrix](executorch_cpu_compatibility_2026_11.md) records two installed toolchains and four actual trusted-artifact load/execute cells, not a broad compatibility or performance guarantee. Deck 23’s final EN/ZH diagram is original course artwork.
+
+## Distributed restart supplement — verified 2026-11-14 UTC
+
+[TorchTitan pinned631d544](https://github.com/pytorch/torchtitan/tree/631d544b1f6794ecfeca734a7bba861e03ddd5e3), selected Llama3 recipe/FSDP2/checkpointer/Grain sources; [PyTorch2.9 DCP API](https://docs.pytorch.org/docs/2.9/distributed.checkpoint.html); [FSDP2 tutorial](https://docs.pytorch.org/tutorials/intermediate/FSDP_tutorial.html), rendered2.15. [Dated source and execution note](distributed_resume_2026_11.md) separates source reading from actual Torch2.9.1 CPU DDP/Gloo/DCP restart and unqualified author/GPU/FSDP2 recovery. Deck29 slide17 uses original course diagrams in both languages, outside the unchanged164 managed mechanism assets.

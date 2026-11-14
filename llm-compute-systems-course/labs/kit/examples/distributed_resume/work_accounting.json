@@ -1,0 +1,81 @@
+{
+  "scope": "descriptive local timing; clean planned stop/start; not kill/failure/durability or throughput ranking",
+  "all_12_fresh_process_intervals_seconds": 16.93659262487199,
+  "runs": [
+    {
+      "seed": 11,
+      "fresh_process_seconds": {
+        "baseline": 1.3679596669971943,
+        "prefix": 1.4250718329567462,
+        "resume": 1.4536803750088438
+      },
+      "full_restart_path_seconds": 2.87875220796559,
+      "unique_committed_examples": 96,
+      "repeated_examples_in_clean_restart": 0,
+      "per_rank_step_times": [
+        {
+          "rank": 0,
+          "baseline_step_seconds": 0.011059917276725173,
+          "prefix_step_seconds": 0.00984824902843684,
+          "resume_step_seconds": 0.0023944589775055647
+        },
+        {
+          "rank": 1,
+          "baseline_step_seconds": 0.011064207996241748,
+          "prefix_step_seconds": 0.009870081907138228,
+          "resume_step_seconds": 0.0023614170495420694
+        }
+      ]
+    },
+    {
+      "seed": 23,
+      "fresh_process_seconds": {
+        "baseline": 1.393630624981597,
+        "prefix": 1.4391114170430228,
+        "resume": 1.423653458012268
+      },
+      "full_restart_path_seconds": 2.8627648750552908,
+      "unique_committed_examples": 96,
+      "repeated_examples_in_clean_restart": 0,
+      "per_rank_step_times": [
+        {
+          "rank": 0,
+          "baseline_step_seconds": 0.01140345900785178,
+          "prefix_step_seconds": 0.010382709093391895,
+          "resume_step_seconds": 0.0024440831039100885
+        },
+        {
+          "rank": 1,
+          "baseline_step_seconds": 0.011433414882048965,
+          "prefix_step_seconds": 0.010363291017711163,
+          "resume_step_seconds": 0.0024504580069333315
+        }
+      ]
+    },
+    {
+      "seed": 37,
+      "fresh_process_seconds": {
+        "baseline": 1.3798207909567282,
+        "prefix": 1.3852059999480844,
+        "resume": 1.4172612499678507
+      },
+      "full_restart_path_seconds": 2.802467249915935,
+      "unique_committed_examples": 96,
+      "repeated_examples_in_clean_restart": 0,
+      "per_rank_step_times": [
+        {
+          "rank": 0,
+          "baseline_step_seconds": 0.011800917098298669,
+          "prefix_step_seconds": 0.009958248934708536,
+          "resume_step_seconds": 0.002488918020389974
+        },
+        {
+          "rank": 1,
+          "baseline_step_seconds": 0.011793417041189969,
+          "prefix_step_seconds": 0.010012957849539816,
+          "resume_step_seconds": 0.0025195421185344458
+        }
+      ]
+    }
+  ]
+}

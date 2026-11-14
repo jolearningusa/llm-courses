@@ -1,0 +1,318 @@
+{
+  "protocol_sha256": "bb215e4553925ee6cfdee653e3bcc6ba1c64b9a26f12c79aaf96453eabe7245a",
+  "runner_sha256": "145bf05963e9d912c5e5216cbbfb11428d45fff29db145b3b4b695cf7bb11b67",
+  "source_revision": "d9ad23c78882756401ec27469c1f135720d1731c",
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "torch": "2.9.1",
+  "numpy": "2.3.5",
+  "world_size": 2,
+  "seeds": [
+    {
+      "seed": 11,
+      "ranks": [
+        {
+          "rank": 0,
+          "checks": {
+            "loss_sequence_equal": true,
+            "data_ids_equal": true,
+            "input_hashes_equal": true,
+            "completed_steps_equal": true,
+            "cursor_equal": true,
+            "model_sha256_equal": true,
+            "optimizer_sha256_equal": true,
+            "rng_sha256_equal": true
+          },
+          "negative_controls": {
+            "omit_rng": {
+              "loss_sequence_equal": false,
+              "data_ids_equal": true,
+              "input_hashes_equal": false,
+              "completed_steps_equal": true,
+              "cursor_equal": true,
+              "model_sha256_equal": false,
+              "optimizer_sha256_equal": false,
+              "rng_sha256_equal": false
+            },
+            "omit_optimizer": {
+              "loss_sequence_equal": false,
+              "data_ids_equal": true,
+              "input_hashes_equal": true,
+              "completed_steps_equal": true,
+              "cursor_equal": true,
+              "model_sha256_equal": false,
+              "optimizer_sha256_equal": false,
+              "rng_sha256_equal": true
+            },
+            "rewind_cursor": {
+              "loss_sequence_equal": false,
+              "data_ids_equal": false,
+              "input_hashes_equal": false,
+              "completed_steps_equal": true,
+              "cursor_equal": false,
+              "model_sha256_equal": false,
+              "optimizer_sha256_equal": false,
+              "rng_sha256_equal": true
+            }
+          },
+          "checkpoint_stall_seconds": 0.053075707983225584,
+          "load_barrier_seconds": 0.06280633399728686
+        },
+        {
+          "rank": 1,
+          "checks": {
+            "loss_sequence_equal": true,
+            "data_ids_equal": true,
+            "input_hashes_equal": true,
+            "completed_steps_equal": true,
+            "cursor_equal": true,
+            "model_sha256_equal": true,
+            "optimizer_sha256_equal": true,
+            "rng_sha256_equal": true
+          },
+          "negative_controls": {
+            "omit_rng": {
+              "loss_sequence_equal": false,
+              "data_ids_equal": true,
+              "input_hashes_equal": false,
+              "completed_steps_equal": true,
+              "cursor_equal": true,
+              "model_sha256_equal": false,
+              "optimizer_sha256_equal": false,
+              "rng_sha256_equal": false
+            },
+            "omit_optimizer": {
+              "loss_sequence_equal": false,
+              "data_ids_equal": true,
+              "input_hashes_equal": true,
+              "completed_steps_equal": true,
+              "cursor_equal": true,
+              "model_sha256_equal": false,
+              "optimizer_sha256_equal": false,
+              "rng_sha256_equal": true
+            },
+            "rewind_cursor": {
+              "loss_sequence_equal": false,
+              "data_ids_equal": false,
+              "input_hashes_equal": false,
+              "completed_steps_equal": true,
+              "cursor_equal": false,
+              "model_sha256_equal": false,
+              "optimizer_sha256_equal": false,
+              "rng_sha256_equal": true
+            }
+          },
+          "checkpoint_stall_seconds": 0.05300654098391533,
+          "load_barrier_seconds": 0.06282637489493936
+        }
+      ],
+      "final_model_ranks_equal": true,
+      "checkpoint_bytes": 198611,
+      "unique_useful_examples": 96
+    },
+    {
+      "seed": 23,
+      "ranks": [
+        {
+          "rank": 0,
+          "checks": {
+            "loss_sequence_equal": true,
+            "data_ids_equal": true,
+            "input_hashes_equal": true,
+            "completed_steps_equal": true,
+            "cursor_equal": true,
+            "model_sha256_equal": true,
+            "optimizer_sha256_equal": true,
+            "rng_sha256_equal": true
+          },
+          "negative_controls": {},
+          "checkpoint_stall_seconds": 0.060341665986925364,
+          "load_barrier_seconds": 0.060536792036145926
+        },
+        {
+          "rank": 1,
+          "checks": {
+            "loss_sequence_equal": true,
+            "data_ids_equal": true,
+            "input_hashes_equal": true,
+            "completed_steps_equal": true,
+            "cursor_equal": true,
+            "model_sha256_equal": true,
+            "optimizer_sha256_equal": true,
+            "rng_sha256_equal": true
+          },
+          "negative_controls": {},
+          "checkpoint_stall_seconds": 0.06033170805312693,
+          "load_barrier_seconds": 0.060536958975717425
+        }
+      ],
+      "final_model_ranks_equal": true,
+      "checkpoint_bytes": 198613,
+      "unique_useful_examples": 96
+    },
+    {
+      "seed": 37,
+      "ranks": [
+        {
+          "rank": 0,
+          "checks": {
+            "loss_sequence_equal": true,
+            "data_ids_equal": true,
+            "input_hashes_equal": true,
+            "completed_steps_equal": true,
+            "cursor_equal": true,
+            "model_sha256_equal": true,
+            "optimizer_sha256_equal": true,
+            "rng_sha256_equal": true
+          },
+          "negative_controls": {},
+          "checkpoint_stall_seconds": 0.05123475007712841,
+          "load_barrier_seconds": 0.061601667082868516
+        },
+        {
+          "rank": 1,
+          "checks": {
+            "loss_sequence_equal": true,
+            "data_ids_equal": true,
+            "input_hashes_equal": true,
+            "completed_steps_equal": true,
+            "cursor_equal": true,
+            "model_sha256_equal": true,
+            "optimizer_sha256_equal": true,
+            "rng_sha256_equal": true
+          },
+          "negative_controls": {},
+          "checkpoint_stall_seconds": 0.05114808294456452,
+          "load_barrier_seconds": 0.061596208019182086
+        }
+      ],
+      "final_model_ranks_equal": true,
+      "checkpoint_bytes": 198506,
+      "unique_useful_examples": 96
+    }
+  ],
+  "processes": [
+    {
+      "seed": 11,
+      "phase": "baseline",
+      "mutation": "none",
+      "exit_code": 0,
+      "fresh_process_seconds": 1.3679596669971943,
+      "log": "11-baseline-none.log"
+    },
+    {
+      "seed": 11,
+      "phase": "prefix",
+      "mutation": "none",
+      "exit_code": 0,
+      "fresh_process_seconds": 1.4250718329567462,
+      "log": "11-prefix-none.log"
+    },
+    {
+      "seed": 11,
+      "phase": "resume",
+      "mutation": "none",
+      "exit_code": 0,
+      "fresh_process_seconds": 1.4536803750088438,
+      "log": "11-resume-none.log"
+    },
+    {
+      "seed": 11,
+      "phase": "resume",
+      "mutation": "omit_rng",
+      "exit_code": 0,
+      "fresh_process_seconds": 1.459952208912,
+      "log": "11-resume-omit_rng.log"
+    },
+    {
+      "seed": 11,
+      "phase": "resume",
+      "mutation": "omit_optimizer",
+      "exit_code": 0,
+      "fresh_process_seconds": 1.3672482500551268,
+      "log": "11-resume-omit_optimizer.log"
+    },
+    {
+      "seed": 11,
+      "phase": "resume",
+      "mutation": "rewind_cursor",
+      "exit_code": 0,
+      "fresh_process_seconds": 1.4239967500325292,
+      "log": "11-resume-rewind_cursor.log"
+    },
+    {
+      "seed": 23,
+      "phase": "baseline",
+      "mutation": "none",
+      "exit_code": 0,
+      "fresh_process_seconds": 1.393630624981597,
+      "log": "23-baseline-none.log"
+    },
+    {
+      "seed": 23,
+      "phase": "prefix",
+      "mutation": "none",
+      "exit_code": 0,
+      "fresh_process_seconds": 1.4391114170430228,
+      "log": "23-prefix-none.log"
+    },
+    {
+      "seed": 23,
+      "phase": "resume",
+      "mutation": "none",
+      "exit_code": 0,
+      "fresh_process_seconds": 1.423653458012268,
+      "log": "23-resume-none.log"
+    },
+    {
+      "seed": 37,
+      "phase": "baseline",
+      "mutation": "none",
+      "exit_code": 0,
+      "fresh_process_seconds": 1.3798207909567282,
+      "log": "37-baseline-none.log"
+    },
+    {
+      "seed": 37,
+      "phase": "prefix",
+      "mutation": "none",
+      "exit_code": 0,
+      "fresh_process_seconds": 1.3852059999480844,
+      "log": "37-prefix-none.log"
+    },
+    {
+      "seed": 37,
+      "phase": "resume",
+      "mutation": "none",
+      "exit_code": 0,
+      "fresh_process_seconds": 1.4172612499678507,
+      "log": "37-resume-none.log"
+    }
+  ],
+  "artifact_controls": {
+    "missing_completion": {
+      "rejected": true,
+      "reason": "[Errno 2] No such file or directory: '<controls>/missing_completion/complete.json'"
+    },
+    "missing_sidecar": {
+      "rejected": true,
+      "reason": "[Errno 2] No such file or directory: '<controls>/missing_sidecar/rank1.json'"
+    },
+    "tampered_dcp_file": {
+      "rejected": true,
+      "reason": "checkpoint digest mismatch: dcp/__1_0.distcp"
+    },
+    "wrong_world_size": {
+      "rejected": true,
+      "reason": "world size changed"
+    },
+    "wrong_protocol": {
+      "rejected": true,
+      "reason": "protocol changed"
+    },
+    "wrong_runner": {
+      "rejected": true,
+      "reason": "runner changed"
+    }
+  }
+}

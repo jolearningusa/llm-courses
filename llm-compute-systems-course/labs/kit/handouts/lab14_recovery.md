@@ -9,3 +9,7 @@ Student task: add a scheduler and accumulation-position state, then interrupt at
 Reproduce the lecture interval model C/I + λI/2 with explicit seconds and assumptions. Report useful tokens over total elapsed time, including save stalls, repeated work and recovery. For a real distributed extension, test incomplete saves, completion publication, restored optimizer shards and data coverage; validate layout resharding only where the selected DCP release supports it. No speed or durability result follows from the tiny CPU example.
 
 Submit raw JSON, the state ledger and [report](../../report_template.md). Instructor diagnostic: identical next loss is weaker evidence than the full resumed sequence plus parameters/data coverage; a new dropout RNG stream can expose a weights-only restore.
+
+## Two-rank CPU restart supplement — 2026-11-14 UTC
+
+The [new source/execution evidence](../../../references/distributed_resume_2026_11.md) pins TorchTitan separately and adds `distributed_resume.py`: three seeds of actual two-rank CPU DDP/Gloo/DCP stop-and-new-process resume, full progress equality, RNG/optimizer/cursor omission controls, six artifact guards, raw checkpoints and measured save/load/work intervals. The first ineffective omission control and correction are retained. This clean restart does not qualify TorchTitan/FSDP2/GPU, SIGKILL, topology changes or crash durability. The earlier fixture and source cohort remain historical evidence.

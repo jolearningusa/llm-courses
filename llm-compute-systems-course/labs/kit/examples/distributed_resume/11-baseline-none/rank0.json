@@ -1,0 +1,112 @@
+{
+  "phase": "baseline",
+  "seed": 11,
+  "rank": 0,
+  "mutation": "none",
+  "completed_steps": 6,
+  "cursor": 6,
+  "trace": [
+    {
+      "completed_step": 1,
+      "ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "input_sha256": "dc7521a11c40ececf861f9bf72e0b0c7f367f34bbccb86f837b103a8a59dc580",
+      "loss": 0.6776159680061778,
+      "step_seconds": 0.008390916045755148
+    },
+    {
+      "completed_step": 2,
+      "ids": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "input_sha256": "c7c248bb984c5fa85b2f3731547222ad1551d608ad8da10751bb2d363fd1be03",
+      "loss": 0.6313713528174778,
+      "step_seconds": 0.0007642920827493072
+    },
+    {
+      "completed_step": 3,
+      "ids": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "input_sha256": "001d0f3ac9ec0dd6904aea8e1cbb01941e566e98a4b63642e09ff91db6cf8b73",
+      "loss": 0.6264433293726116,
+      "step_seconds": 0.0004742080345749855
+    },
+    {
+      "completed_step": 4,
+      "ids": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "input_sha256": "0f4d221aa74e55e507c3745be4b01f00f8379ca573b7ee4916ed643a82e11079",
+      "loss": 1.179081976157298,
+      "step_seconds": 0.0004915000172331929
+    },
+    {
+      "completed_step": 5,
+      "ids": [
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      "input_sha256": "25af2d56474b5cea411e5c3acf7dd94b41fd0fce8cae4ceb3ec1eaa81e9adbcd",
+      "loss": 1.1366498905915958,
+      "step_seconds": 0.000470584025606513
+    },
+    {
+      "completed_step": 6,
+      "ids": [
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87
+      ],
+      "input_sha256": "200575b1f51040594f8b49973474a90e8118d960e246673b9873f30d8b26a18a",
+      "loss": 1.4210103897956154,
+      "step_seconds": 0.00046841707080602646
+    }
+  ],
+  "model_sha256": "eeea6e328002ef9ec3efb4b20a265f65cbbb3071c9fdc3720673ac00a3bf91fe",
+  "optimizer_sha256": "94bda400bd4291caf14363766372ed44a1923c0f09c1f0810fde8da4628fe1d0",
+  "rng_sha256": "d10cf69c060f0e032c0294796fdbf1440d366505c260180902b8630123a584eb",
+  "save_stall_seconds": 0.0,
+  "load_barrier_seconds": 0.0,
+  "worker_seconds": 0.2467554999748245
+}
