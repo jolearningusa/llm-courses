@@ -1,0 +1,42 @@
+{
+  "verified_utc": "2026-11-14",
+  "cohorts": {
+    "2026.10.7": {
+      "actual_main_resolved_file_hashes_verified": 635,
+      "dependency_lock_sha256": "438c8fe30aeb6a80e6c8de39b38017f56c97150686c8982e234eabad460ca585",
+      "package_json_sha256": "362f8c0fda7b71a116e0ca2f812e896bfe9cfec41e64b6b66243f95703aaf7b8",
+      "node_binary_sha256": "cf52d093e9b728a7e6929a4371fa37d271304383e7e7c9f0f0e32fb00373b32c",
+      "dependency_install_log": "\nadded 20 packages in 792ms\n",
+      "main_process_resolution_stayed_in_own_cohort": true
+    },
+    "2026.11.3": {
+      "actual_main_resolved_file_hashes_verified": 681,
+      "dependency_lock_sha256": "9bdd0fd80439be8bb4c069100781990183da22dbad39e086f37b4f55fb8a365c",
+      "package_json_sha256": "18f674ce22047b21d3e832372dff012914a5511cf98044ee0db4b8a065fa317d",
+      "node_binary_sha256": "cf52d093e9b728a7e6929a4371fa37d271304383e7e7c9f0f0e32fb00373b32c",
+      "dependency_install_log": "\nadded 36 packages in 2s\nnpm notice\nnpm notice New major version of npm available! 11.19.1 -> 12.2.2\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2\nnpm notice To update run: npm install -g npm@12.2.2\nnpm notice\n",
+      "main_process_resolution_stayed_in_own_cohort": true
+    }
+  },
+  "control_groups": 20,
+  "all_pass": true,
+  "network_attempts": 0,
+  "full_gateway": "not_run",
+  "persistent_health_store_qualification": "not_run",
+  "initial_setup_notes": [
+    "First import without dependencies correctly raised ERR_MODULE_NOT_FOUND for @openclaw/proc-safe.",
+    "Initial setup expected an absent node_modules directory, but npm archives include a bundled partial node_modules. Existing contents were retained; selected dependencies were symlinked without overwriting bundles.",
+    "First install command used a nonexistent bundled npm path; corrected to installed npm 11.19.1 with Node24.22.1 on PATH. No control expectations changed."
+  ],
+  "existing_kit_tests": {
+    "command": "python grade.py kit",
+    "python": "3.12.14",
+    "passed": 36,
+    "total": 36
+  },
+  "private_state_observation": {
+    "sqlite_files_created": true,
+    "persistent_recovery_qualified": false,
+    "additional_read_only_python_inspection": "sqlite3.OperationalError: unable to open database file; no schema/row/durability claim is inferred"
+  }
+}
