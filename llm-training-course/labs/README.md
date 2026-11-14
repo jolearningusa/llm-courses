@@ -23,3 +23,7 @@ Run every lab's checks from the lab directory with `python -m unittest`.
 ## Observed CPU lanes and reporting
 
 The [2026-11-09 environment evidence and worksheet](../references/cpu_environment_evidence_2026_11.md) records exact versions and 18 passing existing tests across **two separate L1/L9 environments**. It is not a tested lock or qualification of all ten labs. The historical result tables remain historical; L1's seed-generated validation cohort is not strictly disjoint. Fill the selection/data/seed/search-budget fields before larger runs.
+
+## Fresh tested CPU cohort
+
+The [2026-11-14 fresh-install report](../references/tested_cpu_lock_2026_11.md) records **99 passing existing tests across L0–L9** in one new CPython 3.12.14 / macOS arm64 CPU environment with Torch 2.9.1 and NumPy 2.3.5. Use the [hashed platform lock](requirements-cpu-macos-arm64-py312.lock) and [qualification runner](cpu_qualification.py) with new output paths. This is a tested unit-suite cohort; the earlier historical training/result tables were not rerun. Other platforms need their own qualified wheel set.

@@ -182,3 +182,7 @@ Both new inline SVGs are original course schematics; no upstream artwork is copi
 ## Rollout / learner consistency — verified 2026-11-10
 
 Deck 20 / L7 optional supplement: [verl at 2b4ed6826a39205838d0ca004bdd942334dbe4b6](https://github.com/verl-project/verl/tree/2b4ed6826a39205838d0ca004bdd942334dbe4b6), selected standard trainer path, rollout correction helpers and vanilla policy loss; [author correction documentation](https://github.com/verl-project/verl/blob/2b4ed6826a39205838d0ca004bdd942334dbe4b6/docs/algo/rollout_corr.md). The [dated reading/execution note](rollout_consistency_2026_11.md) and [file manifest](verl_reading_manifest_2026_11.json) specify source scope and hashes. Original diagrams distinguish three policy roles and actual local CPU controls; no upstream framework, kernel or distributed throughput result is reproduced.
+
+## Fresh CPU lock — verified 2026-11-14 UTC
+
+[PyTorch previous versions / 2.9.1 OSX](https://pytorch.org/get-started/previous-versions/#v291), [PyTorch 2.9 reproducibility](https://docs.pytorch.org/docs/2.9/notes/randomness.html), [NumPy 2.3 RNG compatibility](https://numpy.org/doc/2.3/reference/random/compatibility.html), [pip hash-checking installs](https://pip.pypa.io/en/stable/topics/secure-installs/). The [execution note](tested_cpu_lock_2026_11.md) records the fresh selected platform cohort, seven acceptance controls and 99 existing passing tests. Capstone slide 9 is an original course evidence diagram, with no upstream artwork copied.

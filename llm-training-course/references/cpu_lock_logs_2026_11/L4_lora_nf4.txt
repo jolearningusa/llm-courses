@@ -1,0 +1,14 @@
+test_fit_reaches_the_best_rank_r_error (test_lora_nf4.TestLoRA.test_fit_reaches_the_best_rank_r_error) ... ok
+test_gradients_match_finite_differences (test_lora_nf4.TestLoRA.test_gradients_match_finite_differences) ... ok
+test_merged_equals_unmerged (test_lora_nf4.TestLoRA.test_merged_equals_unmerged) ... ok
+test_parameter_counts_match_the_paper (test_lora_nf4.TestLoRA.test_parameter_counts_match_the_paper) ... ok
+test_zero_init_leaves_base_model_unchanged (test_lora_nf4.TestLoRA.test_zero_init_leaves_base_model_unchanged) ... ok
+test_codebook_matches_appendix_e (test_lora_nf4.TestNF4.test_codebook_matches_appendix_e) ... ok
+test_double_quantization_bits (test_lora_nf4.TestNF4.test_double_quantization_bits) ... ok
+test_double_quantization_costs_little_accuracy (test_lora_nf4.TestNF4.test_double_quantization_costs_little_accuracy) ... ok
+test_nf4_beats_int4_on_normal_weights_only (test_lora_nf4.TestNF4.test_nf4_beats_int4_on_normal_weights_only) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.371s
+
+OK

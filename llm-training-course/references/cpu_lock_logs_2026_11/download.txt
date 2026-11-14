@@ -1,0 +1,49 @@
+Collecting torch==2.9.1
+  Using cached torch-2.9.1-cp312-none-macosx_11_0_arm64.whl.metadata (30 kB)
+Collecting numpy==2.3.5
+  Downloading numpy-2.3.5-cp312-cp312-macosx_14_0_arm64.whl.metadata (62 kB)
+Collecting filelock (from torch==2.9.1)
+  Downloading filelock-4.2.10-py3-none-any.whl.metadata (2.3 kB)
+Collecting typing-extensions>=4.10.0 (from torch==2.9.1)
+  Using cached typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting setuptools (from torch==2.9.1)
+  Using cached setuptools-84.2.1-py3-none-any.whl.metadata (6.6 kB)
+Collecting sympy>=1.13.3 (from torch==2.9.1)
+  Using cached sympy-1.14.0-py3-none-any.whl.metadata (12 kB)
+Collecting networkx>=2.5.1 (from torch==2.9.1)
+  Using cached networkx-3.7-py3-none-any.whl.metadata (6.7 kB)
+Collecting jinja2 (from torch==2.9.1)
+  Using cached jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+Collecting fsspec>=0.8.5 (from torch==2.9.1)
+  Using cached fsspec-2026.9.0-py3-none-any.whl.metadata (10 kB)
+Collecting mpmath<1.4,>=1.1.0 (from sympy>=1.13.3->torch==2.9.1)
+  Using cached mpmath-1.3.0-py3-none-any.whl.metadata (8.6 kB)
+Collecting MarkupSafe>=2.0 (from jinja2->torch==2.9.1)
+  Using cached markupsafe-3.0.4-cp312-cp312-macosx_11_0_arm64.whl.metadata (2.7 kB)
+Using cached torch-2.9.1-cp312-none-macosx_11_0_arm64.whl (74.5 MB)
+Downloading numpy-2.3.5-cp312-cp312-macosx_14_0_arm64.whl (5.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.1/5.1 MB 4.9 MB/s eta 0:00:00
+Using cached fsspec-2026.9.0-py3-none-any.whl (221 kB)
+Using cached networkx-3.7-py3-none-any.whl (2.1 MB)
+Using cached sympy-1.14.0-py3-none-any.whl (6.3 MB)
+Using cached typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Downloading filelock-4.2.10-py3-none-any.whl (218 kB)
+Using cached jinja2-3.1.6-py3-none-any.whl (134 kB)
+Using cached setuptools-84.2.1-py3-none-any.whl (876 kB)
+Using cached markupsafe-3.0.4-cp312-cp312-macosx_11_0_arm64.whl (12 kB)
+Using cached mpmath-1.3.0-py3-none-any.whl (536 kB)
+Saved /private/tmp/trn4-cpu-wheels-20261114/torch-2.9.1-cp312-none-macosx_11_0_arm64.whl
+Saved /private/tmp/trn4-cpu-wheels-20261114/numpy-2.3.5-cp312-cp312-macosx_14_0_arm64.whl
+Saved /private/tmp/trn4-cpu-wheels-20261114/fsspec-2026.9.0-py3-none-any.whl
+Saved /private/tmp/trn4-cpu-wheels-20261114/networkx-3.7-py3-none-any.whl
+Saved /private/tmp/trn4-cpu-wheels-20261114/sympy-1.14.0-py3-none-any.whl
+Saved /private/tmp/trn4-cpu-wheels-20261114/typing_extensions-4.16.0-py3-none-any.whl
+Saved /private/tmp/trn4-cpu-wheels-20261114/filelock-4.2.10-py3-none-any.whl
+Saved /private/tmp/trn4-cpu-wheels-20261114/jinja2-3.1.6-py3-none-any.whl
+Saved /private/tmp/trn4-cpu-wheels-20261114/setuptools-84.2.1-py3-none-any.whl
+Saved /private/tmp/trn4-cpu-wheels-20261114/markupsafe-3.0.4-cp312-cp312-macosx_11_0_arm64.whl
+Saved /private/tmp/trn4-cpu-wheels-20261114/mpmath-1.3.0-py3-none-any.whl
+Successfully downloaded torch numpy fsspec networkx sympy typing-extensions filelock jinja2 setuptools MarkupSafe mpmath
+
+[notice] A new release of pip is available: 25.0.1 -> 26.3
+[notice] To update, run: /private/tmp/trn4-cpu-lock-20261114/bin/python -m pip install --upgrade pip

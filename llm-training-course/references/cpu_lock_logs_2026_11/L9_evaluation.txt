@@ -1,0 +1,13 @@
+test_clean_model_passes_both_checks (test_eval.TestContamination.test_clean_model_passes_both_checks) ... ok
+test_one_ordered_copy_is_detected (test_eval.TestContamination.test_one_ordered_copy_is_detected) ... ok
+test_shuffled_copy_escapes_the_permutation_test (test_eval.TestContamination.test_shuffled_copy_escapes_the_permutation_test) ... ok
+test_matches_brute_force (test_eval.TestPassAtK.test_matches_brute_force) ... ok
+test_unbiased_in_expectation (test_eval.TestPassAtK.test_unbiased_in_expectation) ... ok
+test_bt_ignores_order_elo_does_not (test_eval.TestRatings.test_bt_ignores_order_elo_does_not) ... ok
+test_bt_is_a_maximum (test_eval.TestRatings.test_bt_is_a_maximum) ... ok
+test_bt_recovers_strengths (test_eval.TestRatings.test_bt_recovers_strengths) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.397s
+
+OK

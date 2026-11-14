@@ -1,0 +1,16 @@
+test_divergences (test_kd.TestModes.test_divergences) ... ok
+test_exact_gradients (test_kd.TestModes.test_exact_gradients) ... ok
+test_forward_kl_covers_both_modes (test_kd.TestModes.test_forward_kl_covers_both_modes) ... ok
+test_jsd_limits (test_kd.TestModes.test_jsd_limits) ... ok
+test_on_policy_agrees_with_exact (test_kd.TestModes.test_on_policy_agrees_with_exact) ... ok
+test_on_policy_estimate_is_unbiased (test_kd.TestModes.test_on_policy_estimate_is_unbiased) ... ok
+test_reverse_kl_picks_one_mode (test_kd.TestModes.test_reverse_kl_picks_one_mode) ... ok
+test_gradient_matches_finite_differences (test_kd.TestTemperature.test_gradient_matches_finite_differences) ... ok
+test_high_temperature_is_logit_matching (test_kd.TestTemperature.test_high_temperature_is_logit_matching) ... ok
+test_kd_loss_mixes_soft_and_hard (test_kd.TestTemperature.test_kd_loss_mixes_soft_and_hard) ... ok
+test_soft_targets_flatten (test_kd.TestTemperature.test_soft_targets_flatten) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.531s
+
+OK

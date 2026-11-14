@@ -1,0 +1,15 @@
+test_bias_correction_first_step (test_pretraining.TestAdamW.test_bias_correction_first_step) ... ok
+test_matches_torch (test_pretraining.TestAdamW.test_matches_torch) ... ok
+test_causal (test_pretraining.TestModel.test_causal) ... ok
+test_z_loss (test_pretraining.TestModel.test_z_loss) ... ok
+test_newton_schulz_flattens_singular_values (test_pretraining.TestMuon.test_newton_schulz_flattens_singular_values) ... ok
+test_update_rms_matches_adamw_scale (test_pretraining.TestMuon.test_update_rms_matches_adamw_scale) ... ok
+test_cosine_ends_at_min (test_pretraining.TestSchedules.test_cosine_ends_at_min) ... ok
+test_warmup_reaches_peak (test_pretraining.TestSchedules.test_warmup_reaches_peak) ... ok
+test_wsd_is_flat_then_cools_down (test_pretraining.TestSchedules.test_wsd_is_flat_then_cools_down) ... ok
+test_loss_falls (test_pretraining.TestTraining.test_loss_falls) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 2.409s
+
+OK

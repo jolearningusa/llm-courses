@@ -1,0 +1,15 @@
+test_activation_memory (test_budget.TestBudget.test_activation_memory) ... ok
+test_bad_stage (test_budget.TestBudget.test_bad_stage) ... ok
+test_chinchilla_split (test_budget.TestBudget.test_chinchilla_split) ... ok
+test_critical_batch_tradeoff (test_budget.TestBudget.test_critical_batch_tradeoff) ... ok
+test_llama3_405b_compute (test_budget.TestBudget.test_llama3_405b_compute) ... ok
+test_megatron_training_days (test_budget.TestBudget.test_megatron_training_days) ... ok
+test_mfu_and_days_are_inverse (test_budget.TestBudget.test_mfu_and_days_are_inverse) ... ok
+test_muon_overhead (test_budget.TestBudget.test_muon_overhead) ... ok
+test_pipeline_bubble (test_budget.TestBudget.test_pipeline_bubble) ... ok
+test_zero_figure_1 (test_budget.TestBudget.test_zero_figure_1) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.000s
+
+OK

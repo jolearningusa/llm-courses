@@ -68,3 +68,7 @@ Before any larger run, fill this in alongside its results; do not populate unkno
 [PyTorch 2.9 reproducibility notes](https://docs.pytorch.org/docs/2.9/notes/randomness.html) explain why the same seed alone does not guarantee results across releases, platforms or devices. [NumPy 2.3 RNG compatibility policy](https://numpy.org/doc/2.3/reference/random/compatibility.html) conditions stream compatibility on the generator, call sequence, build and environment. These documents support reporting those factors; they do not qualify our runtime or promise bitwise replay.
 
 The bounded TRN-4 manifest/reporting work is complete here. A fresh isolated installation with a tested lock, a joint package environment, full historical-table reproduction and distributed/GPU qualification remain separate compatibility work. Existing PyTorch 2.15 / NumPy 2.5 reference claims stay explicitly historical; no new “latest” pin is inferred from the installed versions.
+
+## Later fresh-install evidence — 2026-11-14 UTC
+
+The [new joint CPU lock report](tested_cpu_lock_2026_11.md) now supplies the previously missing fresh installation and joint-package unit-suite gate for one macOS arm64 cohort. The observations and historical-table limits above remain dated to 2026-11-09.
