@@ -28,6 +28,10 @@ llm-courses/
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
 │   ├── reviews/
+│   │   ├── agentos-hermes-import-contracts/
+│   │   │   ├── README.md
+│   │   │   ├── en.png
+│   │   │   └── zh.png
 │   │   ├── training-tested-cpu-lock/
 │   │   │   ├── README.md
 │   │   │   └── changes.png

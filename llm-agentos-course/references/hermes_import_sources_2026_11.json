@@ -1,0 +1,38 @@
+{
+  "captured_utc": "2026-11-14",
+  "cohorts": [
+    {
+      "version": "v0.22.5",
+      "revision": "bf0203a794a07aac3ff764972ab9087baa4e4f4e",
+      "archive_url": "https://codeload.github.com/NousResearch/hermes-agent/tar.gz/bf0203a794a07aac3ff764972ab9087baa4e4f4e",
+      "archive_sha256": "0dc2cca54657d162845a77f634e107c61c3fb0bd6c8505212aa2e200591b7cc9",
+      "source_sha256": {
+        "agent/__init__.py": "21cdce89e9ffdb847634bf498b087410cd191a1e375db43928735846fb7ddc86",
+        "agent/compression_marker.py": "3bee18dc944e95453a42035c2cf1001269974bca0086018176d346c73507c95e",
+        "agent/context_engine.py": "516a4961c59af4c1048dc523b83f135b1fd0089423775fbe3fc04ffdcdb45cbb",
+        "agent/file_safety.py": "90515fb80bcf85c5b153370071f3d85bd945d838e0423d29e11e951f95833f6f",
+        "agent/jiter_preload.py": "bb66461d6e52e54dd2368ad021304d74676824924c45df80f0a3e769c9e5fff3",
+        "agent/memory_provider.py": "ac81dcf489c698891f0edebfe26845a75c50d2bde77ec3be8d7938a85c79f1fc",
+        "agent/redact.py": "cea25df8139675b600eca448f70756bfa9ad22f537abf4f123d01bcbfc71e563"
+      }
+    },
+    {
+      "version": "v0.23.0",
+      "revision": "2bd378ed1b8d6bf2192cb26e0a55ff3091e6bd19",
+      "archive_url": "https://codeload.github.com/NousResearch/hermes-agent/tar.gz/2bd378ed1b8d6bf2192cb26e0a55ff3091e6bd19",
+      "archive_sha256": "0250ce85c071ebceefc5b9d1b58a7a52f71d2849a6ef1d0a70af07d108ef08dc",
+      "source_sha256": {
+        "agent/__init__.py": "21cdce89e9ffdb847634bf498b087410cd191a1e375db43928735846fb7ddc86",
+        "agent/compression_marker.py": "3bee18dc944e95453a42035c2cf1001269974bca0086018176d346c73507c95e",
+        "agent/context_engine.py": "516a4961c59af4c1048dc523b83f135b1fd0089423775fbe3fc04ffdcdb45cbb",
+        "agent/file_safety.py": "b70ea01cd62b2ffb40efe6c85c5bacfbfd779bcd4ef9129603aa800a3d284efa",
+        "agent/jiter_preload.py": "bb66461d6e52e54dd2368ad021304d74676824924c45df80f0a3e769c9e5fff3",
+        "agent/memory_provider.py": "d61d589916698f5334532e0dd05af9da3e6b949479f3a4d58c0073d16f82a837",
+        "agent/redact.py": "b853178208878eec7e9c392e6c5694d9cb171593386b70be887e1542032acc74",
+        "agent/redact_connstr.py": "d2074d23798951b7f5f1497e88cad67a8ca04841b3b5eca5388420e9e4b4c3cd",
+        "hermes_cli/__init__.py": "6a4ab05b8621ec1cd66a5abbe30fa32ed5bddddea95903036da01f0af1af94ce",
+        "hermes_cli/home_data_layout.py": "1246c1f97ef8e8ce427ac87964326875381ecbe637808129724a614a5fa27cdc"
+      }
+    }
+  ]
+}

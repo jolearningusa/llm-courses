@@ -81,3 +81,7 @@ Compared `agent/memory_provider.py`, `agent/context_engine.py` and the docs page
 - Skills: `skills_list` / `skill_view` / `skill_manage`, the skill roots and the gating frontmatter on the skills deck are unchanged; v0.23.0 adds `hermes curator lock <skill>` and more trusted vendor skill repos.
 
 No slide or lab change is needed; the tracker moves to v0.23.0.
+
+## AGT-1 bounded import / clone check — 2026-11-14 UTC
+
+The [executed import note](hermes_import_contracts_2026_11.md) checks the actual Hermes v0.22.5/v0.23.0 base classes in isolated source cohorts, provided adapter construction/clone isolation, and five loading controls. A narrow fix stops nested missing dependencies or removed symbols from silently selecting offline stand-ins; the old loader fails three controls. The existing kit passes 36/36 with loopback access. EN/ZH plugin-API slide 28 visualizes the boundary. Full installation, compaction, failed/retried sessions, profile/persistence behavior and OpenClaw remain unqualified, so AGT-1 remains open. PR #120 still supplies only AGT-2 teaching/protocol, not its measured benchmark.

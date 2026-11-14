@@ -134,6 +134,7 @@ llm-agentos-course/
 │   │   ├── multiagent_eval.py                 # Lab 9: one agent against an orchestrator with workers
 │   │   ├── plugins_eval.py                    # Lab 10: a shell-guard plugin on a simulated shell
 │   │   ├── mcp_eval.py                        # Lab 11: mount an MCP server, measure tokens, requests and defenses
+│   │   ├── hermes_import_eval.py              # Actual pinned-interface construction / clone probe
 │   │   ├── ports_eval.py                      # Lab 12: your Lab 3 engines through Hermes and OpenClaw contracts
 │   │   ├── obs_eval.py                        # Lab 13: trace, grade and compare two configurations; calibrate a judge
 │   │   ├── improve_eval.py                    # Lab 14: the improvement loop on DEV and HELDOUT tasks, with its lessons
@@ -212,6 +213,7 @@ llm-agentos-course/
 │   │   │   ├── __init__.py
 │   │   │   ├── test_session_handoff.py        # Restart, budget, receipt and incomplete-state controls
 │   │   │   ├── test_memory_repair.py          # Independent state/repair negative controls
+│   │   │   ├── test_hermes_imports.py          # Offline / broken optional-import controls
 │   │   │   ├── test_kit.py                    # The kit's own tests
 │   │   │   ├── test_lab00.py                  # Lab 0 autograder tests
 │   │   │   ├── test_lab01.py                  # Lab 1 autograder tests
@@ -256,6 +258,9 @@ llm-agentos-course/
 │       ├── run_harness2_demo.sh               # Quickstart for google-research/harness2
 │       └── sample_lesson_entry.jsonl          # Course schema for an evidence-backed lesson record
 └── references/
+    ├── hermes_import_contracts_2026_11.md
+    ├── hermes_import_sources_2026_11.json
+    ├── hermes_import_results_2026_11.json
     ├── session_handoff_controls_2026_11.md
     ├── session_handoff_cpu_2026_11.json
     ├── memory_repair_controls_2026_11.md

@@ -98,3 +98,7 @@ Labs 12, 5 and 14. New handouts use two-digit numbers (`lab00_...`) to keep the 
 ## Optional memory-repair state fixture
 
 `python3 memory_repair_eval.py` prints a reproducible six-arm trace. `python3 -m unittest tests.test_memory_repair -v` checks the independent state/negative controls. See the [protocol and recorded results](../../references/memory_repair_controls_2026_11.md). It is independent of the student Lab 4 store: multiple episodic claims can be active, retrieval is latest-active, source labels and verified repair values are supplied by the fixture. No model, network or real delivery is involved.
+
+## Hermes import evidence — 2026-11-14 UTC
+
+The [actual-interface import / clone check](../../references/hermes_import_contracts_2026_11.md) runs two pinned upstream source cohorts in isolated venvs and supplies five loading-boundary controls. Offline stand-ins apply only when `agent` is absent; a broken installed package must expose its original error. This does not complete the student compaction/memory TODOs or qualify a real failed/retried Hermes session.
