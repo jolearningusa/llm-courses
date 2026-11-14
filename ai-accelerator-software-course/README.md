@@ -4,6 +4,8 @@ Build and verify the software boundary between an AI framework and an accelerato
 
 **Functional-reference release, 2026-10-31; visual revision, 2026-11-01.** Eight decks in English and Simplified Chinese (80 slides per language), 32 original mechanism diagrams (64 localized editable SVGs), L0–L7 handouts and an executable standard-library virtual accelerator are supplied. Twenty-four regression tests, five scenarios, seeded state exercising and a bounded ownership explorer validate their stated functional scopes. Real-device, firmware-binary, driver, HIL and physical qualification remain target-dependent.
 
+[Metal shared-buffer pilot, 2026-11-14](references/metal_lifetime_2026_11.md): actual Apple M4 Max runtime execution, guards and known-good reuse; physical/driver/firmware qualification remains outside scope.
+
 [Research audit, 2026-11-07](references/research_audit_2026_11.md): checked readings, compatibility findings, prioritized updates and potential projects. Proposed experiments are distinguished from executed results.
 
 ## Start here
@@ -31,7 +33,7 @@ Students should be able to specify a bounded command ABI; trace host/device buff
 | [Interface contracts and command ABI](slides/01_interfaces.html) (10 slides) · [简体中文](slides/zh/01_interfaces.html) | Topic 1 |
 | [Queues, DMA and completion](slides/02_queues_dma.html) (10 slides) · [简体中文](slides/zh/02_queues_dma.html) | Topic 2 |
 | [Firmware lifecycle and recovery](slides/03_firmware_lifecycle.html) (10 slides) · [简体中文](slides/zh/03_firmware_lifecycle.html) | Topic 3 |
-| [Runtime and driver lifetimes](slides/04_runtime_lifetimes.html) (10 slides) · [简体中文](slides/zh/04_runtime_lifetimes.html) | Topic 4 |
+| [Runtime and driver lifetimes](slides/04_runtime_lifetimes.html) (10 slides) · [简体中文](slides/zh/04_runtime_lifetimes.html) | Topic 4; measured Metal ownership/cancel/drain pilot |
 | [Verification and AI-assisted changes](slides/05_verification.html) (10 slides) · [简体中文](slides/zh/05_verification.html) | Topic 5 |
 | [Target qualification, HIL and release](slides/06_qualification.html) (10 slides) · [简体中文](slides/zh/06_qualification.html) | Topic 6 |
 | [Capstone: one invariant, one decision](slides/07_capstone.html) (10 slides) · [简体中文](slides/zh/07_capstone.html) | Week 8 |
@@ -52,6 +54,16 @@ Protocol/correctness labs 45%, source/trace critiques 15%, capstone 40%. A minim
 ai-accelerator-software-course/
 ├── labs/
 │   ├── examples/
+│   │   ├── metal_lifetime/
+│   │   │   ├── build_environment.json
+│   │   │   ├── python-tests.log
+│   │   │   ├── run1.json
+│   │   │   ├── run1.log
+│   │   │   ├── run2.json
+│   │   │   ├── run2.log
+│   │   │   ├── run3.json
+│   │   │   ├── run3.log
+│   │   │   └── verification.json
 │   │   ├── functional_report.json
 │   │   ├── execution_coverage_report.json
 │   │   └── qualification_report.json
@@ -72,11 +84,15 @@ ai-accelerator-software-course/
 │   ├── AI_PROMPTS.md
 │   ├── README.md
 │   ├── TARGET_EVIDENCE.md
+│   ├── metal_lifetime.swift
+│   ├── metal_lifetime.metal
+│   ├── metal_lifetime_protocol.json
 │   ├── experiments.py
 │   ├── execution_coverage.py
 │   ├── qualification_matrix.py
 │   └── virtual_accelerator.py
 ├── references/
+│   ├── metal_lifetime_2026_11.md
 │   ├── bibliography_and_links.md
 │   ├── figure_sources.md
 │   ├── qualification_matrix_2026_11.md
