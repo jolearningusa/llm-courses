@@ -23,3 +23,7 @@ python3 experiments.py fuzz --seed 17 --steps 300
 Deliver seed/configuration, raw results, failure taxonomy and minimized test. Rejection counts alone do not measure useful coverage.
 
 Use [ABI](../ABI.md), [AI prompt boundaries](../AI_PROMPTS.md) and the [target evidence template](../TARGET_EVIDENCE.md). Keep simulated time, source findings and real measurements separate.
+
+## Optional real Metal runtime boundary — 2026-11-14 UTC
+
+The [executed Apple-Silicon pilot](../../references/metal_lifetime_2026_11.md) is separate from the default Python model: three fresh-process runs,24 actual GPU completions, independent output/tail checks, host lifetime guards and logical cancellation followed by drain and known-good reuse. Shared buffer pointers are not physical DMA addresses. This is a bounded runtime functional result; physical qualification, driver/firmware/reset, sanitizers and fault injection remain not-run. See the note for tool/target identity, raw evidence and commands; do not promote it to the default physical acceptance gate.

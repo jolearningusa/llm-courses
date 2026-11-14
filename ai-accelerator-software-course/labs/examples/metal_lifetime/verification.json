@@ -1,0 +1,26 @@
+{
+  "verified_utc": "2026-11-14",
+  "protocol_commit": "5732ad1",
+  "runner_commit": "b63ca6e",
+  "fresh_process_runs": 3,
+  "committed_commands": 24,
+  "completion_callbacks": 24,
+  "independently_verified_output_values": 2511,
+  "host_guard_rejections": 24,
+  "all_tail_checks_pass": true,
+  "all_known_good_before_and_after_pass": true,
+  "pending_gate_proved_before_drain": true,
+  "logical_cancel_is_gpu_abort": false,
+  "physical_qualification": "not_run",
+  "sanitizer": "not_run",
+  "fault_injection_reset": "not_run",
+  "baseline_sizes": [
+    1,
+    63,
+    64,
+    65,
+    257
+  ],
+  "source_identity_verified": true,
+  "note": "Trusted closed toy: Metal completion/status and shader counter plus independent Python oracle; not authenticated hostile-candidate coverage or physical qualification."
+}

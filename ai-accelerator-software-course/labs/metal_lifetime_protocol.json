@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "runs": [
+    1,
+    2,
+    3
+  ],
+  "baseline_sizes": [
+    1,
+    63,
+    64,
+    65,
+    257
+  ],
+  "reuse_size": 65,
+  "cancel_size": 65,
+  "recovery_size": 257,
+  "capacity_elements": 257,
+  "threadgroup_width": 64,
+  "dtype": "uint32",
+  "kernel": "out[i] = (input[i] XOR 0xA5A5A5A5) + i modulo2^32; atomic counter increments for each valid i; padded lanes guard i<n",
+  "input": "input[i]=17*i+19*run",
+  "selection": "all three fresh-process runs retained; every output and untouched tail checked against CPU oracle; fixed cases, no tuning",
+  "cancellation": "pre-submit cancel prevents commit; post-submit logical cancel suppresses publication but waits for real GPU completion before recycle",
+  "pending_control": "MTLSharedEvent initially0; command buffer waits for1; host rejects read/write/recycle/resubmit while pending, then signals1 and drains",
+  "guards": [
+    "count_zero",
+    "count_over_capacity",
+    "submit_after_pre_cancel",
+    "read_pending",
+    "write_pending",
+    "recycle_pending",
+    "resubmit_pending",
+    "publish_cancelled"
+  ],
+  "expected_per_run": {
+    "committed_command_buffers": 8,
+    "completion_callbacks": 8,
+    "guard_rejections": 8
+  },
+  "scope": "one Apple Silicon Metal shared-buffer runtime boundary; no physical DMA address mapping, kernel driver or firmware, fault injection/reset, sanitizer, sustained/thermal/power or portability claim"
+}

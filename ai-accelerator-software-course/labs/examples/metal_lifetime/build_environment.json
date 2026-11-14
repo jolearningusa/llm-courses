@@ -1,0 +1,93 @@
+{
+  "queries": [
+    {
+      "command": [
+        "xcrun",
+        "swift",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)\nTarget: arm64-apple-macosx27.0.0\n",
+      "stderr": "swift-driver version: 1.168.6 "
+    },
+    {
+      "command": [
+        "xcrun",
+        "--sdk",
+        "macosx",
+        "--show-sdk-path"
+      ],
+      "exit_code": 0,
+      "stdout": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.2.sdk\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "xcrun",
+        "--sdk",
+        "macosx",
+        "--show-sdk-version"
+      ],
+      "exit_code": 0,
+      "stdout": "27.2\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "xcrun",
+        "--find",
+        "swiftc"
+      ],
+      "exit_code": 0,
+      "stdout": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "xcodebuild",
+        "-version"
+      ],
+      "exit_code": 0,
+      "stdout": "Xcode 27.2\nBuild version 27B52\n",
+      "stderr": ""
+    }
+  ],
+  "selected_sdk_headers": [
+    {
+      "path": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.2.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLCommandBuffer.h",
+      "sha256": "d84dda866f07ffc37ce68e3c635177373cdefa419fc1f64c766442ed81966895",
+      "bytes": 19270
+    },
+    {
+      "path": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.2.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLBuffer.h",
+      "sha256": "896451ab6131610b757a560dac93d0b6983a839d9a3a1cfe7d7dbd73f556b7d3",
+      "bytes": 5788
+    },
+    {
+      "path": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.2.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLResource.h",
+      "sha256": "1c2fc6c7250205ef7089cbe7ffe004c7a774acb5e8bcb30791e942639e420a0d",
+      "bytes": 16922
+    },
+    {
+      "path": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.2.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLEvent.h",
+      "sha256": "c9edb00f4a1a94b6d023b6ce80c0c02137eabbfe2741ffa5f55f6216ed182087",
+      "bytes": 2900
+    }
+  ],
+  "swift_command": [
+    "xcrun",
+    "swiftc",
+    "-swift-version",
+    "6",
+    "-O",
+    "-module-cache-path",
+    "/private/tmp/acc3-swift-cache",
+    "ai-accelerator-software-course/labs/metal_lifetime.swift",
+    "-o",
+    "/private/tmp/acc3-metal-lifetime"
+  ],
+  "build_exit_code": 0,
+  "build_log": "",
+  "binary_sha256": "a67525f8e542758676bae958a2e6f589ad3f2e21af43ea19c161cd3b42b805e7",
+  "binary_bytes": 110128
+}

@@ -28,6 +28,10 @@ llm-courses/
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
 │   ├── reviews/
+│   │   ├── accelerator-metal-lifetime-pilot/
+│   │   │   ├── README.md
+│   │   │   ├── en.png
+│   │   │   └── zh.png
 │   │   ├── compute-distributed-resume-pilot/
 │   │   │   ├── README.md
 │   │   │   ├── en.png

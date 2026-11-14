@@ -23,3 +23,7 @@ python3 -m unittest discover -s tests -p test_virtual_accelerator.py -v
 Deliver an ownership table, a failing early-release patch or trace, one accepted legal edit and a cancellation/timeout decision. No driver/kernel memory ordering is proven.
 
 Use [ABI](../ABI.md), [AI prompt boundaries](../AI_PROMPTS.md) and the [target evidence template](../TARGET_EVIDENCE.md). Keep simulated time, source findings and real measurements separate.
+
+## Optional real Metal runtime boundary — 2026-11-14 UTC
+
+The [executed Apple-Silicon pilot](../../references/metal_lifetime_2026_11.md) is separate from the default Python model: three fresh-process runs,24 actual GPU completions, independent output/tail checks, host lifetime guards and logical cancellation followed by drain and known-good reuse. Shared buffer pointers are not physical DMA addresses. This is a bounded runtime functional result; physical qualification, driver/firmware/reset, sanitizers and fault injection remain not-run. See the note for tool/target identity, raw evidence and commands; do not promote it to the default physical acceptance gate.

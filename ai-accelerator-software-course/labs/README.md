@@ -35,3 +35,7 @@ Seeded state exercising is not coverage-guided fuzzing. The abstract explorer is
 The separate [L5 execution-evidence controls](handouts/lab05_state_exploration.md#execution-coverage-controls) use the same virtual worker to distinguish a legal run, no launch, invalid channels and observed failures. They add eight tests (32 total) and an executed reference report. They do not change `experiments.py`'s older functional gate or authenticate that report. GPU and Compute Sanitizer remain not-run.
 
 [L6's qualification matrix](handouts/lab06_qualification.md#executed-matrix-and-policy-controls) adds nine policy tests (41 total) and an actual bytecode-build/CPU-model report. It retains unavailable device rows as not-run. Fabricated device records are policy controls only; no target adapter or physical experiment is implemented.
+
+## Optional real Metal runtime boundary — 2026-11-14 UTC
+
+The [executed Apple-Silicon pilot](../references/metal_lifetime_2026_11.md) is separate from the default Python model: three fresh-process runs,24 actual GPU completions, independent output/tail checks, host lifetime guards and logical cancellation followed by drain and known-good reuse. Shared buffer pointers are not physical DMA addresses. This is a bounded runtime functional result; physical qualification, driver/firmware/reset, sanitizers and fault injection remain not-run. See the note for tool/target identity, raw evidence and commands; do not promote it to the default physical acceptance gate.
