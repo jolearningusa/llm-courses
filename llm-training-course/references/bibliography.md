@@ -186,3 +186,9 @@ Deck 20 / L7 optional supplement: [verl at 2b4ed6826a39205838d0ca004bdd942334dbe
 ## Fresh CPU lock — verified 2026-11-14 UTC
 
 [PyTorch previous versions / 2.9.1 OSX](https://pytorch.org/get-started/previous-versions/#v291), [PyTorch 2.9 reproducibility](https://docs.pytorch.org/docs/2.9/notes/randomness.html), [NumPy 2.3 RNG compatibility](https://numpy.org/doc/2.3/reference/random/compatibility.html), [pip hash-checking installs](https://pip.pypa.io/en/stable/topics/secure-installs/). The [execution note](tested_cpu_lock_2026_11.md) records the fresh selected platform cohort, seven acceptance controls and 99 existing passing tests. Capstone slide 9 is an original course evidence diagram, with no upstream artwork copied.
+
+## Activation-space exploration — verified 2026-11-14 UTC
+
+Source ID: arXiv:2610.27012 (version 1).
+
+Zeng et al., [Exploration via Activation-Space Steering for Reinforcement Learning with Verifiable Rewards, 2610.27012v1](https://arxiv.org/html/2610.27012v1), §§3, 4.4–4.7, Appendices B–C. [Local reading and experiment](steering_ablation_2026_11.md) records method adaptations, fixed selection, poor held-out performance, replay/time/memory boundaries and all nine runs. Deck28 slide9 is an original course diagram, not copied artwork or a reproduced paper benchmark.
