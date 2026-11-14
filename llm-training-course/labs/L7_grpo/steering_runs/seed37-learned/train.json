@@ -1,0 +1,2461 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "torch": "2.9.1",
+  "numpy": "2.3.5",
+  "protocol_sha256": "249e7ea7f245b069cefca0936eb44511100265cf55a183fa88d853560a3fd23e",
+  "runner_sha256": "3b469e4c25490bd10d26a454e7c0868b9b4bb0c1129d56d6130c08d34c549d2c",
+  "source_revision": "145d9318fde598914daf7e431c467ea1b0a02249",
+  "source_sha256": {
+    "policy.py": "a11a71852335d2ed00edc32ffe6779012b43c2aec7260d07fe0a0b0370be773f",
+    "grpo.py": "2260a4eee07f3464b5bf9066098071288fb606ed19591d1adf154bf8ef0465f4",
+    "task.py": "6fc77c226f36ea788b77c79b64b75fe643883c02df20ce2561e5cb1058e80c92"
+  },
+  "seed": 37,
+  "condition": "learned",
+  "base_checkpoint_sha256": "1e3c539dcf7ef48f21542e1ba6e56b91ec59f93d85067e8787a7006889e82aa3",
+  "sft_seconds": 0.33463537506759167,
+  "trace": [
+    {
+      "step": 0,
+      "sampled_slots": 384,
+      "valid_tokens": 207,
+      "positive_rewards": 16,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          30,
+          33
+        ],
+        [
+          34,
+          31
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": null,
+      "rollout_steered_responses": 0,
+      "importance_weight_range": [
+        1.0,
+        1.0
+      ],
+      "losses": [
+        0.018710032105445862,
+        0.011243387125432491
+      ],
+      "rollout_tokens_sha256": "afcc6c1fb65df3a04e4a0596b7f4f89c4b4744075b3992c9511cc664e8f0f790"
+    },
+    {
+      "step": 1,
+      "sampled_slots": 384,
+      "valid_tokens": 172,
+      "positive_rewards": 16,
+      "mixed_groups": 2,
+      "paired_trajectory_indices": [
+        [
+          1,
+          0
+        ],
+        [
+          15,
+          16
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": null,
+      "rollout_steered_responses": 0,
+      "importance_weight_range": [
+        1.0,
+        1.0
+      ],
+      "losses": [
+        -0.02610884979367256,
+        -0.03198539838194847
+      ],
+      "rollout_tokens_sha256": "8026ee3018f32162ec0dea104b98da4dde28a1a98a5f90c4587f1ff7b839b89f"
+    },
+    {
+      "step": 2,
+      "sampled_slots": 384,
+      "valid_tokens": 199,
+      "positive_rewards": 24,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": null,
+      "rollout_steered_responses": 0,
+      "importance_weight_range": [
+        1.0,
+        1.0
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "9cf6b6e46e7d08e5c50dc3766247c81e27fd590bec3dd7e17649417fea66da3f"
+    },
+    {
+      "step": 3,
+      "sampled_slots": 384,
+      "valid_tokens": 189,
+      "positive_rewards": 15,
+      "mixed_groups": 3,
+      "paired_trajectory_indices": [
+        [
+          11,
+          8
+        ],
+        [
+          17,
+          15
+        ],
+        [
+          21,
+          22
+        ]
+      ],
+      "replayed_trajectories": 6,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": true,
+      "bank_sha256": "5220de49b44273f422ecba88e3de4913de80be6e88ecb4404174d1e77600b55c",
+      "rollout_steered_responses": 0,
+      "importance_weight_range": [
+        1.0,
+        1.0
+      ],
+      "losses": [
+        -0.032400600612163544,
+        -0.043296217918395996
+      ],
+      "rollout_tokens_sha256": "96253a5fc8626da7a60c9256ff875e4973cedb19c80804097aa05fe96c0c0843"
+    },
+    {
+      "step": 4,
+      "sampled_slots": 384,
+      "valid_tokens": 214,
+      "positive_rewards": 12,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "5220de49b44273f422ecba88e3de4913de80be6e88ecb4404174d1e77600b55c",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.9152222871780396,
+        1.3787370920181274
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "8fd11def43160df0003ef781467f13960d97a2516927519f5024e8c21353622e"
+    },
+    {
+      "step": 5,
+      "sampled_slots": 384,
+      "valid_tokens": 221,
+      "positive_rewards": 11,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          26,
+          24
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "5220de49b44273f422ecba88e3de4913de80be6e88ecb4404174d1e77600b55c",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.8077505826950073,
+        1.2348930835723877
+      ],
+      "losses": [
+        0.024079546332359314,
+        0.017962777987122536
+      ],
+      "rollout_tokens_sha256": "20e519ffd163bf6415704bf3751c3008431cbd24dd765c7f8d56e2fc866533e2"
+    },
+    {
+      "step": 6,
+      "sampled_slots": 384,
+      "valid_tokens": 185,
+      "positive_rewards": 11,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          47,
+          46
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "5220de49b44273f422ecba88e3de4913de80be6e88ecb4404174d1e77600b55c",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.8850880265235901,
+        1.2916680574417114
+      ],
+      "losses": [
+        -0.004323821980506182,
+        -0.006568839307874441
+      ],
+      "rollout_tokens_sha256": "dc0ac602632995b46adb8fc0043a56197d8ffb74ce00fffea85841bcc7196c86"
+    },
+    {
+      "step": 7,
+      "sampled_slots": 384,
+      "valid_tokens": 195,
+      "positive_rewards": 11,
+      "mixed_groups": 3,
+      "paired_trajectory_indices": [
+        [
+          16,
+          13
+        ],
+        [
+          30,
+          32
+        ],
+        [
+          39,
+          38
+        ]
+      ],
+      "replayed_trajectories": 6,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": true,
+      "bank_sha256": "8579fdc122f5ce1e42f1305aa05226171902f4fb21b55c0bf5f0f107795cb1ee",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7323939800262451,
+        1.125999927520752
+      ],
+      "losses": [
+        0.011530649848282337,
+        0.0012571762781590223
+      ],
+      "rollout_tokens_sha256": "86958df719dd2cc0911d2f375d9252f5fb2e82b2cea1794ebd7e77b5218bfe31"
+    },
+    {
+      "step": 8,
+      "sampled_slots": 384,
+      "valid_tokens": 171,
+      "positive_rewards": 12,
+      "mixed_groups": 2,
+      "paired_trajectory_indices": [
+        [
+          10,
+          8
+        ],
+        [
+          12,
+          14
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "8579fdc122f5ce1e42f1305aa05226171902f4fb21b55c0bf5f0f107795cb1ee",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7800369262695312,
+        1.127630352973938
+      ],
+      "losses": [
+        -0.007578433491289616,
+        -0.019255472347140312
+      ],
+      "rollout_tokens_sha256": "c0e94fb812eec17de7af8ad6eb5417852f9ab61ec6ed99d44f3fb60c0a69d3bc"
+    },
+    {
+      "step": 9,
+      "sampled_slots": 384,
+      "valid_tokens": 184,
+      "positive_rewards": 22,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          23,
+          18
+        ],
+        [
+          19,
+          21
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "8579fdc122f5ce1e42f1305aa05226171902f4fb21b55c0bf5f0f107795cb1ee",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7781504392623901,
+        1.2945741415023804
+      ],
+      "losses": [
+        0.0004509897844400257,
+        -0.004431355744600296
+      ],
+      "rollout_tokens_sha256": "d39ea631e0423f5c8387f2167789dc47f1b02b6b3f53ad380bfb43c8d631078a"
+    },
+    {
+      "step": 10,
+      "sampled_slots": 384,
+      "valid_tokens": 175,
+      "positive_rewards": 23,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          19,
+          22
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "8579fdc122f5ce1e42f1305aa05226171902f4fb21b55c0bf5f0f107795cb1ee",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.8677085638046265,
+        1.30569326877594
+      ],
+      "losses": [
+        0.006558583118021488,
+        0.0026275429408997297
+      ],
+      "rollout_tokens_sha256": "5b7ec1cc83feae3c398a349f90294701cf375b957d277d053735f3ca87fdf4be"
+    },
+    {
+      "step": 11,
+      "sampled_slots": 384,
+      "valid_tokens": 158,
+      "positive_rewards": 17,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          33,
+          31
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "8579fdc122f5ce1e42f1305aa05226171902f4fb21b55c0bf5f0f107795cb1ee",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.906613290309906,
+        1.1935161352157593
+      ],
+      "losses": [
+        -0.0027444413863122463,
+        -0.00830129161477089
+      ],
+      "rollout_tokens_sha256": "2dc09de15c3169681f7b29bc3e6a517d51a786be9332b4764280b5ab221e7d66"
+    },
+    {
+      "step": 12,
+      "sampled_slots": 384,
+      "valid_tokens": 160,
+      "positive_rewards": 23,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          18,
+          19
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "8579fdc122f5ce1e42f1305aa05226171902f4fb21b55c0bf5f0f107795cb1ee",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.8947385549545288,
+        1.0954198837280273
+      ],
+      "losses": [
+        -0.00509888119995594,
+        -0.007490219082683325
+      ],
+      "rollout_tokens_sha256": "a123b92efd11a002a6e90d6e9a6030045ff3125584a79aaceea26acac708993d"
+    },
+    {
+      "step": 13,
+      "sampled_slots": 384,
+      "valid_tokens": 194,
+      "positive_rewards": 5,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          43,
+          44
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "8579fdc122f5ce1e42f1305aa05226171902f4fb21b55c0bf5f0f107795cb1ee",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.8156980276107788,
+        1.1412297487258911
+      ],
+      "losses": [
+        -0.0005879438831470907,
+        -0.002413778565824032
+      ],
+      "rollout_tokens_sha256": "a821c703fb2d33aa8ed87f96d2228aa3ed384d65d6949a06e0c4c138b5e9cc3e"
+    },
+    {
+      "step": 14,
+      "sampled_slots": 384,
+      "valid_tokens": 189,
+      "positive_rewards": 24,
+      "mixed_groups": 3,
+      "paired_trajectory_indices": [
+        [
+          5,
+          2
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          31,
+          32
+        ],
+        [
+          30,
+          33
+        ],
+        [
+          35,
+          34
+        ],
+        [
+          38,
+          39
+        ]
+      ],
+      "replayed_trajectories": 12,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": true,
+      "bank_sha256": "1fd322c19b331432f31ef12dfeebc1f1a6f26cefbc57d622c1c5c04b3f572ff1",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.8285266160964966,
+        1.3209741115570068
+      ],
+      "losses": [
+        0.017186736688017845,
+        0.003661386901512742
+      ],
+      "rollout_tokens_sha256": "33901cc4d00396eafab5f6ecf8796c2ad6f2a2b04c04dcb9ed3575fee91cb771"
+    },
+    {
+      "step": 15,
+      "sampled_slots": 384,
+      "valid_tokens": 179,
+      "positive_rewards": 11,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          22,
+          20
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "1fd322c19b331432f31ef12dfeebc1f1a6f26cefbc57d622c1c5c04b3f572ff1",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7811440825462341,
+        1.2578926086425781
+      ],
+      "losses": [
+        -0.012035665102303028,
+        -0.014638946391642094
+      ],
+      "rollout_tokens_sha256": "34fbe221af03c3413c0e71fbf7b51d7f5bb6daf74e3d2b4796b55c8b0cbf54d4"
+    },
+    {
+      "step": 16,
+      "sampled_slots": 384,
+      "valid_tokens": 153,
+      "positive_rewards": 14,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          38,
+          36
+        ],
+        [
+          41,
+          40
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "1fd322c19b331432f31ef12dfeebc1f1a6f26cefbc57d622c1c5c04b3f572ff1",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.92494136095047,
+        1.2756433486938477
+      ],
+      "losses": [
+        -0.032925672829151154,
+        -0.036210715770721436
+      ],
+      "rollout_tokens_sha256": "1a182e635bbf9659926c530337209e09c7b54235bc93551a8914b4ef73f1698c"
+    },
+    {
+      "step": 17,
+      "sampled_slots": 384,
+      "valid_tokens": 183,
+      "positive_rewards": 11,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          32,
+          34
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "1fd322c19b331432f31ef12dfeebc1f1a6f26cefbc57d622c1c5c04b3f572ff1",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.8389426469802856,
+        1.144457459449768
+      ],
+      "losses": [
+        0.0016765967011451721,
+        -0.0007301795412786305
+      ],
+      "rollout_tokens_sha256": "f785c16b556eb15f0e910200e7abcabd1beb12fdbc3d0c379f5018e0db563b41"
+    },
+    {
+      "step": 18,
+      "sampled_slots": 384,
+      "valid_tokens": 183,
+      "positive_rewards": 19,
+      "mixed_groups": 3,
+      "paired_trajectory_indices": [
+        [
+          17,
+          12
+        ],
+        [
+          13,
+          16
+        ],
+        [
+          14,
+          15
+        ],
+        [
+          33,
+          34
+        ],
+        [
+          42,
+          45
+        ]
+      ],
+      "replayed_trajectories": 10,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": true,
+      "bank_sha256": "9199773474fbf06804a466d1a3638e76311b27a42e86c2597cb3bfe7d6409efd",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.8489617705345154,
+        1.1891369819641113
+      ],
+      "losses": [
+        0.010444486513733864,
+        0.001394755905494094
+      ],
+      "rollout_tokens_sha256": "96ef82cb96eada35b78638e482ef228c565dcf1d6273b6bd80444b917ccc8112"
+    },
+    {
+      "step": 19,
+      "sampled_slots": 384,
+      "valid_tokens": 168,
+      "positive_rewards": 18,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "9199773474fbf06804a466d1a3638e76311b27a42e86c2597cb3bfe7d6409efd",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.788672149181366,
+        1.2263603210449219
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "cc2c14e9985fe08c21236bb9871ef41661f723503235c7a836b2b03d670a8f70"
+    },
+    {
+      "step": 20,
+      "sampled_slots": 384,
+      "valid_tokens": 163,
+      "positive_rewards": 6,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "9199773474fbf06804a466d1a3638e76311b27a42e86c2597cb3bfe7d6409efd",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7287077307701111,
+        1.2961316108703613
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "33b7ae462e7004087e0ca2029131babf283da91161c45db750c3b8be9491e2b5"
+    },
+    {
+      "step": 21,
+      "sampled_slots": 384,
+      "valid_tokens": 206,
+      "positive_rewards": 3,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          22,
+          18
+        ],
+        [
+          20,
+          23
+        ],
+        [
+          21,
+          19
+        ]
+      ],
+      "replayed_trajectories": 6,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "9199773474fbf06804a466d1a3638e76311b27a42e86c2597cb3bfe7d6409efd",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7020938396453857,
+        1.205663800239563
+      ],
+      "losses": [
+        0.017815683037042618,
+        0.013327956199645996
+      ],
+      "rollout_tokens_sha256": "e4f7d168db75c317cda2b1dda86c67c331c8d3423428c0f77f69a168885ea6a4"
+    },
+    {
+      "step": 22,
+      "sampled_slots": 384,
+      "valid_tokens": 180,
+      "positive_rewards": 6,
+      "mixed_groups": 2,
+      "paired_trajectory_indices": [
+        [
+          2,
+          0
+        ],
+        [
+          40,
+          39
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": true,
+      "bank_sha256": "14bbbaf9e25bbda75aefbe732b2904c31cee9817c57a95fe7e661bf5e1c27907",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7863072156906128,
+        1.1561460494995117
+      ],
+      "losses": [
+        0.0332266166806221,
+        0.023719362914562225
+      ],
+      "rollout_tokens_sha256": "6a2863a31d94d88b35ef7a60c9c8715eda666c3310724f24130a8bc9712d1f56"
+    },
+    {
+      "step": 23,
+      "sampled_slots": 384,
+      "valid_tokens": 144,
+      "positive_rewards": 8,
+      "mixed_groups": 3,
+      "paired_trajectory_indices": [
+        [
+          15,
+          13
+        ],
+        [
+          41,
+          38
+        ],
+        [
+          39,
+          36
+        ],
+        [
+          47,
+          46
+        ]
+      ],
+      "replayed_trajectories": 8,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "14bbbaf9e25bbda75aefbe732b2904c31cee9817c57a95fe7e661bf5e1c27907",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7479512691497803,
+        1.1611573696136475
+      ],
+      "losses": [
+        -0.01725763827562332,
+        -0.03550352528691292
+      ],
+      "rollout_tokens_sha256": "c894f61be14a0f491bd43155e3443e8b509e6f59ed141608728457fd8ea54bc7"
+    },
+    {
+      "step": 24,
+      "sampled_slots": 384,
+      "valid_tokens": 167,
+      "positive_rewards": 23,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          41,
+          36
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": true,
+      "bank_sha256": "9ad98c2ba1b1a1d612c88e1c9957570ca7549e7f3ec386dd9a3015a3fdaf6c72",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.8181431889533997,
+        1.159560203552246
+      ],
+      "losses": [
+        0.009743829257786274,
+        0.007237154524773359
+      ],
+      "rollout_tokens_sha256": "ed055ff2bd48b6b5073432db101b8a694f906e59200567beb4eec9f3e46fc33a"
+    },
+    {
+      "step": 25,
+      "sampled_slots": 384,
+      "valid_tokens": 189,
+      "positive_rewards": 9,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          5,
+          3
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          0,
+          4
+        ]
+      ],
+      "replayed_trajectories": 6,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "9ad98c2ba1b1a1d612c88e1c9957570ca7549e7f3ec386dd9a3015a3fdaf6c72",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.8410272598266602,
+        1.1301850080490112
+      ],
+      "losses": [
+        -0.001065337099134922,
+        -0.0037377120461314917
+      ],
+      "rollout_tokens_sha256": "6afb309cad2ed5f0d6fb3677cc9b21d4f3a5bb1fafbfefe2d278972e6adbf3b4"
+    },
+    {
+      "step": 26,
+      "sampled_slots": 384,
+      "valid_tokens": 159,
+      "positive_rewards": 0,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "9ad98c2ba1b1a1d612c88e1c9957570ca7549e7f3ec386dd9a3015a3fdaf6c72",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.8169630765914917,
+        1.3089590072631836
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "adf12fbdd5d64d6b6cf6f22689fd43dc9a7d017abf3cb78d99ba0e68f7e48be6"
+    },
+    {
+      "step": 27,
+      "sampled_slots": 384,
+      "valid_tokens": 161,
+      "positive_rewards": 12,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "9ad98c2ba1b1a1d612c88e1c9957570ca7549e7f3ec386dd9a3015a3fdaf6c72",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7761905193328857,
+        1.171332597732544
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "77acd7c2ee9b8c78d8c4b8308b2989dc5802c52df59f6dd4399a60ce03406f5f"
+    },
+    {
+      "step": 28,
+      "sampled_slots": 384,
+      "valid_tokens": 195,
+      "positive_rewards": 18,
+      "mixed_groups": 2,
+      "paired_trajectory_indices": [
+        [
+          2,
+          3
+        ],
+        [
+          20,
+          19
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "9ad98c2ba1b1a1d612c88e1c9957570ca7549e7f3ec386dd9a3015a3fdaf6c72",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7435781955718994,
+        1.1841446161270142
+      ],
+      "losses": [
+        -0.007861826568841934,
+        -0.011836196295917034
+      ],
+      "rollout_tokens_sha256": "cb9f2e78f9eee479342b48e6bb9ba811d54a8ec091399baa66bfd59d14837b6a"
+    },
+    {
+      "step": 29,
+      "sampled_slots": 384,
+      "valid_tokens": 170,
+      "positive_rewards": 21,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          42,
+          43
+        ],
+        [
+          46,
+          44
+        ],
+        [
+          47,
+          45
+        ]
+      ],
+      "replayed_trajectories": 6,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": true,
+      "bank_sha256": "d2a0d32bdd8e231dde60a736f61cf4f940f9304682ad86fbfb9f9a40055e6603",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.8741899728775024,
+        1.1922906637191772
+      ],
+      "losses": [
+        0.01722439005970955,
+        0.01249417383223772
+      ],
+      "rollout_tokens_sha256": "9dba4e0fec96ae3c578692f8532cea13fd5e64e4bc2a8fca6d8dd4fcc3da4a5e"
+    },
+    {
+      "step": 30,
+      "sampled_slots": 384,
+      "valid_tokens": 159,
+      "positive_rewards": 22,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          17,
+          15
+        ],
+        [
+          16,
+          14
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "d2a0d32bdd8e231dde60a736f61cf4f940f9304682ad86fbfb9f9a40055e6603",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7108086347579956,
+        1.2598901987075806
+      ],
+      "losses": [
+        0.010511419735848904,
+        0.004833933897316456
+      ],
+      "rollout_tokens_sha256": "441dd5ec91a9b4b09205b1e2a2e4e5d64be0ae1a4b922258bee2f2eab77ec925"
+    },
+    {
+      "step": 31,
+      "sampled_slots": 384,
+      "valid_tokens": 171,
+      "positive_rewards": 0,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "d2a0d32bdd8e231dde60a736f61cf4f940f9304682ad86fbfb9f9a40055e6603",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7199837565422058,
+        1.3809616565704346
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "250a274fc8e667273b51a37fdcdfe5ebaa9c2ff7676ff8c1326647d04af80354"
+    },
+    {
+      "step": 32,
+      "sampled_slots": 384,
+      "valid_tokens": 205,
+      "positive_rewards": 12,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "d2a0d32bdd8e231dde60a736f61cf4f940f9304682ad86fbfb9f9a40055e6603",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7881256341934204,
+        1.2949304580688477
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "39e3c46df7fa0fce614e9588bcce199d6439fc91126bfba2114d181401d51bd7"
+    },
+    {
+      "step": 33,
+      "sampled_slots": 384,
+      "valid_tokens": 197,
+      "positive_rewards": 24,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "d2a0d32bdd8e231dde60a736f61cf4f940f9304682ad86fbfb9f9a40055e6603",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7190876603126526,
+        1.3592076301574707
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "1041438c29034787e238357ad9fbee4190f4d235a9e54e1966c42e66e95975ca"
+    },
+    {
+      "step": 34,
+      "sampled_slots": 384,
+      "valid_tokens": 167,
+      "positive_rewards": 14,
+      "mixed_groups": 3,
+      "paired_trajectory_indices": [
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          22,
+          20
+        ],
+        [
+          30,
+          32
+        ]
+      ],
+      "replayed_trajectories": 8,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": true,
+      "bank_sha256": "85b355d8f3be3b168bb6cacf620419fc6606fee4731aa54d667fb7da6254da48",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7658133506774902,
+        1.3981817960739136
+      ],
+      "losses": [
+        0.013129234313964844,
+        0.004142371006309986
+      ],
+      "rollout_tokens_sha256": "5b99d738707eac94c2f80f8f32e571b87d5d4501a7fdb6f1f941b38f1f25d6ed"
+    },
+    {
+      "step": 35,
+      "sampled_slots": 384,
+      "valid_tokens": 169,
+      "positive_rewards": 12,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "85b355d8f3be3b168bb6cacf620419fc6606fee4731aa54d667fb7da6254da48",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7389261722564697,
+        1.293588638305664
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "c5acd932809e1a7f8a91f3548f4a562f5164f416521a0d53b8b5981f63fe4d4d"
+    },
+    {
+      "step": 36,
+      "sampled_slots": 384,
+      "valid_tokens": 147,
+      "positive_rewards": 17,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          44,
+          42
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "85b355d8f3be3b168bb6cacf620419fc6606fee4731aa54d667fb7da6254da48",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7912411689758301,
+        1.4566702842712402
+      ],
+      "losses": [
+        -0.0169343501329422,
+        -0.02024184912443161
+      ],
+      "rollout_tokens_sha256": "35ad80ff96559ea64b04301bc7465037e117ed16d594c4ca45cef95dd0044fbf"
+    },
+    {
+      "step": 37,
+      "sampled_slots": 384,
+      "valid_tokens": 171,
+      "positive_rewards": 22,
+      "mixed_groups": 2,
+      "paired_trajectory_indices": [
+        [
+          5,
+          0
+        ],
+        [
+          39,
+          38
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "85b355d8f3be3b168bb6cacf620419fc6606fee4731aa54d667fb7da6254da48",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7584728598594666,
+        1.2797658443450928
+      ],
+      "losses": [
+        0.0009073709370568395,
+        -0.006713114213198423
+      ],
+      "rollout_tokens_sha256": "3ba8fe857de81e860589b3083ae288b5dc677fa2b9040fa3da749ff0313f89b2"
+    },
+    {
+      "step": 38,
+      "sampled_slots": 384,
+      "valid_tokens": 159,
+      "positive_rewards": 25,
+      "mixed_groups": 2,
+      "paired_trajectory_indices": [
+        [
+          16,
+          12
+        ],
+        [
+          47,
+          43
+        ],
+        [
+          46,
+          44
+        ]
+      ],
+      "replayed_trajectories": 6,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "85b355d8f3be3b168bb6cacf620419fc6606fee4731aa54d667fb7da6254da48",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7086551785469055,
+        1.4056822061538696
+      ],
+      "losses": [
+        -0.017844371497631073,
+        -0.02957569807767868
+      ],
+      "rollout_tokens_sha256": "9d780e2a55fccca9bb8029d7557125a76c089ec25d8fa43b5f1f79edbaf58960"
+    },
+    {
+      "step": 39,
+      "sampled_slots": 384,
+      "valid_tokens": 185,
+      "positive_rewards": 5,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          16,
+          13
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "85b355d8f3be3b168bb6cacf620419fc6606fee4731aa54d667fb7da6254da48",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7754080295562744,
+        1.3766894340515137
+      ],
+      "losses": [
+        0.019748004153370857,
+        0.01262248121201992
+      ],
+      "rollout_tokens_sha256": "569a3827916cf151100051b7c05059570540be4f911e8f9922da888cbf474d54"
+    },
+    {
+      "step": 40,
+      "sampled_slots": 384,
+      "valid_tokens": 156,
+      "positive_rewards": 6,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "85b355d8f3be3b168bb6cacf620419fc6606fee4731aa54d667fb7da6254da48",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7470332980155945,
+        1.82308030128479
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "b36dfe2362bf16a6dcf3fc0a804ad3dcfd338c127719d156d0b23f36fb88ba59"
+    },
+    {
+      "step": 41,
+      "sampled_slots": 384,
+      "valid_tokens": 178,
+      "positive_rewards": 6,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "85b355d8f3be3b168bb6cacf620419fc6606fee4731aa54d667fb7da6254da48",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.6191375255584717,
+        1.4308934211730957
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "b023a184274f227a326d955048d21bef356708e8f6229819adce9b536db99f7e"
+    },
+    {
+      "step": 42,
+      "sampled_slots": 384,
+      "valid_tokens": 170,
+      "positive_rewards": 8,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          19,
+          21
+        ],
+        [
+          23,
+          22
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": true,
+      "bank_sha256": "a9615ce24668a41612c1a2748e814bee6234955a747bccb516fb1aa9955882d3",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7076650857925415,
+        1.3614592552185059
+      ],
+      "losses": [
+        -0.0076882378198206425,
+        -0.010186861269176006
+      ],
+      "rollout_tokens_sha256": "06444576dd0f3680c3079dd62a45126446ea8b6d24fcff7cdc2fb276b3946e5d"
+    },
+    {
+      "step": 43,
+      "sampled_slots": 384,
+      "valid_tokens": 161,
+      "positive_rewards": 12,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "a9615ce24668a41612c1a2748e814bee6234955a747bccb516fb1aa9955882d3",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7618780136108398,
+        1.2548575401306152
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "63a7fc8f4551dffc1d9117b227ea1b565cd99c91e070280ed685de39c62dc3bd"
+    },
+    {
+      "step": 44,
+      "sampled_slots": 384,
+      "valid_tokens": 150,
+      "positive_rewards": 12,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "a9615ce24668a41612c1a2748e814bee6234955a747bccb516fb1aa9955882d3",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.702195405960083,
+        1.3255411386489868
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "b47fbf9eec651f0786c6b01913212f3efa687d6cfe3ba84c6769b352b89df81e"
+    },
+    {
+      "step": 45,
+      "sampled_slots": 384,
+      "valid_tokens": 147,
+      "positive_rewards": 22,
+      "mixed_groups": 2,
+      "paired_trajectory_indices": [
+        [
+          9,
+          7
+        ],
+        [
+          20,
+          23
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "a9615ce24668a41612c1a2748e814bee6234955a747bccb516fb1aa9955882d3",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.6214911937713623,
+        1.3437368869781494
+      ],
+      "losses": [
+        -0.004534524399787188,
+        -0.011416120454668999
+      ],
+      "rollout_tokens_sha256": "e946e67d16ba1b815a17a0830a90c9b73453258d09ddaedf458bdb7e5f2eceb1"
+    },
+    {
+      "step": 46,
+      "sampled_slots": 384,
+      "valid_tokens": 177,
+      "positive_rewards": 22,
+      "mixed_groups": 2,
+      "paired_trajectory_indices": [
+        [
+          22,
+          18
+        ],
+        [
+          41,
+          38
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "a9615ce24668a41612c1a2748e814bee6234955a747bccb516fb1aa9955882d3",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7195976972579956,
+        1.2805030345916748
+      ],
+      "losses": [
+        -0.018811389803886414,
+        -0.02494719810783863
+      ],
+      "rollout_tokens_sha256": "faeaefdad4ee49a01c162a5ce66d2b46c2855c2d8b48f8c28108f5229f37a170"
+    },
+    {
+      "step": 47,
+      "sampled_slots": 384,
+      "valid_tokens": 153,
+      "positive_rewards": 30,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "a9615ce24668a41612c1a2748e814bee6234955a747bccb516fb1aa9955882d3",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7906932830810547,
+        1.5261399745941162
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "7bc96b8500f28e56fa2153677cba8f28a6b9e1f3af028eb28d8116fac1e37529"
+    },
+    {
+      "step": 48,
+      "sampled_slots": 384,
+      "valid_tokens": 172,
+      "positive_rewards": 22,
+      "mixed_groups": 4,
+      "paired_trajectory_indices": [
+        [
+          2,
+          0
+        ],
+        [
+          11,
+          8
+        ],
+        [
+          23,
+          19
+        ],
+        [
+          46,
+          42
+        ]
+      ],
+      "replayed_trajectories": 8,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": true,
+      "bank_sha256": "a0cfbf748f3f8dda333288d5d10b4a1e8136d5612391387adb473a5bce7b736b",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7596352696418762,
+        1.4614325761795044
+      ],
+      "losses": [
+        -0.0022767698392271996,
+        -0.014751201495528221
+      ],
+      "rollout_tokens_sha256": "48828c4bb452739c8ced3981059e021654bb38a053990c058ebb790daaa8dc77"
+    },
+    {
+      "step": 49,
+      "sampled_slots": 384,
+      "valid_tokens": 177,
+      "positive_rewards": 16,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "a0cfbf748f3f8dda333288d5d10b4a1e8136d5612391387adb473a5bce7b736b",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7361139059066772,
+        1.4710973501205444
+      ],
+      "losses": [
+        -0.017416201531887054,
+        -0.02049606665968895
+      ],
+      "rollout_tokens_sha256": "47b96ca961356ca89645bdfa55823e7c79d54a14bdc8c84c0078a2912cb1d24e"
+    },
+    {
+      "step": 50,
+      "sampled_slots": 384,
+      "valid_tokens": 168,
+      "positive_rewards": 16,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          38,
+          40
+        ],
+        [
+          41,
+          36
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "a0cfbf748f3f8dda333288d5d10b4a1e8136d5612391387adb473a5bce7b736b",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.6673447489738464,
+        1.1237987279891968
+      ],
+      "losses": [
+        0.007372577209025621,
+        0.001966932788491249
+      ],
+      "rollout_tokens_sha256": "08deaa324234ba5252b657d1e412ddebf8f4d5ecc46b6b3bb0c8c6839a199cb5"
+    },
+    {
+      "step": 51,
+      "sampled_slots": 384,
+      "valid_tokens": 157,
+      "positive_rewards": 12,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "a0cfbf748f3f8dda333288d5d10b4a1e8136d5612391387adb473a5bce7b736b",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7160886526107788,
+        1.5237418413162231
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "beb14a8f4615147c31912f3eb3660f12e84938a28a101bd333ab3834c6625856"
+    },
+    {
+      "step": 52,
+      "sampled_slots": 384,
+      "valid_tokens": 178,
+      "positive_rewards": 23,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          24,
+          27
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "a0cfbf748f3f8dda333288d5d10b4a1e8136d5612391387adb473a5bce7b736b",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.6645141839981079,
+        1.41725754737854
+      ],
+      "losses": [
+        -0.002556026680395007,
+        -0.00602488499134779
+      ],
+      "rollout_tokens_sha256": "7ad5c92b1b00ab27a866225924fbab98ef2c03d4cdf41a50918e6631b6cfa393"
+    },
+    {
+      "step": 53,
+      "sampled_slots": 384,
+      "valid_tokens": 156,
+      "positive_rewards": 5,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          46,
+          43
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "a0cfbf748f3f8dda333288d5d10b4a1e8136d5612391387adb473a5bce7b736b",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7243026494979858,
+        1.3707730770111084
+      ],
+      "losses": [
+        0.017071405425667763,
+        0.009936824440956116
+      ],
+      "rollout_tokens_sha256": "f15e510ec1f679af66bea2d43383b89cd7d6e0fb263ec1524031eb0a71a829ec"
+    },
+    {
+      "step": 54,
+      "sampled_slots": 384,
+      "valid_tokens": 171,
+      "positive_rewards": 12,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "a0cfbf748f3f8dda333288d5d10b4a1e8136d5612391387adb473a5bce7b736b",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7351629734039307,
+        1.2831412553787231
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "06b52c7083c46fdb3dc56b91e51695f3cc244fbd56311bc73443401dbef3e757"
+    },
+    {
+      "step": 55,
+      "sampled_slots": 384,
+      "valid_tokens": 164,
+      "positive_rewards": 12,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "a0cfbf748f3f8dda333288d5d10b4a1e8136d5612391387adb473a5bce7b736b",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7449601888656616,
+        1.361555814743042
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "69141889aa557a49da0e68e8e3e922a33b747f9e58141aa718766fdc02606265"
+    },
+    {
+      "step": 56,
+      "sampled_slots": 384,
+      "valid_tokens": 171,
+      "positive_rewards": 23,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          29,
+          27
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "a0cfbf748f3f8dda333288d5d10b4a1e8136d5612391387adb473a5bce7b736b",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.6763512492179871,
+        1.4341373443603516
+      ],
+      "losses": [
+        -0.023494664579629898,
+        -0.02802330069243908
+      ],
+      "rollout_tokens_sha256": "aee35a9230e138d8fc9adcecb01bc9a2d0ba1657ce04ba2d8c8740e6c6fc73ee"
+    },
+    {
+      "step": 57,
+      "sampled_slots": 384,
+      "valid_tokens": 185,
+      "positive_rewards": 11,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          7,
+          10
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "a0cfbf748f3f8dda333288d5d10b4a1e8136d5612391387adb473a5bce7b736b",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7889277935028076,
+        1.3733644485473633
+      ],
+      "losses": [
+        0.016817446798086166,
+        0.01058328989893198
+      ],
+      "rollout_tokens_sha256": "3b5f110c3de1e2bde3fdaf7ac597ebb85869fa38a16251ddc733b01c3da1b975"
+    },
+    {
+      "step": 58,
+      "sampled_slots": 384,
+      "valid_tokens": 157,
+      "positive_rewards": 21,
+      "mixed_groups": 2,
+      "paired_trajectory_indices": [
+        [
+          16,
+          12
+        ],
+        [
+          21,
+          19
+        ],
+        [
+          20,
+          18
+        ]
+      ],
+      "replayed_trajectories": 6,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": true,
+      "bank_sha256": "7709809d2ad8710a043de237356bfab41f29cf9fce5838e47592d35f0918c2ff",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.8087680339813232,
+        1.521928310394287
+      ],
+      "losses": [
+        0.009365428239107132,
+        -0.0008668982773087919
+      ],
+      "rollout_tokens_sha256": "bc2adbd5cc743de5598d0ba99c83cefb11eef608e7344a39edf9b2ff9528670d"
+    },
+    {
+      "step": 59,
+      "sampled_slots": 384,
+      "valid_tokens": 164,
+      "positive_rewards": 3,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          1,
+          4
+        ]
+      ],
+      "replayed_trajectories": 6,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "7709809d2ad8710a043de237356bfab41f29cf9fce5838e47592d35f0918c2ff",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.6677553653717041,
+        1.3455899953842163
+      ],
+      "losses": [
+        -0.005715443752706051,
+        -0.010872342623770237
+      ],
+      "rollout_tokens_sha256": "7b11bcdde1ed913b6e7780edb768ed1a8034307036c445a166a1dcbf5b1202d5"
+    },
+    {
+      "step": 60,
+      "sampled_slots": 384,
+      "valid_tokens": 157,
+      "positive_rewards": 11,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          19,
+          22
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "7709809d2ad8710a043de237356bfab41f29cf9fce5838e47592d35f0918c2ff",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.6849255561828613,
+        1.2572602033615112
+      ],
+      "losses": [
+        0.0025510145351290703,
+        -0.000374848663341254
+      ],
+      "rollout_tokens_sha256": "c9251a273e96eea5ecc5ade456aa074e2770a3f442b0999595e06a4f40dabeca"
+    },
+    {
+      "step": 61,
+      "sampled_slots": 384,
+      "valid_tokens": 157,
+      "positive_rewards": 18,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "7709809d2ad8710a043de237356bfab41f29cf9fce5838e47592d35f0918c2ff",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7993402481079102,
+        1.1935062408447266
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "e55412481aac432a884babff466cf86d84d50eecdfd17cde4a149ba2e4e60649"
+    },
+    {
+      "step": 62,
+      "sampled_slots": 384,
+      "valid_tokens": 142,
+      "positive_rewards": 6,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "7709809d2ad8710a043de237356bfab41f29cf9fce5838e47592d35f0918c2ff",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7400492429733276,
+        1.669154405593872
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "04dc57d2874977303cf0990b5542a7455df1afb7ceae7172083cea09acf28aa2"
+    },
+    {
+      "step": 63,
+      "sampled_slots": 384,
+      "valid_tokens": 146,
+      "positive_rewards": 33,
+      "mixed_groups": 3,
+      "paired_trajectory_indices": [
+        [
+          21,
+          19
+        ],
+        [
+          28,
+          29
+        ],
+        [
+          43,
+          47
+        ]
+      ],
+      "replayed_trajectories": 6,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": true,
+      "bank_sha256": "2e781d985f079e01cd106ce069a14eeeaec2167c4d1d83c06c91ecf8af663bce",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7572540044784546,
+        1.3082969188690186
+      ],
+      "losses": [
+        0.019252464175224304,
+        0.01036890409886837
+      ],
+      "rollout_tokens_sha256": "9b21cf56f20db382cc73574e79c7cf2bae5251627de593dd64a9aed5054e05a6"
+    },
+    {
+      "step": 64,
+      "sampled_slots": 384,
+      "valid_tokens": 178,
+      "positive_rewards": 11,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          1,
+          5
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "2e781d985f079e01cd106ce069a14eeeaec2167c4d1d83c06c91ecf8af663bce",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.6766112446784973,
+        1.3038833141326904
+      ],
+      "losses": [
+        -0.01113995909690857,
+        -0.013588136062026024
+      ],
+      "rollout_tokens_sha256": "b2418c20494b3ff5fa04a13affba962dfcaabaea38b0345242cb1ffbf261f6dd"
+    },
+    {
+      "step": 65,
+      "sampled_slots": 384,
+      "valid_tokens": 137,
+      "positive_rewards": 22,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          1,
+          0
+        ],
+        [
+          4,
+          3
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "2e781d985f079e01cd106ce069a14eeeaec2167c4d1d83c06c91ecf8af663bce",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.8078098893165588,
+        1.286890983581543
+      ],
+      "losses": [
+        0.028375009074807167,
+        0.019836990162730217
+      ],
+      "rollout_tokens_sha256": "55adc1741135635e9ed320e5191c2e3bbb4e0780934e455f7402b5a56b5e7158"
+    },
+    {
+      "step": 66,
+      "sampled_slots": 384,
+      "valid_tokens": 138,
+      "positive_rewards": 30,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "2e781d985f079e01cd106ce069a14eeeaec2167c4d1d83c06c91ecf8af663bce",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.692919909954071,
+        1.1862751245498657
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "d37f66d022de6b2340fa997d1a40d81264de412ab0dbce3d8cee51ca5001493a"
+    },
+    {
+      "step": 67,
+      "sampled_slots": 384,
+      "valid_tokens": 163,
+      "positive_rewards": 28,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          14,
+          12
+        ],
+        [
+          17,
+          13
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "2e781d985f079e01cd106ce069a14eeeaec2167c4d1d83c06c91ecf8af663bce",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7835249304771423,
+        1.3472187519073486
+      ],
+      "losses": [
+        0.007834188640117645,
+        0.00332519318908453
+      ],
+      "rollout_tokens_sha256": "f73c57042511a0e3fa12f46582f86205a2a938188b05534e677ca2787b7fec84"
+    },
+    {
+      "step": 68,
+      "sampled_slots": 384,
+      "valid_tokens": 148,
+      "positive_rewards": 23,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          32,
+          34
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "2e781d985f079e01cd106ce069a14eeeaec2167c4d1d83c06c91ecf8af663bce",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7529091835021973,
+        1.31109619140625
+      ],
+      "losses": [
+        0.009143875911831856,
+        0.0033962049055844545
+      ],
+      "rollout_tokens_sha256": "48717dbd15ecafd66bc30c39716f22a7c43a103b7b1dd399a65672581475e4e0"
+    },
+    {
+      "step": 69,
+      "sampled_slots": 384,
+      "valid_tokens": 125,
+      "positive_rewards": 17,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          33,
+          35
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "2e781d985f079e01cd106ce069a14eeeaec2167c4d1d83c06c91ecf8af663bce",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.795014500617981,
+        1.4157509803771973
+      ],
+      "losses": [
+        -0.014587361365556717,
+        -0.01839536800980568
+      ],
+      "rollout_tokens_sha256": "2de861e053a4706a69c9741aeb7da2b078f1440bfe4502de1714ea8fd29aaebd"
+    },
+    {
+      "step": 70,
+      "sampled_slots": 384,
+      "valid_tokens": 136,
+      "positive_rewards": 17,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          26,
+          27
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "2e781d985f079e01cd106ce069a14eeeaec2167c4d1d83c06c91ecf8af663bce",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7296990156173706,
+        1.2863450050354004
+      ],
+      "losses": [
+        -0.00038668952765874565,
+        -0.003769651520997286
+      ],
+      "rollout_tokens_sha256": "0d48b5adc1f07a5abc2539696bacf5d0f6160e11a3466d5da30cf844466a76ff"
+    },
+    {
+      "step": 71,
+      "sampled_slots": 384,
+      "valid_tokens": 143,
+      "positive_rewards": 18,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "2e781d985f079e01cd106ce069a14eeeaec2167c4d1d83c06c91ecf8af663bce",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.6494709253311157,
+        1.3442373275756836
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "6bf7a04d094ccaa538f1a13a3e03fcd939f5d397f74fe8a8cddffb3a7564174f"
+    },
+    {
+      "step": 72,
+      "sampled_slots": 384,
+      "valid_tokens": 167,
+      "positive_rewards": 16,
+      "mixed_groups": 2,
+      "paired_trajectory_indices": [
+        [
+          0,
+          5
+        ],
+        [
+          34,
+          35
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": true,
+      "bank_sha256": "bd3f8b2063d1505074972a9db239b3fd94ee35847cc21ab5e8af6719ee24697f",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7403643727302551,
+        1.3568735122680664
+      ],
+      "losses": [
+        -0.03763621300458908,
+        -0.04576095566153526
+      ],
+      "rollout_tokens_sha256": "0e9b3e9f177982d65d0a99bb69155d8d970e845e4eec024f6571cc29a0cc6822"
+    },
+    {
+      "step": 73,
+      "sampled_slots": 384,
+      "valid_tokens": 136,
+      "positive_rewards": 7,
+      "mixed_groups": 1,
+      "paired_trajectory_indices": [
+        [
+          28,
+          24
+        ]
+      ],
+      "replayed_trajectories": 2,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "bd3f8b2063d1505074972a9db239b3fd94ee35847cc21ab5e8af6719ee24697f",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7084939479827881,
+        1.4541282653808594
+      ],
+      "losses": [
+        0.005730853416025639,
+        0.0013703291770070791
+      ],
+      "rollout_tokens_sha256": "ce24289ad67e922c361cf26d23031a27e5145e8eeb14b970d43b2237e11014c2"
+    },
+    {
+      "step": 74,
+      "sampled_slots": 384,
+      "valid_tokens": 159,
+      "positive_rewards": 10,
+      "mixed_groups": 2,
+      "paired_trajectory_indices": [
+        [
+          15,
+          13
+        ],
+        [
+          32,
+          30
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "bd3f8b2063d1505074972a9db239b3fd94ee35847cc21ab5e8af6719ee24697f",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7733913064002991,
+        1.4416584968566895
+      ],
+      "losses": [
+        -0.028305284678936005,
+        -0.03434789553284645
+      ],
+      "rollout_tokens_sha256": "d3ad42df421508dea7aa1de7bc237f7fc90e56bd901ddfca21dec57f3d57b8a4"
+    },
+    {
+      "step": 75,
+      "sampled_slots": 384,
+      "valid_tokens": 152,
+      "positive_rewards": 6,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "bd3f8b2063d1505074972a9db239b3fd94ee35847cc21ab5e8af6719ee24697f",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.707348108291626,
+        1.4224300384521484
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "a0fe23b769ae95f45703458e91b5e0e11016cb70c6dc3a9f59d2fa756b7cdc69"
+    },
+    {
+      "step": 76,
+      "sampled_slots": 384,
+      "valid_tokens": 181,
+      "positive_rewards": 6,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": false,
+      "bank_published_after_update": false,
+      "bank_sha256": "bd3f8b2063d1505074972a9db239b3fd94ee35847cc21ab5e8af6719ee24697f",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7189823985099792,
+        1.3885985612869263
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "612ca4793fef573e851bd8a615ed872b345e0b078900360b5328448f1b9462ac"
+    },
+    {
+      "step": 77,
+      "sampled_slots": 384,
+      "valid_tokens": 125,
+      "positive_rewards": 22,
+      "mixed_groups": 2,
+      "paired_trajectory_indices": [
+        [
+          4,
+          1
+        ],
+        [
+          45,
+          42
+        ]
+      ],
+      "replayed_trajectories": 4,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "bd3f8b2063d1505074972a9db239b3fd94ee35847cc21ab5e8af6719ee24697f",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.791752815246582,
+        1.4626438617706299
+      ],
+      "losses": [
+        0.01593957655131817,
+        0.001618515932932496
+      ],
+      "rollout_tokens_sha256": "ee81e25aa4f58a6c359e21428c0532add3ed05f0fb1f1e901aa5b6eaccff1d4b"
+    },
+    {
+      "step": 78,
+      "sampled_slots": 384,
+      "valid_tokens": 124,
+      "positive_rewards": 18,
+      "mixed_groups": 0,
+      "paired_trajectory_indices": [],
+      "replayed_trajectories": 0,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": false,
+      "bank_sha256": "bd3f8b2063d1505074972a9db239b3fd94ee35847cc21ab5e8af6719ee24697f",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.684205174446106,
+        1.216556191444397
+      ],
+      "losses": [
+        -0.0,
+        -0.0
+      ],
+      "rollout_tokens_sha256": "8a0b3caece56995d346e12d8a6e68753b912304d07b051b443989d636c11d8cc"
+    },
+    {
+      "step": 79,
+      "sampled_slots": 384,
+      "valid_tokens": 143,
+      "positive_rewards": 28,
+      "mixed_groups": 4,
+      "paired_trajectory_indices": [
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          11
+        ],
+        [
+          15,
+          13
+        ],
+        [
+          24,
+          29
+        ],
+        [
+          26,
+          28
+        ],
+        [
+          25,
+          27
+        ],
+        [
+          30,
+          33
+        ],
+        [
+          35,
+          31
+        ]
+      ],
+      "replayed_trajectories": 16,
+      "bank_fit_attempted": true,
+      "bank_published_after_update": true,
+      "bank_sha256": "025e1d8c1b05b34b083a0fe8a56b448fb75c32cddb6166012cd541a1e817b18a",
+      "rollout_steered_responses": 32,
+      "importance_weight_range": [
+        0.7097856998443604,
+        1.3328131437301636
+      ],
+      "losses": [
+        -0.022308096289634705,
+        -0.04391167685389519
+      ],
+      "rollout_tokens_sha256": "7816321eb093051703cc2c33efbcfe87f00a2e526469d3bd4ec07761bccafa7f"
+    }
+  ],
+  "totals": {
+    "sampling_seconds": 0.039695000159554183,
+    "scoring_seconds": 0.029412547359243035,
+    "replay_seconds": 0.006653329357504845,
+    "bank_seconds": 0.007752795238047838,
+    "update_seconds": 0.06334424926899374,
+    "sampled_slots": 30720,
+    "valid_tokens": 13412,
+    "replayed_trajectories": 234,
+    "replayed_valid_tokens": 894,
+    "bank_updates": 14,
+    "bank_fit_attempts": 47,
+    "steered_responses": 2432,
+    "discarded_buffer_pairs": 0
+  },
+  "checkpoint_file_sha256": "21b5b2c373cdc30a42f9c87b82e694eb86695f5f1e48075c3f724f06814307b3",
+  "final_parameter_sha256": "ac352da828593f8a21d6ea63fa022678d0580f9f1ce5d2d59afbb75166af521c",
+  "checkpoint": "final.pt",
+  "bank_active": true,
+  "final_bank": [
+    [
+      -0.02160743996500969,
+      0.012687228620052338,
+      -0.05174333602190018,
+      -0.006122628226876259,
+      0.015888744965195656,
+      0.001638438319787383,
+      0.004618722014129162,
+      0.00889883004128933,
+      -0.0012852258514612913,
+      -0.029448386281728745,
+      0.011288929730653763,
+      -0.0057656001299619675,
+      -0.00582780921831727,
+      -0.02981724962592125,
+      -0.028873853385448456,
+      0.02154691144824028,
+      0.011742670089006424,
+      -0.0703192800283432,
+      -0.011894021183252335,
+      0.14164230227470398,
+      0.08100320398807526,
+      -0.03490649163722992,
+      0.010051037184894085,
+      0.012496938928961754,
+      -0.03814876452088356,
+      -0.006877919193357229,
+      0.03270848095417023,
+      0.036287546157836914,
+      0.006645545829087496,
+      0.0032794070430099964,
+      -0.013220508582890034,
+      -0.11954204738140106,
+      0.05838613584637642,
+      0.07840666174888611,
+      0.0001409543037880212,
+      0.003117686603218317,
+      0.016978904604911804,
+      0.026916759088635445,
+      -0.0306510329246521,
+      -0.3222464323043823,
+      0.08716554939746857,
+      0.010518863797187805,
+      0.011645462363958359,
+      0.004731005057692528,
+      -0.004908209200948477,
+      -0.002428837586194277,
+      -0.0020616315305233,
+      -0.057697925716638565,
+      0.06810766458511353,
+      -0.004399661906063557,
+      -0.15064416825771332,
+      0.00015738513320684433,
+      -0.00441140029579401,
+      0.13553959131240845,
+      -0.01477067545056343,
+      0.04033789038658142,
+      0.03723549470305443,
+      0.06464744359254837,
+      0.008527109399437904,
+      -0.062399644404649734,
+      0.12725037336349487,
+      0.0553506575524807,
+      0.2618924379348755,
+      0.0018901173025369644
+    ],
+    [
+      0.0045051006600260735,
+      -0.012380818836390972,
+      0.09317048639059067,
+      0.017098940908908844,
+      -0.194880872964859,
+      -0.44340425729751587,
+      0.009223619475960732,
+      -0.0047919005155563354,
+      0.19383849203586578,
+      0.009284562431275845,
+      0.4479082524776459,
+      -0.055229827761650085,
+      0.019085880368947983,
+      0.07253996282815933,
+      0.44849106669425964,
+      -0.07995987683534622,
+      -0.02521657571196556,
+      0.6775041818618774,
+      0.04190633445978165,
+      -1.9346845149993896,
+      -0.44788241386413574,
+      0.2911582291126251,
+      0.02951117604970932,
+      -0.3185250163078308,
+      0.04218418896198273,
+      0.0013039486948400736,
+      -0.0003013908863067627,
+      -0.022263862192630768,
+      0.031178079545497894,
+      0.10687299072742462,
+      0.12681147456169128,
+      0.2335117757320404,
+      -0.1693972796201706,
+      -0.1495283544063568,
+      -0.007803037762641907,
+      0.16851365566253662,
+      -0.01888515241444111,
+      0.13953524827957153,
+      0.13723251223564148,
+      1.4716992378234863,
+      -0.6635434031486511,
+      -0.044170595705509186,
+      -0.03157614544034004,
+      -0.4077605605125427,
+      -0.010650480166077614,
+      0.24656477570533752,
+      0.15439878404140472,
+      0.04728483781218529,
+      -0.47114285826683044,
+      -0.03060382977128029,
+      0.7651507258415222,
+      0.012603264302015305,
+      -0.00838924665004015,
+      -0.7590032815933228,
+      0.038380205631256104,
+      -0.2634762227535248,
+      -0.7475035786628723,
+      -0.02045980840921402,
+      -0.07987679541110992,
+      0.3740769326686859,
+      -0.09101416170597076,
+      -0.24545109272003174,
+      -0.7941355109214783,
+      0.061955422163009644
+    ]
+  ],
+  "bank_tensor_bytes": 512,
+  "peak_bank_buffer_tensor_bytes": 7680,
+  "whole_worker_peak_rss_bytes": 274333696,
+  "phase_wall_seconds": 0.5078246250050142,
+  "selection": "fixed final step; heldout not read/evaluated"
+}
