@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "cohorts": {
+    "2026.10.7": {
+      "registry_module": "dist/registry-o5xKgF9Y.mjs",
+      "runtime_module": "dist/runtime-CCZWjmme.mjs",
+      "empty_registry_module": "dist/registry-empty-mS6HujHb.mjs",
+      "tarball": "https://registry.npmjs.org/openclaw/-/openclaw-2026.10.7.tgz",
+      "npm_integrity": "sha512-iiZO+kFFBgQvxm17wn3Sc/MSC/GQu01PubAFVNA2Nn736HOHUbR0ra7a9NeW9wpjq3kDkSJ1RB7dTP+qVJFXig==",
+      "tarball_sha256": "45dc6dadab3ca4e5286262226d6b61554309435a5e83b5d25c803a3a12ef2f81",
+      "source_sha256": {
+        "package.json": "362f8c0fda7b71a116e0ca2f812e896bfe9cfec41e64b6b66243f95703aaf7b8",
+        "dist/registry-o5xKgF9Y.mjs": "6d1db5c3f7d9821510ff3d03ed709d8b3eef42dc322c856f83ce2549761d48d2",
+        "dist/runtime-CCZWjmme.mjs": "aa99426b8bfa128ccd9876aab282c0ad7aa32fe83eacc631eae18580b6b4e957",
+        "dist/registry-empty-mS6HujHb.mjs": "026994b8613f10bff379b625e4ef0edbe0b3ef728d31b759eebb82c802b71432",
+        "docs/concepts/context-engine.md": "7bfbcd827199f0b29c4af6b0e619d694532843cb945fcbbcbd79696a7a3b0ec6",
+        "docs/plugins/architecture-internals/context-engines.md": "15a4144930c54c9fa8644a3fd14b38f4c45692fafb433e24d70270b568223e5e",
+        "docs/plugins/manifest.md": "b1c03127c5e695c98f41ee5a8b1ea9f8bbd4fb7c92d5d6efe7accf6295182dc6"
+      },
+      "engine_requirement": ">=24.22.1 <25 || >=26.12.1",
+      "minimal_dependencies": {
+        "@openclaw/fs-safe": "0.26.0",
+        "chalk": "6.0.1",
+        "json5": "2.2.3",
+        "kysely": "0.29.6",
+        "semver": "7.8.5",
+        "tslog": "5.2.0"
+      }
+    },
+    "2026.11.3": {
+      "registry_module": "dist/registry-CYtION1B.mjs",
+      "runtime_module": "dist/runtime-HVHHrRKt.mjs",
+      "empty_registry_module": "dist/registry-empty-mS6HujHb.mjs",
+      "tarball": "https://registry.npmjs.org/openclaw/-/openclaw-2026.11.3.tgz",
+      "npm_integrity": "sha512-FBq/q0TCaoA2b7qfdV0q81fHhI6RBB1zAQfJQREc1u2TlK5khVgCUsAlXskLWthyVqRz5PWEj+oOmfYgK58dHg==",
+      "tarball_sha256": "dae4c4f7549561db2fe5ac43af7ba0c9491f876380f070f7ffb87bf9721a10df",
+      "source_sha256": {
+        "package.json": "18f674ce22047b21d3e832372dff012914a5511cf98044ee0db4b8a065fa317d",
+        "dist/registry-CYtION1B.mjs": "4f82ce4a6f3544b43e15271c3d490e07150c49f4d3f20a3de052ad9ee65a3d2f",
+        "dist/runtime-HVHHrRKt.mjs": "d650070b70e829e4701804c3ba22cb99bb138c97a8e383b4e2cb072e124aac23",
+        "dist/registry-empty-mS6HujHb.mjs": "026994b8613f10bff379b625e4ef0edbe0b3ef728d31b759eebb82c802b71432",
+        "docs/concepts/context-engine.md": "2bece049ad6c4dc1aca67bad206dcc344e66a7c53990dbf163a6f59a7117df23",
+        "docs/plugins/architecture-internals/context-engines.md": "a1cf4961968b1fca50f54a9bab060c9257b93c16248bdad4d1e4602796e3b5fc",
+        "docs/plugins/manifest.md": "e228ceef4e8a487554c5f3f05c008c6d42a9458970f7dcae2d467c22bf00bf2a"
+      },
+      "engine_requirement": ">=24.16.0 <25 || >=26.1.0",
+      "minimal_dependencies": {
+        "@openclaw/fs-safe": "0.26.5",
+        "@openclaw/proc-safe": "0.4.2",
+        "chalk": "6.0.1",
+        "json5": "2.2.3",
+        "kysely": "0.29.6",
+        "pg": "8.23.1",
+        "semver": "7.8.5",
+        "tslog": "5.2.0"
+      }
+    }
+  },
+  "runtime_node": "24.22.1",
+  "cases": [
+    "reserved_owner_and_duplicate_guard",
+    "accepted_host_param_projection",
+    "fresh_factory_state_isolation",
+    "assembly_error_quarantine_and_fallback",
+    "compaction_error_rethrow_then_fallback_and_explicit_recovery",
+    "invalid_factory_contract",
+    "abort_before_call_no_quarantine",
+    "abort_during_compact_no_quarantine_and_retry",
+    "discovery_only_fallback_without_quarantine",
+    "idempotent_disposal"
+  ],
+  "callbacks": "deterministic course-owned fake context engine and fake legacy-id fallback, no real summarizer, Gateway or provider; actual npm runtime registry/proxy/health modules imported unchanged",
+  "selection": "same controls in both fresh cohort processes, all results retained; do not alter expected behavior after outputs",
+  "scope": "selected internal bundled context-registry contract only; not full plugin-sdk/Gateway/LLM compaction, tokenizer/budget, profile/clone/persistence recovery or complete install qualification",
+  "required_result": "all ten case groups pass in both cohorts; preserve initial failures and state/exception evidence"
+}
