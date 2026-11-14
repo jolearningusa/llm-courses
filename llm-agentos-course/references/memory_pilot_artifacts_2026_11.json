@@ -174,5 +174,45 @@
   "controls_log": "test_extraction_does_not_read_questions_or_labels (test_memory_pilot.TestMemoryPilot.test_extraction_does_not_read_questions_or_labels) ... write x retained 1 generated chunks\nok\ntest_full_is_complete_and_none_has_no_history (test_memory_pilot.TestMemoryPilot.test_full_is_complete_and_none_has_no_history) ... ok\ntest_literal_scorer_rejects_negation_and_extra_prose (test_memory_pilot.TestMemoryPilot.test_literal_scorer_rejects_negation_and_extra_prose) ... ok\ntest_over_cap_is_ineligible_without_generation (test_memory_pilot.TestMemoryPilot.test_over_cap_is_ineligible_without_generation) ... ok\ntest_profile_scope_and_query_only_prompt_construction (test_memory_pilot.TestMemoryPilot.test_profile_scope_and_query_only_prompt_construction) ... ok\ntest_retrieval_ranking_and_stable_ties (test_memory_pilot.TestMemoryPilot.test_retrieval_ranking_and_stable_ties) ... ok\ntest_summary_keeps_failed_and_ineligible_planned_cases (test_memory_pilot.TestMemoryPilot.test_summary_keeps_failed_and_ineligible_planned_cases) ... ok\ntest_write_store_mutation_is_rejected (test_memory_pilot.TestMemoryPilot.test_write_store_mutation_is_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.001s\n\nOK\n",
   "write_log": "`torch_dtype` is deprecated! Use `dtype` instead!\nwrite mara retained 8 generated chunks\nwrite ivo retained 6 generated chunks\n",
   "protocol_freeze_commit": "37288d2",
-  "implementation_commit": "7f6a6a6"
+  "implementation_commit": "7f6a6a6",
+  "answer_log": "`torch_dtype` is deprecated! Use `dtype` instead!\nmara-updated_fact none recorded\nmara-updated_fact full recorded\nmara-updated_fact verbatim recorded\nmara-updated_fact extracted recorded\nmara-preference full recorded\nmara-preference verbatim recorded\nmara-preference extracted recorded\nmara-preference none recorded\nmara-schedule_update verbatim recorded\nmara-schedule_update extracted recorded\nmara-schedule_update none recorded\nmara-schedule_update full recorded\nmara-relation extracted recorded\nmara-relation none recorded\nmara-relation full recorded\nmara-relation verbatim recorded\nivo-updated_fact none recorded\nivo-updated_fact full recorded\nivo-updated_fact verbatim recorded\nivo-updated_fact extracted recorded\nivo-preference full recorded\nivo-preference verbatim recorded\nivo-preference extracted recorded\nivo-preference none recorded\nivo-schedule_update verbatim recorded\nivo-schedule_update extracted recorded\nivo-schedule_update none recorded\nivo-schedule_update full recorded\nivo-relation extracted recorded\nivo-relation none recorded\nivo-relation full recorded\nivo-relation verbatim recorded\n",
+  "write_artifact_commit": "a7c7e94",
+  "order_position_counts": {
+    "none": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "full": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "verbatim": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "extracted": [
+      2,
+      2,
+      2,
+      2
+    ]
+  },
+  "independent_checks": {
+    "unique_planned_answer_pairs": 32,
+    "paired_eligible_per_condition": 8,
+    "all_condition_order_position_counts": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "tokenizer_replay_verified_calls": 34,
+    "repeated_model_generations_for_verification": 0
+  }
 }
