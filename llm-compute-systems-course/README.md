@@ -6,6 +6,8 @@ A systems engineering course on building and measuring the computing stack for L
 
 The worked-example pilot in decks 10/16/36/38 links prediction questions to reproducible CPU checkpoints: [pipelines](labs/kit/handouts/lab04_gemm.md#pipeline-teaching-checkpoint), [prefix-cache ownership](labs/kit/handouts/lab07_cache.md#cache-teaching-checkpoint), [inference bottlenecks](labs/kit/inference_bottleneck_worksheet.md#bottleneck-teaching-checkpoint), and [verification](labs/kit/handouts/lab_ai_verification.md#verification-teaching-checkpoint). English/Chinese slides include worked answers in **S** notes; hardware extensions remain separately scoped.
 
+[ExecuTorch CPU compatibility matrix, 2026-11-14](references/executorch_cpu_compatibility_2026_11.md): two isolated producer lanes and four fresh-process load/execute cells for a bounded unquantized MLP.
+
 [vLLM source-identity supplement, 2026-11-08](references/vllm_source_identity_2026_11.md): candidate 0.33.0 archive/tag evidence; runtime qualification remains pending.
 
 [Research audit, 2026-11-07](references/research_audit_2026_11.md): checked readings, compatibility findings, prioritized updates and potential projects. Proposed experiments are distinguished from executed results.
@@ -200,6 +202,7 @@ llm-compute-systems-course/
 │   │   │   ├── test_attention.py
 │   │   │   ├── test_budgets.py
 │   │   │   ├── test_cache.py
+│   │   │   ├── test_executorch_compat.py
 │   │   │   ├── test_deployment.py
 │   │   │   ├── test_distributed.py
 │   │   │   ├── test_efficiency.py
@@ -218,6 +221,10 @@ llm-compute-systems-course/
 │   │   ├── attention_lab.py
 │   │   ├── budgets.py
 │   │   ├── cache_lab.py
+│   │   ├── executorch_compat.py
+│   │   ├── executorch_compat_fixture.json
+│   │   ├── executorch_compat_protocol.json
+│   │   ├── requirements-executorch-1.6.0-cpu-lock.txt
 │   │   ├── deployment_lab.py
 │   │   ├── distributed_lab.py
 │   │   ├── gemm_lab.py
@@ -264,6 +271,8 @@ llm-compute-systems-course/
 │   ├── POTENTIAL_PROJECTS.md
 │   └── optimization-engine.svg
 ├── references/
+│   ├── executorch_cpu_compatibility_2026_11.md
+│   ├── executorch_cpu_compatibility_2026_11.json
 │   ├── research_audit_2026_11.md
 │   ├── ascend_mode_evidence_2026_11.md
 │   ├── ascend_mode_evidence_2026_11.json
@@ -720,4 +729,4 @@ llm-compute-systems-course/
 
 ## Source and version policy
 
-Readings were checked against primary web sources on 2026-10-26. Review depth and limitations are stated in the research review. Software documentation and repository main branches are evidence of documented behavior, not a tested course environment. No package-version compatibility matrix or hardware benchmark is asserted by this blueprint. Add `references/tracked_sources.json` when lab APIs are pinned and executed, following [the repository update process](../docs/updating-courses.md).
+Readings were checked against primary web sources on 2026-10-26. Review depth and limitations are stated in the research review. Software documentation and repository main branches are evidence of documented behavior, not a tested course environment. The original blueprint asserted no package-version compatibility matrix or hardware benchmark; the separately dated ExecuTorch CPU pilot above adds only its bounded local matrix. Add `references/tracked_sources.json` when lab APIs are pinned and executed, following [the repository update process](../docs/updating-courses.md).

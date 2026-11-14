@@ -1,0 +1,3155 @@
+{
+  "captured_utc": "2026-11-14",
+  "frozen_protocol_commit": "8c0e5c0",
+  "executed_runner_commit": "9c88367",
+  "reports": {
+    "et100-build": {
+      "phase": "build",
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "source_revision": "9c883671a6547b304428814b0adb5234bdd53de2",
+      "source_sha256": "ade8a49d3f8d8faeaa23ecffbcaf98365a50c6df9ceb89f00068aab318308908",
+      "fixture_sha256": "9c8f438626ea842145a4ced10af6b447a6103245ec2e1893571dba3e1c61b5ca",
+      "protocol_sha256": "7701508b05070cf2d11b0b6b2bba7ea6b547996c532e763d2f474bbe3a2d9c2b",
+      "historical_runner_sha256": "fe9249ecdf64dee30fa838d7bd72ffb283e812568d4b3173655855418db9dcd5",
+      "packages": [
+        [
+          "Jinja2",
+          "3.1.6"
+        ],
+        [
+          "MarkupSafe",
+          "3.0.4"
+        ],
+        [
+          "PyYAML",
+          "6.0.3"
+        ],
+        [
+          "Pygments",
+          "2.21.0"
+        ],
+        [
+          "antlr4-python3-runtime",
+          "4.9.3"
+        ],
+        [
+          "attrs",
+          "26.1.0"
+        ],
+        [
+          "cattrs",
+          "26.2.1"
+        ],
+        [
+          "cloudpickle",
+          "3.1.2"
+        ],
+        [
+          "coremltools",
+          "9.0b1"
+        ],
+        [
+          "execnet",
+          "2.1.2"
+        ],
+        [
+          "executorch",
+          "1.0.0"
+        ],
+        [
+          "expecttest",
+          "0.3.0"
+        ],
+        [
+          "filelock",
+          "4.2.4"
+        ],
+        [
+          "flatbuffers",
+          "25.12.19"
+        ],
+        [
+          "fsspec",
+          "2026.9.0"
+        ],
+        [
+          "hydra-core",
+          "1.3.8"
+        ],
+        [
+          "hypothesis",
+          "6.170.12"
+        ],
+        [
+          "iniconfig",
+          "2.3.1"
+        ],
+        [
+          "joblib",
+          "1.6.0"
+        ],
+        [
+          "kgb",
+          "7.3"
+        ],
+        [
+          "mpmath",
+          "1.3.0"
+        ],
+        [
+          "networkx",
+          "3.7"
+        ],
+        [
+          "numpy",
+          "2.5.4"
+        ],
+        [
+          "omegaconf",
+          "2.3.1"
+        ],
+        [
+          "packaging",
+          "26.3"
+        ],
+        [
+          "pandas",
+          "3.1.0"
+        ],
+        [
+          "parameterized",
+          "0.9.0"
+        ],
+        [
+          "pip",
+          "25.0.1"
+        ],
+        [
+          "pluggy",
+          "1.7.0"
+        ],
+        [
+          "protobuf",
+          "7.36.2"
+        ],
+        [
+          "pyaml",
+          "26.7.0"
+        ],
+        [
+          "pytest",
+          "9.2.0"
+        ],
+        [
+          "pytest-json-report",
+          "1.5.0"
+        ],
+        [
+          "pytest-metadata",
+          "3.1.1"
+        ],
+        [
+          "pytest-rerunfailures",
+          "15.1"
+        ],
+        [
+          "pytest-xdist",
+          "3.8.0"
+        ],
+        [
+          "python-dateutil",
+          "3.0.0"
+        ],
+        [
+          "ruamel.yaml",
+          "0.19.1"
+        ],
+        [
+          "scikit-learn",
+          "1.7.1"
+        ],
+        [
+          "scipy",
+          "1.18.1"
+        ],
+        [
+          "setuptools",
+          "84.2.1"
+        ],
+        [
+          "six",
+          "1.17.0"
+        ],
+        [
+          "sortedcontainers",
+          "2.4.0"
+        ],
+        [
+          "sympy",
+          "1.14.0"
+        ],
+        [
+          "tabulate",
+          "0.10.0"
+        ],
+        [
+          "threadpoolctl",
+          "3.7.0"
+        ],
+        [
+          "torch",
+          "2.9.1"
+        ],
+        [
+          "torchao",
+          "0.14.0"
+        ],
+        [
+          "tqdm",
+          "4.70.1"
+        ],
+        [
+          "typing_extensions",
+          "4.16.0"
+        ],
+        [
+          "tzdata",
+          "2026.5"
+        ]
+      ],
+      "versions": {
+        "executorch": "1.0.0",
+        "torch": "2.9.1"
+      },
+      "torch_threads": 1,
+      "device": "cpu",
+      "dtype": "float32",
+      "venv_config": "home = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin\ninclude-system-site-packages = false\nversion = 3.12.14\nexecutable = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12\ncommand = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m venv /private/tmp/cmp1-et100-20261114\n",
+      "result": {
+        "artifact": "mlp.pte",
+        "artifact_sha256": "a910c25afff67ecab8c68a9c3663d041d7f720d084f694d1831e36660aa3337d",
+        "artifact_bytes": 3728,
+        "eager": {
+          "random": {
+            "max_abs_error_vs_scalar": 2.2351741790771484e-08,
+            "output": [
+              [
+                -0.19958361983299255,
+                -0.3911963105201721,
+                -0.07397523522377014,
+                0.07156065851449966
+              ],
+              [
+                -0.37664178013801575,
+                -0.5470883846282959,
+                0.026398807764053345,
+                0.016342267394065857
+              ],
+              [
+                -0.29413363337516785,
+                -0.3037845492362976,
+                0.0486445277929306,
+                -0.0694790631532669
+              ]
+            ],
+            "input_sha256": "a6fba73f8e89313ddd01592f8bce079cb9e4658b3c4ade242f5223cf2ffad858",
+            "first_case_call_seconds": 0.00032887503039091825,
+            "warm_seconds": [
+              6.500049494206905e-06,
+              5.999929271638393e-06,
+              5.958019755780697e-06,
+              5.499925464391708e-06,
+              5.415990017354488e-06,
+              5.500041879713535e-06,
+              5.417037755250931e-06,
+              5.709007382392883e-06,
+              5.292007699608803e-06,
+              5.459063686430454e-06
+            ]
+          },
+          "zero": {
+            "max_abs_error_vs_scalar": 1.862645149230957e-09,
+            "output": [
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843185901642,
+                0.003362715244293213
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843185901642,
+                0.003362715244293213
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843185901642,
+                0.003362715244293213
+              ]
+            ],
+            "input_sha256": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4",
+            "first_case_call_seconds": 8.874922059476376e-06,
+            "warm_seconds": [
+              5.375011824071407e-06,
+              5.415990017354488e-06,
+              5.207955837249756e-06,
+              5.166977643966675e-06,
+              5.124951712787151e-06,
+              5.375011824071407e-06,
+              5.291076377034187e-06,
+              5.375011824071407e-06,
+              5.500041879713535e-06,
+              5.416921339929104e-06
+            ]
+          },
+          "signed": {
+            "max_abs_error_vs_scalar": 5.960464477539063e-08,
+            "output": [
+              [
+                0.5761609077453613,
+                -0.21757772564888,
+                -0.061632946133613586,
+                0.26722201704978943
+              ],
+              [
+                0.013554729521274567,
+                -0.8028314709663391,
+                0.6343821883201599,
+                -0.2589752674102783
+              ],
+              [
+                0.8748890161514282,
+                -0.26108771562576294,
+                -0.18374428153038025,
+                0.400422602891922
+              ]
+            ],
+            "input_sha256": "328ba6c4d1d95804e00c21c793dc56c4fcb4e3b672dea909da816a1eef2ee07f",
+            "first_case_call_seconds": 7.125083357095718e-06,
+            "warm_seconds": [
+              5.292007699608803e-06,
+              5.209003575146198e-06,
+              5.166977643966675e-06,
+              5.249981768429279e-06,
+              5.084089934825897e-06,
+              5.124951712787151e-06,
+              5.083042196929455e-06,
+              5.208072252571583e-06,
+              5.082925781607628e-06,
+              5.124951712787151e-06
+            ]
+          }
+        },
+        "exported": {
+          "random": {
+            "max_abs_error_vs_scalar": 2.2351741790771484e-08,
+            "output": [
+              [
+                -0.19958361983299255,
+                -0.3911963105201721,
+                -0.07397523522377014,
+                0.07156065851449966
+              ],
+              [
+                -0.37664178013801575,
+                -0.5470883846282959,
+                0.026398807764053345,
+                0.016342267394065857
+              ],
+              [
+                -0.29413363337516785,
+                -0.3037845492362976,
+                0.0486445277929306,
+                -0.0694790631532669
+              ]
+            ],
+            "input_sha256": "a6fba73f8e89313ddd01592f8bce079cb9e4658b3c4ade242f5223cf2ffad858",
+            "first_case_call_seconds": 5.825003609061241e-05,
+            "warm_seconds": [
+              2.462498378008604e-05,
+              2.058397512882948e-05,
+              2.0749983377754688e-05,
+              0.00012041698209941387,
+              2.5541987270116806e-05,
+              2.2875028662383556e-05,
+              2.1791900508105755e-05,
+              2.108304761350155e-05,
+              2.0332983694970608e-05,
+              2.0833918824791908e-05
+            ]
+          },
+          "zero": {
+            "max_abs_error_vs_scalar": 1.862645149230957e-09,
+            "output": [
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843185901642,
+                0.003362715244293213
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843185901642,
+                0.003362715244293213
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843185901642,
+                0.003362715244293213
+              ]
+            ],
+            "input_sha256": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4",
+            "first_case_call_seconds": 2.762500662356615e-05,
+            "warm_seconds": [
+              1.9708997569978237e-05,
+              1.9583036191761494e-05,
+              1.9625062122941017e-05,
+              1.950003206729889e-05,
+              1.8916092813014984e-05,
+              1.8583028577268124e-05,
+              1.8999911844730377e-05,
+              1.937500201165676e-05,
+              1.9832979887723923e-05,
+              1.966708805412054e-05
+            ]
+          },
+          "signed": {
+            "max_abs_error_vs_scalar": 5.960464477539063e-08,
+            "output": [
+              [
+                0.5761609077453613,
+                -0.21757772564888,
+                -0.061632946133613586,
+                0.26722201704978943
+              ],
+              [
+                0.013554729521274567,
+                -0.8028314709663391,
+                0.6343821883201599,
+                -0.2589752674102783
+              ],
+              [
+                0.8748890161514282,
+                -0.26108771562576294,
+                -0.18374428153038025,
+                0.400422602891922
+              ]
+            ],
+            "input_sha256": "328ba6c4d1d95804e00c21c793dc56c4fcb4e3b672dea909da816a1eef2ee07f",
+            "first_case_call_seconds": 2.5250017642974854e-05,
+            "warm_seconds": [
+              1.8417020328342915e-05,
+              1.8707942217588425e-05,
+              1.895800232887268e-05,
+              1.8499908037483692e-05,
+              1.8541933968663216e-05,
+              1.908303238451481e-05,
+              1.8583028577268124e-05,
+              1.862493809312582e-05,
+              1.8916907720267773e-05,
+              1.8791062757372856e-05
+            ]
+          }
+        },
+        "export_seconds": 0.014973332989029586,
+        "lower_serialize_seconds": 1.7124138340586796,
+        "export_shape_rejection": {
+          "type": "RuntimeError",
+          "message": "Expected input at *args[0].shape[0] to be equal to 3, but got 4. If you meant for this dimension to be dynamic, please re-export and specify dynamic_shapes (e.g. with Dim.DYNAMIC)"
+        },
+        "delegates": [
+          "XnnpackBackend"
+        ],
+        "edge_graph": "graph():\n    %input_1 : [num_users=1] = placeholder[target=input]\n    %lowered_module_0 : [num_users=1] = get_attr[target=lowered_module_0]\n    %executorch_call_delegate : [num_users=1] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_0, %input_1), kwargs = {})\n    %getitem : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate, 0), kwargs = {})\n    return (getitem,)",
+        "edge_call_targets": [
+          "executorch_call_delegate",
+          "<built-in function getitem>"
+        ],
+        "fallback_aten_targets": [],
+        "guards": {
+          "rejected": {
+            "shape": "this artifact contract requires contiguous CPU float32 (3,8)",
+            "dtype": "this artifact contract requires contiguous CPU float32 (3,8)",
+            "stride": "this artifact contract requires contiguous CPU float32 (3,8)"
+          },
+          "native_calls_for_invalid_inputs": 0
+        }
+      },
+      "passed": true,
+      "phase_wall_seconds": 3.717079000081867
+    },
+    "et160-build": {
+      "phase": "build",
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "source_revision": "9c883671a6547b304428814b0adb5234bdd53de2",
+      "source_sha256": "ade8a49d3f8d8faeaa23ecffbcaf98365a50c6df9ceb89f00068aab318308908",
+      "fixture_sha256": "9c8f438626ea842145a4ced10af6b447a6103245ec2e1893571dba3e1c61b5ca",
+      "protocol_sha256": "7701508b05070cf2d11b0b6b2bba7ea6b547996c532e763d2f474bbe3a2d9c2b",
+      "historical_runner_sha256": "fe9249ecdf64dee30fa838d7bd72ffb283e812568d4b3173655855418db9dcd5",
+      "packages": [
+        [
+          "Jinja2",
+          "3.1.6"
+        ],
+        [
+          "MarkupSafe",
+          "3.0.4"
+        ],
+        [
+          "PyYAML",
+          "6.0.3"
+        ],
+        [
+          "antlr4-python3-runtime",
+          "4.9.3"
+        ],
+        [
+          "anyio",
+          "4.16.0"
+        ],
+        [
+          "attrs",
+          "26.1.0"
+        ],
+        [
+          "cattrs",
+          "26.2.1"
+        ],
+        [
+          "certifi",
+          "2026.10.23"
+        ],
+        [
+          "charset-normalizer",
+          "3.5.2"
+        ],
+        [
+          "click",
+          "8.5.1"
+        ],
+        [
+          "cloudpickle",
+          "3.1.2"
+        ],
+        [
+          "coremltools",
+          "9.0"
+        ],
+        [
+          "executorch",
+          "1.6.0"
+        ],
+        [
+          "filelock",
+          "4.2.10"
+        ],
+        [
+          "flatbuffers",
+          "25.12.19"
+        ],
+        [
+          "fsspec",
+          "2026.9.0"
+        ],
+        [
+          "h11",
+          "0.16.0"
+        ],
+        [
+          "hf-xet",
+          "1.8.0"
+        ],
+        [
+          "httpcore2",
+          "2.16.0"
+        ],
+        [
+          "httpx2",
+          "2.16.0"
+        ],
+        [
+          "huggingface_hub",
+          "2.4.0"
+        ],
+        [
+          "hydra-core",
+          "1.3.8"
+        ],
+        [
+          "idna",
+          "3.20"
+        ],
+        [
+          "joblib",
+          "1.6.0"
+        ],
+        [
+          "mpmath",
+          "1.3.0"
+        ],
+        [
+          "narwhals",
+          "2.28.0"
+        ],
+        [
+          "networkx",
+          "3.7"
+        ],
+        [
+          "numpy",
+          "2.5.4"
+        ],
+        [
+          "omegaconf",
+          "2.3.1"
+        ],
+        [
+          "packaging",
+          "26.3"
+        ],
+        [
+          "pandas",
+          "3.1.1"
+        ],
+        [
+          "pip",
+          "25.0.1"
+        ],
+        [
+          "protobuf",
+          "7.36.2"
+        ],
+        [
+          "py-cpuinfo",
+          "9.0.0"
+        ],
+        [
+          "pyaml",
+          "26.7.0"
+        ],
+        [
+          "python-dateutil",
+          "4.0.0"
+        ],
+        [
+          "pytorch_tokenizers",
+          "1.6.0"
+        ],
+        [
+          "regex",
+          "2026.11.9"
+        ],
+        [
+          "requests",
+          "2.34.2"
+        ],
+        [
+          "ruamel.yaml",
+          "0.19.1"
+        ],
+        [
+          "scikit-learn",
+          "1.9.1"
+        ],
+        [
+          "scipy",
+          "1.18.1"
+        ],
+        [
+          "sentencepiece",
+          "0.2.3"
+        ],
+        [
+          "setuptools",
+          "84.2.1"
+        ],
+        [
+          "sympy",
+          "1.14.0"
+        ],
+        [
+          "tabulate",
+          "0.10.0"
+        ],
+        [
+          "threadpoolctl",
+          "3.8.0"
+        ],
+        [
+          "tiktoken",
+          "0.14.0"
+        ],
+        [
+          "tokenizers",
+          "0.23.3"
+        ],
+        [
+          "torch",
+          "2.15.0"
+        ],
+        [
+          "torchao",
+          "0.18.0"
+        ],
+        [
+          "tqdm",
+          "4.70.1"
+        ],
+        [
+          "truststore",
+          "0.10.5"
+        ],
+        [
+          "typing_extensions",
+          "4.16.0"
+        ],
+        [
+          "tzdata",
+          "2026.6"
+        ],
+        [
+          "urllib3",
+          "2.8.0"
+        ]
+      ],
+      "versions": {
+        "executorch": "1.6.0",
+        "torch": "2.15.0"
+      },
+      "torch_threads": 1,
+      "device": "cpu",
+      "dtype": "float32",
+      "venv_config": "home = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin\ninclude-system-site-packages = false\nversion = 3.12.14\nexecutable = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12\ncommand = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m venv /private/tmp/cmp1-et160-20261114\n",
+      "result": {
+        "artifact": "mlp.pte",
+        "artifact_sha256": "424a6e0b1e4a02c0c7bbc8b13b924d3d15c13cd920bd774fe215a9ca862ff764",
+        "artifact_bytes": 3728,
+        "eager": {
+          "random": {
+            "max_abs_error_vs_scalar": 2.2351741790771484e-08,
+            "output": [
+              [
+                -0.19958361983299255,
+                -0.3911963105201721,
+                -0.07397523522377014,
+                0.07156065851449966
+              ],
+              [
+                -0.37664178013801575,
+                -0.5470883846282959,
+                0.026398807764053345,
+                0.016342267394065857
+              ],
+              [
+                -0.29413363337516785,
+                -0.3037845492362976,
+                0.0486445277929306,
+                -0.0694790631532669
+              ]
+            ],
+            "input_sha256": "a6fba73f8e89313ddd01592f8bce079cb9e4658b3c4ade242f5223cf2ffad858",
+            "first_case_call_seconds": 0.00022729206830263138,
+            "warm_seconds": [
+              6.08398113399744e-06,
+              5.66698145121336e-06,
+              5.416921339929104e-06,
+              5.209003575146198e-06,
+              5.249981768429279e-06,
+              5.332985892891884e-06,
+              5.041016265749931e-06,
+              5.292007699608803e-06,
+              4.999921657145023e-06,
+              5.249981768429279e-06
+            ]
+          },
+          "zero": {
+            "max_abs_error_vs_scalar": 1.862645149230957e-09,
+            "output": [
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843185901642,
+                0.003362715244293213
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843185901642,
+                0.003362715244293213
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843185901642,
+                0.003362715244293213
+              ]
+            ],
+            "input_sha256": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4",
+            "first_case_call_seconds": 8.041970431804657e-06,
+            "warm_seconds": [
+              5.166046321392059e-06,
+              5.125068128108978e-06,
+              5.041947588324547e-06,
+              5.00003807246685e-06,
+              5.00003807246685e-06,
+              4.917033948004246e-06,
+              4.875008016824722e-06,
+              5.00003807246685e-06,
+              5.292007699608803e-06,
+              4.832982085645199e-06
+            ]
+          },
+          "signed": {
+            "max_abs_error_vs_scalar": 5.960464477539063e-08,
+            "output": [
+              [
+                0.5761609077453613,
+                -0.21757772564888,
+                -0.061632946133613586,
+                0.26722201704978943
+              ],
+              [
+                0.013554729521274567,
+                -0.8028314709663391,
+                0.6343821883201599,
+                -0.2589752674102783
+              ],
+              [
+                0.8748890161514282,
+                -0.26108771562576294,
+                -0.18374428153038025,
+                0.400422602891922
+              ]
+            ],
+            "input_sha256": "328ba6c4d1d95804e00c21c793dc56c4fcb4e3b672dea909da816a1eef2ee07f",
+            "first_case_call_seconds": 7.1249669417738914e-06,
+            "warm_seconds": [
+              4.999921657145023e-06,
+              5.00003807246685e-06,
+              4.875008016824722e-06,
+              4.875008016824722e-06,
+              4.875008016824722e-06,
+              4.917033948004246e-06,
+              5.00003807246685e-06,
+              4.916917532682419e-06,
+              4.917033948004246e-06,
+              4.959059879183769e-06
+            ]
+          }
+        },
+        "exported": {
+          "random": {
+            "max_abs_error_vs_scalar": 2.2351741790771484e-08,
+            "output": [
+              [
+                -0.19958361983299255,
+                -0.3911963105201721,
+                -0.07397523522377014,
+                0.07156065851449966
+              ],
+              [
+                -0.37664178013801575,
+                -0.5470883846282959,
+                0.026398807764053345,
+                0.016342267394065857
+              ],
+              [
+                -0.29413363337516785,
+                -0.3037845492362976,
+                0.0486445277929306,
+                -0.0694790631532669
+              ]
+            ],
+            "input_sha256": "a6fba73f8e89313ddd01592f8bce079cb9e4658b3c4ade242f5223cf2ffad858",
+            "first_case_call_seconds": 6.066705100238323e-05,
+            "warm_seconds": [
+              2.308306284248829e-05,
+              2.050003968179226e-05,
+              2.050003968179226e-05,
+              0.00012862496078014374,
+              2.7374946512281895e-05,
+              2.266594674438238e-05,
+              2.154102548956871e-05,
+              2.1167099475860596e-05,
+              1.9957893528044224e-05,
+              2.054101787507534e-05
+            ]
+          },
+          "zero": {
+            "max_abs_error_vs_scalar": 1.862645149230957e-09,
+            "output": [
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843185901642,
+                0.003362715244293213
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843185901642,
+                0.003362715244293213
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843185901642,
+                0.003362715244293213
+              ]
+            ],
+            "input_sha256": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4",
+            "first_case_call_seconds": 2.7792062610387802e-05,
+            "warm_seconds": [
+              2.062495332211256e-05,
+              2.0999927073717117e-05,
+              1.9959057681262493e-05,
+              2.0209001377224922e-05,
+              2.008408773690462e-05,
+              1.945893745869398e-05,
+              1.9749975763261318e-05,
+              2.0666979253292084e-05,
+              2.1292013116180897e-05,
+              1.979200169444084e-05
+            ]
+          },
+          "signed": {
+            "max_abs_error_vs_scalar": 5.960464477539063e-08,
+            "output": [
+              [
+                0.5761609077453613,
+                -0.21757772564888,
+                -0.061632946133613586,
+                0.26722201704978943
+              ],
+              [
+                0.013554729521274567,
+                -0.8028314709663391,
+                0.6343821883201599,
+                -0.2589752674102783
+              ],
+              [
+                0.8748890161514282,
+                -0.26108771562576294,
+                -0.18374428153038025,
+                0.400422602891922
+              ]
+            ],
+            "input_sha256": "328ba6c4d1d95804e00c21c793dc56c4fcb4e3b672dea909da816a1eef2ee07f",
+            "first_case_call_seconds": 2.604199107736349e-05,
+            "warm_seconds": [
+              2.0582927390933037e-05,
+              1.950003206729889e-05,
+              1.979200169444084e-05,
+              1.9999919459223747e-05,
+              1.9791070371866226e-05,
+              1.954101026058197e-05,
+              1.9124941900372505e-05,
+              1.8791062757372856e-05,
+              1.937500201165676e-05,
+              1.9749975763261318e-05
+            ]
+          }
+        },
+        "export_seconds": 0.016648582997731864,
+        "lower_serialize_seconds": 1.2960297500248998,
+        "export_shape_rejection": {
+          "type": "RuntimeError",
+          "message": "Expected input at *args[0].shape[0] to be equal to 3, but got 4. If you meant for this dimension to be dynamic, please re-export and specify dynamic_shapes (e.g. with Dim.DYNAMIC)"
+        },
+        "delegates": [
+          "XnnpackBackend"
+        ],
+        "edge_graph": "graph():\n    %input_1 : [num_users=1] = placeholder[target=input]\n    %lowered_module_0 : [num_users=1] = get_attr[target=lowered_module_0]\n    %executorch_call_delegate : [num_users=1] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_0, %input_1), kwargs = {})\n    %getitem : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate, 0), kwargs = {})\n    return (getitem,)",
+        "edge_call_targets": [
+          "executorch_call_delegate",
+          "<built-in function getitem>"
+        ],
+        "fallback_aten_targets": [],
+        "guards": {
+          "rejected": {
+            "shape": "this artifact contract requires contiguous CPU float32 (3,8)",
+            "dtype": "this artifact contract requires contiguous CPU float32 (3,8)",
+            "stride": "this artifact contract requires contiguous CPU float32 (3,8)"
+          },
+          "native_calls_for_invalid_inputs": 0
+        }
+      },
+      "passed": true,
+      "phase_wall_seconds": 3.312568916939199
+    },
+    "p100-c100": {
+      "phase": "load",
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "source_revision": "9c883671a6547b304428814b0adb5234bdd53de2",
+      "source_sha256": "ade8a49d3f8d8faeaa23ecffbcaf98365a50c6df9ceb89f00068aab318308908",
+      "fixture_sha256": "9c8f438626ea842145a4ced10af6b447a6103245ec2e1893571dba3e1c61b5ca",
+      "protocol_sha256": "7701508b05070cf2d11b0b6b2bba7ea6b547996c532e763d2f474bbe3a2d9c2b",
+      "historical_runner_sha256": "fe9249ecdf64dee30fa838d7bd72ffb283e812568d4b3173655855418db9dcd5",
+      "packages": [
+        [
+          "Jinja2",
+          "3.1.6"
+        ],
+        [
+          "MarkupSafe",
+          "3.0.4"
+        ],
+        [
+          "PyYAML",
+          "6.0.3"
+        ],
+        [
+          "Pygments",
+          "2.21.0"
+        ],
+        [
+          "antlr4-python3-runtime",
+          "4.9.3"
+        ],
+        [
+          "attrs",
+          "26.1.0"
+        ],
+        [
+          "cattrs",
+          "26.2.1"
+        ],
+        [
+          "cloudpickle",
+          "3.1.2"
+        ],
+        [
+          "coremltools",
+          "9.0b1"
+        ],
+        [
+          "execnet",
+          "2.1.2"
+        ],
+        [
+          "executorch",
+          "1.0.0"
+        ],
+        [
+          "expecttest",
+          "0.3.0"
+        ],
+        [
+          "filelock",
+          "4.2.4"
+        ],
+        [
+          "flatbuffers",
+          "25.12.19"
+        ],
+        [
+          "fsspec",
+          "2026.9.0"
+        ],
+        [
+          "hydra-core",
+          "1.3.8"
+        ],
+        [
+          "hypothesis",
+          "6.170.12"
+        ],
+        [
+          "iniconfig",
+          "2.3.1"
+        ],
+        [
+          "joblib",
+          "1.6.0"
+        ],
+        [
+          "kgb",
+          "7.3"
+        ],
+        [
+          "mpmath",
+          "1.3.0"
+        ],
+        [
+          "networkx",
+          "3.7"
+        ],
+        [
+          "numpy",
+          "2.5.4"
+        ],
+        [
+          "omegaconf",
+          "2.3.1"
+        ],
+        [
+          "packaging",
+          "26.3"
+        ],
+        [
+          "pandas",
+          "3.1.0"
+        ],
+        [
+          "parameterized",
+          "0.9.0"
+        ],
+        [
+          "pip",
+          "25.0.1"
+        ],
+        [
+          "pluggy",
+          "1.7.0"
+        ],
+        [
+          "protobuf",
+          "7.36.2"
+        ],
+        [
+          "pyaml",
+          "26.7.0"
+        ],
+        [
+          "pytest",
+          "9.2.0"
+        ],
+        [
+          "pytest-json-report",
+          "1.5.0"
+        ],
+        [
+          "pytest-metadata",
+          "3.1.1"
+        ],
+        [
+          "pytest-rerunfailures",
+          "15.1"
+        ],
+        [
+          "pytest-xdist",
+          "3.8.0"
+        ],
+        [
+          "python-dateutil",
+          "3.0.0"
+        ],
+        [
+          "ruamel.yaml",
+          "0.19.1"
+        ],
+        [
+          "scikit-learn",
+          "1.7.1"
+        ],
+        [
+          "scipy",
+          "1.18.1"
+        ],
+        [
+          "setuptools",
+          "84.2.1"
+        ],
+        [
+          "six",
+          "1.17.0"
+        ],
+        [
+          "sortedcontainers",
+          "2.4.0"
+        ],
+        [
+          "sympy",
+          "1.14.0"
+        ],
+        [
+          "tabulate",
+          "0.10.0"
+        ],
+        [
+          "threadpoolctl",
+          "3.7.0"
+        ],
+        [
+          "torch",
+          "2.9.1"
+        ],
+        [
+          "torchao",
+          "0.14.0"
+        ],
+        [
+          "tqdm",
+          "4.70.1"
+        ],
+        [
+          "typing_extensions",
+          "4.16.0"
+        ],
+        [
+          "tzdata",
+          "2026.5"
+        ]
+      ],
+      "versions": {
+        "executorch": "1.0.0",
+        "torch": "2.9.1"
+      },
+      "torch_threads": 1,
+      "device": "cpu",
+      "dtype": "float32",
+      "venv_config": "home = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin\ninclude-system-site-packages = false\nversion = 3.12.14\nexecutable = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12\ncommand = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m venv /private/tmp/cmp1-et100-20261114\n",
+      "result": {
+        "artifact_sha256": "a910c25afff67ecab8c68a9c3663d041d7f720d084f694d1831e36660aa3337d",
+        "artifact_bytes": 3728,
+        "load_program_and_method_seconds": 0.00042554200626909733,
+        "cases": {
+          "random": {
+            "max_abs_error_vs_scalar": 5.960464477539063e-08,
+            "output": [
+              [
+                -0.19958359003067017,
+                -0.39119628071784973,
+                -0.07397521287202835,
+                0.07156065851449966
+              ],
+              [
+                -0.37664175033569336,
+                -0.5470884442329407,
+                0.026398837566375732,
+                0.016342278569936752
+              ],
+              [
+                -0.29413363337516785,
+                -0.3037845492362976,
+                0.04864450916647911,
+                -0.06947903335094452
+              ]
+            ],
+            "input_sha256": "a6fba73f8e89313ddd01592f8bce079cb9e4658b3c4ade242f5223cf2ffad858",
+            "first_case_call_seconds": 0.00013337505515664816,
+            "warm_seconds": [
+              5.667097866535187e-06,
+              4.874891601502895e-06,
+              4.500034265220165e-06,
+              3.7910649552941322e-06,
+              3.91609501093626e-06,
+              3.875000402331352e-06,
+              3.832974471151829e-06,
+              4.041008651256561e-06,
+              3.4580007195472717e-06,
+              3.2079406082630157e-06
+            ]
+          },
+          "zero": {
+            "max_abs_error_vs_scalar": 7.450580596923828e-09,
+            "output": [
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843930959702,
+                0.003362720599398017
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843930959702,
+                0.003362720599398017
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843930959702,
+                0.003362720599398017
+              ]
+            ],
+            "input_sha256": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4",
+            "first_case_call_seconds": 5.707959644496441e-06,
+            "warm_seconds": [
+              4.167086444795132e-06,
+              4.00003045797348e-06,
+              3.832974471151829e-06,
+              3.915978595614433e-06,
+              3.7919962778687477e-06,
+              3.6659184843301773e-06,
+              3.7499703466892242e-06,
+              3.7910649552941322e-06,
+              4.125060513615608e-06,
+              3.6669662222266197e-06
+            ]
+          },
+          "signed": {
+            "max_abs_error_vs_scalar": 5.960464477539063e-08,
+            "output": [
+              [
+                0.5761608481407166,
+                -0.21757769584655762,
+                -0.06163293123245239,
+                0.26722198724746704
+              ],
+              [
+                0.013554728589951992,
+                -0.8028314113616943,
+                0.6343821883201599,
+                -0.25897523760795593
+              ],
+              [
+                0.8748890161514282,
+                -0.26108768582344055,
+                -0.18374425172805786,
+                0.40042251348495483
+              ]
+            ],
+            "input_sha256": "328ba6c4d1d95804e00c21c793dc56c4fcb4e3b672dea909da816a1eef2ee07f",
+            "first_case_call_seconds": 4.959059879183769e-06,
+            "warm_seconds": [
+              3.958004526793957e-06,
+              3.875000402331352e-06,
+              3.875000402331352e-06,
+              3.7909485399723053e-06,
+              3.625056706368923e-06,
+              3.6659184843301773e-06,
+              3.7079444155097008e-06,
+              3.6670826375484467e-06,
+              3.6660348996520042e-06,
+              3.7079444155097008e-06
+            ]
+          }
+        },
+        "guards": {
+          "rejected": {
+            "shape": "this artifact contract requires contiguous CPU float32 (3,8)",
+            "dtype": "this artifact contract requires contiguous CPU float32 (3,8)",
+            "stride": "this artifact contract requires contiguous CPU float32 (3,8)"
+          },
+          "native_calls_for_invalid_inputs": 0
+        }
+      },
+      "passed": true,
+      "phase_wall_seconds": 1.7553779169684276
+    },
+    "p100-c160": {
+      "phase": "load",
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "source_revision": "9c883671a6547b304428814b0adb5234bdd53de2",
+      "source_sha256": "ade8a49d3f8d8faeaa23ecffbcaf98365a50c6df9ceb89f00068aab318308908",
+      "fixture_sha256": "9c8f438626ea842145a4ced10af6b447a6103245ec2e1893571dba3e1c61b5ca",
+      "protocol_sha256": "7701508b05070cf2d11b0b6b2bba7ea6b547996c532e763d2f474bbe3a2d9c2b",
+      "historical_runner_sha256": "fe9249ecdf64dee30fa838d7bd72ffb283e812568d4b3173655855418db9dcd5",
+      "packages": [
+        [
+          "Jinja2",
+          "3.1.6"
+        ],
+        [
+          "MarkupSafe",
+          "3.0.4"
+        ],
+        [
+          "PyYAML",
+          "6.0.3"
+        ],
+        [
+          "antlr4-python3-runtime",
+          "4.9.3"
+        ],
+        [
+          "anyio",
+          "4.16.0"
+        ],
+        [
+          "attrs",
+          "26.1.0"
+        ],
+        [
+          "cattrs",
+          "26.2.1"
+        ],
+        [
+          "certifi",
+          "2026.10.23"
+        ],
+        [
+          "charset-normalizer",
+          "3.5.2"
+        ],
+        [
+          "click",
+          "8.5.1"
+        ],
+        [
+          "cloudpickle",
+          "3.1.2"
+        ],
+        [
+          "coremltools",
+          "9.0"
+        ],
+        [
+          "executorch",
+          "1.6.0"
+        ],
+        [
+          "filelock",
+          "4.2.10"
+        ],
+        [
+          "flatbuffers",
+          "25.12.19"
+        ],
+        [
+          "fsspec",
+          "2026.9.0"
+        ],
+        [
+          "h11",
+          "0.16.0"
+        ],
+        [
+          "hf-xet",
+          "1.8.0"
+        ],
+        [
+          "httpcore2",
+          "2.16.0"
+        ],
+        [
+          "httpx2",
+          "2.16.0"
+        ],
+        [
+          "huggingface_hub",
+          "2.4.0"
+        ],
+        [
+          "hydra-core",
+          "1.3.8"
+        ],
+        [
+          "idna",
+          "3.20"
+        ],
+        [
+          "joblib",
+          "1.6.0"
+        ],
+        [
+          "mpmath",
+          "1.3.0"
+        ],
+        [
+          "narwhals",
+          "2.28.0"
+        ],
+        [
+          "networkx",
+          "3.7"
+        ],
+        [
+          "numpy",
+          "2.5.4"
+        ],
+        [
+          "omegaconf",
+          "2.3.1"
+        ],
+        [
+          "packaging",
+          "26.3"
+        ],
+        [
+          "pandas",
+          "3.1.1"
+        ],
+        [
+          "pip",
+          "25.0.1"
+        ],
+        [
+          "protobuf",
+          "7.36.2"
+        ],
+        [
+          "py-cpuinfo",
+          "9.0.0"
+        ],
+        [
+          "pyaml",
+          "26.7.0"
+        ],
+        [
+          "python-dateutil",
+          "4.0.0"
+        ],
+        [
+          "pytorch_tokenizers",
+          "1.6.0"
+        ],
+        [
+          "regex",
+          "2026.11.9"
+        ],
+        [
+          "requests",
+          "2.34.2"
+        ],
+        [
+          "ruamel.yaml",
+          "0.19.1"
+        ],
+        [
+          "scikit-learn",
+          "1.9.1"
+        ],
+        [
+          "scipy",
+          "1.18.1"
+        ],
+        [
+          "sentencepiece",
+          "0.2.3"
+        ],
+        [
+          "setuptools",
+          "84.2.1"
+        ],
+        [
+          "sympy",
+          "1.14.0"
+        ],
+        [
+          "tabulate",
+          "0.10.0"
+        ],
+        [
+          "threadpoolctl",
+          "3.8.0"
+        ],
+        [
+          "tiktoken",
+          "0.14.0"
+        ],
+        [
+          "tokenizers",
+          "0.23.3"
+        ],
+        [
+          "torch",
+          "2.15.0"
+        ],
+        [
+          "torchao",
+          "0.18.0"
+        ],
+        [
+          "tqdm",
+          "4.70.1"
+        ],
+        [
+          "truststore",
+          "0.10.5"
+        ],
+        [
+          "typing_extensions",
+          "4.16.0"
+        ],
+        [
+          "tzdata",
+          "2026.6"
+        ],
+        [
+          "urllib3",
+          "2.8.0"
+        ]
+      ],
+      "versions": {
+        "executorch": "1.6.0",
+        "torch": "2.15.0"
+      },
+      "torch_threads": 1,
+      "device": "cpu",
+      "dtype": "float32",
+      "venv_config": "home = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin\ninclude-system-site-packages = false\nversion = 3.12.14\nexecutable = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12\ncommand = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m venv /private/tmp/cmp1-et160-20261114\n",
+      "result": {
+        "artifact_sha256": "a910c25afff67ecab8c68a9c3663d041d7f720d084f694d1831e36660aa3337d",
+        "artifact_bytes": 3728,
+        "load_program_and_method_seconds": 0.0016644169809296727,
+        "cases": {
+          "random": {
+            "max_abs_error_vs_scalar": 5.960464477539063e-08,
+            "output": [
+              [
+                -0.19958359003067017,
+                -0.39119628071784973,
+                -0.07397521287202835,
+                0.07156065851449966
+              ],
+              [
+                -0.37664175033569336,
+                -0.5470884442329407,
+                0.026398837566375732,
+                0.016342278569936752
+              ],
+              [
+                -0.29413363337516785,
+                -0.3037845492362976,
+                0.04864450916647911,
+                -0.06947903335094452
+              ]
+            ],
+            "input_sha256": "a6fba73f8e89313ddd01592f8bce079cb9e4658b3c4ade242f5223cf2ffad858",
+            "first_case_call_seconds": 0.00036987499333918095,
+            "warm_seconds": [
+              9.582960046827793e-06,
+              1.091696321964264e-05,
+              9.750016033649445e-06,
+              9.416951797902584e-06,
+              8.707982487976551e-06,
+              7.958034984767437e-06,
+              8.750008419156075e-06,
+              8.624978363513947e-06,
+              8.834060281515121e-06,
+              8.457922376692295e-06
+            ]
+          },
+          "zero": {
+            "max_abs_error_vs_scalar": 7.450580596923828e-09,
+            "output": [
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843930959702,
+                0.003362720599398017
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843930959702,
+                0.003362720599398017
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843930959702,
+                0.003362720599398017
+              ]
+            ],
+            "input_sha256": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4",
+            "first_case_call_seconds": 1.0416028089821339e-05,
+            "warm_seconds": [
+              1.1458992958068848e-05,
+              9.041978046298027e-06,
+              7.3750270530581474e-06,
+              8.208095096051693e-06,
+              1.0458054021000862e-05,
+              8.624978363513947e-06,
+              7.958034984767437e-06,
+              8.29098280519247e-06,
+              6.875023245811462e-06,
+              8.874922059476376e-06
+            ]
+          },
+          "signed": {
+            "max_abs_error_vs_scalar": 5.960464477539063e-08,
+            "output": [
+              [
+                0.5761608481407166,
+                -0.21757769584655762,
+                -0.06163293123245239,
+                0.26722198724746704
+              ],
+              [
+                0.013554728589951992,
+                -0.8028314113616943,
+                0.6343821883201599,
+                -0.25897523760795593
+              ],
+              [
+                0.8748890161514282,
+                -0.26108768582344055,
+                -0.18374425172805786,
+                0.40042251348495483
+              ]
+            ],
+            "input_sha256": "328ba6c4d1d95804e00c21c793dc56c4fcb4e3b672dea909da816a1eef2ee07f",
+            "first_case_call_seconds": 8.124974556267262e-06,
+            "warm_seconds": [
+              8.042086847126484e-06,
+              7.916009053587914e-06,
+              7.750000804662704e-06,
+              6.7909713834524155e-06,
+              7.6669966802001e-06,
+              7.958034984767437e-06,
+              7.708091288805008e-06,
+              7.6669966802001e-06,
+              7.4999406933784485e-06,
+              7.1659451350569725e-06
+            ]
+          }
+        },
+        "guards": {
+          "rejected": {
+            "shape": "this artifact contract requires contiguous CPU float32 (3,8)",
+            "dtype": "this artifact contract requires contiguous CPU float32 (3,8)",
+            "stride": "this artifact contract requires contiguous CPU float32 (3,8)"
+          },
+          "native_calls_for_invalid_inputs": 0
+        }
+      },
+      "passed": true,
+      "phase_wall_seconds": 1.731255333055742
+    },
+    "p160-c100": {
+      "phase": "load",
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "source_revision": "9c883671a6547b304428814b0adb5234bdd53de2",
+      "source_sha256": "ade8a49d3f8d8faeaa23ecffbcaf98365a50c6df9ceb89f00068aab318308908",
+      "fixture_sha256": "9c8f438626ea842145a4ced10af6b447a6103245ec2e1893571dba3e1c61b5ca",
+      "protocol_sha256": "7701508b05070cf2d11b0b6b2bba7ea6b547996c532e763d2f474bbe3a2d9c2b",
+      "historical_runner_sha256": "fe9249ecdf64dee30fa838d7bd72ffb283e812568d4b3173655855418db9dcd5",
+      "packages": [
+        [
+          "Jinja2",
+          "3.1.6"
+        ],
+        [
+          "MarkupSafe",
+          "3.0.4"
+        ],
+        [
+          "PyYAML",
+          "6.0.3"
+        ],
+        [
+          "Pygments",
+          "2.21.0"
+        ],
+        [
+          "antlr4-python3-runtime",
+          "4.9.3"
+        ],
+        [
+          "attrs",
+          "26.1.0"
+        ],
+        [
+          "cattrs",
+          "26.2.1"
+        ],
+        [
+          "cloudpickle",
+          "3.1.2"
+        ],
+        [
+          "coremltools",
+          "9.0b1"
+        ],
+        [
+          "execnet",
+          "2.1.2"
+        ],
+        [
+          "executorch",
+          "1.0.0"
+        ],
+        [
+          "expecttest",
+          "0.3.0"
+        ],
+        [
+          "filelock",
+          "4.2.4"
+        ],
+        [
+          "flatbuffers",
+          "25.12.19"
+        ],
+        [
+          "fsspec",
+          "2026.9.0"
+        ],
+        [
+          "hydra-core",
+          "1.3.8"
+        ],
+        [
+          "hypothesis",
+          "6.170.12"
+        ],
+        [
+          "iniconfig",
+          "2.3.1"
+        ],
+        [
+          "joblib",
+          "1.6.0"
+        ],
+        [
+          "kgb",
+          "7.3"
+        ],
+        [
+          "mpmath",
+          "1.3.0"
+        ],
+        [
+          "networkx",
+          "3.7"
+        ],
+        [
+          "numpy",
+          "2.5.4"
+        ],
+        [
+          "omegaconf",
+          "2.3.1"
+        ],
+        [
+          "packaging",
+          "26.3"
+        ],
+        [
+          "pandas",
+          "3.1.0"
+        ],
+        [
+          "parameterized",
+          "0.9.0"
+        ],
+        [
+          "pip",
+          "25.0.1"
+        ],
+        [
+          "pluggy",
+          "1.7.0"
+        ],
+        [
+          "protobuf",
+          "7.36.2"
+        ],
+        [
+          "pyaml",
+          "26.7.0"
+        ],
+        [
+          "pytest",
+          "9.2.0"
+        ],
+        [
+          "pytest-json-report",
+          "1.5.0"
+        ],
+        [
+          "pytest-metadata",
+          "3.1.1"
+        ],
+        [
+          "pytest-rerunfailures",
+          "15.1"
+        ],
+        [
+          "pytest-xdist",
+          "3.8.0"
+        ],
+        [
+          "python-dateutil",
+          "3.0.0"
+        ],
+        [
+          "ruamel.yaml",
+          "0.19.1"
+        ],
+        [
+          "scikit-learn",
+          "1.7.1"
+        ],
+        [
+          "scipy",
+          "1.18.1"
+        ],
+        [
+          "setuptools",
+          "84.2.1"
+        ],
+        [
+          "six",
+          "1.17.0"
+        ],
+        [
+          "sortedcontainers",
+          "2.4.0"
+        ],
+        [
+          "sympy",
+          "1.14.0"
+        ],
+        [
+          "tabulate",
+          "0.10.0"
+        ],
+        [
+          "threadpoolctl",
+          "3.7.0"
+        ],
+        [
+          "torch",
+          "2.9.1"
+        ],
+        [
+          "torchao",
+          "0.14.0"
+        ],
+        [
+          "tqdm",
+          "4.70.1"
+        ],
+        [
+          "typing_extensions",
+          "4.16.0"
+        ],
+        [
+          "tzdata",
+          "2026.5"
+        ]
+      ],
+      "versions": {
+        "executorch": "1.0.0",
+        "torch": "2.9.1"
+      },
+      "torch_threads": 1,
+      "device": "cpu",
+      "dtype": "float32",
+      "venv_config": "home = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin\ninclude-system-site-packages = false\nversion = 3.12.14\nexecutable = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12\ncommand = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m venv /private/tmp/cmp1-et100-20261114\n",
+      "result": {
+        "artifact_sha256": "424a6e0b1e4a02c0c7bbc8b13b924d3d15c13cd920bd774fe215a9ca862ff764",
+        "artifact_bytes": 3728,
+        "load_program_and_method_seconds": 0.00027283409144729376,
+        "cases": {
+          "random": {
+            "max_abs_error_vs_scalar": 5.960464477539063e-08,
+            "output": [
+              [
+                -0.19958359003067017,
+                -0.39119628071784973,
+                -0.07397521287202835,
+                0.07156065851449966
+              ],
+              [
+                -0.37664175033569336,
+                -0.5470884442329407,
+                0.026398837566375732,
+                0.016342278569936752
+              ],
+              [
+                -0.29413363337516785,
+                -0.3037845492362976,
+                0.04864450916647911,
+                -0.06947903335094452
+              ]
+            ],
+            "input_sha256": "a6fba73f8e89313ddd01592f8bce079cb9e4658b3c4ade242f5223cf2ffad858",
+            "first_case_call_seconds": 7.333303801715374e-05,
+            "warm_seconds": [
+              5.375011824071407e-06,
+              4.832982085645199e-06,
+              4.624947905540466e-06,
+              4.207948222756386e-06,
+              4.249974153935909e-06,
+              4.29095234721899e-06,
+              4.124944098293781e-06,
+              4.332978278398514e-06,
+              3.875000402331352e-06,
+              3.7499703466892242e-06
+            ]
+          },
+          "zero": {
+            "max_abs_error_vs_scalar": 7.450580596923828e-09,
+            "output": [
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843930959702,
+                0.003362720599398017
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843930959702,
+                0.003362720599398017
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843930959702,
+                0.003362720599398017
+              ]
+            ],
+            "input_sha256": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4",
+            "first_case_call_seconds": 7.209018804132938e-06,
+            "warm_seconds": [
+              4.416913725435734e-06,
+              4.415982402861118e-06,
+              3.875000402331352e-06,
+              3.875000402331352e-06,
+              3.833090886473656e-06,
+              3.708992153406143e-06,
+              3.708992153406143e-06,
+              3.7499703466892242e-06,
+              4.125060513615608e-06,
+              3.625056706368923e-06
+            ]
+          },
+          "signed": {
+            "max_abs_error_vs_scalar": 5.960464477539063e-08,
+            "output": [
+              [
+                0.5761608481407166,
+                -0.21757769584655762,
+                -0.06163293123245239,
+                0.26722198724746704
+              ],
+              [
+                0.013554728589951992,
+                -0.8028314113616943,
+                0.6343821883201599,
+                -0.25897523760795593
+              ],
+              [
+                0.8748890161514282,
+                -0.26108768582344055,
+                -0.18374425172805786,
+                0.40042251348495483
+              ]
+            ],
+            "input_sha256": "328ba6c4d1d95804e00c21c793dc56c4fcb4e3b672dea909da816a1eef2ee07f",
+            "first_case_call_seconds": 4.417030140757561e-06,
+            "warm_seconds": [
+              3.875000402331352e-06,
+              3.7910649552941322e-06,
+              3.5830307751893997e-06,
+              3.5830307751893997e-06,
+              3.4999102354049683e-06,
+              3.584078513085842e-06,
+              3.4999102354049683e-06,
+              3.5830307751893997e-06,
+              3.6659184843301773e-06,
+              3.7499703466892242e-06
+            ]
+          }
+        },
+        "guards": {
+          "rejected": {
+            "shape": "this artifact contract requires contiguous CPU float32 (3,8)",
+            "dtype": "this artifact contract requires contiguous CPU float32 (3,8)",
+            "stride": "this artifact contract requires contiguous CPU float32 (3,8)"
+          },
+          "native_calls_for_invalid_inputs": 0
+        }
+      },
+      "passed": true,
+      "phase_wall_seconds": 1.5977856249082834
+    },
+    "p160-c160": {
+      "phase": "load",
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "source_revision": "9c883671a6547b304428814b0adb5234bdd53de2",
+      "source_sha256": "ade8a49d3f8d8faeaa23ecffbcaf98365a50c6df9ceb89f00068aab318308908",
+      "fixture_sha256": "9c8f438626ea842145a4ced10af6b447a6103245ec2e1893571dba3e1c61b5ca",
+      "protocol_sha256": "7701508b05070cf2d11b0b6b2bba7ea6b547996c532e763d2f474bbe3a2d9c2b",
+      "historical_runner_sha256": "fe9249ecdf64dee30fa838d7bd72ffb283e812568d4b3173655855418db9dcd5",
+      "packages": [
+        [
+          "Jinja2",
+          "3.1.6"
+        ],
+        [
+          "MarkupSafe",
+          "3.0.4"
+        ],
+        [
+          "PyYAML",
+          "6.0.3"
+        ],
+        [
+          "antlr4-python3-runtime",
+          "4.9.3"
+        ],
+        [
+          "anyio",
+          "4.16.0"
+        ],
+        [
+          "attrs",
+          "26.1.0"
+        ],
+        [
+          "cattrs",
+          "26.2.1"
+        ],
+        [
+          "certifi",
+          "2026.10.23"
+        ],
+        [
+          "charset-normalizer",
+          "3.5.2"
+        ],
+        [
+          "click",
+          "8.5.1"
+        ],
+        [
+          "cloudpickle",
+          "3.1.2"
+        ],
+        [
+          "coremltools",
+          "9.0"
+        ],
+        [
+          "executorch",
+          "1.6.0"
+        ],
+        [
+          "filelock",
+          "4.2.10"
+        ],
+        [
+          "flatbuffers",
+          "25.12.19"
+        ],
+        [
+          "fsspec",
+          "2026.9.0"
+        ],
+        [
+          "h11",
+          "0.16.0"
+        ],
+        [
+          "hf-xet",
+          "1.8.0"
+        ],
+        [
+          "httpcore2",
+          "2.16.0"
+        ],
+        [
+          "httpx2",
+          "2.16.0"
+        ],
+        [
+          "huggingface_hub",
+          "2.4.0"
+        ],
+        [
+          "hydra-core",
+          "1.3.8"
+        ],
+        [
+          "idna",
+          "3.20"
+        ],
+        [
+          "joblib",
+          "1.6.0"
+        ],
+        [
+          "mpmath",
+          "1.3.0"
+        ],
+        [
+          "narwhals",
+          "2.28.0"
+        ],
+        [
+          "networkx",
+          "3.7"
+        ],
+        [
+          "numpy",
+          "2.5.4"
+        ],
+        [
+          "omegaconf",
+          "2.3.1"
+        ],
+        [
+          "packaging",
+          "26.3"
+        ],
+        [
+          "pandas",
+          "3.1.1"
+        ],
+        [
+          "pip",
+          "25.0.1"
+        ],
+        [
+          "protobuf",
+          "7.36.2"
+        ],
+        [
+          "py-cpuinfo",
+          "9.0.0"
+        ],
+        [
+          "pyaml",
+          "26.7.0"
+        ],
+        [
+          "python-dateutil",
+          "4.0.0"
+        ],
+        [
+          "pytorch_tokenizers",
+          "1.6.0"
+        ],
+        [
+          "regex",
+          "2026.11.9"
+        ],
+        [
+          "requests",
+          "2.34.2"
+        ],
+        [
+          "ruamel.yaml",
+          "0.19.1"
+        ],
+        [
+          "scikit-learn",
+          "1.9.1"
+        ],
+        [
+          "scipy",
+          "1.18.1"
+        ],
+        [
+          "sentencepiece",
+          "0.2.3"
+        ],
+        [
+          "setuptools",
+          "84.2.1"
+        ],
+        [
+          "sympy",
+          "1.14.0"
+        ],
+        [
+          "tabulate",
+          "0.10.0"
+        ],
+        [
+          "threadpoolctl",
+          "3.8.0"
+        ],
+        [
+          "tiktoken",
+          "0.14.0"
+        ],
+        [
+          "tokenizers",
+          "0.23.3"
+        ],
+        [
+          "torch",
+          "2.15.0"
+        ],
+        [
+          "torchao",
+          "0.18.0"
+        ],
+        [
+          "tqdm",
+          "4.70.1"
+        ],
+        [
+          "truststore",
+          "0.10.5"
+        ],
+        [
+          "typing_extensions",
+          "4.16.0"
+        ],
+        [
+          "tzdata",
+          "2026.6"
+        ],
+        [
+          "urllib3",
+          "2.8.0"
+        ]
+      ],
+      "versions": {
+        "executorch": "1.6.0",
+        "torch": "2.15.0"
+      },
+      "torch_threads": 1,
+      "device": "cpu",
+      "dtype": "float32",
+      "venv_config": "home = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin\ninclude-system-site-packages = false\nversion = 3.12.14\nexecutable = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12\ncommand = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m venv /private/tmp/cmp1-et160-20261114\n",
+      "result": {
+        "artifact_sha256": "424a6e0b1e4a02c0c7bbc8b13b924d3d15c13cd920bd774fe215a9ca862ff764",
+        "artifact_bytes": 3728,
+        "load_program_and_method_seconds": 0.0003107920056208968,
+        "cases": {
+          "random": {
+            "max_abs_error_vs_scalar": 5.960464477539063e-08,
+            "output": [
+              [
+                -0.19958359003067017,
+                -0.39119628071784973,
+                -0.07397521287202835,
+                0.07156065851449966
+              ],
+              [
+                -0.37664175033569336,
+                -0.5470884442329407,
+                0.026398837566375732,
+                0.016342278569936752
+              ],
+              [
+                -0.29413363337516785,
+                -0.3037845492362976,
+                0.04864450916647911,
+                -0.06947903335094452
+              ]
+            ],
+            "input_sha256": "a6fba73f8e89313ddd01592f8bce079cb9e4658b3c4ade242f5223cf2ffad858",
+            "first_case_call_seconds": 7.670803461223841e-05,
+            "warm_seconds": [
+              1.1082971468567848e-05,
+              8.165952749550343e-06,
+              9.584007784724236e-06,
+              9.457929991185665e-06,
+              8.624978363513947e-06,
+              8.541974239051342e-06,
+              8.08399636298418e-06,
+              9.083072654902935e-06,
+              8.875038474798203e-06,
+              8.333008736371994e-06
+            ]
+          },
+          "zero": {
+            "max_abs_error_vs_scalar": 7.450580596923828e-09,
+            "output": [
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843930959702,
+                0.003362720599398017
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843930959702,
+                0.003362720599398017
+              ],
+              [
+                -0.19320988655090332,
+                -0.26206743717193604,
+                0.08068843930959702,
+                0.003362720599398017
+              ]
+            ],
+            "input_sha256": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4",
+            "first_case_call_seconds": 9.833020158112049e-06,
+            "warm_seconds": [
+              8.291914127767086e-06,
+              8.124974556267262e-06,
+              8.25000461190939e-06,
+              7.6669966802001e-06,
+              8.25000461190939e-06,
+              1.0249903425574303e-05,
+              7.916940376162529e-06,
+              8.916016668081284e-06,
+              8.00006091594696e-06,
+              7.166992872953415e-06
+            ]
+          },
+          "signed": {
+            "max_abs_error_vs_scalar": 5.960464477539063e-08,
+            "output": [
+              [
+                0.5761608481407166,
+                -0.21757769584655762,
+                -0.06163293123245239,
+                0.26722198724746704
+              ],
+              [
+                0.013554728589951992,
+                -0.8028314113616943,
+                0.6343821883201599,
+                -0.25897523760795593
+              ],
+              [
+                0.8748890161514282,
+                -0.26108768582344055,
+                -0.18374425172805786,
+                0.40042251348495483
+              ]
+            ],
+            "input_sha256": "328ba6c4d1d95804e00c21c793dc56c4fcb4e3b672dea909da816a1eef2ee07f",
+            "first_case_call_seconds": 8.207978680729866e-06,
+            "warm_seconds": [
+              7.833004929125309e-06,
+              7.958966307342052e-06,
+              7.790978997945786e-06,
+              7.457914762198925e-06,
+              7.3750270530581474e-06,
+              7.665948942303658e-06,
+              7.6249707490205765e-06,
+              7.6669966802001e-06,
+              7.334048859775066e-06,
+              7.582944817841053e-06
+            ]
+          }
+        },
+        "guards": {
+          "rejected": {
+            "shape": "this artifact contract requires contiguous CPU float32 (3,8)",
+            "dtype": "this artifact contract requires contiguous CPU float32 (3,8)",
+            "stride": "this artifact contract requires contiguous CPU float32 (3,8)"
+          },
+          "native_calls_for_invalid_inputs": 0
+        }
+      },
+      "passed": true,
+      "phase_wall_seconds": 0.5847406659740955
+    }
+  },
+  "logs": {
+    "et100-build": "Skipping import of cpp extensions due to incompatible torch version 2.9.1 for torchao version 0.14.0         Please see GitHub issue #2919 for more info\nW1113 20:53:45.010000 49876 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\nbuild True /private/tmp/cmp1-et100-build.json\n",
+    "et160-build": "W1113 20:53:49.403000 49868 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.\nW1113 20:53:49.416000 49868 torch/utils/_pytree.py:646] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.\nbuild True /private/tmp/cmp1-et160-build.json\n",
+    "p100-c100": "Skipping import of cpp extensions due to incompatible torch version 2.9.1 for torchao version 0.14.0         Please see GitHub issue #2919 for more info\nW1113 20:54:36.799000 50128 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\n[program.cpp:154] InternalConsistency verification requested but not available\nload True /private/tmp/cmp1-p100-c100.json\n",
+    "p100-c160": "[cpuinfo_utils.cpp:185] Number of efficient cores 0\nload True /private/tmp/cmp1-p100-c160.json\n",
+    "p160-c100": "Skipping import of cpp extensions due to incompatible torch version 2.9.1 for torchao version 0.14.0         Please see GitHub issue #2919 for more info\nW1113 20:54:40.753000 50154 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\n[program.cpp:154] InternalConsistency verification requested but not available\nload True /private/tmp/cmp1-p160-c100.json\n",
+    "p160-c160": "[cpuinfo_utils.cpp:185] Number of efficient cores 0\nload True /private/tmp/cmp1-p160-c160.json\n"
+  },
+  "environments": [
+    {
+      "lane": "100",
+      "executorch": "1.0.0",
+      "source_revision": "8c84780911e7f4e9eb19395181b04761392a4b56",
+      "pip_version": "25.0.1",
+      "install_environment": {
+        "implementation_name": "cpython",
+        "implementation_version": "3.12.14",
+        "os_name": "posix",
+        "platform_machine": "arm64",
+        "platform_release": "27.0.0",
+        "platform_system": "Darwin",
+        "platform_version": "Darwin Kernel Version 27.0.0: Tue Aug 11 21:05:48 PDT 2026; root:xnu-13432.1.9~1/RELEASE_ARM64_T6041",
+        "python_full_version": "3.12.14",
+        "platform_python_implementation": "CPython",
+        "python_version": "3.12",
+        "sys_platform": "darwin"
+      },
+      "installed_artifacts": [
+        {
+          "name": "antlr4-python3-runtime",
+          "version": "4.9.3",
+          "url": "https://files.pythonhosted.org/packages/3e/38/7859ff46355f76f8d19459005ca000b6e7012f2f1ca597746cbcd1fbfe5e/antlr4-python3-runtime-4.9.3.tar.gz",
+          "sha256": "f224469b4168294902bb1efa80a8bf7855f24c99aef99cbefc1bcd3cce77881b"
+        },
+        {
+          "name": "attrs",
+          "version": "26.1.0",
+          "url": "https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl",
+          "sha256": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309"
+        },
+        {
+          "name": "cattrs",
+          "version": "26.2.1",
+          "url": "https://files.pythonhosted.org/packages/e8/cf/22794a399d99480486120e26e879ef008e21f5e85274c2ed591d568bb326/cattrs-26.2.1-py3-none-any.whl",
+          "sha256": "a12aaa3453dc8f633a815293179f08b7421ed18d2575c459c3c736f840beac24"
+        },
+        {
+          "name": "cloudpickle",
+          "version": "3.1.2",
+          "url": "https://files.pythonhosted.org/packages/88/39/799be3f2f0f38cc727ee3b4f1445fe6d5e4133064ec2e4115069418a5bb6/cloudpickle-3.1.2-py3-none-any.whl",
+          "sha256": "9acb47f6afd73f60dc1df93bb801b472f05ff42fa6c84167d25cb206be1fbf4a"
+        },
+        {
+          "name": "coremltools",
+          "version": "9.0b1",
+          "url": "https://files.pythonhosted.org/packages/0a/a3/f86e036f20755b5bd7ee4569955a7c3f49bebf50d4ae785ff098fc8ad68d/coremltools-9.0b1-cp312-none-macosx_11_0_arm64.whl",
+          "sha256": "294351637b070c488dfc73a5a28d0c79377257c91ede2bd52fee705039e3d7d9"
+        },
+        {
+          "name": "execnet",
+          "version": "2.1.2",
+          "url": "https://files.pythonhosted.org/packages/ab/84/02fc1827e8cdded4aa65baef11296a9bbe595c474f0d6d758af082d849fd/execnet-2.1.2-py3-none-any.whl",
+          "sha256": "67fba928dd5a544b783f6056f449e5e3931a5c378b128bc18501f7ea79e296ec"
+        },
+        {
+          "name": "executorch",
+          "version": "1.0.0",
+          "url": "https://files.pythonhosted.org/packages/b6/f8/c92ccc9e04bc87d89fc6403757c0a2de082cffef1ac43f2b4d6ce73b9df0/executorch-1.0.0-cp312-cp312-macosx_12_0_arm64.whl",
+          "sha256": "d94b97f4366c4fbba9a1f7a5b1ff50157d8f7f2b78913f102cf792530ad04218",
+          "pypi_hash_matched": true
+        },
+        {
+          "name": "expecttest",
+          "version": "0.3.0",
+          "url": "https://files.pythonhosted.org/packages/27/fb/deeefea1ea549273817ca7bed3db2f39cc238a75a745a20e3651619f7335/expecttest-0.3.0-py3-none-any.whl",
+          "sha256": "60f88103086e1754240b42175f622be83b6ffeac419434691ee5a5be819d0544"
+        },
+        {
+          "name": "filelock",
+          "version": "4.2.4",
+          "url": "https://files.pythonhosted.org/packages/e0/1b/5e74289a1878e666bb4b65fe5805a04cafcac2aa5f519ef1ead67ef91c56/filelock-4.2.4-py3-none-any.whl",
+          "sha256": "301241438c57936ef93f4243a94f2559022268bfcf9b375a9a72eb0f8db8358e"
+        },
+        {
+          "name": "flatbuffers",
+          "version": "25.12.19",
+          "url": "https://files.pythonhosted.org/packages/e8/2d/d2a548598be01649e2d46231d151a6c56d10b964d94043a335ae56ea2d92/flatbuffers-25.12.19-py2.py3-none-any.whl",
+          "sha256": "7634f50c427838bb021c2d66a3d1168e9d199b0607e6329399f04846d42e20b4"
+        },
+        {
+          "name": "fsspec",
+          "version": "2026.9.0",
+          "url": "https://files.pythonhosted.org/packages/6c/c0/a98505f18594f1bce828bb159cec0fcf9860562f1a2c85913409fc8f3d9e/fsspec-2026.9.0-py3-none-any.whl",
+          "sha256": "8dd6e646e99ea382bd85f97a45e6b526a442d79423a7dc673f1e2756d05fcb5f"
+        },
+        {
+          "name": "hydra-core",
+          "version": "1.3.8",
+          "url": "https://files.pythonhosted.org/packages/13/69/8e5cf7ad847538fc180fbd06e8442b8bede53ee4852458a16e24231395e9/hydra_core-1.3.8-py3-none-any.whl",
+          "sha256": "d5f184c291691cba835c7f04bc4e36270ad88b1d7e394a3712f5af084c30b394"
+        },
+        {
+          "name": "hypothesis",
+          "version": "6.170.12",
+          "url": "https://files.pythonhosted.org/packages/e2/05/e38e2de5486b03670360d47e1deb419917754fc9daf2aaee3ad185083d5a/hypothesis-6.170.12-cp312-cp312-macosx_11_0_arm64.whl",
+          "sha256": "94b05dd80631d60f672c7d87d4280be9efa31b3116d0d88e71b7d26951fd3f94"
+        },
+        {
+          "name": "iniconfig",
+          "version": "2.3.1",
+          "url": "https://files.pythonhosted.org/packages/56/43/4ca9e49d27a1fcf6bece6f6aec0ea46bb9112489b93d4b688fb415457bdb/iniconfig-2.3.1-py3-none-any.whl",
+          "sha256": "9121e2c1fdb355232495be3194c8dfe87ccc2d5dee45947b78e68f499790d7a7"
+        },
+        {
+          "name": "Jinja2",
+          "version": "3.1.6",
+          "url": "https://files.pythonhosted.org/packages/62/a1/3d680cbfd5f4b8f15abc1d571870c5fc3e594bb582bc3b64ea099db13e56/jinja2-3.1.6-py3-none-any.whl",
+          "sha256": "85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67"
+        },
+        {
+          "name": "joblib",
+          "version": "1.6.0",
+          "url": "https://files.pythonhosted.org/packages/18/53/84099323c2ec4be98d935f63c033ac4151ee83836ca1050ede3b3aadf155/joblib-1.6.0-py3-none-any.whl",
+          "sha256": "3dbbf9f6e4b592a2357b854608e980fe6390d131d7a82f011a377ef2ebef7aba"
+        },
+        {
+          "name": "kgb",
+          "version": "7.3",
+          "url": "https://files.pythonhosted.org/packages/eb/d6/1c81a1292fc50ad93d0b145f1c241ecb7d541fba4dcec7166e2e1d99f9cd/kgb-7.3-py2.py3-none-any.whl",
+          "sha256": "0b300cd6d234a951f60e54ccda78c99a355393d6ae878d3d5925e726ae2f0450"
+        },
+        {
+          "name": "MarkupSafe",
+          "version": "3.0.4",
+          "url": "https://files.pythonhosted.org/packages/a2/f0/d6613774d86fbf6d145751d43c59875e47a6f9f17daee0aef173bd36d90e/markupsafe-3.0.4-cp312-cp312-macosx_11_0_arm64.whl",
+          "sha256": "0930db9bdc62d22944e10b066448bb65dc9abe9112880c7cab8da54db4284d5f"
+        },
+        {
+          "name": "mpmath",
+          "version": "1.3.0",
+          "url": "https://files.pythonhosted.org/packages/43/e3/7d92a15f894aa0c9c4b49b8ee9ac9850d6e63b03c9c32c0367a13ae62209/mpmath-1.3.0-py3-none-any.whl",
+          "sha256": "a0b2b9fe80bbcd81a6647ff13108738cfb482d481d826cc0e02f5b35e5c88d2c"
+        },
+        {
+          "name": "networkx",
+          "version": "3.7",
+          "url": "https://files.pythonhosted.org/packages/7e/cd/fe58041e9011f307c490e3e17dd48cc516448f7c698a3f2d9d9d65d7e6a8/networkx-3.7-py3-none-any.whl",
+          "sha256": "e3fd2c13a7814cee3746340d8d7f8598a67f16a58bf47fb7f8793fab6efca1b0"
+        },
+        {
+          "name": "numpy",
+          "version": "2.5.4",
+          "url": "https://files.pythonhosted.org/packages/31/2f/5ea3570fcb8ccd0882bea99436a513b2c85dad8f774a2057849130a8fb99/numpy-2.5.4-cp312-cp312-macosx_14_0_arm64.whl",
+          "sha256": "9cb18a327b49c5c337f972b03682f6a49855525faaf3c0d3e9c96cd0fd8880a8"
+        },
+        {
+          "name": "omegaconf",
+          "version": "2.3.1",
+          "url": "https://files.pythonhosted.org/packages/a4/0e/152509871bf30df6fc38569f52a2db9b55dd41aae957adae50a053ac7778/omegaconf-2.3.1-py3-none-any.whl",
+          "sha256": "3d701d14e9a8828f1edd28bb70b725908b34277cdd72cf7d6a83f94dadc6b6a0"
+        },
+        {
+          "name": "packaging",
+          "version": "26.3",
+          "url": "https://files.pythonhosted.org/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl",
+          "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c"
+        },
+        {
+          "name": "pandas",
+          "version": "3.1.0",
+          "url": "https://files.pythonhosted.org/packages/1b/4b/af8ca15261db52ab07f5d0c2d4c1bc28d822ea4c2a79756bc2606c012e7c/pandas-3.1.0-cp312-cp312-macosx_11_0_arm64.whl",
+          "sha256": "cc5e4e12d287ea77bbf4c4d4bf47ed152d82a990d3a6794dee7c350f887532b5"
+        },
+        {
+          "name": "parameterized",
+          "version": "0.9.0",
+          "url": "https://files.pythonhosted.org/packages/00/2f/804f58f0b856ab3bf21617cccf5b39206e6c4c94c2cd227bde125ea6105f/parameterized-0.9.0-py2.py3-none-any.whl",
+          "sha256": "4e0758e3d41bea3bbd05ec14fc2c24736723f243b28d702081aef438c9372b1b"
+        },
+        {
+          "name": "pluggy",
+          "version": "1.7.0",
+          "url": "https://files.pythonhosted.org/packages/40/9e/2b38731e0fc536806f16490e1a12d7f0dc2a1235aa8cc07bcc75416a7daa/pluggy-1.7.0-py3-none-any.whl",
+          "sha256": "7dd7b0d8832ba3cb632c306926ded123429211b83641b35dc5c41ad2d34f9bec"
+        },
+        {
+          "name": "protobuf",
+          "version": "7.36.2",
+          "url": "https://files.pythonhosted.org/packages/32/72/98342feb672507c8f3a69e34b4fa8961f608edba5c1a48a6f47156d92cb5/protobuf-7.36.2-cp310-abi3-macosx_10_9_universal2.whl",
+          "sha256": "cbc70b17ee27e28894c7fee8bb04be1abead49e936bc70eb60052531eee2079e"
+        },
+        {
+          "name": "pyaml",
+          "version": "26.7.0",
+          "url": "https://files.pythonhosted.org/packages/a6/26/3f05f9e3692853dff663913d5d62fb8df3f5640c8d70b06588c0b51ed953/pyaml-26.7.0-py3-none-any.whl",
+          "sha256": "cfa382780c43ae660669b87d394d550a41856ef175f5749f51f753e12d7077ac"
+        },
+        {
+          "name": "Pygments",
+          "version": "2.21.0",
+          "url": "https://files.pythonhosted.org/packages/71/46/17f022dd3e953bf20a04a028a21ec746d942f8d2af30fa0f124fa0e6a684/pygments-2.21.0-py3-none-any.whl",
+          "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9"
+        },
+        {
+          "name": "pytest",
+          "version": "9.2.0",
+          "url": "https://files.pythonhosted.org/packages/51/39/1f5d8c8877a0fa327db959c19341d4be61660de1ab6b7391f9eb805bcd67/pytest-9.2.0-py3-none-any.whl",
+          "sha256": "07acdcf88ec174f907dc01af70bf52d49b014bbab03faeeade31c96b18c2e588"
+        },
+        {
+          "name": "pytest-json-report",
+          "version": "1.5.0",
+          "url": "https://files.pythonhosted.org/packages/81/35/d07400c715bf8a88aa0c1ee9c9eb6050ca7fe5b39981f0eea773feeb0681/pytest_json_report-1.5.0-py3-none-any.whl",
+          "sha256": "9897b68c910b12a2e48dd849f9a284b2c79a732a8a9cb398452ddd23d3c8c325"
+        },
+        {
+          "name": "pytest-metadata",
+          "version": "3.1.1",
+          "url": "https://files.pythonhosted.org/packages/3e/43/7e7b2ec865caa92f67b8f0e9231a798d102724ca4c0e1f414316be1c1ef2/pytest_metadata-3.1.1-py3-none-any.whl",
+          "sha256": "c8e0844db684ee1c798cfa38908d20d67d0463ecb6137c72e91f418558dd5f4b"
+        },
+        {
+          "name": "pytest-rerunfailures",
+          "version": "15.1",
+          "url": "https://files.pythonhosted.org/packages/f3/30/11d836ff01c938969efa319b4ebe2374ed79d28043a12bfc908577aab9f3/pytest_rerunfailures-15.1-py3-none-any.whl",
+          "sha256": "f674c3594845aba8b23c78e99b1ff8068556cc6a8b277f728071fdc4f4b0b355"
+        },
+        {
+          "name": "pytest-xdist",
+          "version": "3.8.0",
+          "url": "https://files.pythonhosted.org/packages/ca/31/d4e37e9e550c2b92a9cbc2e4d0b7420a27224968580b5a447f420847c975/pytest_xdist-3.8.0-py3-none-any.whl",
+          "sha256": "202ca578cfeb7370784a8c33d6d05bc6e13b4f25b5053c30a152269fd10f0b88"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "3.0.0",
+          "url": "https://files.pythonhosted.org/packages/5a/17/cebee01d1c0c1441174cf0456ddc91b280d79acb65340c05e41d77866ee8/python_dateutil-3.0.0-py2.py3-none-any.whl",
+          "sha256": "3c79630202e4152c6add678446984236efe4f57e84d8e892aab0637bab82e9fd"
+        },
+        {
+          "name": "PyYAML",
+          "version": "6.0.3",
+          "url": "https://files.pythonhosted.org/packages/89/a0/6cf41a19a1f2f3feab0e9c0b74134aa2ce6849093d5517a0c550fe37a648/pyyaml-6.0.3-cp312-cp312-macosx_11_0_arm64.whl",
+          "sha256": "fc09d0aa354569bc501d4e787133afc08552722d3ab34836a80547331bb5d4a0"
+        },
+        {
+          "name": "ruamel.yaml",
+          "version": "0.19.1",
+          "url": "https://files.pythonhosted.org/packages/b8/0c/51f6841f1d84f404f92463fc2b1ba0da357ca1e3db6b7fbda26956c3b82a/ruamel_yaml-0.19.1-py3-none-any.whl",
+          "sha256": "27592957fedf6e0b62f281e96effd28043345e0e66001f97683aa9a40c667c93"
+        },
+        {
+          "name": "scikit-learn",
+          "version": "1.7.1",
+          "url": "https://files.pythonhosted.org/packages/67/4e/899317092f5efcab0e9bc929e3391341cec8fb0e816c4789686770024580/scikit_learn-1.7.1-cp312-cp312-macosx_12_0_arm64.whl",
+          "sha256": "2fd8b8d35817b0d9ebf0b576f7d5ffbbabdb55536b0655a8aaae629d7ffd2e1f"
+        },
+        {
+          "name": "scipy",
+          "version": "1.18.1",
+          "url": "https://files.pythonhosted.org/packages/a5/f6/a5b82f8abbe14d134691b8b903696f701d25a081353a29dc655c364d9e62/scipy-1.18.1-cp312-cp312-macosx_14_0_arm64.whl",
+          "sha256": "7bbf207c4453ce1ad2e00b17313852b33310b83090c2311bdaf97f93c0380d12"
+        },
+        {
+          "name": "setuptools",
+          "version": "84.2.1",
+          "url": "https://files.pythonhosted.org/packages/ef/55/6dc6d6bb953bdfc52519a0059592c52b6e3b8ad51cf8256dffceb55b0610/setuptools-84.2.1-py3-none-any.whl",
+          "sha256": "ca140b45d5325a9478f880e351484f62fef15f336462e449ca0c03c873d589c2"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0",
+          "url": "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl",
+          "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
+        },
+        {
+          "name": "sortedcontainers",
+          "version": "2.4.0",
+          "url": "https://files.pythonhosted.org/packages/32/46/9cb0e58b2deb7f82b84065f37f3bffeb12413f947f9388e4cac22c4621ce/sortedcontainers-2.4.0-py2.py3-none-any.whl",
+          "sha256": "a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0"
+        },
+        {
+          "name": "sympy",
+          "version": "1.14.0",
+          "url": "https://files.pythonhosted.org/packages/a2/09/77d55d46fd61b4a135c444fc97158ef34a095e5681d0a6c10b75bf356191/sympy-1.14.0-py3-none-any.whl",
+          "sha256": "e091cc3e99d2141a0ba2847328f5479b05d94a6635cb96148ccb3f34671bd8f5"
+        },
+        {
+          "name": "tabulate",
+          "version": "0.10.0",
+          "url": "https://files.pythonhosted.org/packages/99/55/db07de81b5c630da5cbf5c7df646580ca26dfaefa593667fc6f2fe016d2e/tabulate-0.10.0-py3-none-any.whl",
+          "sha256": "f0b0622e567335c8fabaaa659f1b33bcb6ddfe2e496071b743aa113f8774f2d3"
+        },
+        {
+          "name": "threadpoolctl",
+          "version": "3.7.0",
+          "url": "https://files.pythonhosted.org/packages/43/3f/f88a53f60a472b46f4023f56d204dd7de33d34c5d2acbfa0d70a674e639e/threadpoolctl-3.7.0-py3-none-any.whl",
+          "sha256": "cd8b60b5641b45c67bbf73c64c843235fc2d8a480c87389f52f5dbee893b86be"
+        },
+        {
+          "name": "torch",
+          "version": "2.9.1",
+          "url": "https://files.pythonhosted.org/packages/6e/ab/07739fd776618e5882661d04c43f5b5586323e2f6a2d7d84aac20d8f20bd/torch-2.9.1-cp312-none-macosx_11_0_arm64.whl",
+          "sha256": "c0d25d1d8e531b8343bea0ed811d5d528958f1dcbd37e7245bc686273177ad7e",
+          "pypi_hash_matched": true
+        },
+        {
+          "name": "torchao",
+          "version": "0.14.0",
+          "url": "https://files.pythonhosted.org/packages/6f/f0/975479131e6d8365854b97334688dd156a6d67824cc24b65a6e661e93800/torchao-0.14.0-py3-none-any.whl",
+          "sha256": "c5a939e035f8cc0493f2bb18a3d01c1db8139662f7fcf49a6df84366218aa95e"
+        },
+        {
+          "name": "tqdm",
+          "version": "4.70.1",
+          "url": "https://files.pythonhosted.org/packages/a7/03/921a3d3c75785aca9ebfbfcabfbc3a1be12e2ab5265deb026d55a5a3f83e/tqdm-4.70.1-py3-none-any.whl",
+          "sha256": "c293e525e6fef9c20e8728fd4612df02a0aa31bb5fe91ecd93e123b1b7bffa73"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0",
+          "url": "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl",
+          "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+        },
+        {
+          "name": "tzdata",
+          "version": "2026.5",
+          "url": "https://files.pythonhosted.org/packages/94/21/1e5995a1c920cce14e4bffae20c665ec10e7ed03ab25e006cd741092b718/tzdata-2026.5-py2.py3-none-any.whl",
+          "sha256": "b683bd1b6659ddcd810ff02ad09ba821d4bf1065072805063eb35c49617905ac"
+        }
+      ],
+      "freeze": "antlr4-python3-runtime==4.9.3\nattrs==26.1.0\ncattrs==26.2.1\ncloudpickle==3.1.2\ncoremltools==9.0b1\nexecnet==2.1.2\nexecutorch==1.0.0\nexpecttest==0.3.0\nfilelock==4.2.4\nflatbuffers==25.12.19\nfsspec==2026.9.0\nhydra-core==1.3.8\nhypothesis==6.170.12\niniconfig==2.3.1\nJinja2==3.1.6\njoblib==1.6.0\nkgb==7.3\nMarkupSafe==3.0.4\nmpmath==1.3.0\nnetworkx==3.7\nnumpy==2.5.4\nomegaconf==2.3.1\npackaging==26.3\npandas==3.1.0\nparameterized==0.9.0\npluggy==1.7.0\nprotobuf==7.36.2\npyaml==26.7.0\nPygments==2.21.0\npytest==9.2.0\npytest-json-report==1.5.0\npytest-metadata==3.1.1\npytest-rerunfailures==15.1\npytest-xdist==3.8.0\npython-dateutil==3.0.0\nPyYAML==6.0.3\nruamel.yaml==0.19.1\nscikit-learn==1.7.1\nscipy==1.18.1\nsetuptools==84.2.1\nsix==1.17.0\nsortedcontainers==2.4.0\nsympy==1.14.0\ntabulate==0.10.0\nthreadpoolctl==3.7.0\ntorch==2.9.1\ntorchao==0.14.0\ntqdm==4.70.1\ntyping_extensions==4.16.0\ntzdata==2026.5\n",
+      "tests_log": "test_bad_inputs_do_not_call_runtime (test_executorch_compat.TestExecuTorchCompatibility.test_bad_inputs_do_not_call_runtime) ... ok\ntest_scalar_oracle_relu_and_bias (test_executorch_compat.TestExecuTorchCompatibility.test_scalar_oracle_relu_and_bias) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 1.981s\n\nOK\n",
+      "selected_upstream_source_sha256": {
+        "runtime/__init__.py": "c7e4d7649fe6a5120e7ddf70ac56f54c5b004486c31a4f74912f7afafacc9b7c",
+        "backends/xnnpack/partition/xnnpack_partitioner.py": "a0c8d9a5b50ea6da0c65f53188b6b98cc2938bede9a13e13bfde3a5b4020048e"
+      },
+      "installed_selected_python_sha256": {
+        "runtime/__init__.py": "c7e4d7649fe6a5120e7ddf70ac56f54c5b004486c31a4f74912f7afafacc9b7c",
+        "backends/xnnpack/partition/xnnpack_partitioner.py": "a0c8d9a5b50ea6da0c65f53188b6b98cc2938bede9a13e13bfde3a5b4020048e"
+      },
+      "install_log": "Collecting antlr4-python3-runtime==4.9.3 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 1))\n  Using cached antlr4_python3_runtime-4.9.3-py3-none-any.whl\nCollecting attrs==26.1.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 2))\n  Using cached attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)\nCollecting cattrs==26.2.1 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 3))\n  Using cached cattrs-26.2.1-py3-none-any.whl.metadata (8.5 kB)\nCollecting cloudpickle==3.1.2 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 4))\n  Using cached cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)\nCollecting coremltools==9.0b1 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 5))\n  Using cached coremltools-9.0b1-cp312-none-macosx_11_0_arm64.whl.metadata (2.7 kB)\nCollecting execnet==2.1.2 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 6))\n  Using cached execnet-2.1.2-py3-none-any.whl.metadata (2.9 kB)\nCollecting executorch==1.0.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 7))\n  Using cached executorch-1.0.0-cp312-cp312-macosx_12_0_arm64.whl.metadata (4.2 kB)\nCollecting expecttest==0.3.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 8))\n  Using cached expecttest-0.3.0-py3-none-any.whl.metadata (3.8 kB)\nCollecting filelock==4.2.4 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 9))\n  Using cached filelock-4.2.4-py3-none-any.whl.metadata (2.0 kB)\nCollecting flatbuffers==25.12.19 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 10))\n  Using cached flatbuffers-25.12.19-py2.py3-none-any.whl.metadata (1.0 kB)\nCollecting fsspec==2026.9.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 11))\n  Using cached fsspec-2026.9.0-py3-none-any.whl.metadata (10 kB)\nCollecting hydra-core==1.3.8 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 12))\n  Using cached hydra_core-1.3.8-py3-none-any.whl.metadata (5.7 kB)\nCollecting hypothesis==6.170.12 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 13))\n  Using cached hypothesis-6.170.12-cp312-cp312-macosx_11_0_arm64.whl.metadata (5.6 kB)\nCollecting iniconfig==2.3.1 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 14))\n  Using cached iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)\nCollecting Jinja2==3.1.6 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 15))\n  Using cached jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)\nCollecting joblib==1.6.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 16))\n  Using cached joblib-1.6.0-py3-none-any.whl.metadata (6.5 kB)\nCollecting kgb==7.3 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 17))\n  Using cached kgb-7.3-py2.py3-none-any.whl.metadata (21 kB)\nCollecting MarkupSafe==3.0.4 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 18))\n  Using cached markupsafe-3.0.4-cp312-cp312-macosx_11_0_arm64.whl.metadata (2.7 kB)\nCollecting mpmath==1.3.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 19))\n  Using cached mpmath-1.3.0-py3-none-any.whl.metadata (8.6 kB)\nCollecting networkx==3.7 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 20))\n  Using cached networkx-3.7-py3-none-any.whl.metadata (6.7 kB)\nCollecting numpy==2.5.4 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 21))\n  Using cached numpy-2.5.4-cp312-cp312-macosx_14_0_arm64.whl.metadata (6.6 kB)\nCollecting omegaconf==2.3.1 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 22))\n  Using cached omegaconf-2.3.1-py3-none-any.whl.metadata (4.5 kB)\nCollecting packaging==26.3 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 23))\n  Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)\nCollecting pandas==3.1.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 24))\n  Using cached pandas-3.1.0-cp312-cp312-macosx_11_0_arm64.whl.metadata (18 kB)\nCollecting parameterized==0.9.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 25))\n  Using cached parameterized-0.9.0-py2.py3-none-any.whl.metadata (18 kB)\nCollecting pluggy==1.7.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 26))\n  Using cached pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)\nCollecting protobuf==7.36.2 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 27))\n  Using cached protobuf-7.36.2-cp310-abi3-macosx_10_9_universal2.whl.metadata (595 bytes)\nCollecting pyaml==26.7.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 28))\n  Using cached pyaml-26.7.0-py3-none-any.whl.metadata (12 kB)\nCollecting Pygments==2.21.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 29))\n  Using cached pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)\nCollecting pytest==9.2.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 30))\n  Using cached pytest-9.2.0-py3-none-any.whl.metadata (7.9 kB)\nCollecting pytest-json-report==1.5.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 31))\n  Using cached pytest_json_report-1.5.0-py3-none-any.whl.metadata (15 kB)\nCollecting pytest-metadata==3.1.1 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 32))\n  Using cached pytest_metadata-3.1.1-py3-none-any.whl.metadata (8.6 kB)\nCollecting pytest-rerunfailures==15.1 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 33))\n  Using cached pytest_rerunfailures-15.1-py3-none-any.whl.metadata (20 kB)\nCollecting pytest-xdist==3.8.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 34))\n  Using cached pytest_xdist-3.8.0-py3-none-any.whl.metadata (3.0 kB)\nCollecting python-dateutil==3.0.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 35))\n  Using cached python_dateutil-3.0.0-py2.py3-none-any.whl.metadata (8.2 kB)\nCollecting PyYAML==6.0.3 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 36))\n  Using cached pyyaml-6.0.3-cp312-cp312-macosx_11_0_arm64.whl.metadata (2.4 kB)\nCollecting ruamel.yaml==0.19.1 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 37))\n  Using cached ruamel_yaml-0.19.1-py3-none-any.whl.metadata (16 kB)\nCollecting scikit-learn==1.7.1 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 38))\n  Using cached scikit_learn-1.7.1-cp312-cp312-macosx_12_0_arm64.whl.metadata (11 kB)\nCollecting scipy==1.18.1 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 39))\n  Using cached scipy-1.18.1-cp312-cp312-macosx_14_0_arm64.whl.metadata (62 kB)\nCollecting setuptools==84.2.1 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 40))\n  Using cached setuptools-84.2.1-py3-none-any.whl.metadata (6.6 kB)\nCollecting six==1.17.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 41))\n  Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)\nCollecting sortedcontainers==2.4.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 42))\n  Using cached sortedcontainers-2.4.0-py2.py3-none-any.whl.metadata (10 kB)\nCollecting sympy==1.14.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 43))\n  Using cached sympy-1.14.0-py3-none-any.whl.metadata (12 kB)\nCollecting tabulate==0.10.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 44))\n  Using cached tabulate-0.10.0-py3-none-any.whl.metadata (40 kB)\nCollecting threadpoolctl==3.7.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 45))\n  Using cached threadpoolctl-3.7.0-py3-none-any.whl.metadata (24 kB)\nCollecting torch==2.9.1 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 46))\n  Using cached torch-2.9.1-cp312-none-macosx_11_0_arm64.whl.metadata (30 kB)\nCollecting torchao==0.14.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 47))\n  Using cached torchao-0.14.0-py3-none-any.whl.metadata (19 kB)\nCollecting tqdm==4.70.1 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 48))\n  Using cached tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)\nCollecting typing_extensions==4.16.0 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 49))\n  Using cached typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)\nCollecting tzdata==2026.5 (from -r llm-compute-systems-course/labs/kit/requirements-executorch-lock.txt (line 50))\n  Using cached tzdata-2026.5-py2.py3-none-any.whl.metadata (1.4 kB)\nUsing cached attrs-26.1.0-py3-none-any.whl (67 kB)\nUsing cached cattrs-26.2.1-py3-none-any.whl (74 kB)\nUsing cached cloudpickle-3.1.2-py3-none-any.whl (22 kB)\nUsing cached coremltools-9.0b1-cp312-none-macosx_11_0_arm64.whl (2.8 MB)\nUsing cached execnet-2.1.2-py3-none-any.whl (40 kB)\nUsing cached executorch-1.0.0-cp312-cp312-macosx_12_0_arm64.whl (9.8 MB)\nUsing cached expecttest-0.3.0-py3-none-any.whl (8.2 kB)\nUsing cached filelock-4.2.4-py3-none-any.whl (162 kB)\nUsing cached flatbuffers-25.12.19-py2.py3-none-any.whl (26 kB)\nUsing cached fsspec-2026.9.0-py3-none-any.whl (221 kB)\nUsing cached hydra_core-1.3.8-py3-none-any.whl (168 kB)\nUsing cached hypothesis-6.170.12-cp312-cp312-macosx_11_0_arm64.whl (793 kB)\nUsing cached iniconfig-2.3.1-py3-none-any.whl (7.6 kB)\nUsing cached jinja2-3.1.6-py3-none-any.whl (134 kB)\nUsing cached joblib-1.6.0-py3-none-any.whl (306 kB)\nUsing cached kgb-7.3-py2.py3-none-any.whl (59 kB)\nUsing cached markupsafe-3.0.4-cp312-cp312-macosx_11_0_arm64.whl (12 kB)\nUsing cached mpmath-1.3.0-py3-none-any.whl (536 kB)\nUsing cached networkx-3.7-py3-none-any.whl (2.1 MB)\nUsing cached numpy-2.5.4-cp312-cp312-macosx_14_0_arm64.whl (5.5 MB)\nUsing cached omegaconf-2.3.1-py3-none-any.whl (79 kB)\nUsing cached packaging-26.3-py3-none-any.whl (129 kB)\nUsing cached pandas-3.1.0-cp312-cp312-macosx_11_0_arm64.whl (11.2 MB)\nUsing cached parameterized-0.9.0-py2.py3-none-any.whl (20 kB)\nUsing cached pluggy-1.7.0-py3-none-any.whl (27 kB)\nUsing cached protobuf-7.36.2-cp310-abi3-macosx_10_9_universal2.whl (456 kB)\nUsing cached pyaml-26.7.0-py3-none-any.whl (27 kB)\nUsing cached pygments-2.21.0-py3-none-any.whl (1.3 MB)\nUsing cached pytest-9.2.0-py3-none-any.whl (411 kB)\nUsing cached pytest_json_report-1.5.0-py3-none-any.whl (13 kB)\nUsing cached pytest_metadata-3.1.1-py3-none-any.whl (11 kB)\nUsing cached pytest_rerunfailures-15.1-py3-none-any.whl (13 kB)\nUsing cached pytest_xdist-3.8.0-py3-none-any.whl (46 kB)\nUsing cached python_dateutil-3.0.0-py2.py3-none-any.whl (94 kB)\nUsing cached pyyaml-6.0.3-cp312-cp312-macosx_11_0_arm64.whl (173 kB)\nUsing cached ruamel_yaml-0.19.1-py3-none-any.whl (118 kB)\nUsing cached scikit_learn-1.7.1-cp312-cp312-macosx_12_0_arm64.whl (8.6 MB)\nUsing cached scipy-1.18.1-cp312-cp312-macosx_14_0_arm64.whl (20.5 MB)\nUsing cached setuptools-84.2.1-py3-none-any.whl (876 kB)\nUsing cached six-1.17.0-py2.py3-none-any.whl (11 kB)\nUsing cached sortedcontainers-2.4.0-py2.py3-none-any.whl (29 kB)\nUsing cached sympy-1.14.0-py3-none-any.whl (6.3 MB)\nUsing cached tabulate-0.10.0-py3-none-any.whl (39 kB)\nUsing cached threadpoolctl-3.7.0-py3-none-any.whl (26 kB)\nUsing cached torch-2.9.1-cp312-none-macosx_11_0_arm64.whl (74.5 MB)\nUsing cached torchao-0.14.0-py3-none-any.whl (1.1 MB)\nUsing cached tqdm-4.70.1-py3-none-any.whl (80 kB)\nUsing cached typing_extensions-4.16.0-py3-none-any.whl (45 kB)\nUsing cached tzdata-2026.5-py2.py3-none-any.whl (347 kB)\nInstalling collected packages: torchao, sortedcontainers, mpmath, flatbuffers, antlr4-python3-runtime, tzdata, typing_extensions, tqdm, threadpoolctl, tabulate, sympy, six, setuptools, ruamel.yaml, PyYAML, Pygments, protobuf, pluggy, parameterized, packaging, numpy, networkx, MarkupSafe, kgb, iniconfig, hypothesis, fsspec, filelock, expecttest, execnet, cloudpickle, attrs, scipy, python-dateutil, pytest, pyaml, omegaconf, joblib, Jinja2, cattrs, torch, scikit-learn, pytest-xdist, pytest-rerunfailures, pytest-metadata, pandas, hydra-core, coremltools, pytest-json-report, executorch\nSuccessfully installed Jinja2-3.1.6 MarkupSafe-3.0.4 PyYAML-6.0.3 Pygments-2.21.0 antlr4-python3-runtime-4.9.3 attrs-26.1.0 cattrs-26.2.1 cloudpickle-3.1.2 coremltools-9.0b1 execnet-2.1.2 executorch-1.0.0 expecttest-0.3.0 filelock-4.2.4 flatbuffers-25.12.19 fsspec-2026.9.0 hydra-core-1.3.8 hypothesis-6.170.12 iniconfig-2.3.1 joblib-1.6.0 kgb-7.3 mpmath-1.3.0 networkx-3.7 numpy-2.5.4 omegaconf-2.3.1 packaging-26.3 pandas-3.1.0 parameterized-0.9.0 pluggy-1.7.0 protobuf-7.36.2 pyaml-26.7.0 pytest-9.2.0 pytest-json-report-1.5.0 pytest-metadata-3.1.1 pytest-rerunfailures-15.1 pytest-xdist-3.8.0 python-dateutil-3.0.0 ruamel.yaml-0.19.1 scikit-learn-1.7.1 scipy-1.18.1 setuptools-84.2.1 six-1.17.0 sortedcontainers-2.4.0 sympy-1.14.0 tabulate-0.10.0 threadpoolctl-3.7.0 torch-2.9.1 torchao-0.14.0 tqdm-4.70.1 typing_extensions-4.16.0 tzdata-2026.5\n\n[notice] A new release of pip is available: 25.0.1 -> 26.3\n[notice] To update, run: /private/tmp/cmp1-et100-20261114/bin/python -m pip install --upgrade pip\n",
+      "postrun_bundled_flatc": {
+        "file": "/private/tmp/cmp1-et100-20261114/bin/flatc",
+        "sha256": "5d56c8ad877400bbac9d119c89666d28f13f6f46e9f1a2ff6a218cb4bbbbbed1",
+        "version": "flatc version 24.3.25",
+        "on_inherited_path": null
+      }
+    },
+    {
+      "lane": "160",
+      "executorch": "1.6.0",
+      "source_revision": "4776f71b6f0daa5dfc7d758d5836fc1cc0d40154",
+      "pip_version": "25.0.1",
+      "install_environment": {
+        "implementation_name": "cpython",
+        "implementation_version": "3.12.14",
+        "os_name": "posix",
+        "platform_machine": "arm64",
+        "platform_release": "27.0.0",
+        "platform_system": "Darwin",
+        "platform_version": "Darwin Kernel Version 27.0.0: Tue Aug 11 21:05:48 PDT 2026; root:xnu-13432.1.9~1/RELEASE_ARM64_T6041",
+        "python_full_version": "3.12.14",
+        "platform_python_implementation": "CPython",
+        "python_version": "3.12",
+        "sys_platform": "darwin"
+      },
+      "installed_artifacts": [
+        {
+          "name": "executorch",
+          "version": "1.6.0",
+          "url": "https://files.pythonhosted.org/packages/c6/47/1e2120ca1ee178e81471d57255ea0f87b6e04272e32ba20e5ed60ebdb46d/executorch-1.6.0-cp312-cp312-macosx_14_0_arm64.whl",
+          "sha256": "02c220037b41a0a6074a94499a747400ef1a5075a3f2b4d83911871c7291a341",
+          "pypi_hash_matched": true
+        },
+        {
+          "name": "coremltools",
+          "version": "9.0",
+          "url": "https://files.pythonhosted.org/packages/44/ab/6231b83d770825803284453f1ff36e5f3ba0a5740fcedbd3ba7454e5d412/coremltools-9.0-cp312-none-macosx_11_0_arm64.whl",
+          "sha256": "7079e8b6ff5a63f0e2c08eeeb8673e4eab8ca231d4b2eae4f7fb005e0d08a8cd"
+        },
+        {
+          "name": "mpmath",
+          "version": "1.3.0",
+          "url": "https://files.pythonhosted.org/packages/43/e3/7d92a15f894aa0c9c4b49b8ee9ac9850d6e63b03c9c32c0367a13ae62209/mpmath-1.3.0-py3-none-any.whl",
+          "sha256": "a0b2b9fe80bbcd81a6647ff13108738cfb482d481d826cc0e02f5b35e5c88d2c"
+        },
+        {
+          "name": "torch",
+          "version": "2.15.0",
+          "url": "https://files.pythonhosted.org/packages/17/24/7b9b755e8c4dd2395c6a94bab6a4ed8aded1735ff2538bc63cbba8abeddd/torch-2.15.0-cp312-cp312-macosx_14_0_arm64.whl",
+          "sha256": "593e5fd0c204284890d1c3dff643be34e549e1d24523e13402510f960d4da438",
+          "pypi_hash_matched": true
+        },
+        {
+          "name": "hydra-core",
+          "version": "1.3.8",
+          "url": "https://files.pythonhosted.org/packages/13/69/8e5cf7ad847538fc180fbd06e8442b8bede53ee4852458a16e24231395e9/hydra_core-1.3.8-py3-none-any.whl",
+          "sha256": "d5f184c291691cba835c7f04bc4e36270ad88b1d7e394a3712f5af084c30b394"
+        },
+        {
+          "name": "antlr4-python3-runtime",
+          "version": "4.9.3",
+          "url": "https://files.pythonhosted.org/packages/3e/38/7859ff46355f76f8d19459005ca000b6e7012f2f1ca597746cbcd1fbfe5e/antlr4-python3-runtime-4.9.3.tar.gz",
+          "sha256": "f224469b4168294902bb1efa80a8bf7855f24c99aef99cbefc1bcd3cce77881b"
+        },
+        {
+          "name": "numpy",
+          "version": "2.5.4",
+          "url": "https://files.pythonhosted.org/packages/31/2f/5ea3570fcb8ccd0882bea99436a513b2c85dad8f774a2057849130a8fb99/numpy-2.5.4-cp312-cp312-macosx_14_0_arm64.whl",
+          "sha256": "9cb18a327b49c5c337f972b03682f6a49855525faaf3c0d3e9c96cd0fd8880a8"
+        },
+        {
+          "name": "omegaconf",
+          "version": "2.3.1",
+          "url": "https://files.pythonhosted.org/packages/a4/0e/152509871bf30df6fc38569f52a2db9b55dd41aae957adae50a053ac7778/omegaconf-2.3.1-py3-none-any.whl",
+          "sha256": "3d701d14e9a8828f1edd28bb70b725908b34277cdd72cf7d6a83f94dadc6b6a0"
+        },
+        {
+          "name": "pandas",
+          "version": "3.1.1",
+          "url": "https://files.pythonhosted.org/packages/f8/e2/dbcb8b3639358f49a723cbe7e9e505be378a981b5e5dbc403bca978b368a/pandas-3.1.1-cp312-cp312-macosx_11_0_arm64.whl",
+          "sha256": "3b10ae67d301ea84d0969388557cf8b90ea7870def14fd743614bde890104163"
+        },
+        {
+          "name": "PyYAML",
+          "version": "6.0.3",
+          "url": "https://files.pythonhosted.org/packages/89/a0/6cf41a19a1f2f3feab0e9c0b74134aa2ce6849093d5517a0c550fe37a648/pyyaml-6.0.3-cp312-cp312-macosx_11_0_arm64.whl",
+          "sha256": "fc09d0aa354569bc501d4e787133afc08552722d3ab34836a80547331bb5d4a0"
+        },
+        {
+          "name": "scikit-learn",
+          "version": "1.9.1",
+          "url": "https://files.pythonhosted.org/packages/60/ea/57e57539ce175d774fc291ed091b0a6d756854b92cd92554c6bb4d0ae498/scikit_learn-1.9.1-cp312-cp312-macosx_12_0_arm64.whl",
+          "sha256": "8c14ce41d561f7749f990b41d6703fe02c4669fbc485e598e069e0a1967b488e"
+        },
+        {
+          "name": "sympy",
+          "version": "1.14.0",
+          "url": "https://files.pythonhosted.org/packages/a2/09/77d55d46fd61b4a135c444fc97158ef34a095e5681d0a6c10b75bf356191/sympy-1.14.0-py3-none-any.whl",
+          "sha256": "e091cc3e99d2141a0ba2847328f5479b05d94a6635cb96148ccb3f34671bd8f5"
+        },
+        {
+          "name": "torchao",
+          "version": "0.18.0",
+          "url": "https://files.pythonhosted.org/packages/c4/4d/485477bb8f05bd501016059c6d8abd742f830cb1b24ab7704e086c7cc35a/torchao-0.18.0-py3-none-any.whl",
+          "sha256": "5c2b4485341bf28b7fed2c4fc95b9f298e209f41685350f067de85527a05585e"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0",
+          "url": "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl",
+          "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+        },
+        {
+          "name": "flatbuffers",
+          "version": "25.12.19",
+          "url": "https://files.pythonhosted.org/packages/e8/2d/d2a548598be01649e2d46231d151a6c56d10b964d94043a335ae56ea2d92/flatbuffers-25.12.19-py2.py3-none-any.whl",
+          "sha256": "7634f50c427838bb021c2d66a3d1168e9d199b0607e6329399f04846d42e20b4"
+        },
+        {
+          "name": "packaging",
+          "version": "26.3",
+          "url": "https://files.pythonhosted.org/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl",
+          "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c"
+        },
+        {
+          "name": "py-cpuinfo",
+          "version": "9.0.0",
+          "url": "https://files.pythonhosted.org/packages/e0/a9/023730ba63db1e494a271cb018dcd361bd2c917ba7004c3e49d5daf795a2/py_cpuinfo-9.0.0-py3-none-any.whl",
+          "sha256": "859625bc251f64e21f077d099d4162689c762b5d6a4c3c97553d56241c9674d5"
+        },
+        {
+          "name": "pytorch_tokenizers",
+          "version": "1.6.0",
+          "url": "https://files.pythonhosted.org/packages/d1/e3/d22bff3db935aebb592b9ca0ee7e5ca6b0e80a71c081b4c0fb2f01badc82/pytorch_tokenizers-1.6.0-cp312-cp312-macosx_14_0_arm64.whl",
+          "sha256": "0b29caf6ec92fffa2363faa6fbb6d5e8273b8f8194d2ee451cea9ec6203cffbc"
+        },
+        {
+          "name": "requests",
+          "version": "2.34.2",
+          "url": "https://files.pythonhosted.org/packages/a0/f4/c67b0b3f1b9245e8d266f0f112c500d50e5b4e83cb6f3b71b6528104182a/requests-2.34.2-py3-none-any.whl",
+          "sha256": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0"
+        },
+        {
+          "name": "ruamel.yaml",
+          "version": "0.19.1",
+          "url": "https://files.pythonhosted.org/packages/b8/0c/51f6841f1d84f404f92463fc2b1ba0da357ca1e3db6b7fbda26956c3b82a/ruamel_yaml-0.19.1-py3-none-any.whl",
+          "sha256": "27592957fedf6e0b62f281e96effd28043345e0e66001f97683aa9a40c667c93"
+        },
+        {
+          "name": "tabulate",
+          "version": "0.10.0",
+          "url": "https://files.pythonhosted.org/packages/99/55/db07de81b5c630da5cbf5c7df646580ca26dfaefa593667fc6f2fe016d2e/tabulate-0.10.0-py3-none-any.whl",
+          "sha256": "f0b0622e567335c8fabaaa659f1b33bcb6ddfe2e496071b743aa113f8774f2d3"
+        },
+        {
+          "name": "attrs",
+          "version": "26.1.0",
+          "url": "https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl",
+          "sha256": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309"
+        },
+        {
+          "name": "certifi",
+          "version": "2026.10.23",
+          "url": "https://files.pythonhosted.org/packages/32/d1/a3652fe2c19134d0d15922177821d863cbd7e842d53a21bbe7e8e3a1b5ac/certifi-2026.10.23-py3-none-any.whl",
+          "sha256": "e9b54de76e530bb6cf0ccd036787103acb58fd42ba930ea8bf948ddbaa2f61d1"
+        },
+        {
+          "name": "charset-normalizer",
+          "version": "3.5.2",
+          "url": "https://files.pythonhosted.org/packages/e7/c8/693809898870237d82785a03f3b2b58fe4c9f14669f84a7d4e623c92a59e/charset_normalizer-3.5.2-cp312-cp312-macosx_10_13_universal2.whl",
+          "sha256": "ed2a239c0ea213acc1908150a3037257083c7c083128f1a4cec2ec4b97dca491"
+        },
+        {
+          "name": "fsspec",
+          "version": "2026.9.0",
+          "url": "https://files.pythonhosted.org/packages/6c/c0/a98505f18594f1bce828bb159cec0fcf9860562f1a2c85913409fc8f3d9e/fsspec-2026.9.0-py3-none-any.whl",
+          "sha256": "8dd6e646e99ea382bd85f97a45e6b526a442d79423a7dc673f1e2756d05fcb5f"
+        },
+        {
+          "name": "idna",
+          "version": "3.20",
+          "url": "https://files.pythonhosted.org/packages/58/a2/bb081bab032533a855d44de1d56f8e8426114ff1ba5d1f07a438a0a654f8/idna-3.20-py3-none-any.whl",
+          "sha256": "ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c"
+        },
+        {
+          "name": "joblib",
+          "version": "1.6.0",
+          "url": "https://files.pythonhosted.org/packages/18/53/84099323c2ec4be98d935f63c033ac4151ee83836ca1050ede3b3aadf155/joblib-1.6.0-py3-none-any.whl",
+          "sha256": "3dbbf9f6e4b592a2357b854608e980fe6390d131d7a82f011a377ef2ebef7aba"
+        },
+        {
+          "name": "narwhals",
+          "version": "2.28.0",
+          "url": "https://files.pythonhosted.org/packages/cf/82/8ef9c7e0f50493307a49c09cfa7f00c5a778b6d1921f7b2dabe1d3a5809e/narwhals-2.28.0-py3-none-any.whl",
+          "sha256": "1f69d6385ec30e2fa6e1fdeb37c562ecabd0f713f6f3e3b58a668c5c9df9567f"
+        },
+        {
+          "name": "networkx",
+          "version": "3.7",
+          "url": "https://files.pythonhosted.org/packages/7e/cd/fe58041e9011f307c490e3e17dd48cc516448f7c698a3f2d9d9d65d7e6a8/networkx-3.7-py3-none-any.whl",
+          "sha256": "e3fd2c13a7814cee3746340d8d7f8598a67f16a58bf47fb7f8793fab6efca1b0"
+        },
+        {
+          "name": "protobuf",
+          "version": "7.36.2",
+          "url": "https://files.pythonhosted.org/packages/32/72/98342feb672507c8f3a69e34b4fa8961f608edba5c1a48a6f47156d92cb5/protobuf-7.36.2-cp310-abi3-macosx_10_9_universal2.whl",
+          "sha256": "cbc70b17ee27e28894c7fee8bb04be1abead49e936bc70eb60052531eee2079e"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "4.0.0",
+          "url": "https://files.pythonhosted.org/packages/2f/a9/52b89563d154433d79b51ed1eb4842bf7334cb2696891a7fe135618853d7/python_dateutil-4.0.0-py3-none-any.whl",
+          "sha256": "a5e246f79eb80475e691bf93862cead98decd8a498cf53ba0516fcdc0f50dc1c"
+        },
+        {
+          "name": "scipy",
+          "version": "1.18.1",
+          "url": "https://files.pythonhosted.org/packages/a5/f6/a5b82f8abbe14d134691b8b903696f701d25a081353a29dc655c364d9e62/scipy-1.18.1-cp312-cp312-macosx_14_0_arm64.whl",
+          "sha256": "7bbf207c4453ce1ad2e00b17313852b33310b83090c2311bdaf97f93c0380d12"
+        },
+        {
+          "name": "setuptools",
+          "version": "84.2.1",
+          "url": "https://files.pythonhosted.org/packages/ef/55/6dc6d6bb953bdfc52519a0059592c52b6e3b8ad51cf8256dffceb55b0610/setuptools-84.2.1-py3-none-any.whl",
+          "sha256": "ca140b45d5325a9478f880e351484f62fef15f336462e449ca0c03c873d589c2"
+        },
+        {
+          "name": "threadpoolctl",
+          "version": "3.8.0",
+          "url": "https://files.pythonhosted.org/packages/54/1b/831f2de4840a25db1dd7b1afea433ccafe6bb10aca07e13264f2079462d0/threadpoolctl-3.8.0-py3-none-any.whl",
+          "sha256": "f1b49c82704d50f13ffae019c727b0fa4f6791a58f48f06a09c45face1be66da"
+        },
+        {
+          "name": "urllib3",
+          "version": "2.8.0",
+          "url": "https://files.pythonhosted.org/packages/92/9d/c4e665119135114480843e7ab388fa94d8480650450e6f8e26b70d323a4c/urllib3-2.8.0-py3-none-any.whl",
+          "sha256": "0cf3cae568d36aa9576b28dfb35f11328f1cb974ca7647d9475ebb86c75ac6e3"
+        },
+        {
+          "name": "cattrs",
+          "version": "26.2.1",
+          "url": "https://files.pythonhosted.org/packages/e8/cf/22794a399d99480486120e26e879ef008e21f5e85274c2ed591d568bb326/cattrs-26.2.1-py3-none-any.whl",
+          "sha256": "a12aaa3453dc8f633a815293179f08b7421ed18d2575c459c3c736f840beac24"
+        },
+        {
+          "name": "filelock",
+          "version": "4.2.10",
+          "url": "https://files.pythonhosted.org/packages/ef/90/5d0096a325aa0f83ba7a3968bfb485b67e32c947bdf9cd0fcb4b485be718/filelock-4.2.10-py3-none-any.whl",
+          "sha256": "9479aaeb4db20b5a53e3da28493edd24720b66b8a0b84030aa56ccdf243d6857"
+        },
+        {
+          "name": "Jinja2",
+          "version": "3.1.6",
+          "url": "https://files.pythonhosted.org/packages/62/a1/3d680cbfd5f4b8f15abc1d571870c5fc3e594bb582bc3b64ea099db13e56/jinja2-3.1.6-py3-none-any.whl",
+          "sha256": "85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67"
+        },
+        {
+          "name": "pyaml",
+          "version": "26.7.0",
+          "url": "https://files.pythonhosted.org/packages/a6/26/3f05f9e3692853dff663913d5d62fb8df3f5640c8d70b06588c0b51ed953/pyaml-26.7.0-py3-none-any.whl",
+          "sha256": "cfa382780c43ae660669b87d394d550a41856ef175f5749f51f753e12d7077ac"
+        },
+        {
+          "name": "sentencepiece",
+          "version": "0.2.3",
+          "url": "https://files.pythonhosted.org/packages/f8/a9/8dbb891f51a80f1f47afa3d5336b165e269c4fa87f47b7fba6fc34a4a6a0/sentencepiece-0.2.3-cp312-cp312-macosx_11_0_arm64.whl",
+          "sha256": "9b39b16b889c9d3be4f00f1a0a4283ee81ad8af745d48023e5ab18c724019c08"
+        },
+        {
+          "name": "tiktoken",
+          "version": "0.14.0",
+          "url": "https://files.pythonhosted.org/packages/69/9f/fe6b1aca23331aa5271df5a4bd07bf68a7059254d47faee1b8272592a777/tiktoken-0.14.0-cp312-cp312-macosx_11_0_arm64.whl",
+          "sha256": "d6cebe67765569df3dafac8474e4eccf5c19d24140492567a5e58a11445732a4"
+        },
+        {
+          "name": "tokenizers",
+          "version": "0.23.3",
+          "url": "https://files.pythonhosted.org/packages/b2/72/01e49f032bb346e5aaf06c10c74fe8aeec847173adbadd66eb7c53054bf2/tokenizers-0.23.3-cp310-abi3-macosx_11_0_arm64.whl",
+          "sha256": "68649e97d5b43c44c031d8d848874a6eecae8f8fe40ea989aa777a5a83aca716"
+        },
+        {
+          "name": "tqdm",
+          "version": "4.70.1",
+          "url": "https://files.pythonhosted.org/packages/a7/03/921a3d3c75785aca9ebfbfcabfbc3a1be12e2ab5265deb026d55a5a3f83e/tqdm-4.70.1-py3-none-any.whl",
+          "sha256": "c293e525e6fef9c20e8728fd4612df02a0aa31bb5fe91ecd93e123b1b7bffa73"
+        },
+        {
+          "name": "cloudpickle",
+          "version": "3.1.2",
+          "url": "https://files.pythonhosted.org/packages/88/39/799be3f2f0f38cc727ee3b4f1445fe6d5e4133064ec2e4115069418a5bb6/cloudpickle-3.1.2-py3-none-any.whl",
+          "sha256": "9acb47f6afd73f60dc1df93bb801b472f05ff42fa6c84167d25cb206be1fbf4a"
+        },
+        {
+          "name": "huggingface_hub",
+          "version": "2.4.0",
+          "url": "https://files.pythonhosted.org/packages/d4/55/ff47f1b082ecf5f43f4bc1e3b932d68eead171dabbbd1a92666c686301d7/huggingface_hub-2.4.0-py3-none-any.whl",
+          "sha256": "42ecfd93ede47bdd333daebbf66a32d7bfe2e18752754fe4d2d4f98a0179d801"
+        },
+        {
+          "name": "MarkupSafe",
+          "version": "3.0.4",
+          "url": "https://files.pythonhosted.org/packages/a2/f0/d6613774d86fbf6d145751d43c59875e47a6f9f17daee0aef173bd36d90e/markupsafe-3.0.4-cp312-cp312-macosx_11_0_arm64.whl",
+          "sha256": "0930db9bdc62d22944e10b066448bb65dc9abe9112880c7cab8da54db4284d5f"
+        },
+        {
+          "name": "regex",
+          "version": "2026.11.9",
+          "url": "https://files.pythonhosted.org/packages/13/c6/32671781f2e61f40c76cf81df160ef5471264ba8a5f28cbd342cd4887a8c/regex-2026.11.9-cp312-cp312-macosx_11_0_arm64.whl",
+          "sha256": "2255e173ffb8da59f26ec3529bf7e8531320e71575b27c3fb062747eb3a12e1f"
+        },
+        {
+          "name": "tzdata",
+          "version": "2026.6",
+          "url": "https://files.pythonhosted.org/packages/0a/66/9a06c2227fedfd4919f0eaaa8b94377d9730882a7e4f95823c9a331ab5e1/tzdata-2026.6-py2.py3-none-any.whl",
+          "sha256": "0a10eec6e13ef16b627fabed9a5f2ba61a62b1c67f327305f4e7e412a70b4aec"
+        },
+        {
+          "name": "click",
+          "version": "8.5.1",
+          "url": "https://files.pythonhosted.org/packages/31/7d/164b7ffc8624fe9efb4221bf9af485d5c1e41b9ae118045d2b6dc5457d8b/click-8.5.1-py3-none-any.whl",
+          "sha256": "8bb5376d2006950386f8c6427613334a2acadc5f559cb80e638d00b4df957e37"
+        },
+        {
+          "name": "hf-xet",
+          "version": "1.8.0",
+          "url": "https://files.pythonhosted.org/packages/d4/f2/ef25e2085e92dcaeaa675331e443923aed2006f6fe2d984e15d8b8d40766/hf_xet-1.8.0-cp38-abi3-macosx_11_0_arm64.whl",
+          "sha256": "3e8934784425781f0f779b91044df441f3a7af4dab47375d7e3aeaecbb8eecb4"
+        },
+        {
+          "name": "httpx2",
+          "version": "2.16.0",
+          "url": "https://files.pythonhosted.org/packages/7b/3d/2e4bc4fd1ef9770871669adb348d612a6e4786b303a23f9935b81c48dd60/httpx2-2.16.0-py3-none-any.whl",
+          "sha256": "fd2c5d7909e8d86fe92d53020c310ca0e4e431b838c207c5754b9bbf0308d49a"
+        },
+        {
+          "name": "httpcore2",
+          "version": "2.16.0",
+          "url": "https://files.pythonhosted.org/packages/af/c2/ce417c397afa5181f0e3c6ff01a4d01639414e1adef08730d97571297151/httpcore2-2.16.0-py3-none-any.whl",
+          "sha256": "5c4358319f2602d984ad93182c9fee5160f22e9da7babdda870a5e7c4e2dc34f"
+        },
+        {
+          "name": "anyio",
+          "version": "4.16.0",
+          "url": "https://files.pythonhosted.org/packages/a9/16/7757fb84c819accc7d7e9af5291b261e4abb8627ee040f99e7d35ef2457a/anyio-4.16.0-py3-none-any.whl",
+          "sha256": "c66ae634e0b8228396b801741beb3294326d4b6102f7bba4041c0dfb58c29026"
+        },
+        {
+          "name": "truststore",
+          "version": "0.10.5",
+          "url": "https://files.pythonhosted.org/packages/51/e9/3a7820be2bb0fe53b6bc9c3be26d3d1158004e4c3ab953aa6840b955b1e9/truststore-0.10.5-py3-none-any.whl",
+          "sha256": "9aaaedaefaf06d8b206278cf8b5012bc897f485a874503501e12d776df78951c"
+        },
+        {
+          "name": "h11",
+          "version": "0.16.0",
+          "url": "https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl",
+          "sha256": "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86"
+        }
+      ],
+      "freeze": "antlr4-python3-runtime==4.9.3\nanyio==4.16.0\nattrs==26.1.0\ncattrs==26.2.1\ncertifi==2026.10.23\ncharset-normalizer==3.5.2\nclick==8.5.1\ncloudpickle==3.1.2\ncoremltools==9.0\nexecutorch==1.6.0\nfilelock==4.2.10\nflatbuffers==25.12.19\nfsspec==2026.9.0\nh11==0.16.0\nhf-xet==1.8.0\nhttpcore2==2.16.0\nhttpx2==2.16.0\nhuggingface_hub==2.4.0\nhydra-core==1.3.8\nidna==3.20\nJinja2==3.1.6\njoblib==1.6.0\nMarkupSafe==3.0.4\nmpmath==1.3.0\nnarwhals==2.28.0\nnetworkx==3.7\nnumpy==2.5.4\nomegaconf==2.3.1\npackaging==26.3\npandas==3.1.1\nprotobuf==7.36.2\npy-cpuinfo==9.0.0\npyaml==26.7.0\npython-dateutil==4.0.0\npytorch_tokenizers==1.6.0\nPyYAML==6.0.3\nregex==2026.11.9\nrequests==2.34.2\nruamel.yaml==0.19.1\nscikit-learn==1.9.1\nscipy==1.18.1\nsentencepiece==0.2.3\nsetuptools==84.2.1\nsympy==1.14.0\ntabulate==0.10.0\nthreadpoolctl==3.8.0\ntiktoken==0.14.0\ntokenizers==0.23.3\ntorch==2.15.0\ntorchao==0.18.0\ntqdm==4.70.1\ntruststore==0.10.5\ntyping_extensions==4.16.0\ntzdata==2026.6\nurllib3==2.8.0\n",
+      "tests_log": "test_bad_inputs_do_not_call_runtime (test_executorch_compat.TestExecuTorchCompatibility.test_bad_inputs_do_not_call_runtime) ... ok\ntest_scalar_oracle_relu_and_bias (test_executorch_compat.TestExecuTorchCompatibility.test_scalar_oracle_relu_and_bias) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 2.894s\n\nOK\n",
+      "selected_upstream_source_sha256": {
+        "runtime/__init__.py": "d753e234bcebfbf0fdf5c85a2a204fa833585d01236694d7e1b3044ee18764a6",
+        "backends/xnnpack/partition/xnnpack_partitioner.py": "6016f39f1bae77db0f3b47d56de13902fe286237cfdbd3965970dbbf62c7577f"
+      },
+      "installed_selected_python_sha256": {
+        "runtime/__init__.py": "d753e234bcebfbf0fdf5c85a2a204fa833585d01236694d7e1b3044ee18764a6",
+        "backends/xnnpack/partition/xnnpack_partitioner.py": "6016f39f1bae77db0f3b47d56de13902fe286237cfdbd3965970dbbf62c7577f"
+      },
+      "install_log": "Collecting executorch==1.6.0\n  Downloading executorch-1.6.0-cp312-cp312-macosx_14_0_arm64.whl.metadata (6.8 kB)\nCollecting flatbuffers (from executorch==1.6.0)\n  Using cached flatbuffers-25.12.19-py2.py3-none-any.whl.metadata (1.0 kB)\nCollecting mpmath==1.3.0 (from executorch==1.6.0)\n  Using cached mpmath-1.3.0-py3-none-any.whl.metadata (8.6 kB)\nCollecting numpy>=2.0.0 (from executorch==1.6.0)\n  Using cached numpy-2.5.4-cp312-cp312-macosx_14_0_arm64.whl.metadata (6.6 kB)\nCollecting packaging (from executorch==1.6.0)\n  Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)\nCollecting pandas>=2.2.2 (from executorch==1.6.0)\n  Downloading pandas-3.1.1-cp312-cp312-macosx_11_0_arm64.whl.metadata (16 kB)\nCollecting py-cpuinfo (from executorch==1.6.0)\n  Downloading py_cpuinfo-9.0.0-py3-none-any.whl.metadata (794 bytes)\nCollecting requests (from executorch==1.6.0)\n  Using cached requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)\nCollecting pytorch-tokenizers (from executorch==1.6.0)\n  Downloading pytorch_tokenizers-1.6.0-cp312-cp312-macosx_14_0_arm64.whl.metadata (5.0 kB)\nCollecting torch==2.15.0 (from executorch==1.6.0)\n  Downloading torch-2.15.0-cp312-cp312-macosx_14_0_arm64.whl.metadata (36 kB)\nCollecting torchao>=0.18.0 (from executorch==1.6.0)\n  Downloading torchao-0.18.0-py3-none-any.whl.metadata (21 kB)\nCollecting pyyaml (from executorch==1.6.0)\n  Using cached pyyaml-6.0.3-cp312-cp312-macosx_11_0_arm64.whl.metadata (2.4 kB)\nCollecting ruamel.yaml (from executorch==1.6.0)\n  Using cached ruamel_yaml-0.19.1-py3-none-any.whl.metadata (16 kB)\nCollecting sympy (from executorch==1.6.0)\n  Using cached sympy-1.14.0-py3-none-any.whl.metadata (12 kB)\nCollecting tabulate (from executorch==1.6.0)\n  Using cached tabulate-0.10.0-py3-none-any.whl.metadata (40 kB)\nCollecting typing-extensions>=4.10.0 (from executorch==1.6.0)\n  Using cached typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)\nCollecting coremltools==9.0 (from executorch==1.6.0)\n  Downloading coremltools-9.0-cp312-none-macosx_11_0_arm64.whl.metadata (2.7 kB)\nCollecting scikit-learn>=1.7.1 (from executorch==1.6.0)\n  Downloading scikit_learn-1.9.1-cp312-cp312-macosx_12_0_arm64.whl.metadata (9.3 kB)\nCollecting hydra-core>=1.3.0 (from executorch==1.6.0)\n  Using cached hydra_core-1.3.8-py3-none-any.whl.metadata (5.7 kB)\nCollecting omegaconf>=2.3.0 (from executorch==1.6.0)\n  Using cached omegaconf-2.4.0-py3-none-any.whl.metadata (4.9 kB)\nCollecting protobuf>=3.1.0 (from coremltools==9.0->executorch==1.6.0)\n  Using cached protobuf-7.36.2-cp310-abi3-macosx_10_9_universal2.whl.metadata (595 bytes)\nCollecting tqdm (from coremltools==9.0->executorch==1.6.0)\n  Using cached tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)\nCollecting attrs>=21.3.0 (from coremltools==9.0->executorch==1.6.0)\n  Using cached attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)\nCollecting cattrs (from coremltools==9.0->executorch==1.6.0)\n  Using cached cattrs-26.2.1-py3-none-any.whl.metadata (8.5 kB)\nCollecting pyaml (from coremltools==9.0->executorch==1.6.0)\n  Using cached pyaml-26.7.0-py3-none-any.whl.metadata (12 kB)\nCollecting filelock (from torch==2.15.0->executorch==1.6.0)\n  Using cached filelock-4.2.10-py3-none-any.whl.metadata (2.3 kB)\nCollecting setuptools>=77.0.3 (from torch==2.15.0->executorch==1.6.0)\n  Using cached setuptools-84.2.1-py3-none-any.whl.metadata (6.6 kB)\nCollecting networkx>=2.5.1 (from torch==2.15.0->executorch==1.6.0)\n  Using cached networkx-3.7-py3-none-any.whl.metadata (6.7 kB)\nCollecting jinja2 (from torch==2.15.0->executorch==1.6.0)\n  Using cached jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)\nCollecting fsspec>=0.8.5 (from torch==2.15.0->executorch==1.6.0)\n  Using cached fsspec-2026.9.0-py3-none-any.whl.metadata (10 kB)\nCollecting omegaconf>=2.3.0 (from executorch==1.6.0)\n  Using cached omegaconf-2.3.1-py3-none-any.whl.metadata (4.5 kB)\nCollecting antlr4-python3-runtime==4.9.* (from hydra-core>=1.3.0->executorch==1.6.0)\n  Using cached antlr4_python3_runtime-4.9.3-py3-none-any.whl\nCollecting python-dateutil>=2.9.0 (from pandas>=2.2.2->executorch==1.6.0)\n  Downloading python_dateutil-4.0.0-py3-none-any.whl.metadata (7.3 kB)\nCollecting scipy>=1.10.0 (from scikit-learn>=1.7.1->executorch==1.6.0)\n  Using cached scipy-1.18.1-cp312-cp312-macosx_14_0_arm64.whl.metadata (62 kB)\nCollecting joblib>=1.4.0 (from scikit-learn>=1.7.1->executorch==1.6.0)\n  Using cached joblib-1.6.0-py3-none-any.whl.metadata (6.5 kB)\nCollecting narwhals>=2.0.1 (from scikit-learn>=1.7.1->executorch==1.6.0)\n  Downloading narwhals-2.28.0-py3-none-any.whl.metadata (15 kB)\nCollecting threadpoolctl>=3.5.0 (from scikit-learn>=1.7.1->executorch==1.6.0)\n  Downloading threadpoolctl-3.8.0-py3-none-any.whl.metadata (29 kB)\nCollecting tiktoken (from pytorch-tokenizers->executorch==1.6.0)\n  Downloading tiktoken-0.14.0-cp312-cp312-macosx_11_0_arm64.whl.metadata (6.7 kB)\nCollecting tokenizers (from pytorch-tokenizers->executorch==1.6.0)\n  Downloading tokenizers-0.23.3-cp310-abi3-macosx_11_0_arm64.whl.metadata (9.8 kB)\nCollecting sentencepiece (from pytorch-tokenizers->executorch==1.6.0)\n  Downloading sentencepiece-0.2.3-cp312-cp312-macosx_11_0_arm64.whl.metadata (34 kB)\nCollecting charset_normalizer<4,>=2 (from requests->executorch==1.6.0)\n  Using cached charset_normalizer-3.5.2-cp312-cp312-macosx_10_13_universal2.whl.metadata (46 kB)\nCollecting idna<4,>=2.5 (from requests->executorch==1.6.0)\n  Using cached idna-3.20-py3-none-any.whl.metadata (7.2 kB)\nCollecting urllib3<3,>=1.26 (from requests->executorch==1.6.0)\n  Using cached urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)\nCollecting certifi>=2023.5.7 (from requests->executorch==1.6.0)\n  Using cached certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)\nCollecting cloudpickle>=3.0 (from joblib>=1.4.0->scikit-learn>=1.7.1->executorch==1.6.0)\n  Using cached cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)\nCollecting tzdata (from python-dateutil>=2.9.0->pandas>=2.2.2->executorch==1.6.0)\n  Downloading tzdata-2026.6-py2.py3-none-any.whl.metadata (1.4 kB)\nCollecting MarkupSafe>=2.0 (from jinja2->torch==2.15.0->executorch==1.6.0)\n  Using cached markupsafe-3.0.4-cp312-cp312-macosx_11_0_arm64.whl.metadata (2.7 kB)\nCollecting regex (from tiktoken->pytorch-tokenizers->executorch==1.6.0)\n  Using cached regex-2026.11.9-cp312-cp312-macosx_11_0_arm64.whl.metadata (40 kB)\nCollecting huggingface-hub<3.0,>=0.16.4 (from tokenizers->pytorch-tokenizers->executorch==1.6.0)\n  Downloading huggingface_hub-2.4.0-py3-none-any.whl.metadata (16 kB)\nCollecting click<9.0.0,>=8.4.2 (from huggingface-hub<3.0,>=0.16.4->tokenizers->pytorch-tokenizers->executorch==1.6.0)\n  Downloading click-8.5.1-py3-none-any.whl.metadata (2.6 kB)\nCollecting hf-xet<2.0.0,>=1.6.0 (from huggingface-hub<3.0,>=0.16.4->tokenizers->pytorch-tokenizers->executorch==1.6.0)\n  Using cached hf_xet-1.8.0-cp38-abi3-macosx_11_0_arm64.whl.metadata (4.9 kB)\nCollecting httpx2<3,>=2.0.0 (from huggingface-hub<3.0,>=0.16.4->tokenizers->pytorch-tokenizers->executorch==1.6.0)\n  Downloading httpx2-2.16.0-py3-none-any.whl.metadata (10 kB)\nCollecting anyio>=4.10 (from httpx2<3,>=2.0.0->huggingface-hub<3.0,>=0.16.4->tokenizers->pytorch-tokenizers->executorch==1.6.0)\n  Downloading anyio-4.16.0-py3-none-any.whl.metadata (4.7 kB)\nCollecting httpcore2==2.16.0 (from httpx2<3,>=2.0.0->huggingface-hub<3.0,>=0.16.4->tokenizers->pytorch-tokenizers->executorch==1.6.0)\n  Downloading httpcore2-2.16.0-py3-none-any.whl.metadata (27 kB)\nCollecting truststore>=0.10 (from httpx2<3,>=2.0.0->huggingface-hub<3.0,>=0.16.4->tokenizers->pytorch-tokenizers->executorch==1.6.0)\n  Downloading truststore-0.10.5-py3-none-any.whl.metadata (4.5 kB)\nCollecting h11>=0.16 (from httpcore2==2.16.0->httpx2<3,>=2.0.0->huggingface-hub<3.0,>=0.16.4->tokenizers->pytorch-tokenizers->executorch==1.6.0)\n  Using cached h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)\nDownloading executorch-1.6.0-cp312-cp312-macosx_14_0_arm64.whl (16.4 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 16.4/16.4 MB 10.8 MB/s eta 0:00:00\nDownloading coremltools-9.0-cp312-none-macosx_11_0_arm64.whl (2.8 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 2.8/2.8 MB 22.6 MB/s eta 0:00:00\nUsing cached mpmath-1.3.0-py3-none-any.whl (536 kB)\nDownloading torch-2.15.0-cp312-cp312-macosx_14_0_arm64.whl (138.6 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 138.6/138.6 MB 38.5 MB/s eta 0:00:00\nUsing cached hydra_core-1.3.8-py3-none-any.whl (168 kB)\nUsing cached numpy-2.5.4-cp312-cp312-macosx_14_0_arm64.whl (5.5 MB)\nUsing cached omegaconf-2.3.1-py3-none-any.whl (79 kB)\nDownloading pandas-3.1.1-cp312-cp312-macosx_11_0_arm64.whl (11.2 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 11.2/11.2 MB 43.3 MB/s eta 0:00:00\nUsing cached pyyaml-6.0.3-cp312-cp312-macosx_11_0_arm64.whl (173 kB)\nDownloading scikit_learn-1.9.1-cp312-cp312-macosx_12_0_arm64.whl (8.3 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 8.3/8.3 MB 48.4 MB/s eta 0:00:00\nUsing cached sympy-1.14.0-py3-none-any.whl (6.3 MB)\nDownloading torchao-0.18.0-py3-none-any.whl (1.4 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 1.4/1.4 MB 41.8 MB/s eta 0:00:00\nUsing cached typing_extensions-4.16.0-py3-none-any.whl (45 kB)\nUsing cached flatbuffers-25.12.19-py2.py3-none-any.whl (26 kB)\nUsing cached packaging-26.3-py3-none-any.whl (129 kB)\nDownloading py_cpuinfo-9.0.0-py3-none-any.whl (22 kB)\nDownloading pytorch_tokenizers-1.6.0-cp312-cp312-macosx_14_0_arm64.whl (1.2 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 1.2/1.2 MB 38.7 MB/s eta 0:00:00\nUsing cached requests-2.34.2-py3-none-any.whl (73 kB)\nUsing cached ruamel_yaml-0.19.1-py3-none-any.whl (118 kB)\nUsing cached tabulate-0.10.0-py3-none-any.whl (39 kB)\nUsing cached attrs-26.1.0-py3-none-any.whl (67 kB)\nUsing cached certifi-2026.10.23-py3-none-any.whl (135 kB)\nUsing cached charset_normalizer-3.5.2-cp312-cp312-macosx_10_13_universal2.whl (367 kB)\nUsing cached fsspec-2026.9.0-py3-none-any.whl (221 kB)\nUsing cached idna-3.20-py3-none-any.whl (69 kB)\nUsing cached joblib-1.6.0-py3-none-any.whl (306 kB)\nDownloading narwhals-2.28.0-py3-none-any.whl (490 kB)\nUsing cached networkx-3.7-py3-none-any.whl (2.1 MB)\nUsing cached protobuf-7.36.2-cp310-abi3-macosx_10_9_universal2.whl (456 kB)\nDownloading python_dateutil-4.0.0-py3-none-any.whl (92 kB)\nUsing cached scipy-1.18.1-cp312-cp312-macosx_14_0_arm64.whl (20.5 MB)\nUsing cached setuptools-84.2.1-py3-none-any.whl (876 kB)\nDownloading threadpoolctl-3.8.0-py3-none-any.whl (32 kB)\nUsing cached urllib3-2.8.0-py3-none-any.whl (135 kB)\nUsing cached cattrs-26.2.1-py3-none-any.whl (74 kB)\nUsing cached filelock-4.2.10-py3-none-any.whl (218 kB)\nUsing cached jinja2-3.1.6-py3-none-any.whl (134 kB)\nUsing cached pyaml-26.7.0-py3-none-any.whl (27 kB)\nDownloading sentencepiece-0.2.3-cp312-cp312-macosx_11_0_arm64.whl (1.4 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 1.4/1.4 MB 34.7 MB/s eta 0:00:00\nDownloading tiktoken-0.14.0-cp312-cp312-macosx_11_0_arm64.whl (1.0 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 1.0/1.0 MB 34.3 MB/s eta 0:00:00\nDownloading tokenizers-0.23.3-cp310-abi3-macosx_11_0_arm64.whl (3.1 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 3.1/3.1 MB 51.8 MB/s eta 0:00:00\nUsing cached tqdm-4.70.1-py3-none-any.whl (80 kB)\nUsing cached cloudpickle-3.1.2-py3-none-any.whl (22 kB)\nDownloading huggingface_hub-2.4.0-py3-none-any.whl (857 kB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 857.0/857.0 kB 24.8 MB/s eta 0:00:00\nUsing cached markupsafe-3.0.4-cp312-cp312-macosx_11_0_arm64.whl (12 kB)\nUsing cached regex-2026.11.9-cp312-cp312-macosx_11_0_arm64.whl (294 kB)\nDownloading tzdata-2026.6-py2.py3-none-any.whl (348 kB)\nDownloading click-8.5.1-py3-none-any.whl (126 kB)\nUsing cached hf_xet-1.8.0-cp38-abi3-macosx_11_0_arm64.whl (3.6 MB)\nDownloading httpx2-2.16.0-py3-none-any.whl (97 kB)\nDownloading httpcore2-2.16.0-py3-none-any.whl (85 kB)\nDownloading anyio-4.16.0-py3-none-any.whl (134 kB)\nDownloading truststore-0.10.5-py3-none-any.whl (19 kB)\nUsing cached h11-0.16.0-py3-none-any.whl (37 kB)\nInstalling collected packages: torchao, py-cpuinfo, mpmath, flatbuffers, antlr4-python3-runtime, urllib3, tzdata, typing-extensions, truststore, tqdm, threadpoolctl, tabulate, sympy, setuptools, sentencepiece, ruamel.yaml, regex, pyyaml, protobuf, packaging, numpy, networkx, narwhals, MarkupSafe, idna, hf-xet, h11, fsspec, filelock, cloudpickle, click, charset_normalizer, certifi, attrs, scipy, requests, python-dateutil, pyaml, omegaconf, joblib, jinja2, httpcore2, cattrs, anyio, torch, tiktoken, scikit-learn, pandas, hydra-core, httpx2, coremltools, huggingface-hub, tokenizers, pytorch-tokenizers, executorch\nSuccessfully installed MarkupSafe-3.0.4 antlr4-python3-runtime-4.9.3 anyio-4.16.0 attrs-26.1.0 cattrs-26.2.1 certifi-2026.10.23 charset_normalizer-3.5.2 click-8.5.1 cloudpickle-3.1.2 coremltools-9.0 executorch-1.6.0 filelock-4.2.10 flatbuffers-25.12.19 fsspec-2026.9.0 h11-0.16.0 hf-xet-1.8.0 httpcore2-2.16.0 httpx2-2.16.0 huggingface-hub-2.4.0 hydra-core-1.3.8 idna-3.20 jinja2-3.1.6 joblib-1.6.0 mpmath-1.3.0 narwhals-2.28.0 networkx-3.7 numpy-2.5.4 omegaconf-2.3.1 packaging-26.3 pandas-3.1.1 protobuf-7.36.2 py-cpuinfo-9.0.0 pyaml-26.7.0 python-dateutil-4.0.0 pytorch-tokenizers-1.6.0 pyyaml-6.0.3 regex-2026.11.9 requests-2.34.2 ruamel.yaml-0.19.1 scikit-learn-1.9.1 scipy-1.18.1 sentencepiece-0.2.3 setuptools-84.2.1 sympy-1.14.0 tabulate-0.10.0 threadpoolctl-3.8.0 tiktoken-0.14.0 tokenizers-0.23.3 torch-2.15.0 torchao-0.18.0 tqdm-4.70.1 truststore-0.10.5 typing-extensions-4.16.0 tzdata-2026.6 urllib3-2.8.0\n\n[notice] A new release of pip is available: 25.0.1 -> 26.3\n[notice] To update, run: /private/tmp/cmp1-et160-20261114/bin/python -m pip install --upgrade pip\n",
+      "postrun_bundled_flatc": {
+        "file": "/private/tmp/cmp1-et160-20261114/bin/flatc",
+        "sha256": "30be5de0e2ac0cec17906e1f0fb66fcb823bb2e7d2f78106bf8347ae8a9cfe5a",
+        "version": "flatc version 24.3.25",
+        "on_inherited_path": null
+      }
+    }
+  ]
+}

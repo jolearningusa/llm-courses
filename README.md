@@ -28,6 +28,10 @@ llm-courses/
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
 │   ├── reviews/
+│   │   ├── compute-executorch-cpu-compatibility/
+│   │   │   ├── README.md
+│   │   │   ├── en.png
+│   │   │   └── zh.png
 │   │   ├── agentos-measured-memory-pilot/
 │   │   │   ├── README.md
 │   │   │   ├── en.png
