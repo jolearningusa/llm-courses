@@ -42,7 +42,13 @@ from nanoos.memory import Extractor, MemoryStore
 try:  # the real base classes when this runs inside Hermes Agent
     from agent.context_engine import ContextEngine as _HermesContextEngine
     from agent.memory_provider import MemoryProvider as _HermesMemoryProvider
-except ImportError:  # stand-ins with the same attributes, so the kit runs without Hermes
+except ModuleNotFoundError as exc:
+    # Offline stand-ins are valid only when Hermes itself is absent. A missing
+    # helper/dependency inside an installed Hermes, or a partial/conflicting
+    # agent package, must fail visibly instead of silently dropping the contract.
+    if exc.name != "agent":
+        raise
+    # Stand-ins with the same attributes let the kit run without Hermes.
     class _HermesContextEngine:  # type: ignore[no-redef]
         last_prompt_tokens = 0
         last_completion_tokens = 0

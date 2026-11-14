@@ -125,3 +125,7 @@ The [executed NumPy study](../ml101-neural-networks-course/references/heldout_op
 ## TRN-4 fresh joint CPU lock — 2026-11-14 UTC
 
 The [fresh joint CPU installation](../llm-training-course/references/tested_cpu_lock_2026_11.md) installs 11 hashed wheels into a new CPython 3.12.14 / macOS arm64 venv, then runs all 99 existing L0–L9 tests with Torch 2.9.1 and NumPy 2.3.5 together. Five runner controls and two actual installer rejection controls pass; raw logs retain the L3 warning. Capstone slide 9 visualizes install/execution/claim boundaries. This completes the bounded fresh-install/tested-lock gate, not historical-table reproduction, a newer-package migration or cross-platform/GPU/distributed qualification. AGT-2’s measured benchmark beyond PR #120 remains open.
+
+## AGT-1 bounded import / clone check — 2026-11-14 UTC
+
+The [executed import note](../llm-agentos-course/references/hermes_import_contracts_2026_11.md) checks the actual Hermes v0.22.5/v0.23.0 base classes in isolated source cohorts, provided adapter construction/clone isolation, and five loading controls. A narrow fix stops nested missing dependencies or removed symbols from silently selecting offline stand-ins; the old loader fails three controls. The existing kit passes 36/36 with loopback access. EN/ZH plugin-API slide 28 visualizes the boundary. Full installation, compaction, failed/retried sessions, profile/persistence behavior and OpenClaw remain unqualified, so AGT-1 remains open. PR #120 still supplies only AGT-2 teaching/protocol, not its measured benchmark.

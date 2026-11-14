@@ -148,3 +148,7 @@ Hand in one page from [`report_template.md`](../report_template.md).
   does not lose the compacted history.
 - **One process, many sessions.** Run the bridge under load (10 sessions in parallel) and find what in
   `OpenClawEngine` needs a lock.
+
+## Hermes import evidence — 2026-11-14 UTC
+
+The [actual-interface import / clone check](../../../references/hermes_import_contracts_2026_11.md) runs two pinned upstream source cohorts in isolated venvs and supplies five loading-boundary controls. Offline stand-ins apply only when `agent` is absent; a broken installed package must expose its original error. This does not complete the student compaction/memory TODOs or qualify a real failed/retried Hermes session.

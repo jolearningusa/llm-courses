@@ -375,3 +375,7 @@ Star and fork counts were read from each repository page on 2026-10-26.
 - [Malcolm Featonby, Amazon Builders' Library, Making retries safe with idempotent APIs](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/): caller request identity, equivalent responses, changed parameters and server-side atomicity requirements.
 
 Context-manager slides 12/13 use original inline SVGs for the [independent handoff fixture](session_handoff_controls_2026_11.md). No author artwork or production service code is reproduced. Nine fixed CPU cases and unit controls do not establish a model-token comparison, arbitrary crash durability or real-service exactly-once behavior. Original context-engine metrics/exercises remain in Lab 3 and hidden original explanations.
+
+## Hermes import / clone evidence — checked 2026-11-14 UTC
+
+The [execution note](hermes_import_contracts_2026_11.md) and [source ledger](hermes_import_sources_2026_11.json) identify v0.22.5 at `bf0203a794a07aac3ff764972ab9087baa4e4f4e` and v0.23.0 at `2bd378ed1b8d6bf2192cb26e0a55ff3091e6bd19`, especially `agent/context_engine.py` / `agent/memory_provider.py`. Real imported base classes and the course adapter’s provided clone were exercised; full session compaction/retry was not. EN/ZH slide 28 uses original course artwork; no vendor diagram is copied.

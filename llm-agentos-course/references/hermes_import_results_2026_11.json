@@ -1,0 +1,189 @@
+{
+  "captured_utc": "2026-11-14",
+  "cohorts": [
+    {
+      "revision": "bf0203a794a07aac3ff764972ab9087baa4e4f4e",
+      "version": "v0.22.5",
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "isolated_venv": true,
+      "venv_config": "home = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin\ninclude-system-site-packages = false\nversion = 3.12.14\nexecutable = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12\ncommand = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m venv /private/tmp/hermes-import-old-20261114\n",
+      "installed_distributions": [
+        [
+          "pip",
+          "25.0.1"
+        ]
+      ],
+      "source_archive_sha256": "0dc2cca54657d162845a77f634e107c61c3fb0bd6c8505212aa2e200591b7cc9",
+      "imported_upstream": {
+        "agent.jiter_preload": {
+          "file": "agent/jiter_preload.py",
+          "sha256": "bb66461d6e52e54dd2368ad021304d74676824924c45df80f0a3e769c9e5fff3"
+        },
+        "agent": {
+          "file": "agent/__init__.py",
+          "sha256": "21cdce89e9ffdb847634bf498b087410cd191a1e375db43928735846fb7ddc86"
+        },
+        "agent.compression_marker": {
+          "file": "agent/compression_marker.py",
+          "sha256": "3bee18dc944e95453a42035c2cf1001269974bca0086018176d346c73507c95e"
+        },
+        "agent.file_safety": {
+          "file": "agent/file_safety.py",
+          "sha256": "90515fb80bcf85c5b153370071f3d85bd945d838e0423d29e11e951f95833f6f"
+        },
+        "agent.redact": {
+          "file": "agent/redact.py",
+          "sha256": "cea25df8139675b600eca448f70756bfa9ad22f537abf4f123d01bcbfc71e563"
+        },
+        "agent.context_engine": {
+          "file": "agent/context_engine.py",
+          "sha256": "516a4961c59af4c1048dc523b83f135b1fd0089423775fbe3fc04ffdcdb45cbb"
+        },
+        "agent.memory_provider": {
+          "file": "agent/memory_provider.py",
+          "sha256": "ac81dcf489c698891f0edebfe26845a75c50d2bde77ec3be8d7938a85c79f1fc"
+        }
+      },
+      "adapter_sha256": "5deef2b25412c60da7ba2dc4862a8c8cfd8f350d51677be93e88e559537e6d3e",
+      "probe_sha256": "08be6e3d0dafbe825d03c2f10eb28f8ad111406a5d946b095d49ca3de60184c3",
+      "checks": {
+        "actual_context_base": true,
+        "actual_memory_base": true,
+        "abstract_contract_constructs": true,
+        "fresh_adapter_clone": true,
+        "child_budget_usage_isolation": true,
+        "provider_discovery_schema": true
+      },
+      "counters": {
+        "parent": {
+          "engine": "nanoos-context",
+          "mode": "compress",
+          "last_prompt_tokens": 600,
+          "threshold_tokens": 750,
+          "compression_count": 0
+        },
+        "child": {
+          "engine": "nanoos-context",
+          "mode": "compress",
+          "last_prompt_tokens": 12,
+          "threshold_tokens": 150,
+          "compression_count": 0
+        }
+      },
+      "signatures": {
+        "compress": "(self, messages: list[dict[str, typing.Any]], current_tokens: Optional[int] = None, focus_topic: Optional[str] = None, force: bool = False, memory_context: str = '') -> list[dict[str, typing.Any]]",
+        "select_context": "(self, request_messages: list[dict[str, typing.Any]], *, conversation_messages: list[dict[str, typing.Any]] | None = None, incoming_message: dict[str, typing.Any] | None = None, budget_tokens: int = 0) -> list[dict[str, typing.Any]]",
+        "clone_for_agent": "(self) -> 'ContextEngine'"
+      },
+      "optional_jiter_preload": {
+        "loaded": false,
+        "error_type": "ModuleNotFoundError"
+      },
+      "compaction": "student TODO; not qualified",
+      "session_retry": "not run",
+      "full_hermes_installation": false,
+      "passed": true
+    },
+    {
+      "revision": "2bd378ed1b8d6bf2192cb26e0a55ff3091e6bd19",
+      "version": "v0.23.0",
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "isolated_venv": true,
+      "venv_config": "home = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin\ninclude-system-site-packages = false\nversion = 3.12.14\nexecutable = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12\ncommand = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m venv /private/tmp/hermes-import-new-20261114\n",
+      "installed_distributions": [
+        [
+          "pip",
+          "25.0.1"
+        ]
+      ],
+      "source_archive_sha256": "0250ce85c071ebceefc5b9d1b58a7a52f71d2849a6ef1d0a70af07d108ef08dc",
+      "imported_upstream": {
+        "agent.jiter_preload": {
+          "file": "agent/jiter_preload.py",
+          "sha256": "bb66461d6e52e54dd2368ad021304d74676824924c45df80f0a3e769c9e5fff3"
+        },
+        "agent": {
+          "file": "agent/__init__.py",
+          "sha256": "21cdce89e9ffdb847634bf498b087410cd191a1e375db43928735846fb7ddc86"
+        },
+        "agent.compression_marker": {
+          "file": "agent/compression_marker.py",
+          "sha256": "3bee18dc944e95453a42035c2cf1001269974bca0086018176d346c73507c95e"
+        },
+        "hermes_cli": {
+          "file": "hermes_cli/__init__.py",
+          "sha256": "6a4ab05b8621ec1cd66a5abbe30fa32ed5bddddea95903036da01f0af1af94ce"
+        },
+        "hermes_cli.home_data_layout": {
+          "file": "hermes_cli/home_data_layout.py",
+          "sha256": "1246c1f97ef8e8ce427ac87964326875381ecbe637808129724a614a5fa27cdc"
+        },
+        "agent.file_safety": {
+          "file": "agent/file_safety.py",
+          "sha256": "b70ea01cd62b2ffb40efe6c85c5bacfbfd779bcd4ef9129603aa800a3d284efa"
+        },
+        "agent.redact_connstr": {
+          "file": "agent/redact_connstr.py",
+          "sha256": "d2074d23798951b7f5f1497e88cad67a8ca04841b3b5eca5388420e9e4b4c3cd"
+        },
+        "agent.redact": {
+          "file": "agent/redact.py",
+          "sha256": "b853178208878eec7e9c392e6c5694d9cb171593386b70be887e1542032acc74"
+        },
+        "agent.context_engine": {
+          "file": "agent/context_engine.py",
+          "sha256": "516a4961c59af4c1048dc523b83f135b1fd0089423775fbe3fc04ffdcdb45cbb"
+        },
+        "agent.memory_provider": {
+          "file": "agent/memory_provider.py",
+          "sha256": "d61d589916698f5334532e0dd05af9da3e6b949479f3a4d58c0073d16f82a837"
+        }
+      },
+      "adapter_sha256": "5deef2b25412c60da7ba2dc4862a8c8cfd8f350d51677be93e88e559537e6d3e",
+      "probe_sha256": "08be6e3d0dafbe825d03c2f10eb28f8ad111406a5d946b095d49ca3de60184c3",
+      "checks": {
+        "actual_context_base": true,
+        "actual_memory_base": true,
+        "abstract_contract_constructs": true,
+        "fresh_adapter_clone": true,
+        "child_budget_usage_isolation": true,
+        "provider_discovery_schema": true
+      },
+      "counters": {
+        "parent": {
+          "engine": "nanoos-context",
+          "mode": "compress",
+          "last_prompt_tokens": 600,
+          "threshold_tokens": 750,
+          "compression_count": 0
+        },
+        "child": {
+          "engine": "nanoos-context",
+          "mode": "compress",
+          "last_prompt_tokens": 12,
+          "threshold_tokens": 150,
+          "compression_count": 0
+        }
+      },
+      "signatures": {
+        "compress": "(self, messages: list[dict[str, typing.Any]], current_tokens: Optional[int] = None, focus_topic: Optional[str] = None, force: bool = False, memory_context: str = '') -> list[dict[str, typing.Any]]",
+        "select_context": "(self, request_messages: list[dict[str, typing.Any]], *, conversation_messages: list[dict[str, typing.Any]] | None = None, incoming_message: dict[str, typing.Any] | None = None, budget_tokens: int = 0) -> list[dict[str, typing.Any]]",
+        "clone_for_agent": "(self) -> 'ContextEngine'"
+      },
+      "optional_jiter_preload": {
+        "loaded": false,
+        "error_type": "ModuleNotFoundError"
+      },
+      "compaction": "student TODO; not qualified",
+      "session_retry": "not run",
+      "full_hermes_installation": false,
+      "passed": true
+    }
+  ],
+  "baseline_control_log": "test_absent_hermes_allows_offline_standins (test_hermes_imports.TestHermesImports.test_absent_hermes_allows_offline_standins) ... ok\ntest_missing_nested_dependency_is_not_hidden (test_hermes_imports.TestHermesImports.test_missing_nested_dependency_is_not_hidden) ... FAIL\ntest_partial_agent_package_is_not_hidden (test_hermes_imports.TestHermesImports.test_partial_agent_package_is_not_hidden) ... FAIL\ntest_present_interfaces_are_used (test_hermes_imports.TestHermesImports.test_present_interfaces_are_used) ... ok\ntest_removed_symbol_is_not_hidden (test_hermes_imports.TestHermesImports.test_removed_symbol_is_not_hidden) ... FAIL\n\n======================================================================\nFAIL: test_missing_nested_dependency_is_not_hidden (test_hermes_imports.TestHermesImports.test_missing_nested_dependency_is_not_hidden)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/tmp/hermes-import-before-kit/test_hermes_imports.py\", line 40, in test_missing_nested_dependency_is_not_hidden\n    self.assertNotEqual(p.returncode, 0)\nAssertionError: 0 == 0\n\n======================================================================\nFAIL: test_partial_agent_package_is_not_hidden (test_hermes_imports.TestHermesImports.test_partial_agent_package_is_not_hidden)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/tmp/hermes-import-before-kit/test_hermes_imports.py\", line 46, in test_partial_agent_package_is_not_hidden\n    self.assertNotEqual(p.returncode, 0)\nAssertionError: 0 == 0\n\n======================================================================\nFAIL: test_removed_symbol_is_not_hidden (test_hermes_imports.TestHermesImports.test_removed_symbol_is_not_hidden)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/tmp/hermes-import-before-kit/test_hermes_imports.py\", line 51, in test_removed_symbol_is_not_hidden\n    self.assertNotEqual(p.returncode, 0)\nAssertionError: 0 == 0\n\n----------------------------------------------------------------------\nRan 5 tests in 0.171s\n\nFAILED (failures=3)\n",
+  "fixed_control_log": "test_absent_hermes_allows_offline_standins (test_hermes_imports.TestHermesImports.test_absent_hermes_allows_offline_standins) ... ok\ntest_missing_nested_dependency_is_not_hidden (test_hermes_imports.TestHermesImports.test_missing_nested_dependency_is_not_hidden) ... ok\ntest_partial_agent_package_is_not_hidden (test_hermes_imports.TestHermesImports.test_partial_agent_package_is_not_hidden) ... ok\ntest_present_interfaces_are_used (test_hermes_imports.TestHermesImports.test_present_interfaces_are_used) ... ok\ntest_removed_symbol_is_not_hidden (test_hermes_imports.TestHermesImports.test_removed_symbol_is_not_hidden) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.165s\n\nOK\n",
+  "kit_initial_restricted_log": "  ok    TestCacheSession.test_baseline_is_append_only_and_variants_differ\n  ok    TestCapstoneProvided.test_budget_stops_a_run\n  ok    TestCapstoneProvided.test_dry_run_and_leaderboard\n  ok    TestFlaky.test_fail_rate_bounds\n  ok    TestFlaky.test_suite_records_model_errors\n  ok    TestImproveProvided.test_edits_runner_and_scores\n  ok    TestImproveProvided.test_habits_follow_the_harness\n  ok    TestImproveProvided.test_improve_eval_runs_at_any_stage\n  ok    TestLongTier.test_long_demos_solve_with_file_tools_only\n  ok    TestMemoryFixtures.test_every_user_turn_and_tool_result_has_gold_ops\n  ok    TestMemoryFixtures.test_parse_ops_and_model_extractor\n  ok    TestMemoryFixtures.test_question_counts_and_demo_answers\n  ok    TestModels.test_parse_openai_response\n  ok    TestModels.test_scripted_model_replays_records_and_raises\n  ERROR TestNotesServer.test_http_validation\n  ok    TestNotesServer.test_tasks_need_the_tools\n  ok    TestObservabilityProvided.test_calibration_set_and_offline_judge\n  ERROR TestObservabilityProvided.test_http_exporter_posts_json_and_fails_open\n  ok    TestObservabilityProvided.test_obs_eval_runs_at_any_stage\n  ok    TestObservabilityProvided.test_otlp_round_trip_and_tree\n  ok    TestPortsProvided.test_fit_budget\n  ok    TestPortsProvided.test_hermes_plugin_registers_both\n  ok    TestPortsProvided.test_openclaw_shell_forwards_to_python\n  ok    TestRedteamFixtures.test_benign_demos_pass_and_checks_need_work\n  ok    TestRedteamFixtures.test_reader_keeps_facts_and_drops_injections\n  ok    TestResearchFixtures.test_answer_keys_and_worker_scripts\n  ok    TestSkillFixtures.test_install_and_demo_reports\n  ok    TestSuite.test_demo_run_writes_metrics_and_summary\n  ok    TestSuite.test_pass_metrics\n  ok    TestTasks.test_demo_script_solves_each_task\n  ok    TestTasks.test_no_task_passes_without_work\n  ok    TestTasks.test_ten_basic_tasks_with_unique_ids\n  ok    TestTicketFixtures.test_demos_answer_and_checks_need_work\n  ok    TestTools.test_errors_are_reported_not_raised\n  ok    TestTools.test_read_write_search_list\n  ok    TestTools.test_schemas_name_every_tool\n\n--- tests.test_kit.TestNotesServer.test_http_validation\nTraceback (most recent call last):\n  File \"/Users/zxd/Documents/ChatGPT/llm-cources/work/llm-courses/llm-agentos-course/labs/kit/tests/test_kit.py\", line 316, in test_http_validation\n    httpd, url = start_http(server)\n                 ^^^^^^^^^^^^^^^^^^\n  File \"/Users/zxd/Documents/ChatGPT/llm-cources/work/llm-courses/llm-agentos-course/labs/kit/tasks/mcp_notes.py\", line 495, in start_http\n    httpd = ThreadingHTTPServer((host, port), make_handler(server))\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py\", line 457, in __init__\n    self.server_bind()\n  File \"/Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/http/server.py\", line 140, in server_bind\n    socketserver.TCPServer.server_bind(self)\n  File \"/Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py\", line 478, in server_bind\n    self.socket.bind(self.server_address)\nPermissionError: [Errno 1] Operation not permitted\n\n--- tests.test_kit.TestObservabilityProvided.test_http_exporter_posts_json_and_fails_open\nTraceback (most recent call last):\n  File \"/Users/zxd/Documents/ChatGPT/llm-cources/work/llm-courses/llm-agentos-course/labs/kit/tests/test_kit.py\", line 476, in test_http_exporter_posts_json_and_fails_open\n    srv = http.server.HTTPServer((\"127.0.0.1\", 0), H)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py\", line 457, in __init__\n    self.server_bind()\n  File \"/Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/http/server.py\", line 140, in server_bind\n    socketserver.TCPServer.server_bind(self)\n  File \"/Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py\", line 478, in server_bind\n    self.socket.bind(self.server_address)\nPermissionError: [Errno 1] Operation not permitted\n\nKit: 34/36 tests pass, score 94\n",
+  "kit_authorized_log": "  ok    TestCacheSession.test_baseline_is_append_only_and_variants_differ\n  ok    TestCapstoneProvided.test_budget_stops_a_run\n  ok    TestCapstoneProvided.test_dry_run_and_leaderboard\n  ok    TestFlaky.test_fail_rate_bounds\n  ok    TestFlaky.test_suite_records_model_errors\n  ok    TestImproveProvided.test_edits_runner_and_scores\n  ok    TestImproveProvided.test_habits_follow_the_harness\n  ok    TestImproveProvided.test_improve_eval_runs_at_any_stage\n  ok    TestLongTier.test_long_demos_solve_with_file_tools_only\n  ok    TestMemoryFixtures.test_every_user_turn_and_tool_result_has_gold_ops\n  ok    TestMemoryFixtures.test_parse_ops_and_model_extractor\n  ok    TestMemoryFixtures.test_question_counts_and_demo_answers\n  ok    TestModels.test_parse_openai_response\n  ok    TestModels.test_scripted_model_replays_records_and_raises\n  ok    TestNotesServer.test_http_validation\n  ok    TestNotesServer.test_tasks_need_the_tools\n  ok    TestObservabilityProvided.test_calibration_set_and_offline_judge\n  ok    TestObservabilityProvided.test_http_exporter_posts_json_and_fails_open\n  ok    TestObservabilityProvided.test_obs_eval_runs_at_any_stage\n  ok    TestObservabilityProvided.test_otlp_round_trip_and_tree\n  ok    TestPortsProvided.test_fit_budget\n  ok    TestPortsProvided.test_hermes_plugin_registers_both\n  ok    TestPortsProvided.test_openclaw_shell_forwards_to_python\n  ok    TestRedteamFixtures.test_benign_demos_pass_and_checks_need_work\n  ok    TestRedteamFixtures.test_reader_keeps_facts_and_drops_injections\n  ok    TestResearchFixtures.test_answer_keys_and_worker_scripts\n  ok    TestSkillFixtures.test_install_and_demo_reports\n  ok    TestSuite.test_demo_run_writes_metrics_and_summary\n  ok    TestSuite.test_pass_metrics\n  ok    TestTasks.test_demo_script_solves_each_task\n  ok    TestTasks.test_no_task_passes_without_work\n  ok    TestTasks.test_ten_basic_tasks_with_unique_ids\n  ok    TestTicketFixtures.test_demos_answer_and_checks_need_work\n  ok    TestTools.test_errors_are_reported_not_raised\n  ok    TestTools.test_read_write_search_list\n  ok    TestTools.test_schemas_name_every_tool\n\nKit: 36/36 tests pass, score 100\n"
+}
