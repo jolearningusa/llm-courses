@@ -17,7 +17,7 @@ import numpy as np
 import torch
 import torch.distributed as dist
 import torch.distributed.checkpoint as dcp
-from torch.distributed.checkpoint.state_dict import get_state_dict, set_state_dict
+from torch.distributed.checkpoint.state_dict import get_model_state_dict, get_state_dict, set_state_dict
 from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
 
@@ -71,6 +71,10 @@ class App:
         self.model, self.optimizer, self.omit_optimizer = model, optimizer, omit_optimizer
 
     def state_dict(self):
+        # DCP fills returned tensor storage in place. To omit optimizer restore,
+        # exclude optimizer tensors from the load destination, not just its setter.
+        if self.omit_optimizer:
+            return {'model': get_model_state_dict(self.model)}
         model, optimizer = get_state_dict(self.model, self.optimizer)
         return {'model': model, 'optimizer': optimizer}
 
