@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "seeds": [
+    11,
+    23,
+    37
+  ],
+  "world_size": 2,
+  "backend": "gloo",
+  "device": "cpu",
+  "dtype": "float64",
+  "threads_per_rank": 1,
+  "total_steps": 6,
+  "checkpoint_after_steps": 3,
+  "batch_per_rank": 8,
+  "model": "Linear4x8,ReLU,Dropout0.3,Linear8x2",
+  "optimizer": "AdamW lr0.01 default remaining parameters",
+  "data": "Unique ID ((cursor*world_size+rank)*8+j); each ID gets torch.Generator seed10000+ID; x4,y2 standard Gaussian, x adds Pythonrandom/100 plus NumPyuniform/100",
+  "selection": "all three seeds; exact full loss sequence, input IDs/hash, final model/optimizer and per-rank RNG equality; no tuning",
+  "negative_controls": [
+    "omit_rng",
+    "omit_optimizer",
+    "rewind_cursor"
+  ],
+  "artifact_controls": [
+    "missing_completion",
+    "missing_sidecar",
+    "tampered_dcp_file",
+    "wrong_world_size",
+    "wrong_protocol",
+    "wrong_runner"
+  ],
+  "scope": "real two-rank CPU DDP/Gloo/DCP, clean process exit and new processes; not FSDP2/TorchTitan execution, SIGKILL, elastic/resharding, durability or GPU recovery",
+  "runtime": {
+    "torch": "2.9.1",
+    "numpy": "2.3.5"
+  },
+  "source_commit": "631d544b1f6794ecfeca734a7bba861e03ddd5e3"
+}

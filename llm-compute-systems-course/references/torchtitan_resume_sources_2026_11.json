@@ -1,0 +1,58 @@
+{
+  "repository": "https://github.com/pytorch/torchtitan",
+  "commit": "631d544b1f6794ecfeca734a7bba861e03ddd5e3",
+  "inspected_utc": "2026-11-14",
+  "executed": false,
+  "files": [
+    {
+      "path": "torchtitan/components/checkpointer/README.md",
+      "sha256": "b290cf2357c28c4e927b2fee2b1bd40ae2fc3398ce6ebc726285bf63a29b9100",
+      "bytes": 8085
+    },
+    {
+      "path": "torchtitan/components/checkpointer/base.py",
+      "sha256": "7535af216c3ef95b5dc6c271ad85de68e0355e345e16f8321a8fe218bcb11bba",
+      "bytes": 31168
+    },
+    {
+      "path": "torchtitan/components/checkpointer/dcp.py",
+      "sha256": "f214cbeee930b80373ac3939af621ed7e499fbc1ea8a21d996fcd77b9f412ada",
+      "bytes": 25931
+    },
+    {
+      "path": "torchtitan/components/checkpointer/utils.py",
+      "sha256": "3b039581f7b38197a8c41e9f262bfe3e0f2121d8ab7c3ae4011ca40482bf4471",
+      "bytes": 999
+    },
+    {
+      "path": "torchtitan/components/data/loader.py",
+      "sha256": "fd04cc98d40619fb61dc1a214c29e83e63257a94efc4f5d9267d62534cb97293",
+      "bytes": 7686
+    },
+    {
+      "path": "torchtitan/distributed/fsdp.py",
+      "sha256": "a66e3d1d82ed1c792bcfa2b3070f36bcb2f97cb809e1d1c8e5b213768232744d",
+      "bytes": 26818
+    },
+    {
+      "path": "torchtitan/train.py",
+      "sha256": "4c3af6ec7cdef4eb99253ec18b594bceb4486cb0d7da1f4f8f167bf0bed4aef8",
+      "bytes": 2036
+    },
+    {
+      "path": "torchtitan/trainer.py",
+      "sha256": "dea5f4c0c83494e39ca87bfc93b07e125f57b6df31af9802d5fb429cc8d5b011",
+      "bytes": 25085
+    },
+    {
+      "path": "torchtitan/training_engine.py",
+      "sha256": "ecbe72af3cdf4eba9d8093eb07c6178b2046063e87e574ed0d43f5861ab982ab",
+      "bytes": 41751
+    },
+    {
+      "path": "torchtitan_recipes/tests/models/llama3.py",
+      "sha256": "a248bb7d8e9b72b304281491fd594e8f7ad2f0a53dac03672f9e36e8057853f9",
+      "bytes": 13627
+    }
+  ]
+}
