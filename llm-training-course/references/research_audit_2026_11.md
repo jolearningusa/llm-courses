@@ -46,3 +46,7 @@ The [source/execution note](rollout_consistency_2026_11.md) pins four verl autho
 ## TRN-4 fresh joint CPU lock — 2026-11-14 UTC
 
 The [fresh joint CPU installation](tested_cpu_lock_2026_11.md) installs 11 hashed wheels into a new CPython 3.12.14 / macOS arm64 venv, then runs all 99 existing L0–L9 tests with Torch 2.9.1 and NumPy 2.3.5 together. Five runner controls and two actual installer rejection controls pass; raw logs retain the L3 warning. Capstone slide 9 visualizes install/execution/claim boundaries. This completes the bounded fresh-install/tested-lock gate, not historical-table reproduction, a newer-package migration or cross-platform/GPU/distributed qualification. AGT-2’s measured benchmark beyond PR #120 remains open.
+
+## TRN-3 bounded CPU steering ablation — 2026-11-14 UTC
+
+The [nine-run frozen study](steering_ablation_2026_11.md) compares no/random/learned steering on a disjoint-operand tiny MLP with identical sampled-response budgets, final checkpoints frozen before evaluation, raw outputs, replay/bank work, timing and memory. Eight new controls and all 28 L7 tests pass. Held-out response successes are only 1/648, 2/648 and 4/648; learned does not win every seed. This completes the bounded toy TRN-3 experiment, not an ASE Qwen3 replication, reliable quality/speed ranking or real-task transfer study. AGT-2’s broader measured benchmark remains open.

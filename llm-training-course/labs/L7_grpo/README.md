@@ -148,3 +148,7 @@ Use a fresh output path. The [actual report](rollout_consistency_report.json) re
 5. Design a real-backend ledger: sample/weight versions, valid masks, queue depth, completed work and stage timing. The local synchronous batch counts and CPU intervals are not Ray/vLLM throughput or async evidence.
 
 The observer and fingerprints are reproduction aids, not authenticated runtime attestations. The new finite-ratio helper's padding control is scoped to that helper; no blanket nonfinite-input robustness claim is made for the original policy loss. Retained deck 20 questions: helpfulness/safety reward separation, rating margins, KL versus early stopping, and comparing alignment-tax/bonus study setups. Historical questions and prose also remain in slide notes.
+
+## Optional: training-time steering with a frozen budget
+
+The [TRN-3 study](../../references/steering_ablation_2026_11.md) implements no/random/learned activation steering, freezes all final checkpoints before evaluation and records all nine runs. Held-out generalization is poor; inspect the per-seed outcomes and replay/time/memory costs before claiming a gain. This separate experiment does not change the coverage reference table above. See the evidence note for protocol, controls, raw outputs and commands.

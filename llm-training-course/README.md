@@ -75,7 +75,7 @@ Classic architectures such as MLPs, CNNs, RNNs and LSTMs, and the basics of trai
 | [25 Verifiers and process rewards](slides/25_verifiers_process_rewards.html) (9 slides) | Week 12: GSM8K verifiers, STaR self-training, outcome against process reward models, automatic step labels; lab L7 |
 | [26 GRPO and REINFORCE baselines: DeepSeekMath and RLOO](slides/26_grpo_rloo.html) (9 slides) | Week 12: group baselines instead of a value model, one frame for SFT to GRPO, leave-one-out REINFORCE against PPO; lab L7 |
 | [27 RL with verifiable rewards: DeepSeek-R1, Kimi k1.5 and Tülu 3](slides/27_rlvr_r1.html) (9 slides) | Week 12: rule-based rewards, R1-Zero from a base model, R1's four stages, long-context RL and long-to-short; lab L7 |
-| [28 Fixing GRPO and spending test-time compute: DAPO, Dr. GRPO, Snell et al.](slides/28_dapo_drgrpo_test_time.html) (9 slides) | Week 13: Clip-Higher and dynamic sampling, length and difficulty biases, search against a verifier and revisions; paper critique 2 |
+| [28 Fixing GRPO and spending test-time compute: DAPO, Dr. GRPO, Snell et al.](slides/28_dapo_drgrpo_test_time.html) (9 slides) | Week 13: Clip-Higher and dynamic sampling, length and difficulty biases, search against a verifier and revisions; frozen three-arm CPU steering study with poor held-out generalization; paper critique 2 |
 | [29 Knowledge distillation: Hinton et al., sequence-level KD, DistilBERT](slides/29_knowledge_distillation.html) (10 slides) | Week 14: soft targets and the temperature, logit matching, distilling whole sequences, a distilled BERT; lab L8 |
 | [30 Distilling LLMs: MiniLLM, on-policy distillation, Gemma 2, R1's distilled models](slides/30_distilling_llms.html) (11 slides) | Week 14: forward against reverse KL, distilling on the student's own samples, distillation in pre-training, reasoning by SFT; lab L8 |
 | [31 Safety tuning and its attacks: red teaming, Safety-Tuned LLaMAs, fine-tuning attacks, GCG, deliberative alignment](slides/31_safety_tuning_attacks.html) (12 slides) | Week 14: red teaming with a language model, how much safety data, fine-tuning and suffix attacks, reasoning over a written policy |
@@ -140,7 +140,47 @@ llm-training-course/
 │   │   ├── rollout_consistency_report.json
 │   │   ├── coverage_ablation.py     # Fixed-split SFT-coverage × reward controls and strict evaluation
 │   │   ├── test_coverage.py         # Split, oracle, shaping-attack, pass@k and trace checks
-│   │   └── coverage_reference.json  # All twelve CPU runs, per-step ledger, configuration and hashes
+│   │   ├── coverage_reference.json  # All twelve CPU runs, per-step ledger, configuration and hashes
+│   │   ├── steering_ablation.py
+│   │   ├── steering_protocol.json
+│   │   ├── test_steering.py
+│   │   └── steering_runs/
+│   │       ├── seed11-learned/
+│   │       │   ├── final.pt
+│   │       │   ├── train.json
+│   │       │   └── evaluation.json
+│   │       ├── seed11-none/
+│   │       │   ├── final.pt
+│   │       │   ├── train.json
+│   │       │   └── evaluation.json
+│   │       ├── seed11-random/
+│   │       │   ├── final.pt
+│   │       │   ├── train.json
+│   │       │   └── evaluation.json
+│   │       ├── seed23-learned/
+│   │       │   ├── final.pt
+│   │       │   ├── train.json
+│   │       │   └── evaluation.json
+│   │       ├── seed23-none/
+│   │       │   ├── final.pt
+│   │       │   ├── train.json
+│   │       │   └── evaluation.json
+│   │       ├── seed23-random/
+│   │       │   ├── final.pt
+│   │       │   ├── train.json
+│   │       │   └── evaluation.json
+│   │       ├── seed37-learned/
+│   │       │   ├── final.pt
+│   │       │   ├── train.json
+│   │       │   └── evaluation.json
+│   │       ├── seed37-none/
+│   │       │   ├── final.pt
+│   │       │   ├── train.json
+│   │       │   └── evaluation.json
+│   │       └── seed37-random/
+│   │           ├── final.pt
+│   │           ├── train.json
+│   │           └── evaluation.json
 │   ├── L8_distillation/
 │   │   ├── README.md
 │   │   ├── kd.py                    # Soft targets at a temperature, the T² factor, logit matching
@@ -157,6 +197,9 @@ llm-training-course/
 │   ├── requirements-cpu-macos-arm64-py312.lock
 │   └── README.md                    # Lab index
 ├── references/
+│   ├── steering_ablation_2026_11.md
+│   ├── steering_ablation_summary_2026_11.json
+│   ├── steering_checkpoint_manifest_2026_11.json
 │   ├── tested_cpu_lock_2026_11.md
 │   ├── cpu_lock_artifacts_2026_11.json
 │   ├── cpu_lock_manifest_2026_11.json

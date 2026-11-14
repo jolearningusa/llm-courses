@@ -1,0 +1,146 @@
+{
+  "frozen_before_heldout": true,
+  "protocol_freeze_commit": "2b53e38",
+  "implementation_commit": "145d931",
+  "runs": [
+    {
+      "seed": 11,
+      "condition": "none",
+      "base_checkpoint_sha256": "2dcaa8848e19c86078b061ca0eee787e7894dc42e2510c42d241ea77c68580f6",
+      "checkpoint_file_sha256": "f37ab4a6cb1f6a744f08c4c8cb071d12b35e54446e640413df58786f9a9d56c2",
+      "final_parameter_sha256": "86d1be0114096e577863be2a170d3ac8c6e2bd825d27d775464146630d1aefaf",
+      "checkpoint_bytes": 33329
+    },
+    {
+      "seed": 11,
+      "condition": "random",
+      "base_checkpoint_sha256": "2dcaa8848e19c86078b061ca0eee787e7894dc42e2510c42d241ea77c68580f6",
+      "checkpoint_file_sha256": "ebdb5e01b669eece9b153d1f2fcb3624a928240a263284f48127a3ff21951bc0",
+      "final_parameter_sha256": "781fd972046e4b339ad2d35eff82c1d1f4a3a8f39ef70325dc65883fdb2e2153",
+      "checkpoint_bytes": 33329
+    },
+    {
+      "seed": 11,
+      "condition": "learned",
+      "base_checkpoint_sha256": "2dcaa8848e19c86078b061ca0eee787e7894dc42e2510c42d241ea77c68580f6",
+      "checkpoint_file_sha256": "107c24781a9d8b92c7e14abf62b29677d20954a5062536173cfacde1f906352f",
+      "final_parameter_sha256": "cb9dd97ed7b9ad7319d5797d4a414ddf135a637ea3b87bc33920b74901dc3834",
+      "checkpoint_bytes": 33329
+    },
+    {
+      "seed": 23,
+      "condition": "none",
+      "base_checkpoint_sha256": "79a11bfb0e079cbdcbfdd9c8f1ce1ef36529d44d9b7f39566d58a87cc023e0d3",
+      "checkpoint_file_sha256": "3a3301811b28b17a7e61bcfa062b323464325c008109c2097df7321f0b4382c8",
+      "final_parameter_sha256": "11cd9421d853186192bb0164f194a8f0c4d9e0817842d79cda4e6c1c3801f000",
+      "checkpoint_bytes": 33329
+    },
+    {
+      "seed": 23,
+      "condition": "random",
+      "base_checkpoint_sha256": "79a11bfb0e079cbdcbfdd9c8f1ce1ef36529d44d9b7f39566d58a87cc023e0d3",
+      "checkpoint_file_sha256": "1690942e231dba9b9dd24710e474712373f83dd056da257775fcac188184c744",
+      "final_parameter_sha256": "9e6ab89bfda2b90966196d3ba92f55aa4f2d94b4293188a6f7bafab821787d3c",
+      "checkpoint_bytes": 33329
+    },
+    {
+      "seed": 23,
+      "condition": "learned",
+      "base_checkpoint_sha256": "79a11bfb0e079cbdcbfdd9c8f1ce1ef36529d44d9b7f39566d58a87cc023e0d3",
+      "checkpoint_file_sha256": "8958dbd16de20ad5a3310dce40b4b7f6a7c1943361c956a4b14003d1582fed4f",
+      "final_parameter_sha256": "134379d382a6c9e14f630c76ba64d0ba3198a3fed5f23f11cd8d0b5ee7569824",
+      "checkpoint_bytes": 33329
+    },
+    {
+      "seed": 37,
+      "condition": "none",
+      "base_checkpoint_sha256": "1e3c539dcf7ef48f21542e1ba6e56b91ec59f93d85067e8787a7006889e82aa3",
+      "checkpoint_file_sha256": "8f5eb0a818fae4acac3496d74e4844d7b476f8e6748327984f33a97017bab501",
+      "final_parameter_sha256": "d40aa079ad68b87a3217e3f8407c7d0e187622c48e3e52398e02a3bd7bcd8913",
+      "checkpoint_bytes": 33329
+    },
+    {
+      "seed": 37,
+      "condition": "random",
+      "base_checkpoint_sha256": "1e3c539dcf7ef48f21542e1ba6e56b91ec59f93d85067e8787a7006889e82aa3",
+      "checkpoint_file_sha256": "df5ebbba3199e232a773fdc6a08d58453cbeaa71f8aee710533976ac22835287",
+      "final_parameter_sha256": "b46e7e0c07f4543a6d94b66d5bebe4ff52a38031e0fec0dfcf5f232df9c5bf88",
+      "checkpoint_bytes": 33329
+    },
+    {
+      "seed": 37,
+      "condition": "learned",
+      "base_checkpoint_sha256": "1e3c539dcf7ef48f21542e1ba6e56b91ec59f93d85067e8787a7006889e82aa3",
+      "checkpoint_file_sha256": "21b5b2c373cdc30a42f9c87b82e694eb86695f5f1e48075c3f724f06814307b3",
+      "final_parameter_sha256": "ac352da828593f8a21d6ea63fa022678d0580f9f1ce5d2d59afbb75166af521c",
+      "checkpoint_bytes": 33329
+    }
+  ],
+  "training_processes": [
+    {
+      "seed": 11,
+      "condition": "none",
+      "exit_code": 0,
+      "worker_wall_seconds": 1.0010452499845996,
+      "log": "train none 11 recorded\n"
+    },
+    {
+      "seed": 11,
+      "condition": "random",
+      "exit_code": 0,
+      "worker_wall_seconds": 1.0096334159607068,
+      "log": "train random 11 recorded\n"
+    },
+    {
+      "seed": 11,
+      "condition": "learned",
+      "exit_code": 0,
+      "worker_wall_seconds": 1.0644742919830605,
+      "log": "train learned 11 recorded\n"
+    },
+    {
+      "seed": 23,
+      "condition": "none",
+      "exit_code": 0,
+      "worker_wall_seconds": 1.004439334035851,
+      "log": "train none 23 recorded\n"
+    },
+    {
+      "seed": 23,
+      "condition": "random",
+      "exit_code": 0,
+      "worker_wall_seconds": 1.0644659580430016,
+      "log": "train random 23 recorded\n"
+    },
+    {
+      "seed": 23,
+      "condition": "learned",
+      "exit_code": 0,
+      "worker_wall_seconds": 1.0543910409323871,
+      "log": "train learned 23 recorded\n"
+    },
+    {
+      "seed": 37,
+      "condition": "none",
+      "exit_code": 0,
+      "worker_wall_seconds": 1.0594242920633405,
+      "log": "train none 37 recorded\n"
+    },
+    {
+      "seed": 37,
+      "condition": "random",
+      "exit_code": 0,
+      "worker_wall_seconds": 1.0092360840644687,
+      "log": "train random 37 recorded\n"
+    },
+    {
+      "seed": 37,
+      "condition": "learned",
+      "exit_code": 0,
+      "worker_wall_seconds": 1.0047757910797372,
+      "log": "train learned 37 recorded\n"
+    }
+  ],
+  "unit_controls_log": "test_actual_behavior_correction_and_old_anchor_are_distinct (test_steering.TestSteering.test_actual_behavior_correction_and_old_anchor_are_distinct) ... ok\ntest_intervention_context_restores_after_failure (test_steering.TestSteering.test_intervention_context_restores_after_failure) ... ok\ntest_matching_precedes_ema (test_steering.TestSteering.test_matching_precedes_ema) ... ok\ntest_pairing_is_within_prompt_and_rejects_homogeneous_group (test_steering.TestSteering.test_pairing_is_within_prompt_and_rejects_homogeneous_group) ... ok\ntest_pca_clusters_return_original_hidden_space_means (test_steering.TestSteering.test_pca_clusters_return_original_hidden_space_means) ... ok\ntest_routes_are_balanced_and_norm_matched (test_steering.TestSteering.test_routes_are_balanced_and_norm_matched) ... ok\ntest_split_has_no_reversed_operand_leak (test_steering.TestSteering.test_split_has_no_reversed_operand_leak) ... ok\ntest_zero_intervention_matches_original_policy (test_steering.TestSteering.test_zero_intervention_matches_original_policy) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.060s\n\nOK\n",
+  "all_l7_tests_log": "test_independent_oracle_agrees_on_task_grammar (test_coverage.TestCoverageControls.test_independent_oracle_agrees_on_task_grammar) ... ok\ntest_no_signal_trace_and_sampling_cost (test_coverage.TestCoverageControls.test_no_signal_trace_and_sampling_cost) ... ok\ntest_pass_at_k_against_enumerated_subsets (test_coverage.TestCoverageControls.test_pass_at_k_against_enumerated_subsets) ... ok\ntest_shaping_attack_is_not_task_success (test_coverage.TestCoverageControls.test_shaping_attack_is_not_task_success) ... ok\ntest_split_and_nested_coverage (test_coverage.TestCoverageControls.test_split_and_nested_coverage) ... ok\ntest_trace_does_not_change_default_training (test_coverage.TestCoverageControls.test_trace_does_not_change_default_training) ... ok\ntest_rows_sum_to_zero (test_grpo.TestGroupAdvantages.test_rows_sum_to_zero) ... ok\ntest_std_division_upweights_easy_and_hard_questions (test_grpo.TestGroupAdvantages.test_std_division_upweights_easy_and_hard_questions) ... ok\ntest_clipped_loss_has_no_gradient_past_the_clip (test_grpo.TestLengthNormalization.test_clipped_loss_has_no_gradient_past_the_clip) ... ok\ntest_grpo_weights_short_responses_more (test_grpo.TestLengthNormalization.test_grpo_weights_short_responses_more) ... ok\ntest_rule_based_reward (test_grpo.TestReward.test_rule_based_reward) ... ok\ntest_grpo_raises_reward_above_the_start (test_grpo.TestTraining.test_grpo_raises_reward_above_the_start) ... ok\ntest_actual_sampling_and_controlled_update_report (test_rollout_consistency.RolloutConsistencyTests.test_actual_sampling_and_controlled_update_report) ... ok\ntest_bad_padding_never_enters_exponent (test_rollout_consistency.RolloutConsistencyTests.test_bad_padding_never_enters_exponent) ... ok\ntest_empty_nonbinary_or_misaligned_masks_rejected (test_rollout_consistency.RolloutConsistencyTests.test_empty_nonbinary_or_misaligned_masks_rejected) ... ok\ntest_eos_included_padding_excluded_and_mask_mismatch_rejected (test_rollout_consistency.RolloutConsistencyTests.test_eos_included_padding_excluded_and_mask_mismatch_rejected) ... ok\ntest_fingerprint_tracks_weight_change (test_rollout_consistency.RolloutConsistencyTests.test_fingerprint_tracks_weight_change) ... ok\ntest_stepwise_and_batched_same_policy_ratio_is_one (test_rollout_consistency.RolloutConsistencyTests.test_stepwise_and_batched_same_policy_ratio_is_one) ... ok\ntest_temperature_or_previous_token_mismatch_breaks_identity (test_rollout_consistency.RolloutConsistencyTests.test_temperature_or_previous_token_mismatch_breaks_identity) ... ok\ntest_token_and_sequence_ratios_have_different_units (test_rollout_consistency.RolloutConsistencyTests.test_token_and_sequence_ratios_have_different_units) ... ok\ntest_actual_behavior_correction_and_old_anchor_are_distinct (test_steering.TestSteering.test_actual_behavior_correction_and_old_anchor_are_distinct) ... ok\ntest_intervention_context_restores_after_failure (test_steering.TestSteering.test_intervention_context_restores_after_failure) ... ok\ntest_matching_precedes_ema (test_steering.TestSteering.test_matching_precedes_ema) ... ok\ntest_pairing_is_within_prompt_and_rejects_homogeneous_group (test_steering.TestSteering.test_pairing_is_within_prompt_and_rejects_homogeneous_group) ... ok\ntest_pca_clusters_return_original_hidden_space_means (test_steering.TestSteering.test_pca_clusters_return_original_hidden_space_means) ... ok\ntest_routes_are_balanced_and_norm_matched (test_steering.TestSteering.test_routes_are_balanced_and_norm_matched) ... ok\ntest_split_has_no_reversed_operand_leak (test_steering.TestSteering.test_split_has_no_reversed_operand_leak) ... ok\ntest_zero_intervention_matches_original_policy (test_steering.TestSteering.test_zero_intervention_matches_original_policy) ... ok\n\n----------------------------------------------------------------------\nRan 28 tests in 0.947s\n\nOK\n"
+}
