@@ -1,0 +1,12 @@
+test_deterministic_preferences (test_dpo.TestBandit.test_deterministic_preferences) ... ok
+test_dpo_optimum_is_the_rlhf_policy (test_dpo.TestBandit.test_dpo_optimum_is_the_rlhf_policy) ... ok
+test_policy_gradient_matches_finite_differences (test_dpo.TestBandit.test_policy_gradient_matches_finite_differences) ... ok
+test_dpo_at_the_reference_is_log_2 (test_dpo.TestLosses.test_dpo_at_the_reference_is_log_2) ... ok
+test_dpo_value_and_gradients (test_dpo.TestLosses.test_dpo_value_and_gradients) ... ok
+test_ipo_and_simpo_gradients (test_dpo.TestLosses.test_ipo_and_simpo_gradients) ... ok
+test_simpo_normalizes_length (test_dpo.TestLosses.test_simpo_normalizes_length) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.443s
+
+OK

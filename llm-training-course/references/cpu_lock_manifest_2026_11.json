@@ -1,0 +1,508 @@
+{
+  "schema": 1,
+  "source_revision": "a4430b5be85b96b8ad23dcb66e33f49a40d27a4a",
+  "runner_sha256": "4a95eebf6a1c4d91be4d2434f098dfa03d19dbd491f7e9068c1ded6efbc7bca7",
+  "lock_sha256": "2f60689c2017e65bc70e6c8e09b601436c9c6ee7298aa90c0c64c8b5ff813f1c",
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "implementation": "CPython",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "venv": true,
+  "include_system_site_packages": "home = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin\ninclude-system-site-packages = false\nversion = 3.12.14\nexecutable = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12\ncommand = /Users/zxd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m venv /private/tmp/trn4-cpu-lock-20261114\n",
+  "packages": {
+    "filelock": "4.2.10",
+    "fsspec": "2026.9.0",
+    "Jinja2": "3.1.6",
+    "MarkupSafe": "3.0.4",
+    "mpmath": "1.3.0",
+    "networkx": "3.7",
+    "numpy": "2.3.5",
+    "setuptools": "84.2.1",
+    "sympy": "1.14.0",
+    "torch": "2.9.1",
+    "typing_extensions": "4.16.0"
+  },
+  "pip": "25.0.1",
+  "installed_distributions": [
+    [
+      "Jinja2",
+      "3.1.6"
+    ],
+    [
+      "MarkupSafe",
+      "3.0.4"
+    ],
+    [
+      "filelock",
+      "4.2.10"
+    ],
+    [
+      "fsspec",
+      "2026.9.0"
+    ],
+    [
+      "mpmath",
+      "1.3.0"
+    ],
+    [
+      "networkx",
+      "3.7"
+    ],
+    [
+      "numpy",
+      "2.3.5"
+    ],
+    [
+      "pip",
+      "25.0.1"
+    ],
+    [
+      "setuptools",
+      "84.2.1"
+    ],
+    [
+      "sympy",
+      "1.14.0"
+    ],
+    [
+      "torch",
+      "2.9.1"
+    ],
+    [
+      "typing_extensions",
+      "4.16.0"
+    ]
+  ],
+  "torch_build": "PyTorch built with:\n  - GCC 4.2\n  - C++ Version: 201703\n  - clang 15.0.0\n  - OpenMP 201811\n  - LAPACK is enabled (usually provided by MKL)\n  - NNPACK is enabled\n  - CPU capability usage: DEFAULT\n  - Build settings: BLAS_INFO=accelerate, BUILD_TYPE=Release, COMMIT_SHA=5811a8d7da873dd699ff6687092c225caffcf1bb, CXX_COMPILER=/usr/bin/c++, CXX_FLAGS= -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOCUPTI -DLIBKINETO_NOROCTRACER -DLIBKINETO_NOXPUPTI=ON -DUSE_PYTORCH_QNNPACK -DAT_BUILD_ARM_VEC256_WITH_SLEEF -DUSE_XNNPACK -DUSE_PYTORCH_METAL_EXPORT -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -DUSE_COREML_DELEGATE -O2 -fPIC -DC10_NODEPRECATED -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=braced-scalar-init -Werror=range-loop-construct -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-unknown-pragmas -Wno-unused-parameter -Wno-strict-overflow -Wno-strict-aliasing -Wvla-extension -Wsuggest-override -Wnewline-eof -Winconsistent-missing-override -Winconsistent-missing-destructor-override -Wno-pass-failed -Wno-error=old-style-cast -Wconstant-conversion -Qunused-arguments -faligned-new -fno-math-errno -fno-trapping-math -Werror=format -DUSE_MPS -Wno-missing-braces, LAPACK_INFO=accelerate, TORCH_VERSION=2.9.1, USE_CUDA=OFF, USE_CUDNN=OFF, USE_CUSPARSELT=OFF, USE_EIGEN_FOR_BLAS=ON, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=OFF, USE_MKLDNN=OFF, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, USE_XCCL=OFF, USE_XPU=OFF, \n",
+  "numpy_build": {
+    "Compilers": {
+      "c": {
+        "name": "clang",
+        "linker": "ld64",
+        "version": "15.0.0",
+        "commands": "cc"
+      },
+      "cython": {
+        "name": "cython",
+        "linker": "cython",
+        "version": "3.2.1",
+        "commands": "cython"
+      },
+      "c++": {
+        "name": "clang",
+        "linker": "ld64",
+        "version": "15.0.0",
+        "commands": "c++"
+      }
+    },
+    "Machine Information": {
+      "host": {
+        "cpu": "aarch64",
+        "family": "aarch64",
+        "endian": "little",
+        "system": "darwin"
+      },
+      "build": {
+        "cpu": "aarch64",
+        "family": "aarch64",
+        "endian": "little",
+        "system": "darwin"
+      }
+    },
+    "Build Dependencies": {
+      "blas": {
+        "name": "accelerate",
+        "found": true,
+        "version": "unknown",
+        "detection method": "system",
+        "include directory": "unknown",
+        "lib directory": "unknown",
+        "openblas configuration": "unknown",
+        "pc file directory": "unknown"
+      },
+      "lapack": {
+        "name": "accelerate",
+        "found": true,
+        "version": "unknown",
+        "detection method": "system",
+        "include directory": "unknown",
+        "lib directory": "unknown",
+        "openblas configuration": "unknown",
+        "pc file directory": "unknown"
+      }
+    },
+    "Python Information": {
+      "path": "/private/var/folders/8s/1jkm89h96qjdtjr7q3bll2vh0000gn/T/build-env-zbmksv9_/bin/python",
+      "version": "3.12"
+    },
+    "SIMD Extensions": {
+      "baseline": [
+        "NEON",
+        "NEON_FP16",
+        "NEON_VFPV4",
+        "ASIMD"
+      ],
+      "found": [
+        "ASIMDHP"
+      ],
+      "not found": [
+        "ASIMDFHM"
+      ]
+    }
+  },
+  "device": "cpu",
+  "torch_numpy_shared_storage_control": "passed",
+  "worker_environment": {
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "PYTHONHASHSEED": "0"
+  },
+  "rng_policy": "Existing suite seeds unchanged; no additional Python/NumPy/Torch seed override",
+  "pip_check_exit": 0,
+  "labs": [
+    {
+      "lab": "L0_training_budget",
+      "test_ids": [
+        "test_budget.TestBudget.test_activation_memory",
+        "test_budget.TestBudget.test_bad_stage",
+        "test_budget.TestBudget.test_chinchilla_split",
+        "test_budget.TestBudget.test_critical_batch_tradeoff",
+        "test_budget.TestBudget.test_llama3_405b_compute",
+        "test_budget.TestBudget.test_megatron_training_days",
+        "test_budget.TestBudget.test_mfu_and_days_are_inverse",
+        "test_budget.TestBudget.test_muon_overhead",
+        "test_budget.TestBudget.test_pipeline_bubble",
+        "test_budget.TestBudget.test_zero_figure_1"
+      ],
+      "tests_run": 10,
+      "failures": [],
+      "errors": [],
+      "skipped": [],
+      "expected_failures": [],
+      "unexpected_successes": [],
+      "elapsed_seconds": 0.00022245896980166435,
+      "torch_threads": 1,
+      "deterministic_algorithms": false,
+      "passed": true,
+      "exit_code": 0,
+      "source_sha256": {
+        "budget.py": "25f3d7dedca570d0b91f676b76e42845a2cace0a42a994e2c06c6cd2d94d848a",
+        "test_budget.py": "e915929b7930c535ee876364871a1c800211603cfa3d2bfa4b0fae6c2c417611"
+      },
+      "log": "L0_training_budget.txt",
+      "log_sha256": "0ce5a8e185d1bef9bce2abb86a06c65bd9be6e21750c000ec3449f3f852b768b"
+    },
+    {
+      "lab": "L1_pretraining_loop",
+      "test_ids": [
+        "test_pretraining.TestAdamW.test_bias_correction_first_step",
+        "test_pretraining.TestAdamW.test_matches_torch",
+        "test_pretraining.TestModel.test_causal",
+        "test_pretraining.TestModel.test_z_loss",
+        "test_pretraining.TestMuon.test_newton_schulz_flattens_singular_values",
+        "test_pretraining.TestMuon.test_update_rms_matches_adamw_scale",
+        "test_pretraining.TestSchedules.test_cosine_ends_at_min",
+        "test_pretraining.TestSchedules.test_warmup_reaches_peak",
+        "test_pretraining.TestSchedules.test_wsd_is_flat_then_cools_down",
+        "test_pretraining.TestTraining.test_loss_falls"
+      ],
+      "tests_run": 10,
+      "failures": [],
+      "errors": [],
+      "skipped": [],
+      "expected_failures": [],
+      "unexpected_successes": [],
+      "elapsed_seconds": 2.4095165830804035,
+      "torch_threads": 1,
+      "deterministic_algorithms": false,
+      "passed": true,
+      "exit_code": 0,
+      "source_sha256": {
+        "model.py": "70ffcd2e597b6a2f2370eba75bd41c6a42b64022097175d42e59a4e76c1c7768",
+        "optim.py": "65efed3c06b4d5ba45caa7cfb6f44b2bc839b1095d3136aab98fa5099eeaa89d",
+        "schedules.py": "bb864e165eb0bb881689f1ab3439c2653082ddbdc126754e13938fdefee56805",
+        "test_pretraining.py": "35aea37fd407f7357430940f0fd209a0644466e23d6ccc7f4396ee6b80487a99",
+        "train.py": "046de05bef7fe4de9a73f6d6e7fd6885803c11020c52f334f34e7587d65fdc6d"
+      },
+      "log": "L1_pretraining_loop.txt",
+      "log_sha256": "5680982b086946fcfd77f19c06246238597aba03a4a287cb92bfc3af83faf399"
+    },
+    {
+      "lab": "L2_data_pipeline",
+      "test_ids": [
+        "test_data_pipeline.TestDedup.test_dedup_keeps_first_copy",
+        "test_data_pipeline.TestDedup.test_lsh_s_curve",
+        "test_data_pipeline.TestDedup.test_minhash_tracks_jaccard",
+        "test_data_pipeline.TestDedup.test_normalized_exact_key",
+        "test_data_pipeline.TestMixture.test_epochs",
+        "test_data_pipeline.TestMixture.test_repetition_value",
+        "test_data_pipeline.TestMixture.test_sampled_proportions",
+        "test_data_pipeline.TestQuality.test_keep_top",
+        "test_data_pipeline.TestQuality.test_pipeline_funnel",
+        "test_data_pipeline.TestQuality.test_rules_on_hand_examples"
+      ],
+      "tests_run": 10,
+      "failures": [],
+      "errors": [],
+      "skipped": [],
+      "expected_failures": [],
+      "unexpected_successes": [],
+      "elapsed_seconds": 0.652020041947253,
+      "torch_threads": 1,
+      "deterministic_algorithms": false,
+      "passed": true,
+      "exit_code": 0,
+      "source_sha256": {
+        "corpus.py": "988a9144922bf4bca5642b72b074a19b2903ef4cc8fe0b3ee8fb6f36fb2b9f4b",
+        "dedup.py": "e14f99d3e05a0f934b0ecb18fd7afea16febad11c8d43d8329aafb2fb5ff3ca3",
+        "mixture.py": "f5f63f900cd5a59b8b4a4b014c61aea093483b260702e619724e097916c1b9e7",
+        "pipeline.py": "0aa0e7cfdacb3e5fd8790c0b3bac1a41f5d378b314e011b32d81d81f9a587558",
+        "quality.py": "7723a8ba917bab551157d9318d1682a00905cca9bff9d16f52d5e83dcc566560",
+        "test_data_pipeline.py": "c482b31bfc71b5e61df7021a1d0bc1c5e2136777d43de4b3db9af8b36ccbeebd"
+      },
+      "log": "L2_data_pipeline.txt",
+      "log_sha256": "8f28ae184c46124f5865a02e9e244eee92be1f08fee6bb3810d0ec013b5790a5"
+    },
+    {
+      "lab": "L3_sft_packing",
+      "test_ids": [
+        "test_sft.TestLossAggregation.test_sum_then_divide_matches_full_batch",
+        "test_sft.TestMaskedLoss.test_masked_tokens_get_zero_gradient",
+        "test_sft.TestPacking.test_packed_equals_unpacked",
+        "test_sft.TestPacking.test_packing_keeps_every_token",
+        "test_sft.TestPacking.test_without_block_mask_examples_leak",
+        "test_sft.TestTemplate.test_mask_covers_assistant_replies_only",
+        "test_sft.TestTraining.test_sft_beats_untrained_model"
+      ],
+      "tests_run": 7,
+      "failures": [],
+      "errors": [],
+      "skipped": [],
+      "expected_failures": [],
+      "unexpected_successes": [],
+      "elapsed_seconds": 2.260669916984625,
+      "torch_threads": 1,
+      "deterministic_algorithms": false,
+      "passed": true,
+      "exit_code": 0,
+      "source_sha256": {
+        "chat.py": "9ff29ec49c7b6e624da04a6803fcff6ea945446462c838fabfca7de311bd20cd",
+        "model.py": "9495889403acc69e31c2a59bbc124cf7dcd15ae19c34cbff1e52a0789ea628a6",
+        "packing.py": "f5fbb5aa15ece0d9a62e3e6543719ab4905baade12681511563d6cc0171172d7",
+        "sft.py": "b2523776e9814730a0aa6789cd5a454f5d4b5269f09a662ee407dec9187cc5fe",
+        "test_sft.py": "8d57e47c85ce6b6ff955208161db14d3b9cc814b27c00b33603e98f616949b2f"
+      },
+      "log": "L3_sft_packing.txt",
+      "log_sha256": "9a48ff6607609f127ebf713167975fdc32c75dd33732aaee321e5229f0a8a459"
+    },
+    {
+      "lab": "L4_lora_nf4",
+      "test_ids": [
+        "test_lora_nf4.TestLoRA.test_fit_reaches_the_best_rank_r_error",
+        "test_lora_nf4.TestLoRA.test_gradients_match_finite_differences",
+        "test_lora_nf4.TestLoRA.test_merged_equals_unmerged",
+        "test_lora_nf4.TestLoRA.test_parameter_counts_match_the_paper",
+        "test_lora_nf4.TestLoRA.test_zero_init_leaves_base_model_unchanged",
+        "test_lora_nf4.TestNF4.test_codebook_matches_appendix_e",
+        "test_lora_nf4.TestNF4.test_double_quantization_bits",
+        "test_lora_nf4.TestNF4.test_double_quantization_costs_little_accuracy",
+        "test_lora_nf4.TestNF4.test_nf4_beats_int4_on_normal_weights_only"
+      ],
+      "tests_run": 9,
+      "failures": [],
+      "errors": [],
+      "skipped": [],
+      "expected_failures": [],
+      "unexpected_successes": [],
+      "elapsed_seconds": 0.3715347080724314,
+      "torch_threads": 1,
+      "deterministic_algorithms": false,
+      "passed": true,
+      "exit_code": 0,
+      "source_sha256": {
+        "lora.py": "1433ad4446328d7e4d16af0b61568152259bf3ec978d934bda2b2a390ea532c0",
+        "nf4.py": "70903268fbba9a5e28a8c9718e7d60ca20342b4991b1d02994003e32c8443916",
+        "test_lora_nf4.py": "2dc617d907e51bd5d93158fb3cf7bc402d7a76aa6538e6e82019d62b337f7641"
+      },
+      "log": "L4_lora_nf4.txt",
+      "log_sha256": "aa91d7061fe6bc032ab06d0fa46c72fc93771f66eb22992a2919772c64cd9979"
+    },
+    {
+      "lab": "L5_reward_ppo",
+      "test_ids": [
+        "test_rlhf.TestPPO.test_clipped_objective",
+        "test_rlhf.TestPPO.test_clipping_limits_the_step",
+        "test_rlhf.TestPPO.test_gae_limits",
+        "test_rlhf.TestPPO.test_overoptimization",
+        "test_rlhf.TestPPO.test_reaches_kl_regularized_optimum",
+        "test_rlhf.TestRewardModel.test_bradley_terry_loss",
+        "test_rlhf.TestRewardModel.test_ranks_held_out_pairs"
+      ],
+      "tests_run": 7,
+      "failures": [],
+      "errors": [],
+      "skipped": [],
+      "expected_failures": [],
+      "unexpected_successes": [],
+      "elapsed_seconds": 0.7334891249192879,
+      "torch_threads": 1,
+      "deterministic_algorithms": false,
+      "passed": true,
+      "exit_code": 0,
+      "source_sha256": {
+        "ppo.py": "b32a582cc1ed9f49dc272f3fb120db2179d472bf79afb9da95821acb45db413f",
+        "preferences.py": "f3c2f3e0b24c915ff6594b68998329ee2ecb0b94ebab8d63c3a1bd0f22205b97",
+        "rlhf.py": "8114139921c61201c2789cc7ac482a4393a701ef7b2f1e29a3818f5d732e4b46",
+        "test_rlhf.py": "539fb9af932a59b3ab5c82acf74d4f9953685de5851f15a6626a0fca9abc534e"
+      },
+      "log": "L5_reward_ppo.txt",
+      "log_sha256": "f0daa9186efe946623078d41bff33bc0f91e4a70b8cfa8c433fc74553ec848ae"
+    },
+    {
+      "lab": "L6_dpo",
+      "test_ids": [
+        "test_dpo.TestBandit.test_deterministic_preferences",
+        "test_dpo.TestBandit.test_dpo_optimum_is_the_rlhf_policy",
+        "test_dpo.TestBandit.test_policy_gradient_matches_finite_differences",
+        "test_dpo.TestLosses.test_dpo_at_the_reference_is_log_2",
+        "test_dpo.TestLosses.test_dpo_value_and_gradients",
+        "test_dpo.TestLosses.test_ipo_and_simpo_gradients",
+        "test_dpo.TestLosses.test_simpo_normalizes_length"
+      ],
+      "tests_run": 7,
+      "failures": [],
+      "errors": [],
+      "skipped": [],
+      "expected_failures": [],
+      "unexpected_successes": [],
+      "elapsed_seconds": 0.44302808307111263,
+      "torch_threads": 1,
+      "deterministic_algorithms": false,
+      "passed": true,
+      "exit_code": 0,
+      "source_sha256": {
+        "bandit.py": "227fcbb200299a4e61ae967b36fdc11adb88958f19ef670efe3f2e1f4bea992c",
+        "losses.py": "d607d9dd26502f5256aef04d9a32ad4b63a656a7a38ef1064e93cd95295d19b6",
+        "test_dpo.py": "d94df27018e5ea8edb59b3813518a8b2789d644eee44fb8ff4df24e478aa44a9"
+      },
+      "log": "L6_dpo.txt",
+      "log_sha256": "25591d9d43b1cf172619c6f1fdb49647e45b5c8bb7352b9bd95da503a05c1698"
+    },
+    {
+      "lab": "L7_grpo",
+      "test_ids": [
+        "test_coverage.TestCoverageControls.test_independent_oracle_agrees_on_task_grammar",
+        "test_coverage.TestCoverageControls.test_no_signal_trace_and_sampling_cost",
+        "test_coverage.TestCoverageControls.test_pass_at_k_against_enumerated_subsets",
+        "test_coverage.TestCoverageControls.test_shaping_attack_is_not_task_success",
+        "test_coverage.TestCoverageControls.test_split_and_nested_coverage",
+        "test_coverage.TestCoverageControls.test_trace_does_not_change_default_training",
+        "test_grpo.TestGroupAdvantages.test_rows_sum_to_zero",
+        "test_grpo.TestGroupAdvantages.test_std_division_upweights_easy_and_hard_questions",
+        "test_grpo.TestLengthNormalization.test_clipped_loss_has_no_gradient_past_the_clip",
+        "test_grpo.TestLengthNormalization.test_grpo_weights_short_responses_more",
+        "test_grpo.TestReward.test_rule_based_reward",
+        "test_grpo.TestTraining.test_grpo_raises_reward_above_the_start",
+        "test_rollout_consistency.RolloutConsistencyTests.test_actual_sampling_and_controlled_update_report",
+        "test_rollout_consistency.RolloutConsistencyTests.test_bad_padding_never_enters_exponent",
+        "test_rollout_consistency.RolloutConsistencyTests.test_empty_nonbinary_or_misaligned_masks_rejected",
+        "test_rollout_consistency.RolloutConsistencyTests.test_eos_included_padding_excluded_and_mask_mismatch_rejected",
+        "test_rollout_consistency.RolloutConsistencyTests.test_fingerprint_tracks_weight_change",
+        "test_rollout_consistency.RolloutConsistencyTests.test_stepwise_and_batched_same_policy_ratio_is_one",
+        "test_rollout_consistency.RolloutConsistencyTests.test_temperature_or_previous_token_mismatch_breaks_identity",
+        "test_rollout_consistency.RolloutConsistencyTests.test_token_and_sequence_ratios_have_different_units"
+      ],
+      "tests_run": 20,
+      "failures": [],
+      "errors": [],
+      "skipped": [],
+      "expected_failures": [],
+      "unexpected_successes": [],
+      "elapsed_seconds": 0.6971937919734046,
+      "torch_threads": 1,
+      "deterministic_algorithms": false,
+      "passed": true,
+      "exit_code": 0,
+      "source_sha256": {
+        "coverage_ablation.py": "2b6a712dee5e38eac13a59bb5ab5fd855bba47c86fc846e8d3143198b73b6f72",
+        "grpo.py": "2260a4eee07f3464b5bf9066098071288fb606ed19591d1adf154bf8ef0465f4",
+        "policy.py": "a11a71852335d2ed00edc32ffe6779012b43c2aec7260d07fe0a0b0370be773f",
+        "rollout_consistency.py": "62b6106fb194e830c9d99bdcdd1b292face8811b19f9dd1c8f6af3b37acdcb48",
+        "task.py": "6fc77c226f36ea788b77c79b64b75fe643883c02df20ce2561e5cb1058e80c92",
+        "test_coverage.py": "b72f3619c4309cfae88c8f10486165588be5a3bf0998666db8be1ecc84a110bd",
+        "test_grpo.py": "a35dad186e098173720fcf22e5c24f2a3b0ee7a9773f93f1a4c027e682c9efc8",
+        "test_rollout_consistency.py": "4e31262f95b0a928f50ea28299a3d3e188b41b200fc3bcbf1d6cbf068a9dd6d7"
+      },
+      "log": "L7_grpo.txt",
+      "log_sha256": "49c1392d775d570508acdd3cdcf5c4450ca9fd20f980c0623b00c32f6e96f254"
+    },
+    {
+      "lab": "L8_distillation",
+      "test_ids": [
+        "test_kd.TestModes.test_divergences",
+        "test_kd.TestModes.test_exact_gradients",
+        "test_kd.TestModes.test_forward_kl_covers_both_modes",
+        "test_kd.TestModes.test_jsd_limits",
+        "test_kd.TestModes.test_on_policy_agrees_with_exact",
+        "test_kd.TestModes.test_on_policy_estimate_is_unbiased",
+        "test_kd.TestModes.test_reverse_kl_picks_one_mode",
+        "test_kd.TestTemperature.test_gradient_matches_finite_differences",
+        "test_kd.TestTemperature.test_high_temperature_is_logit_matching",
+        "test_kd.TestTemperature.test_kd_loss_mixes_soft_and_hard",
+        "test_kd.TestTemperature.test_soft_targets_flatten"
+      ],
+      "tests_run": 11,
+      "failures": [],
+      "errors": [],
+      "skipped": [],
+      "expected_failures": [],
+      "unexpected_successes": [],
+      "elapsed_seconds": 0.5312753750476986,
+      "torch_threads": 1,
+      "deterministic_algorithms": false,
+      "passed": true,
+      "exit_code": 0,
+      "source_sha256": {
+        "kd.py": "ef29f589d9fd0dda43844c813d6891e98d1bc473b583db5c19544be57b10804d",
+        "modes.py": "d00bb2fdbfdef934ffd65c6bae460c361cf43d72de3a9c9a9cc7b4918ad7edc4",
+        "test_kd.py": "14807116d27eebe70232993b8ad692d8b254ea720eff3f4e8f0ce875b6f3d2ec"
+      },
+      "log": "L8_distillation.txt",
+      "log_sha256": "fe5844a88fa03ac583632fcab9b3756942a592e0d3e7b6c48d859984871d1812"
+    },
+    {
+      "lab": "L9_evaluation",
+      "test_ids": [
+        "test_eval.TestContamination.test_clean_model_passes_both_checks",
+        "test_eval.TestContamination.test_one_ordered_copy_is_detected",
+        "test_eval.TestContamination.test_shuffled_copy_escapes_the_permutation_test",
+        "test_eval.TestPassAtK.test_matches_brute_force",
+        "test_eval.TestPassAtK.test_unbiased_in_expectation",
+        "test_eval.TestRatings.test_bt_ignores_order_elo_does_not",
+        "test_eval.TestRatings.test_bt_is_a_maximum",
+        "test_eval.TestRatings.test_bt_recovers_strengths"
+      ],
+      "tests_run": 8,
+      "failures": [],
+      "errors": [],
+      "skipped": [],
+      "expected_failures": [],
+      "unexpected_successes": [],
+      "elapsed_seconds": 0.3968670000322163,
+      "torch_threads": 1,
+      "deterministic_algorithms": false,
+      "passed": true,
+      "exit_code": 0,
+      "source_sha256": {
+        "contamination.py": "0c23637bcedc335c00bdc21cd14b93bc1e1e35f4cdb5b131683fa95ce830a9ab",
+        "passk.py": "d28f290ea05e379fdf73aa5f1e35307d0819f446da6bd5cccc8c868319b1235d",
+        "ratings.py": "95db4895985187f294f9b742b1fa813661caaae3fe7b275a6f0bd3539e60bd43",
+        "test_eval.py": "c26441fb1d96339e44fec56020d9e79a9e8b7b413a85cda7e8272af619648fbd"
+      },
+      "log": "L9_evaluation.txt",
+      "log_sha256": "22ff0e95be879a591ea807dcb2b73433ebfd7ee47f03e98add3c658a915552ec"
+    }
+  ],
+  "passed": true,
+  "total_tests": 99
+}

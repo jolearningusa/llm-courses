@@ -42,3 +42,7 @@ The [two-lane evidence note and manifest](cpu_environment_evidence_2026_11.md) r
 ## TRN-2 pinned path and CPU probability controls — 2026-11-10
 
 The [source/execution note](rollout_consistency_2026_11.md) pins four verl author files and traces the selected generation/reward/anchor/advantage/update/publication path. Deck 20 slides 9/10 distinguish behavior, anchor and learner probabilities. L7 actually samples four responses, checks independent rescoring and masks, then records one synthetic-advantage update with policy identities and separate CPU phase intervals; 19 selected controls pass (eight new). Actual strict rewards are zero, so no quality improvement is inferred. This completes the bounded source/CPU contract portion; imported workers, full config/backend qualification, real queue/staleness and distributed timing remain open.
+
+## TRN-4 fresh joint CPU lock — 2026-11-14 UTC
+
+The [fresh joint CPU installation](tested_cpu_lock_2026_11.md) installs 11 hashed wheels into a new CPython 3.12.14 / macOS arm64 venv, then runs all 99 existing L0–L9 tests with Torch 2.9.1 and NumPy 2.3.5 together. Five runner controls and two actual installer rejection controls pass; raw logs retain the L3 warning. Capstone slide 9 visualizes install/execution/claim boundaries. This completes the bounded fresh-install/tested-lock gate, not historical-table reproduction, a newer-package migration or cross-platform/GPU/distributed qualification. AGT-2’s measured benchmark beyond PR #120 remains open.

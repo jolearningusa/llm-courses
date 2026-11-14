@@ -1,0 +1,25 @@
+test_independent_oracle_agrees_on_task_grammar (test_coverage.TestCoverageControls.test_independent_oracle_agrees_on_task_grammar) ... ok
+test_no_signal_trace_and_sampling_cost (test_coverage.TestCoverageControls.test_no_signal_trace_and_sampling_cost) ... ok
+test_pass_at_k_against_enumerated_subsets (test_coverage.TestCoverageControls.test_pass_at_k_against_enumerated_subsets) ... ok
+test_shaping_attack_is_not_task_success (test_coverage.TestCoverageControls.test_shaping_attack_is_not_task_success) ... ok
+test_split_and_nested_coverage (test_coverage.TestCoverageControls.test_split_and_nested_coverage) ... ok
+test_trace_does_not_change_default_training (test_coverage.TestCoverageControls.test_trace_does_not_change_default_training) ... ok
+test_rows_sum_to_zero (test_grpo.TestGroupAdvantages.test_rows_sum_to_zero) ... ok
+test_std_division_upweights_easy_and_hard_questions (test_grpo.TestGroupAdvantages.test_std_division_upweights_easy_and_hard_questions) ... ok
+test_clipped_loss_has_no_gradient_past_the_clip (test_grpo.TestLengthNormalization.test_clipped_loss_has_no_gradient_past_the_clip) ... ok
+test_grpo_weights_short_responses_more (test_grpo.TestLengthNormalization.test_grpo_weights_short_responses_more) ... ok
+test_rule_based_reward (test_grpo.TestReward.test_rule_based_reward) ... ok
+test_grpo_raises_reward_above_the_start (test_grpo.TestTraining.test_grpo_raises_reward_above_the_start) ... ok
+test_actual_sampling_and_controlled_update_report (test_rollout_consistency.RolloutConsistencyTests.test_actual_sampling_and_controlled_update_report) ... ok
+test_bad_padding_never_enters_exponent (test_rollout_consistency.RolloutConsistencyTests.test_bad_padding_never_enters_exponent) ... ok
+test_empty_nonbinary_or_misaligned_masks_rejected (test_rollout_consistency.RolloutConsistencyTests.test_empty_nonbinary_or_misaligned_masks_rejected) ... ok
+test_eos_included_padding_excluded_and_mask_mismatch_rejected (test_rollout_consistency.RolloutConsistencyTests.test_eos_included_padding_excluded_and_mask_mismatch_rejected) ... ok
+test_fingerprint_tracks_weight_change (test_rollout_consistency.RolloutConsistencyTests.test_fingerprint_tracks_weight_change) ... ok
+test_stepwise_and_batched_same_policy_ratio_is_one (test_rollout_consistency.RolloutConsistencyTests.test_stepwise_and_batched_same_policy_ratio_is_one) ... ok
+test_temperature_or_previous_token_mismatch_breaks_identity (test_rollout_consistency.RolloutConsistencyTests.test_temperature_or_previous_token_mismatch_breaks_identity) ... ok
+test_token_and_sequence_ratios_have_different_units (test_rollout_consistency.RolloutConsistencyTests.test_token_and_sequence_ratios_have_different_units) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.697s
+
+OK

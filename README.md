@@ -28,6 +28,9 @@ llm-courses/
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
 │   ├── reviews/
+│   │   ├── training-tested-cpu-lock/
+│   │   │   ├── README.md
+│   │   │   └── changes.png
 │   │   ├── foundations-heldout-optimizer-study/
 │   │   │   ├── README.md
 │   │   │   └── changes.png

@@ -1,0 +1,15 @@
+test_dedup_keeps_first_copy (test_data_pipeline.TestDedup.test_dedup_keeps_first_copy) ... ok
+test_lsh_s_curve (test_data_pipeline.TestDedup.test_lsh_s_curve) ... ok
+test_minhash_tracks_jaccard (test_data_pipeline.TestDedup.test_minhash_tracks_jaccard) ... ok
+test_normalized_exact_key (test_data_pipeline.TestDedup.test_normalized_exact_key) ... ok
+test_epochs (test_data_pipeline.TestMixture.test_epochs) ... ok
+test_repetition_value (test_data_pipeline.TestMixture.test_repetition_value) ... ok
+test_sampled_proportions (test_data_pipeline.TestMixture.test_sampled_proportions) ... ok
+test_keep_top (test_data_pipeline.TestQuality.test_keep_top) ... ok
+test_pipeline_funnel (test_data_pipeline.TestQuality.test_pipeline_funnel) ... ok
+test_rules_on_hand_examples (test_data_pipeline.TestQuality.test_rules_on_hand_examples) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.652s
+
+OK

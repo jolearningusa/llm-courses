@@ -152,8 +152,30 @@ llm-training-course/
 │   │   ├── ratings.py               # Bradley-Terry by Newton's method against online Elo; bootstrap
 │   │   ├── contamination.py         # n-gram overlap and the example-order permutation test
 │   │   └── test_eval.py
+│   ├── cpu_qualification.py         # Fresh-worker CPU suite evidence
+│   ├── check_cpu_qualification_controls.py
+│   ├── requirements-cpu-macos-arm64-py312.lock
 │   └── README.md                    # Lab index
 ├── references/
+│   ├── tested_cpu_lock_2026_11.md
+│   ├── cpu_lock_artifacts_2026_11.json
+│   ├── cpu_lock_manifest_2026_11.json
+│   ├── cpu_lock_runner_controls_2026_11.json
+│   ├── cpu_lock_installer_controls_2026_11.json
+│   ├── cpu_lock_logs_2026_11/
+│   │   ├── L0_training_budget.txt
+│   │   ├── L1_pretraining_loop.txt
+│   │   ├── L2_data_pipeline.txt
+│   │   ├── L3_sft_packing.txt
+│   │   ├── L4_lora_nf4.txt
+│   │   ├── L5_reward_ppo.txt
+│   │   ├── L6_dpo.txt
+│   │   ├── L7_grpo.txt
+│   │   ├── L8_distillation.txt
+│   │   ├── L9_evaluation.txt
+│   │   ├── download.txt
+│   │   ├── install.txt
+│   │   └── pip-check.txt
 │   ├── cpu_environment_evidence_2026_11.md
 │   ├── cpu_lane_manifest_2026_11.json
 │   ├── research_audit_2026_11.md

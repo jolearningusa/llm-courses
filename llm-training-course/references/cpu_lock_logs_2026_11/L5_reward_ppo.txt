@@ -1,0 +1,12 @@
+test_clipped_objective (test_rlhf.TestPPO.test_clipped_objective) ... ok
+test_clipping_limits_the_step (test_rlhf.TestPPO.test_clipping_limits_the_step) ... ok
+test_gae_limits (test_rlhf.TestPPO.test_gae_limits) ... ok
+test_overoptimization (test_rlhf.TestPPO.test_overoptimization) ... ok
+test_reaches_kl_regularized_optimum (test_rlhf.TestPPO.test_reaches_kl_regularized_optimum) ... ok
+test_bradley_terry_loss (test_rlhf.TestRewardModel.test_bradley_terry_loss) ... ok
+test_ranks_held_out_pairs (test_rlhf.TestRewardModel.test_ranks_held_out_pairs) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.733s
+
+OK
