@@ -1,0 +1,58 @@
+[
+  {
+    "id": "mara-updated_fact",
+    "history_id": "mara",
+    "type": "updated_fact",
+    "question": "Which city is Mara's current home?",
+    "answer": "Ghent"
+  },
+  {
+    "id": "mara-preference",
+    "history_id": "mara",
+    "type": "preference",
+    "question": "What is Mara's favorite mug color?",
+    "answer": "teal"
+  },
+  {
+    "id": "mara-schedule_update",
+    "history_id": "mara",
+    "type": "schedule_update",
+    "question": "Which day is Mara's weekly check-in now?",
+    "answer": "Thursday"
+  },
+  {
+    "id": "mara-relation",
+    "history_id": "mara",
+    "type": "relation",
+    "question": "Who owns the orange notebook?",
+    "answer": "Jon"
+  },
+  {
+    "id": "ivo-updated_fact",
+    "history_id": "ivo",
+    "type": "updated_fact",
+    "question": "Which city is Ivo's current home?",
+    "answer": "Bern"
+  },
+  {
+    "id": "ivo-preference",
+    "history_id": "ivo",
+    "type": "preference",
+    "question": "What is Ivo's favorite mug color?",
+    "answer": "olive"
+  },
+  {
+    "id": "ivo-schedule_update",
+    "history_id": "ivo",
+    "type": "schedule_update",
+    "question": "Which day is Ivo's weekly check-in now?",
+    "answer": "Saturday"
+  },
+  {
+    "id": "ivo-relation",
+    "history_id": "ivo",
+    "type": "relation",
+    "question": "Who owns the violet notebook?",
+    "answer": "Lea"
+  }
+]
