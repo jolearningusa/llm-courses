@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "question": "Validation-selected synthetic linear-predictor MSE under equal update caps, not equal runtime",
+  "data": {
+    "generator": "optimizers.noisy_regression",
+    "pool_seed": 101,
+    "split_seed": 102,
+    "n": 384,
+    "d": 8,
+    "noise": 0.5,
+    "counts": [
+      192,
+      96,
+      96
+    ]
+  },
+  "seeds": [
+    11,
+    23,
+    37
+  ],
+  "steps": 300,
+  "batch": 16,
+  "initialization_std": 0.01,
+  "lr_grids": {
+    "sgd": [
+      0.003,
+      0.03,
+      0.3
+    ],
+    "adam": [
+      0.001,
+      0.01,
+      0.1
+    ]
+  },
+  "fixed": {
+    "schedule": "constant",
+    "adam_b1": 0.9,
+    "adam_b2": 0.999,
+    "adam_eps": 1e-08,
+    "weight_decay": 0.0,
+    "dtype": "float64",
+    "preprocessing": "none",
+    "checkpoint": "final update only",
+    "refit": "none; reuse final training-only checkpoints"
+  },
+  "selection": "smallest mean validation MSE over all three seeds; any failed seed invalidates candidate; exact ties use grid order",
+  "test_policy": "lock selections first; score each selected seed checkpoint once; no grid/seed/checkpoint changes after test"
+}

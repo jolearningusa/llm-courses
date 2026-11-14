@@ -118,3 +118,7 @@ Fair-comparison supplement checked 2026-11-07: Google Tuning Playbook, experimen
 ## Shape/gradient/causality bridge — checked 2026-11-10
 
 Deck 20 and the [shared worksheet](decoder_bridge_worksheet_2026_11.md) recheck [CS231n gradient-check guidance](https://cs231n.github.io/neural-networks-3/) and [Attention Is All You Need, arXiv:1706.03762](https://arxiv.org/html/1706.03762v7), §§3.1–3.3. Numerical derivatives, residual dimensions, decoder masking and the output offset have distinct contracts. The original course diagrams and executed mask-removal control do not reproduce a paper result or establish learned quality. Course blocks use pre-LN; the paper uses post-LN.
+
+## Held-out optimizer reference study — 2026-11-12 UTC
+
+[Executed study and limits](heldout_optimizer_study_2026_11.md) uses the [pinned Tuning Playbook experimental-design reading](https://github.com/google-research/tuning_playbook/blob/7554a51f5d3002ba90308d39701b586f5a9b962e/README.md#designing-the-next-round-of-experiments). Course-owned synthetic protocol, not paper benchmark reproduction.

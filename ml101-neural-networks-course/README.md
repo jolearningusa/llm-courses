@@ -89,6 +89,11 @@ ml101-neural-networks-course/
 │   ├── L2_optimizers/
 │   │   ├── README.md
 │   │   ├── optimizers.py            # SGD, momentum, AdaGrad, RMSProp, Adam, AdamW; schedules; test problems
+│   │   ├── heldout_protocol.json
+│   │   ├── heldout_study.py
+│   │   ├── test_heldout_study.py
+│   │   ├── heldout_search_report.json
+│   │   ├── heldout_test_report.json
 │   │   └── test_optimizers.py
 │   ├── L3_regularization_bn/
 │   │   ├── README.md
@@ -110,6 +115,7 @@ ml101-neural-networks-course/
 ├── references/
 │   ├── research_audit_2026_11.md
 │   ├── decoder_bridge_worksheet_2026_11.md
+│   ├── heldout_optimizer_study_2026_11.md
 │   ├── bridge_training_checks_2026_11.json
 │   └── bibliography.md              # Every source, grouped by deck; checked 2026-11-06
 ├── slides/

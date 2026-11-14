@@ -90,10 +90,23 @@ The expected invariant is **six printed trial records**, not a hard-coded winner
 
 ### Deliver and interpret
 
-Submit the frozen protocol, all-trial ledger, per-optimizer validation-selected configuration, seed-level outcomes, held-out report, actual cost and one adverse case. The learned-data part is a student experiment protocol; no held-out model result is supplied here. The small snippet only executes the deterministic optimization ledger.
+Submit the frozen protocol, all-trial ledger, per-optimizer validation-selected configuration, seed-level outcomes, held-out report, actual cost and one adverse case. At the 2026-11-07 protocol stage, the learned-data part was a student experiment protocol without a supplied held-out result. The dated reference study below now adds one bounded executed learning example. The small snippet only executes the deterministic optimization ledger.
 
 Prediction: A used 6 candidate settings and B used 60, but their selected final fits each used 200 updates. Is the entire search budget matched? **No.** Equal trial count alone is also insufficient if one setting trains much longer. Explain both the budget boundary and the limits of the explored ranges.
 
 Retain the previous optimizer checkpoints: momentum's constant-gradient limit; Adam's first step with and without bias correction; its coordinate scaling; and AdamW versus L2-in-Adam. For learning-rate practice, continue to sweep on a log grid, retune after changing batch/model/normalization, and inspect instability rather than assuming the optimum always lies at one universal distance from it.
 
 Primary reading: [Google Deep Learning Tuning Playbook](https://github.com/google-research/tuning_playbook), experimental design and scientific/nuisance/fixed hyperparameters. The study diagram, allocation and ledger protocol are course-owned teaching material informed by that methodology.
+
+<a id="heldout-study"></a>
+## Executed validation-selected learning study — 2026-11-12 UTC
+
+[Protocol, results, environment and limits](../../references/heldout_optimizer_study_2026_11.md) extend the protocol with a fixed synthetic linear-predictor task. Existing optimizer classes and L0 losses/gradients are unchanged. Run the stages with **new output paths**; checked-in artifacts are preserved:
+
+```sh
+python heldout_study.py search --output /tmp/my-optimizer-search.json
+python heldout_study.py evaluate --search /tmp/my-optimizer-search.json --output /tmp/my-optimizer-test.json
+python -m unittest -v
+```
+
+Use NumPy (recorded run: Python 3.12.14 / NumPy 2.3.5). Eighteen fits, 5,400 total updates, validation mean selection, then six held-out scores with no refit. Both selected methods have similar held-out MSE and paired direction changes by seed. No general ranking is inferred. Replaying now-known test results is reproducibility checking, not a new blind test; future tuning needs a new evaluation cohort. The two-stage files are workflow guards, not hostile-user isolation.
