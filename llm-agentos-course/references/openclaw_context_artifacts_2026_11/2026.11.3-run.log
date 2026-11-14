@@ -1,0 +1,5 @@
+[context-engine] Context engine "assembly-fail" owner=plugin:assembly-fail failed during assemble: course-assembly-failure; quarantining it for this process and falling back to default engine "legacy".
+[context-engine] Context engine "compact-fail" owner=plugin:compact-fail failed during compact: course-compaction-failure; quarantining it for this process and falling back to default engine "legacy".
+[context-engine] Context engine "invalid-contract" owner=plugin:invalid-contract failed during contract-validation: Context engine "invalid-contract" factory returned an invalid ContextEngine: missing compact().; quarantining it for this process and falling back to default engine "legacy".
+[context-engine] Context engine "discovery-only" owner=plugin:discovery-only is registered for read-only discovery only; falling back to default engine "legacy" without quarantine until runtime activation registers it.
+{"version":"2026.11.3","status":"passed","case_groups":10,"network_attempts":0,"main_process_files":681}
