@@ -1,0 +1,50 @@
+{
+  "source_commit": "1e0be52",
+  "outcome": "suite aborted: AssertionError: omission undetected: omit_optimizer",
+  "reason": "DCP writes returned live destination tensors in place; skipping setter still restored optimizer storage. Corrected state_dict omits optimizer destinations entirely. Original protocol and all outcomes unchanged; full corrected suite executed in new directory.",
+  "rank_evidence": {
+    "0": {
+      "baseline_final_model_sha256": "eeea6e328002ef9ec3efb4b20a265f65cbbb3071c9fdc3720673ac00a3bf91fe",
+      "omission_final_model_sha256": "eeea6e328002ef9ec3efb4b20a265f65cbbb3071c9fdc3720673ac00a3bf91fe",
+      "baseline_final_optimizer_sha256": "94bda400bd4291caf14363766372ed44a1923c0f09c1f0810fde8da4628fe1d0",
+      "omission_final_optimizer_sha256": "94bda400bd4291caf14363766372ed44a1923c0f09c1f0810fde8da4628fe1d0",
+      "all_recorded_checks_equal": true,
+      "checks": {
+        "loss_sequence_equal": true,
+        "data_ids_equal": true,
+        "input_hashes_equal": true,
+        "completed_steps_equal": true,
+        "cursor_equal": true,
+        "model_sha256_equal": true,
+        "optimizer_sha256_equal": true,
+        "rng_sha256_equal": true
+      }
+    },
+    "1": {
+      "baseline_final_model_sha256": "eeea6e328002ef9ec3efb4b20a265f65cbbb3071c9fdc3720673ac00a3bf91fe",
+      "omission_final_model_sha256": "eeea6e328002ef9ec3efb4b20a265f65cbbb3071c9fdc3720673ac00a3bf91fe",
+      "baseline_final_optimizer_sha256": "94bda400bd4291caf14363766372ed44a1923c0f09c1f0810fde8da4628fe1d0",
+      "omission_final_optimizer_sha256": "94bda400bd4291caf14363766372ed44a1923c0f09c1f0810fde8da4628fe1d0",
+      "all_recorded_checks_equal": true,
+      "checks": {
+        "loss_sequence_equal": true,
+        "data_ids_equal": true,
+        "input_hashes_equal": true,
+        "completed_steps_equal": true,
+        "cursor_equal": true,
+        "model_sha256_equal": true,
+        "optimizer_sha256_equal": true,
+        "rng_sha256_equal": true
+      }
+    }
+  },
+  "logs": {
+    "11-baseline-none.log": "W1113 22:22:21.053000 71461 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\nW1113 22:22:21.501000 71464 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\nW1113 22:22:21.501000 71463 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\n",
+    "11-prefix-none.log": "W1113 22:22:22.499000 71487 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\nW1113 22:22:22.930000 71506 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\nW1113 22:22:22.930000 71507 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\n/private/tmp/trn4-cpu-lock-20261114/lib/python3.12/site-packages/torch/distributed/checkpoint/filesystem.py:133: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()\n  if tensor.storage().size() != tensor.numel():\n/private/tmp/trn4-cpu-lock-20261114/lib/python3.12/site-packages/torch/distributed/checkpoint/filesystem.py:133: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()\n  if tensor.storage().size() != tensor.numel():\n",
+    "11-resume-none.log": "W1113 22:22:23.887000 71509 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\nW1113 22:22:24.315000 71524 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\nW1113 22:22:24.316000 71525 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\n",
+    "11-resume-omit_optimizer.log": "W1113 22:22:26.726000 71531 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\nW1113 22:22:27.195000 71534 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\nW1113 22:22:27.195000 71533 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\n",
+    "11-resume-omit_rng.log": "W1113 22:22:25.257000 71526 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\nW1113 22:22:25.697000 71529 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\nW1113 22:22:25.697000 71528 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\n",
+    "11-resume-rewind_cursor.log": "W1113 22:22:28.238000 71536 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\nW1113 22:22:28.673000 71539 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\nW1113 22:22:28.673000 71538 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.\n"
+  },
+  "corrected_commit": "d9ad23c"
+}

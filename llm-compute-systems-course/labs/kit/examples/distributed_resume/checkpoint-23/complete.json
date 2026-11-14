@@ -1,0 +1,12 @@
+{
+  "world_size": 2,
+  "runner_sha256": "145bf05963e9d912c5e5216cbbfb11428d45fff29db145b3b4b695cf7bb11b67",
+  "protocol_sha256": "bb215e4553925ee6cfdee653e3bcc6ba1c64b9a26f12c79aaf96453eabe7245a",
+  "files": {
+    "dcp/.metadata": "44b4851114ecd95adc35c4499d9125b59c72b216586bf8aceaa49dbf1da0a138",
+    "dcp/__0_0.distcp": "6e4e0d7aa015cc1438ad074f2d22b8c965e544d6a5262954d32ff25b7a3f01f9",
+    "dcp/__1_0.distcp": "32fc37f65159ce27c682967d4300e3612d3c1eb7d39d81a0a99092322f9df808",
+    "rank0.json": "60c59897d771aa291168e6c2a3195aab7116afb200ab2c0438fdbe597443c326",
+    "rank1.json": "f32e70d3076466d8faba4e3dd322a934048ffc047c15d3e77a80c7a5bfb5ecd9"
+  }
+}

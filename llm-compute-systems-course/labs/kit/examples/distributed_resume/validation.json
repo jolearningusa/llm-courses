@@ -1,0 +1,16 @@
+{
+  "recorded_utc": "2026-11-14",
+  "protocol_sha256": "bb215e4553925ee6cfdee653e3bcc6ba1c64b9a26f12c79aaf96453eabe7245a",
+  "runner_sha256": "145bf05963e9d912c5e5216cbbfb11428d45fff29db145b3b4b695cf7bb11b67",
+  "retained_checkpoints_verified": 3,
+  "full_restore_rank_comparisons_verified": 6,
+  "initial_ineffective_control_ranks_verified": 2,
+  "existing_tests": {
+    "command": "python -m unittest discover -s tests -p test_moe_recovery.py -v",
+    "cwd": "llm-compute-systems-course/labs/kit",
+    "passed": 3
+  },
+  "independent_data_coverage": "96 distinct IDs0\u201395 per clean resumed seed, no overlap/repeat",
+  "frozen_protocol_commit": "df3ce35",
+  "corrected_runner_commit": "d9ad23c"
+}

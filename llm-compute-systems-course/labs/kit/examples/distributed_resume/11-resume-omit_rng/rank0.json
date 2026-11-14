@@ -1,0 +1,64 @@
+{
+  "phase": "resume",
+  "seed": 11,
+  "rank": 0,
+  "mutation": "omit_rng",
+  "completed_steps": 6,
+  "cursor": 6,
+  "trace": [
+    {
+      "completed_step": 4,
+      "ids": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "input_sha256": "5c66d9e05c4fa7d1dec8044e2a257c99fa1c31a1a149bd55e68ee3d76e45bcc2",
+      "loss": 1.1002363851577612,
+      "step_seconds": 0.0010087499395012856
+    },
+    {
+      "completed_step": 5,
+      "ids": [
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      "input_sha256": "1254ff1866664bc17cf6a0efc75ac3fd9238a793c1622c18a0d169b1bc091972",
+      "loss": 1.1700416398207678,
+      "step_seconds": 0.0006787499878555536
+    },
+    {
+      "completed_step": 6,
+      "ids": [
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87
+      ],
+      "input_sha256": "5e621033cb8e6f7abb100ae2d3d8e84d7e981b8f5a553201e109e0f61f286fcb",
+      "loss": 1.3926405549699599,
+      "step_seconds": 0.0004992079921066761
+    }
+  ],
+  "model_sha256": "6b940ff1159310b11ca2045f361db56f295d1164555ad6e7203addd04a954a00",
+  "optimizer_sha256": "08d23dbf9c96d0ed8f8d882f072d862bf608baf1f8c02fea5815b0db6a909c3d",
+  "rng_sha256": "6c7d4bf356f851a66771bd7d088d557455768a3116e4178b63d5b0834dff27a8",
+  "save_stall_seconds": 0.0,
+  "load_barrier_seconds": 0.05971954099368304,
+  "worker_seconds": 0.3069368749856949
+}

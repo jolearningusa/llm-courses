@@ -8,6 +8,8 @@ The worked-example pilot in decks 10/16/36/38 links prediction questions to repr
 
 [ExecuTorch CPU compatibility matrix, 2026-11-14](references/executorch_cpu_compatibility_2026_11.md): two isolated producer lanes and four fresh-process load/execute cells for a bounded unquantized MLP.
 
+[Two-rank CPU restart, 2026-11-14](references/distributed_resume_2026_11.md): exact three-seed progress equivalence, omissions and save/work accounting; author/FSDP2 recovery remains unqualified.
+
 [vLLM source-identity supplement, 2026-11-08](references/vllm_source_identity_2026_11.md): candidate 0.33.0 archive/tag evidence; runtime qualification remains pending.
 
 [Research audit, 2026-11-07](references/research_audit_2026_11.md): checked readings, compatibility findings, prioritized updates and potential projects. Proposed experiments are distinguished from executed results.
@@ -148,7 +150,7 @@ Decks are listed in teaching order, grouped by part. Each row links the English 
 | [Collectives, Topology and Exposed Communication](slides/26_collectives_overlap.html) (17 slides) · [简体中文](slides/zh/26_collectives_overlap.html) | Week 13, lecture B |
 | [Parallel Layouts and Recomputation](slides/27_parallelism_recomputation.html) (17 slides) · [简体中文](slides/zh/27_parallelism_recomputation.html) | Week 14, lecture A |
 | [Reading a Production Training Stack](slides/28_training_stack_walkthrough.html) (17 slides) · [简体中文](slides/zh/28_training_stack_walkthrough.html) | Week 14, lecture B |
-| [Checkpointing, Input State and Useful Training Work](slides/29_checkpoint_recovery.html) (17 slides) · [简体中文](slides/zh/29_checkpoint_recovery.html) | Week 15, lecture A |
+| [Checkpointing, Input State and Useful Training Work](slides/29_checkpoint_recovery.html) (17 slides) · [简体中文](slides/zh/29_checkpoint_recovery.html) | Week 15, lecture A; measured two-rank CPU restart and remaining target gates |
 | [Whole-System Efficiency and Useful Work](slides/30_whole_system_efficiency.html) (17 slides) · [简体中文](slides/zh/30_whole_system_efficiency.html) | Week 15, lecture B |
 | **AI-assisted development and verification unit** | |
 | [37 · AI-assisted development](slides/37_ai_assisted_development.html) (11 slides) · [简体中文](slides/zh/37_ai_assisted_development.html) | AI-assisted development/verification unit; after deck 32 |
@@ -176,6 +178,83 @@ llm-compute-systems-course/
 │   │   ├── cuda/
 │   │   │   └── rmsnorm.cu
 │   │   ├── examples/
+│   │   │   ├── distributed_resume/
+│   │   │   │   ├── 11-baseline-none/
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── 11-baseline-none.log
+│   │   │   │   ├── 11-prefix-none/
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── 11-prefix-none.log
+│   │   │   │   ├── 11-resume-none/
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── 11-resume-none.log
+│   │   │   │   ├── 11-resume-omit_optimizer/
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── 11-resume-omit_optimizer.log
+│   │   │   │   ├── 11-resume-omit_rng/
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── 11-resume-omit_rng.log
+│   │   │   │   ├── 11-resume-rewind_cursor/
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── 11-resume-rewind_cursor.log
+│   │   │   │   ├── 23-baseline-none/
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── 23-baseline-none.log
+│   │   │   │   ├── 23-prefix-none/
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── 23-prefix-none.log
+│   │   │   │   ├── 23-resume-none/
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── 23-resume-none.log
+│   │   │   │   ├── 37-baseline-none/
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── 37-baseline-none.log
+│   │   │   │   ├── 37-prefix-none/
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── 37-prefix-none.log
+│   │   │   │   ├── 37-resume-none/
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── 37-resume-none.log
+│   │   │   │   ├── checkpoint-11/
+│   │   │   │   │   ├── complete.json
+│   │   │   │   │   ├── dcp/
+│   │   │   │   │   │   ├── .metadata
+│   │   │   │   │   │   ├── __0_0.distcp
+│   │   │   │   │   │   └── __1_0.distcp
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── checkpoint-23/
+│   │   │   │   │   ├── complete.json
+│   │   │   │   │   ├── dcp/
+│   │   │   │   │   │   ├── .metadata
+│   │   │   │   │   │   ├── __0_0.distcp
+│   │   │   │   │   │   └── __1_0.distcp
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── checkpoint-37/
+│   │   │   │   │   ├── complete.json
+│   │   │   │   │   ├── dcp/
+│   │   │   │   │   │   ├── .metadata
+│   │   │   │   │   │   ├── __0_0.distcp
+│   │   │   │   │   │   └── __1_0.distcp
+│   │   │   │   │   ├── rank0.json
+│   │   │   │   │   └── rank1.json
+│   │   │   │   ├── first_attempt.json
+│   │   │   │   ├── summary.json
+│   │   │   │   ├── validation.json
+│   │   │   │   └── work_accounting.json
 │   │   │   ├── l11_aoti_cpu.json
 │   │   │   └── l11_executorch_cpu.json
 │   │   ├── handouts/
@@ -234,6 +313,8 @@ llm-compute-systems-course/
 │   │   ├── parallelism_lab.py
 │   │   ├── precision_lab.py
 │   │   ├── pytorch_lab.py
+│   │   ├── distributed_resume.py
+│   │   ├── distributed_resume_protocol.json
 │   │   ├── recovery_lab.py
 │   │   ├── reductions.py
 │   │   ├── requirements-executorch-lock.txt
@@ -271,6 +352,8 @@ llm-compute-systems-course/
 │   ├── POTENTIAL_PROJECTS.md
 │   └── optimization-engine.svg
 ├── references/
+│   ├── distributed_resume_2026_11.md
+│   ├── torchtitan_resume_sources_2026_11.json
 │   ├── executorch_cpu_compatibility_2026_11.md
 │   ├── executorch_cpu_compatibility_2026_11.json
 │   ├── research_audit_2026_11.md

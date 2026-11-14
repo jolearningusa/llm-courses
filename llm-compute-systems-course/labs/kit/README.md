@@ -126,3 +126,7 @@ The [diagnosis worksheet](inference_bottleneck_worksheet.md) connects L1/L8/L10 
 ## Fresh old/new CPU compatibility — 2026-11-14 UTC
 
 The [executed CMP-1 matrix](../../references/executorch_cpu_compatibility_2026_11.md) uses fresh 1.0.0/Torch 2.9.1 and 1.6.0/Torch 2.15.0 environments, one literal model/input fixture and four fresh-process producer/consumer cells. All three eligible inputs and before-native shape/dtype/stride guards pass in every cell. Actual delegate graphs, artifact/source/package hashes, warnings and raw timing samples are retained. The separate `executorch_compat.py` runner and candidate lock preserve this lab’s historical runner/default requirements. This qualifies the bounded unquantized CPU fixture, not all .pte formats, quantized/GPU/edge paths or stable performance.
+
+## Two-rank CPU restart supplement — 2026-11-14 UTC
+
+The [new source/execution evidence](../../references/distributed_resume_2026_11.md) pins TorchTitan separately and adds `distributed_resume.py`: three seeds of actual two-rank CPU DDP/Gloo/DCP stop-and-new-process resume, full progress equality, RNG/optimizer/cursor omission controls, six artifact guards, raw checkpoints and measured save/load/work intervals. The first ineffective omission control and correction are retained. This clean restart does not qualify TorchTitan/FSDP2/GPU, SIGKILL, topology changes or crash durability. The earlier fixture and source cohort remain historical evidence.

@@ -30,9 +30,39 @@
       "bytes": 7686
     },
     {
+      "path": "torchtitan/config/parallelism.py",
+      "sha256": "ce39315121bbcedd38e584eea1d39d452f07db04a520cfd8c988aa7260329d8d",
+      "bytes": 12910
+    },
+    {
       "path": "torchtitan/distributed/fsdp.py",
       "sha256": "a66e3d1d82ed1c792bcfa2b3070f36bcb2f97cb809e1d1c8e5b213768232744d",
       "bytes": 26818
+    },
+    {
+      "path": "torchtitan/models/common/decoder.py",
+      "sha256": "d1353465c62a9a82653309f365acaf18d6e307036a0331b41656003a610e9a2a",
+      "bytes": 21977
+    },
+    {
+      "path": "torchtitan/models/common/decoder_sharding.py",
+      "sha256": "8657cc44916b71499994195af81dc80484a4c29e13afa88ed4bdc8278d2d5c2a",
+      "bytes": 11375
+    },
+    {
+      "path": "torchtitan/models/llama3/__init__.py",
+      "sha256": "8d3f3eef3d82570f39e8fa0fc71ecb4ae7ed0d699b2575659e48bd15abb47bcb",
+      "bytes": 361
+    },
+    {
+      "path": "torchtitan/models/llama3/flavors.py",
+      "sha256": "2c2a9938c65e237b316a4426db7eef41891188a6a2e83b7ec29b9e7a4c8cdcf7",
+      "bytes": 15034
+    },
+    {
+      "path": "torchtitan/models/llama3/model.py",
+      "sha256": "4ca0fe8b30dd9eeabd3c3f7b8ed377bbeb9ec2cf4166abd8708104f31ea4db98",
+      "bytes": 3025
     },
     {
       "path": "torchtitan/train.py",
@@ -48,6 +78,11 @@
       "path": "torchtitan/training_engine.py",
       "sha256": "ecbe72af3cdf4eba9d8093eb07c6178b2046063e87e574ed0d43f5861ab982ab",
       "bytes": 41751
+    },
+    {
+      "path": "torchtitan_recipes/models/llama3.py",
+      "sha256": "2b4c429ec1eb69bf5e4df73ff22142225401a9fa8f10fd6a8182b44d5b99db01",
+      "bytes": 4405
     },
     {
       "path": "torchtitan_recipes/tests/models/llama3.py",
