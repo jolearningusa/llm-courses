@@ -126,6 +126,9 @@ llm-agentos-course/
 │   │   ├── sched_replay.py                    # Lab 2: replay a simulated workload against a vLLM server
 │   │   ├── session_handoff_eval.py            # Provided AGT-4 fresh-process state/receipt controls
 │   │   ├── memory_repair_eval.py              # Provided AGT-3 state/repair controls; no model or real delivery
+│   │   ├── memory_pilot.py                  # Frozen real-model write/answer pilot
+│   │   ├── memory_pilot_protocol.json
+│   │   ├── memory_pilot_requirements.txt
 │   │   ├── memory_eval.py                     # Lab 4: one memory store, two read paths, 40 questions
 │   │   ├── cache_experiment.py                # Lab 5: break the prefix cache on purpose, simulated or on vLLM
 │   │   ├── redteam_eval.py                    # Lab 6: red-team the agent with and without each defense
@@ -187,6 +190,9 @@ llm-agentos-course/
 │   │   │       ├── plugin.json
 │   │   │       └── plugin.py                  # Lab 3 clearing in the context-engine slot
 │   │   ├── tasks/
+│   │   │   ├── memory_pilot/
+│   │   │   │   ├── histories.json
+│   │   │   │   └── questions.json
 │   │   │   ├── __init__.py                    # Task type and tiers
 │   │   │   ├── basic.py                       # Ten basic tasks with checkers and scripted solutions
 │   │   │   ├── long.py                        # Three 40+ step tasks for context engines and sub-agents
@@ -214,6 +220,7 @@ llm-agentos-course/
 │   │   │   ├── test_session_handoff.py        # Restart, budget, receipt and incomplete-state controls
 │   │   │   ├── test_memory_repair.py          # Independent state/repair negative controls
 │   │   │   ├── test_hermes_imports.py          # Offline / broken optional-import controls
+│   │   │   ├── test_memory_pilot.py           # Scope, eligibility, scoring and store controls
 │   │   │   ├── test_kit.py                    # The kit's own tests
 │   │   │   ├── test_lab00.py                  # Lab 0 autograder tests
 │   │   │   ├── test_lab01.py                  # Lab 1 autograder tests
@@ -258,6 +265,10 @@ llm-agentos-course/
 │       ├── run_harness2_demo.sh               # Quickstart for google-research/harness2
 │       └── sample_lesson_entry.jsonl          # Course schema for an evidence-backed lesson record
 └── references/
+    ├── measured_memory_pilot_2026_11.md
+    ├── memory_pilot_artifacts_2026_11.json
+    ├── memory_pilot_writes_2026_11.json
+    ├── memory_pilot_answers_2026_11.json
     ├── hermes_import_contracts_2026_11.md
     ├── hermes_import_sources_2026_11.json
     ├── hermes_import_results_2026_11.json

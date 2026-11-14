@@ -1,0 +1,26 @@
+[
+  {
+    "id": "mara",
+    "turns": [
+      "Mara: I live in Porto.",
+      "Mara: My favorite mug color is teal.",
+      "Mara: Jon is my colleague. Jon owns the orange notebook.",
+      "Mara: My weekly check-in was Monday.",
+      "Mara: I moved from Porto to Ghent. Ghent is my current home.",
+      "Mara: My weekly check-in is now Thursday instead of Monday.",
+      "Mara: The office wallpaper is gray. I do not own the gray notebook."
+    ]
+  },
+  {
+    "id": "ivo",
+    "turns": [
+      "Ivo: I live in Turin.",
+      "Ivo: My favorite mug color is olive.",
+      "Ivo: Lea is my colleague. Lea owns the violet notebook.",
+      "Ivo: My weekly check-in was Tuesday.",
+      "Ivo: I moved from Turin to Bern. Bern is my current home.",
+      "Ivo: My weekly check-in is now Saturday instead of Tuesday.",
+      "Ivo: The office wallpaper is gray. I do not own the gray notebook."
+    ]
+  }
+]

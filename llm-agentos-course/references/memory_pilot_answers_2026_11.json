@@ -1,0 +1,1681 @@
+{
+  "source_revision": "a7c7e94b5b2df81ecb6b156c71aff04a1c98d584",
+  "runner_sha256": "b7098f10ac49b4a1773c20ab631a3178a6a69c155b9e12c738174fde706e7a13",
+  "protocol_sha256": "542d6fe44dfb7eff1cbcef358a0551098a0d41bac2142ed86601d7cb1343f78e",
+  "histories_sha256": "744a56c07ace6a9d1be5c727fcf63c384ebb040fc47f5298c23d09ef4f29941a",
+  "model_id": "HuggingFaceTB/SmolLM2-135M-Instruct",
+  "model_revision": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+  "model_files_sha256": {
+    "README.md": "4f97533ad95b1b2fea15fbc075c01b94578ebdd7c8138888fa43fa3abd530dc4",
+    "config.json": "8eb740e8bbe4cff95ea7b4588d17a2432deb16e8075bc5828ff7ba9be94d982a",
+    "generation_config.json": "87b916edaaab66b3899b9d0dd0752727dff6666686da0504d89ae0a6e055a013",
+    "merges.txt": "0b54e8aa4e53d5383e2e4bc635a56b43f9647f7b13832d5d9ecd8f82dac4f510",
+    "model.safetensors": "5af571cbf074e6d21a03528d2330792e532ca608f24ac70a143f6b369968ab8c",
+    "special_tokens_map.json": "2b7379f3ae813529281a5c602bc5a11c1d4e0a99107aaa597fe936c1e813ca52",
+    "tokenizer.json": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+    "tokenizer_config.json": "4ec77d44f62efeb38d7e044a1db318f6a939438425312dfa333b8382dbad98df",
+    "vocab.json": "82b84012e3add4d01d12ba14442026e49b8cbbaead1f79ecf3d919784f82dc79"
+  },
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "packages": [
+    [
+      "Jinja2",
+      "3.1.6"
+    ],
+    [
+      "MarkupSafe",
+      "3.0.4"
+    ],
+    [
+      "PyYAML",
+      "6.0.3"
+    ],
+    [
+      "certifi",
+      "2026.10.23"
+    ],
+    [
+      "charset-normalizer",
+      "3.5.2"
+    ],
+    [
+      "filelock",
+      "4.2.10"
+    ],
+    [
+      "fsspec",
+      "2026.9.0"
+    ],
+    [
+      "hf-xet",
+      "1.8.0"
+    ],
+    [
+      "huggingface_hub",
+      "0.36.2"
+    ],
+    [
+      "idna",
+      "3.20"
+    ],
+    [
+      "mpmath",
+      "1.3.0"
+    ],
+    [
+      "networkx",
+      "3.7"
+    ],
+    [
+      "numpy",
+      "2.3.5"
+    ],
+    [
+      "packaging",
+      "26.3"
+    ],
+    [
+      "pip",
+      "25.0.1"
+    ],
+    [
+      "regex",
+      "2026.11.9"
+    ],
+    [
+      "requests",
+      "2.34.2"
+    ],
+    [
+      "safetensors",
+      "0.8.0"
+    ],
+    [
+      "setuptools",
+      "84.2.1"
+    ],
+    [
+      "sympy",
+      "1.14.0"
+    ],
+    [
+      "tokenizers",
+      "0.22.2"
+    ],
+    [
+      "torch",
+      "2.9.1"
+    ],
+    [
+      "tqdm",
+      "4.70.1"
+    ],
+    [
+      "transformers",
+      "4.57.1"
+    ],
+    [
+      "typing_extensions",
+      "4.16.0"
+    ],
+    [
+      "urllib3",
+      "2.8.0"
+    ]
+  ],
+  "torch_threads": 2,
+  "device": "cpu",
+  "dtype": "float32",
+  "torch_deterministic_algorithms": false,
+  "model_load_seconds": 0.10088804108090699,
+  "warmup": {
+    "eligible": true,
+    "input_tokens": 38,
+    "output_tokens": 1,
+    "input_ids_sha256": "24941aed223af00bf2a27fb16f7d8965eccba9698f079127e6bc4c1c111139cb",
+    "output_ids": [
+      33
+    ],
+    "prompt": "<|im_start|>system\nYou are a helpful AI assistant named SmolLM, trained by Hugging Face<|im_end|>\n<|im_start|>user\nWhat is 1 plus 1?<|im_end|>\n<|im_start|>assistant\n",
+    "text": "1",
+    "hit_output_cap_without_eos": true,
+    "tokenize_seconds": 0.001964083989150822,
+    "generate_seconds": 0.024779499974101782,
+    "elapsed_seconds": 0.02682899998035282
+  },
+  "questions_sha256": "b8b261756deedf3e84286029c0102745946035cb682aa9e686dcceb37fe8748d",
+  "writes_sha256": "9cfe7793a665b4a66419d76b92ddfc9272c365c7d863af497e980921ee36474b",
+  "rows": [
+    {
+      "question_id": "mara-updated_fact",
+      "history_id": "mara",
+      "type": "updated_fact",
+      "condition": "none",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 61,
+        "output_tokens": 11,
+        "input_ids_sha256": "8a6f3f483ebb94c3260149a2f247751891030f0b661b97a3bf2dbb2a4e24cec6",
+        "output_ids": [
+          12186,
+          81,
+          506,
+          1574,
+          1478,
+          314,
+          1315,
+          2863,
+          4206,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\n[none]\n\nQuestion:\nWhich city is Mara's current home?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Mara's current home is New York City.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00041083397809416056,
+        "generate_seconds": 0.126605166005902,
+        "elapsed_seconds": 0.12710891698952764
+      },
+      "reference": "Ghent",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 4.125060513615608e-06,
+      "read_answer_seconds": 0.12712904100771993
+    },
+    {
+      "question_id": "mara-updated_fact",
+      "history_id": "mara",
+      "type": "updated_fact",
+      "condition": "full",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 161,
+        "output_tokens": 10,
+        "input_ids_sha256": "8f1b1385fe21b5b5ff22d6b6e4e6d2e50da69dea0ef5eb84c8a1f54a5c20c919",
+        "output_ids": [
+          61,
+          4075,
+          506,
+          1574,
+          1478,
+          314,
+          452,
+          5349,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nMara: I live in Porto.\nMara: My favorite mug color is teal.\nMara: Jon is my colleague. Jon owns the orange notebook.\nMara: My weekly check-in was Monday.\nMara: I moved from Porto to Ghent. Ghent is my current home.\nMara: My weekly check-in is now Thursday instead of Monday.\nMara: The office wallpaper is gray. I do not own the gray notebook.\n\nQuestion:\nWhich city is Mara's current home?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Mara's current home is Ghent.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00035850005224347115,
+        "generate_seconds": 0.13948549993801862,
+        "elapsed_seconds": 0.13990787498187274
+      },
+      "reference": "Ghent",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 5.583977326750755e-06,
+      "read_answer_seconds": 0.13992295891512185
+    },
+    {
+      "question_id": "mara-updated_fact",
+      "history_id": "mara",
+      "type": "updated_fact",
+      "condition": "verbatim",
+      "selected": [
+        {
+          "index": 4,
+          "text": "Mara: I moved from Porto to Ghent. Ghent is my current home.",
+          "score": 2
+        },
+        {
+          "index": 0,
+          "text": "Mara: I live in Porto.",
+          "score": 1
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 87,
+        "output_tokens": 10,
+        "input_ids_sha256": "0c4f1cd033450137bc658e0b559113350a0a5fad2fbaefc4a1c02e81b56f698c",
+        "output_ids": [
+          61,
+          4075,
+          506,
+          1574,
+          1478,
+          314,
+          5403,
+          95,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nMara: I moved from Porto to Ghent. Ghent is my current home.\nMara: I live in Porto.\n\nQuestion:\nWhich city is Mara's current home?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Mara's current home is Porto.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.0002025420544669032,
+        "generate_seconds": 0.12032058299519122,
+        "elapsed_seconds": 0.12058600003365427
+      },
+      "reference": "Ghent",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 0.00010987499263137579,
+      "read_answer_seconds": 0.12070483306888491
+    },
+    {
+      "question_id": "mara-updated_fact",
+      "history_id": "mara",
+      "type": "updated_fact",
+      "condition": "extracted",
+      "selected": [
+        {
+          "index": 0,
+          "text": "Mara: My favorite mug color is teal.",
+          "score": 1
+        },
+        {
+          "index": 1,
+          "text": "Mara: My favorite mug color is teal.",
+          "score": 1
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 83,
+        "output_tokens": 11,
+        "input_ids_sha256": "ba80aa221b74f5019803a24334d7f205e49d8c044d901fbbfce5c7f08b615e87",
+        "output_ids": [
+          61,
+          4075,
+          506,
+          1574,
+          1478,
+          314,
+          1315,
+          2863,
+          4206,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nMara: My favorite mug color is teal.\nMara: My favorite mug color is teal.\n\nQuestion:\nWhich city is Mara's current home?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Mara's current home is New York City.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00022166699636727571,
+        "generate_seconds": 0.13394674996379763,
+        "elapsed_seconds": 0.13423787499777973
+      },
+      "reference": "Ghent",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 3.2250070944428444e-05,
+      "read_answer_seconds": 0.13427895901259035
+    },
+    {
+      "question_id": "mara-preference",
+      "history_id": "mara",
+      "type": "preference",
+      "condition": "full",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 162,
+        "output_tokens": 12,
+        "input_ids_sha256": "b9a4d539b28b464fde4cb827c32fec6f20730eb538bdfeedac80a5b231bb9fb7",
+        "output_ids": [
+          61,
+          4075,
+          506,
+          4932,
+          283,
+          1433,
+          2380,
+          314,
+          543,
+          272,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nMara: I live in Porto.\nMara: My favorite mug color is teal.\nMara: Jon is my colleague. Jon owns the orange notebook.\nMara: My weekly check-in was Monday.\nMara: I moved from Porto to Ghent. Ghent is my current home.\nMara: My weekly check-in is now Thursday instead of Monday.\nMara: The office wallpaper is gray. I do not own the gray notebook.\n\nQuestion:\nWhat is Mara's favorite mug color?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Mara's favorite mug color is teal.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00029466592241078615,
+        "generate_seconds": 0.16651966702193022,
+        "elapsed_seconds": 0.16689520794898272
+      },
+      "reference": "teal",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 4.458008334040642e-06,
+      "read_answer_seconds": 0.16691045800689608
+    },
+    {
+      "question_id": "mara-preference",
+      "history_id": "mara",
+      "type": "preference",
+      "condition": "verbatim",
+      "selected": [
+        {
+          "index": 1,
+          "text": "Mara: My favorite mug color is teal.",
+          "score": 4
+        },
+        {
+          "index": 0,
+          "text": "Mara: I live in Porto.",
+          "score": 1
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 81,
+        "output_tokens": 12,
+        "input_ids_sha256": "19c4ef25cc8fa09c21ed4c368b993db53eb2048ba2acb904f27025d90164909e",
+        "output_ids": [
+          61,
+          4075,
+          506,
+          4932,
+          283,
+          1433,
+          2380,
+          314,
+          543,
+          272,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nMara: My favorite mug color is teal.\nMara: I live in Porto.\n\nQuestion:\nWhat is Mara's favorite mug color?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Mara's favorite mug color is teal.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00021612504497170448,
+        "generate_seconds": 0.15019650000613183,
+        "elapsed_seconds": 0.15048129204660654
+      },
+      "reference": "teal",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 4.295899998396635e-05,
+      "read_answer_seconds": 0.1505330839427188
+    },
+    {
+      "question_id": "mara-preference",
+      "history_id": "mara",
+      "type": "preference",
+      "condition": "extracted",
+      "selected": [
+        {
+          "index": 0,
+          "text": "Mara: My favorite mug color is teal.",
+          "score": 4
+        },
+        {
+          "index": 1,
+          "text": "Mara: My favorite mug color is teal.",
+          "score": 4
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 84,
+        "output_tokens": 12,
+        "input_ids_sha256": "1c053e6e9688044c4ac1e1d9775a118d342bd6f0b24f1968fd81839dd2fa82c2",
+        "output_ids": [
+          61,
+          4075,
+          506,
+          4932,
+          283,
+          1433,
+          2380,
+          314,
+          543,
+          272,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nMara: My favorite mug color is teal.\nMara: My favorite mug color is teal.\n\nQuestion:\nWhat is Mara's favorite mug color?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Mara's favorite mug color is teal.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.0002190840896219015,
+        "generate_seconds": 0.14386570791248232,
+        "elapsed_seconds": 0.14414937503170222
+      },
+      "reference": "teal",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 3.2374984584748745e-05,
+      "read_answer_seconds": 0.14419016696047038
+    },
+    {
+      "question_id": "mara-preference",
+      "history_id": "mara",
+      "type": "preference",
+      "condition": "none",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 62,
+        "output_tokens": 11,
+        "input_ids_sha256": "3451492c21d6a947e1cc9889a266bc9919ed188a0c757384a8ae967abedaf40e",
+        "output_ids": [
+          12186,
+          81,
+          506,
+          4932,
+          283,
+          1433,
+          2380,
+          314,
+          4461,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\n[none]\n\nQuestion:\nWhat is Mara's favorite mug color?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Mara's favorite mug color is blue.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00020412507001310587,
+        "generate_seconds": 0.12790529197081923,
+        "elapsed_seconds": 0.1281725000590086
+      },
+      "reference": "teal",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 3.6669662222266197e-06,
+      "read_answer_seconds": 0.12818474997766316
+    },
+    {
+      "question_id": "mara-schedule_update",
+      "history_id": "mara",
+      "type": "schedule_update",
+      "condition": "verbatim",
+      "selected": [
+        {
+          "index": 3,
+          "text": "Mara: My weekly check-in was Monday.",
+          "score": 3
+        },
+        {
+          "index": 5,
+          "text": "Mara: My weekly check-in is now Thursday instead of Monday.",
+          "score": 3
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 88,
+        "output_tokens": 15,
+        "input_ids_sha256": "5346d4b266d2832df40287ab53238d09a8d99f719c29cad49a857eebef38b9cb",
+        "output_ids": [
+          61,
+          4075,
+          506,
+          11438,
+          2545,
+          29,
+          254,
+          314,
+          1209,
+          14963,
+          2489,
+          282,
+          12397,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nMara: My weekly check-in was Monday.\nMara: My weekly check-in is now Thursday instead of Monday.\n\nQuestion:\nWhich day is Mara's weekly check-in now?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Mara's weekly check-in is now Thursday instead of Monday.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.0002358750207349658,
+        "generate_seconds": 0.17204633296933025,
+        "elapsed_seconds": 0.1723550419555977
+      },
+      "reference": "Thursday",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 3.4374999813735485e-05,
+      "read_answer_seconds": 0.17239833297207952
+    },
+    {
+      "question_id": "mara-schedule_update",
+      "history_id": "mara",
+      "type": "schedule_update",
+      "condition": "extracted",
+      "selected": [
+        {
+          "index": 0,
+          "text": "Mara: My favorite mug color is teal.",
+          "score": 1
+        },
+        {
+          "index": 1,
+          "text": "Mara: My favorite mug color is teal.",
+          "score": 1
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 86,
+        "output_tokens": 16,
+        "input_ids_sha256": "3071f33c9bb89277ad67fd2980bf13d183b75a07ecc3f0c1d3fdd30ecc9b4483",
+        "output_ids": [
+          61,
+          4075,
+          506,
+          11438,
+          2545,
+          29,
+          254,
+          314,
+          1209,
+          335,
+          260,
+          216,
+          33,
+          37,
+          373,
+          282
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nMara: My favorite mug color is teal.\nMara: My favorite mug color is teal.\n\nQuestion:\nWhich day is Mara's weekly check-in now?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Mara's weekly check-in is now on the 15th of",
+        "hit_output_cap_without_eos": true,
+        "tokenize_seconds": 0.00021974998526275158,
+        "generate_seconds": 0.19147716695442796,
+        "elapsed_seconds": 0.19181241700425744
+      },
+      "reference": "Thursday",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 3.0249939300119877e-05,
+      "read_answer_seconds": 0.1918725409777835
+    },
+    {
+      "question_id": "mara-schedule_update",
+      "history_id": "mara",
+      "type": "schedule_update",
+      "condition": "none",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 64,
+        "output_tokens": 16,
+        "input_ids_sha256": "b0373b1cc39e552ccb4b0c362132b02450098aa7ba726004a418e190f408f204",
+        "output_ids": [
+          12186,
+          81,
+          506,
+          11438,
+          2545,
+          29,
+          254,
+          314,
+          1209,
+          335,
+          260,
+          216,
+          33,
+          37,
+          373,
+          282
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\n[none]\n\nQuestion:\nWhich day is Mara's weekly check-in now?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Mara's weekly check-in is now on the 15th of",
+        "hit_output_cap_without_eos": true,
+        "tokenize_seconds": 0.0005980830173939466,
+        "generate_seconds": 0.17670029203873128,
+        "elapsed_seconds": 0.17735341703519225
+      },
+      "reference": "Thursday",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 3.50000336766243e-05,
+      "read_answer_seconds": 0.1773990000365302
+    },
+    {
+      "question_id": "mara-schedule_update",
+      "history_id": "mara",
+      "type": "schedule_update",
+      "condition": "full",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 164,
+        "output_tokens": 15,
+        "input_ids_sha256": "4dfe39b32ae4233bb44de08152ea35e5b67f643d41ae27231856057cfb6b0b96",
+        "output_ids": [
+          61,
+          4075,
+          506,
+          11438,
+          2545,
+          29,
+          254,
+          314,
+          1209,
+          14963,
+          2489,
+          282,
+          12397,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nMara: I live in Porto.\nMara: My favorite mug color is teal.\nMara: Jon is my colleague. Jon owns the orange notebook.\nMara: My weekly check-in was Monday.\nMara: I moved from Porto to Ghent. Ghent is my current home.\nMara: My weekly check-in is now Thursday instead of Monday.\nMara: The office wallpaper is gray. I do not own the gray notebook.\n\nQuestion:\nWhich day is Mara's weekly check-in now?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Mara's weekly check-in is now Thursday instead of Monday.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00029333296697586775,
+        "generate_seconds": 0.19238641706760973,
+        "elapsed_seconds": 0.19275070796720684
+      },
+      "reference": "Thursday",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 4.500034265220165e-06,
+      "read_answer_seconds": 0.19276516698300838
+    },
+    {
+      "question_id": "mara-relation",
+      "history_id": "mara",
+      "type": "relation",
+      "condition": "extracted",
+      "selected": [
+        {
+          "index": 0,
+          "text": "Mara: My favorite mug color is teal.",
+          "score": 0
+        },
+        {
+          "index": 1,
+          "text": "Mara: My favorite mug color is teal.",
+          "score": 0
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 80,
+        "output_tokens": 16,
+        "input_ids_sha256": "3c6d11c6c4c30d61ff2d28af2a8bfc931d354c0aca7b7ccf153083fd9f3c53c4",
+        "output_ids": [
+          61,
+          4075,
+          42,
+          3361,
+          4932,
+          283,
+          1433,
+          2380,
+          314,
+          10245,
+          30,
+          198,
+          61,
+          4075,
+          42,
+          3361
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nMara: My favorite mug color is teal.\nMara: My favorite mug color is teal.\n\nQuestion:\nWho owns the orange notebook?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Mara: My favorite mug color is orange.\nMara: My",
+        "hit_output_cap_without_eos": true,
+        "tokenize_seconds": 0.0002174580004066229,
+        "generate_seconds": 0.1841549170203507,
+        "elapsed_seconds": 0.18444041593465954
+      },
+      "reference": "Jon",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 2.99159437417984e-05,
+      "read_answer_seconds": 0.18447904102504253
+    },
+    {
+      "question_id": "mara-relation",
+      "history_id": "mara",
+      "type": "relation",
+      "condition": "none",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 58,
+        "output_tokens": 13,
+        "input_ids_sha256": "d8baaec790b1cb70f3a501422818bd348b792dbe527661ccc58b2530907a93a4",
+        "output_ids": [
+          504,
+          10245,
+          20797,
+          12698,
+          288,
+          260,
+          7615,
+          282,
+          260,
+          10245,
+          20797,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\n[none]\n\nQuestion:\nWho owns the orange notebook?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "The orange notebook belongs to the owner of the orange notebook.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00021129101514816284,
+        "generate_seconds": 0.15098470903467387,
+        "elapsed_seconds": 0.15125558304134756
+      },
+      "reference": "Jon",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 3.875000402331352e-06,
+      "read_answer_seconds": 0.1512681250460446
+    },
+    {
+      "question_id": "mara-relation",
+      "history_id": "mara",
+      "type": "relation",
+      "condition": "full",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 158,
+        "output_tokens": 10,
+        "input_ids_sha256": "149b3032fc05ce7f4964e7c076f4533bc960055917cf0690ee659a937a967391",
+        "output_ids": [
+          61,
+          4075,
+          42,
+          12711,
+          22247,
+          260,
+          10245,
+          20797,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nMara: I live in Porto.\nMara: My favorite mug color is teal.\nMara: Jon is my colleague. Jon owns the orange notebook.\nMara: My weekly check-in was Monday.\nMara: I moved from Porto to Ghent. Ghent is my current home.\nMara: My weekly check-in is now Thursday instead of Monday.\nMara: The office wallpaper is gray. I do not own the gray notebook.\n\nQuestion:\nWho owns the orange notebook?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Mara: Jon owns the orange notebook.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00029208301566541195,
+        "generate_seconds": 0.14565879199653864,
+        "elapsed_seconds": 0.1460236250422895
+      },
+      "reference": "Jon",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 4.332978278398514e-06,
+      "read_answer_seconds": 0.1460372080327943
+    },
+    {
+      "question_id": "mara-relation",
+      "history_id": "mara",
+      "type": "relation",
+      "condition": "verbatim",
+      "selected": [
+        {
+          "index": 2,
+          "text": "Mara: Jon is my colleague. Jon owns the orange notebook.",
+          "score": 3
+        },
+        {
+          "index": 6,
+          "text": "Mara: The office wallpaper is gray. I do not own the gray notebook.",
+          "score": 1
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 87,
+        "output_tokens": 7,
+        "input_ids_sha256": "0e511d029e7dfd0f921caedb80609e43e93642d2cc15529c9db541591d3af045",
+        "output_ids": [
+          38976,
+          22247,
+          260,
+          10245,
+          20797,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nMara: Jon is my colleague. Jon owns the orange notebook.\nMara: The office wallpaper is gray. I do not own the gray notebook.\n\nQuestion:\nWho owns the orange notebook?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Jon owns the orange notebook.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00023600005079060793,
+        "generate_seconds": 0.09344829199835658,
+        "elapsed_seconds": 0.09374612499959767
+      },
+      "reference": "Jon",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 3.6291079595685005e-05,
+      "read_answer_seconds": 0.09379204106517136
+    },
+    {
+      "question_id": "ivo-updated_fact",
+      "history_id": "ivo",
+      "type": "updated_fact",
+      "condition": "none",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 61,
+        "output_tokens": 15,
+        "input_ids_sha256": "14d45285c50175aaa22cb5534d5b429e47cadddbccaa7bfe63f5b1aa18fdcf79",
+        "output_ids": [
+          57,
+          16104,
+          506,
+          1574,
+          1478,
+          314,
+          260,
+          2240,
+          282,
+          31567,
+          28,
+          15633,
+          5261,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\n[none]\n\nQuestion:\nWhich city is Ivo's current home?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo's current home is the city of Prague, Czech Republic.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00020629109349101782,
+        "generate_seconds": 0.18042941694147885,
+        "elapsed_seconds": 0.1807023750152439
+      },
+      "reference": "Bern",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 3.832974471151829e-06,
+      "read_answer_seconds": 0.18071558303199708
+    },
+    {
+      "question_id": "ivo-updated_fact",
+      "history_id": "ivo",
+      "type": "updated_fact",
+      "condition": "full",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 160,
+        "output_tokens": 9,
+        "input_ids_sha256": "8cc140900546acc3c928cceca6efb373b71222f6f078c06869294e74ef2fb7c5",
+        "output_ids": [
+          57,
+          16104,
+          506,
+          1574,
+          1478,
+          314,
+          11676,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nIvo: I live in Turin.\nIvo: My favorite mug color is olive.\nIvo: Lea is my colleague. Lea owns the violet notebook.\nIvo: My weekly check-in was Tuesday.\nIvo: I moved from Turin to Bern. Bern is my current home.\nIvo: My weekly check-in is now Saturday instead of Tuesday.\nIvo: The office wallpaper is gray. I do not own the gray notebook.\n\nQuestion:\nWhich city is Ivo's current home?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo's current home is Bern.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00031758297700434923,
+        "generate_seconds": 0.13195287506096065,
+        "elapsed_seconds": 0.13235179102048278
+      },
+      "reference": "Bern",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 4.667090252041817e-06,
+      "read_answer_seconds": 0.13236604200210422
+    },
+    {
+      "question_id": "ivo-updated_fact",
+      "history_id": "ivo",
+      "type": "updated_fact",
+      "condition": "verbatim",
+      "selected": [
+        {
+          "index": 4,
+          "text": "Ivo: I moved from Turin to Bern. Bern is my current home.",
+          "score": 2
+        },
+        {
+          "index": 0,
+          "text": "Ivo: I live in Turin.",
+          "score": 1
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 85,
+        "output_tokens": 9,
+        "input_ids_sha256": "fcea6f8f8ef54595904282e797b4b2653f5721e6953401fd82ee63b2837b7ccb",
+        "output_ids": [
+          57,
+          16104,
+          506,
+          1574,
+          1478,
+          314,
+          11676,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nIvo: I moved from Turin to Bern. Bern is my current home.\nIvo: I live in Turin.\n\nQuestion:\nWhich city is Ivo's current home?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo's current home is Bern.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00023491692263633013,
+        "generate_seconds": 0.1283454999793321,
+        "elapsed_seconds": 0.12865754193626344
+      },
+      "reference": "Bern",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 4.324992187321186e-05,
+      "read_answer_seconds": 0.12870995898265392
+    },
+    {
+      "question_id": "ivo-updated_fact",
+      "history_id": "ivo",
+      "type": "updated_fact",
+      "condition": "extracted",
+      "selected": [
+        {
+          "index": 4,
+          "text": "Ivo: I moved from Turin to Bern. Bern is my current home.",
+          "score": 2
+        },
+        {
+          "index": 0,
+          "text": "Ivo: I live in Turin.",
+          "score": 1
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 85,
+        "output_tokens": 9,
+        "input_ids_sha256": "fcea6f8f8ef54595904282e797b4b2653f5721e6953401fd82ee63b2837b7ccb",
+        "output_ids": [
+          57,
+          16104,
+          506,
+          1574,
+          1478,
+          314,
+          11676,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nIvo: I moved from Turin to Bern. Bern is my current home.\nIvo: I live in Turin.\n\nQuestion:\nWhich city is Ivo's current home?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo's current home is Bern.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.0002554170787334442,
+        "generate_seconds": 0.12153241701889783,
+        "elapsed_seconds": 0.12186320906039327
+      },
+      "reference": "Bern",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 4.2665982618927956e-05,
+      "read_answer_seconds": 0.121914540999569
+    },
+    {
+      "question_id": "ivo-preference",
+      "history_id": "ivo",
+      "type": "preference",
+      "condition": "full",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 161,
+        "output_tokens": 11,
+        "input_ids_sha256": "91fe5efd32e261e6bd5674b2e3f8988da7786a998c90bb58e4958a2fe634fbf4",
+        "output_ids": [
+          57,
+          16104,
+          506,
+          4932,
+          283,
+          1433,
+          2380,
+          314,
+          13359,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nIvo: I live in Turin.\nIvo: My favorite mug color is olive.\nIvo: Lea is my colleague. Lea owns the violet notebook.\nIvo: My weekly check-in was Tuesday.\nIvo: I moved from Turin to Bern. Bern is my current home.\nIvo: My weekly check-in is now Saturday instead of Tuesday.\nIvo: The office wallpaper is gray. I do not own the gray notebook.\n\nQuestion:\nWhat is Ivo's favorite mug color?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo's favorite mug color is olive.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00032708398066461086,
+        "generate_seconds": 0.16648104100022465,
+        "elapsed_seconds": 0.16689274995587766
+      },
+      "reference": "olive",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 4.792003892362118e-06,
+      "read_answer_seconds": 0.1669092089869082
+    },
+    {
+      "question_id": "ivo-preference",
+      "history_id": "ivo",
+      "type": "preference",
+      "condition": "verbatim",
+      "selected": [
+        {
+          "index": 1,
+          "text": "Ivo: My favorite mug color is olive.",
+          "score": 4
+        },
+        {
+          "index": 0,
+          "text": "Ivo: I live in Turin.",
+          "score": 1
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 80,
+        "output_tokens": 11,
+        "input_ids_sha256": "1287c7e6f5b9180276362d15ffac36acd33860cfb44ebd8a6c9d75213acdf909",
+        "output_ids": [
+          57,
+          16104,
+          506,
+          4932,
+          283,
+          1433,
+          2380,
+          314,
+          13359,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nIvo: My favorite mug color is olive.\nIvo: I live in Turin.\n\nQuestion:\nWhat is Ivo's favorite mug color?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo's favorite mug color is olive.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.0002698330208659172,
+        "generate_seconds": 0.15826145897153765,
+        "elapsed_seconds": 0.15860812494065613
+      },
+      "reference": "olive",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 4.2750034481287e-05,
+      "read_answer_seconds": 0.15866037493105978
+    },
+    {
+      "question_id": "ivo-preference",
+      "history_id": "ivo",
+      "type": "preference",
+      "condition": "extracted",
+      "selected": [
+        {
+          "index": 1,
+          "text": "Ivo: My favorite mug color is olive.",
+          "score": 4
+        },
+        {
+          "index": 0,
+          "text": "Ivo: I live in Turin.",
+          "score": 1
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 80,
+        "output_tokens": 11,
+        "input_ids_sha256": "1287c7e6f5b9180276362d15ffac36acd33860cfb44ebd8a6c9d75213acdf909",
+        "output_ids": [
+          57,
+          16104,
+          506,
+          4932,
+          283,
+          1433,
+          2380,
+          314,
+          13359,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nIvo: My favorite mug color is olive.\nIvo: I live in Turin.\n\nQuestion:\nWhat is Ivo's favorite mug color?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo's favorite mug color is olive.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.0002692500129342079,
+        "generate_seconds": 0.14928154204972088,
+        "elapsed_seconds": 0.14962191705126315
+      },
+      "reference": "olive",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 4.3749925680458546e-05,
+      "read_answer_seconds": 0.14967504190281034
+    },
+    {
+      "question_id": "ivo-preference",
+      "history_id": "ivo",
+      "type": "preference",
+      "condition": "none",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 62,
+        "output_tokens": 11,
+        "input_ids_sha256": "18609ec975b2d73bcba56f028b4f782da8e49f778555a00184d9dba775ab0a28",
+        "output_ids": [
+          57,
+          16104,
+          506,
+          4932,
+          283,
+          1433,
+          2380,
+          314,
+          4461,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\n[none]\n\nQuestion:\nWhat is Ivo's favorite mug color?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo's favorite mug color is blue.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00022599997464567423,
+        "generate_seconds": 0.1326920420397073,
+        "elapsed_seconds": 0.1329837499652058
+      },
+      "reference": "olive",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 4.417030140757561e-06,
+      "read_answer_seconds": 0.13299687497783452
+    },
+    {
+      "question_id": "ivo-schedule_update",
+      "history_id": "ivo",
+      "type": "schedule_update",
+      "condition": "verbatim",
+      "selected": [
+        {
+          "index": 3,
+          "text": "Ivo: My weekly check-in was Tuesday.",
+          "score": 3
+        },
+        {
+          "index": 5,
+          "text": "Ivo: My weekly check-in is now Saturday instead of Tuesday.",
+          "score": 3
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 88,
+        "output_tokens": 15,
+        "input_ids_sha256": "aeffb562a8bf1dbb364822ba8d179c1338d50955da96d110c0f24f007bfff703",
+        "output_ids": [
+          57,
+          16104,
+          506,
+          11438,
+          2545,
+          29,
+          254,
+          314,
+          1209,
+          14986,
+          2489,
+          282,
+          14801,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nIvo: My weekly check-in was Tuesday.\nIvo: My weekly check-in is now Saturday instead of Tuesday.\n\nQuestion:\nWhich day is Ivo's weekly check-in now?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo's weekly check-in is now Saturday instead of Tuesday.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00023304193746298552,
+        "generate_seconds": 0.18662429205141962,
+        "elapsed_seconds": 0.18693858396727592
+      },
+      "reference": "Saturday",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 3.8207974284887314e-05,
+      "read_answer_seconds": 0.18698695802595466
+    },
+    {
+      "question_id": "ivo-schedule_update",
+      "history_id": "ivo",
+      "type": "schedule_update",
+      "condition": "extracted",
+      "selected": [
+        {
+          "index": 3,
+          "text": "Ivo: My weekly check-in was Tuesday.",
+          "score": 3
+        },
+        {
+          "index": 5,
+          "text": "Ivo: My weekly check-in is now Saturday instead of Tuesday.",
+          "score": 3
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 88,
+        "output_tokens": 15,
+        "input_ids_sha256": "aeffb562a8bf1dbb364822ba8d179c1338d50955da96d110c0f24f007bfff703",
+        "output_ids": [
+          57,
+          16104,
+          506,
+          11438,
+          2545,
+          29,
+          254,
+          314,
+          1209,
+          14986,
+          2489,
+          282,
+          14801,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nIvo: My weekly check-in was Tuesday.\nIvo: My weekly check-in is now Saturday instead of Tuesday.\n\nQuestion:\nWhich day is Ivo's weekly check-in now?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo's weekly check-in is now Saturday instead of Tuesday.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.0002499170368537307,
+        "generate_seconds": 0.22199516696855426,
+        "elapsed_seconds": 0.22231512505095452
+      },
+      "reference": "Saturday",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 3.9790989831089973e-05,
+      "read_answer_seconds": 0.22236645792145282
+    },
+    {
+      "question_id": "ivo-schedule_update",
+      "history_id": "ivo",
+      "type": "schedule_update",
+      "condition": "none",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 64,
+        "output_tokens": 16,
+        "input_ids_sha256": "244f38c2ed04200172ada6c2db26f4fb9546d1798bbe003edd8128f02a665d31",
+        "output_ids": [
+          57,
+          16104,
+          506,
+          11438,
+          2545,
+          29,
+          254,
+          314,
+          1209,
+          335,
+          260,
+          216,
+          33,
+          37,
+          373,
+          282
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\n[none]\n\nQuestion:\nWhich day is Ivo's weekly check-in now?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo's weekly check-in is now on the 15th of",
+        "hit_output_cap_without_eos": true,
+        "tokenize_seconds": 0.00021570897661149502,
+        "generate_seconds": 0.19118745799642056,
+        "elapsed_seconds": 0.19146695896051824
+      },
+      "reference": "Saturday",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 5.041947588324547e-06,
+      "read_answer_seconds": 0.19148120796307921
+    },
+    {
+      "question_id": "ivo-schedule_update",
+      "history_id": "ivo",
+      "type": "schedule_update",
+      "condition": "full",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 163,
+        "output_tokens": 15,
+        "input_ids_sha256": "cb0fa2642aa3f0739192687ddda0092827a123c0010ad999f84198b87a8cd6b4",
+        "output_ids": [
+          57,
+          16104,
+          506,
+          11438,
+          2545,
+          29,
+          254,
+          314,
+          1209,
+          14986,
+          2489,
+          282,
+          14801,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nIvo: I live in Turin.\nIvo: My favorite mug color is olive.\nIvo: Lea is my colleague. Lea owns the violet notebook.\nIvo: My weekly check-in was Tuesday.\nIvo: I moved from Turin to Bern. Bern is my current home.\nIvo: My weekly check-in is now Saturday instead of Tuesday.\nIvo: The office wallpaper is gray. I do not own the gray notebook.\n\nQuestion:\nWhich day is Ivo's weekly check-in now?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo's weekly check-in is now Saturday instead of Tuesday.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00028929102700203657,
+        "generate_seconds": 0.2035806670319289,
+        "elapsed_seconds": 0.20396241603884846
+      },
+      "reference": "Saturday",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 4.666042514145374e-06,
+      "read_answer_seconds": 0.20397775003220886
+    },
+    {
+      "question_id": "ivo-relation",
+      "history_id": "ivo",
+      "type": "relation",
+      "condition": "extracted",
+      "selected": [
+        {
+          "index": 2,
+          "text": "Ivo: Lea is my colleague. Lea owns the violet notebook.",
+          "score": 3
+        },
+        {
+          "index": 0,
+          "text": "Ivo: I live in Turin.",
+          "score": 0
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 81,
+        "output_tokens": 11,
+        "input_ids_sha256": "9c2765fbe3ffd6378f63856ac56af60f4176a043a005c0a34b38a0d7afd21db1",
+        "output_ids": [
+          57,
+          16104,
+          42,
+          2250,
+          81,
+          22247,
+          260,
+          33871,
+          20797,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nIvo: Lea is my colleague. Lea owns the violet notebook.\nIvo: I live in Turin.\n\nQuestion:\nWho owns the violet notebook?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo: Lea owns the violet notebook.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00022899999748915434,
+        "generate_seconds": 0.13956262497231364,
+        "elapsed_seconds": 0.13985887495800853
+      },
+      "reference": "Lea",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 3.462505992501974e-05,
+      "read_answer_seconds": 0.1399020830867812
+    },
+    {
+      "question_id": "ivo-relation",
+      "history_id": "ivo",
+      "type": "relation",
+      "condition": "none",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 58,
+        "output_tokens": 13,
+        "input_ids_sha256": "4f68c0cfd1fec51c601de6973ed1e2fbbb2f2dc6c9ce2adc08afd0940eaece5b",
+        "output_ids": [
+          504,
+          33871,
+          20797,
+          12698,
+          288,
+          260,
+          7615,
+          282,
+          260,
+          33871,
+          20797,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\n[none]\n\nQuestion:\nWho owns the violet notebook?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "The violet notebook belongs to the owner of the violet notebook.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.00020504207350313663,
+        "generate_seconds": 0.1533678750274703,
+        "elapsed_seconds": 0.1536396670853719
+      },
+      "reference": "Lea",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 4.29095234721899e-06,
+      "read_answer_seconds": 0.1536532499594614
+    },
+    {
+      "question_id": "ivo-relation",
+      "history_id": "ivo",
+      "type": "relation",
+      "condition": "full",
+      "selected": [],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 157,
+        "output_tokens": 11,
+        "input_ids_sha256": "d25ae21fd75fd0ebe63c3a581b2133eeb63b190049976b5882bdc70e768d4ed1",
+        "output_ids": [
+          57,
+          16104,
+          42,
+          2250,
+          81,
+          22247,
+          260,
+          33871,
+          20797,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nIvo: I live in Turin.\nIvo: My favorite mug color is olive.\nIvo: Lea is my colleague. Lea owns the violet notebook.\nIvo: My weekly check-in was Tuesday.\nIvo: I moved from Turin to Bern. Bern is my current home.\nIvo: My weekly check-in is now Saturday instead of Tuesday.\nIvo: The office wallpaper is gray. I do not own the gray notebook.\n\nQuestion:\nWho owns the violet notebook?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo: Lea owns the violet notebook.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.000310625066049397,
+        "generate_seconds": 0.15895308402832597,
+        "elapsed_seconds": 0.15933250007219613
+      },
+      "reference": "Lea",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 5.834037438035011e-06,
+      "read_answer_seconds": 0.159347917069681
+    },
+    {
+      "question_id": "ivo-relation",
+      "history_id": "ivo",
+      "type": "relation",
+      "condition": "verbatim",
+      "selected": [
+        {
+          "index": 2,
+          "text": "Ivo: Lea is my colleague. Lea owns the violet notebook.",
+          "score": 3
+        },
+        {
+          "index": 6,
+          "text": "Ivo: The office wallpaper is gray. I do not own the gray notebook.",
+          "score": 1
+        }
+      ],
+      "generation": {
+        "eligible": true,
+        "input_tokens": 89,
+        "output_tokens": 8,
+        "input_ids_sha256": "cb94278f8d8a1a5f362e4eb8ac47ea3a8e34f6554ab2eade4a2642a75fa3d07b",
+        "output_ids": [
+          57,
+          16104,
+          22247,
+          260,
+          33871,
+          20797,
+          30,
+          2
+        ],
+        "prompt": "<|im_start|>system\nAnswer the question using only the supplied memory. If the value is not supplied, answer unknown. Reply with only the requested value.<|im_end|>\n<|im_start|>user\nMemory:\nIvo: Lea is my colleague. Lea owns the violet notebook.\nIvo: The office wallpaper is gray. I do not own the gray notebook.\n\nQuestion:\nWho owns the violet notebook?<|im_end|>\n<|im_start|>assistant\n",
+        "text": "Ivo owns the violet notebook.",
+        "hit_output_cap_without_eos": false,
+        "tokenize_seconds": 0.0002245830837637186,
+        "generate_seconds": 0.11195020901504904,
+        "elapsed_seconds": 0.11223716707900167
+      },
+      "reference": "Lea",
+      "error": null,
+      "correct": false,
+      "prepare_seconds": 3.483297768980265e-05,
+      "read_answer_seconds": 0.11228054203093052
+    }
+  ],
+  "summary": {
+    "none": {
+      "planned": 8,
+      "eligible": 8,
+      "correct": 0,
+      "errors": 0,
+      "by_type": {
+        "preference": {
+          "n": 2,
+          "correct": 0
+        },
+        "relation": {
+          "n": 2,
+          "correct": 0
+        },
+        "schedule_update": {
+          "n": 2,
+          "correct": 0
+        },
+        "updated_fact": {
+          "n": 2,
+          "correct": 0
+        }
+      },
+      "write_calls": 0,
+      "write_input_tokens": 0,
+      "write_output_tokens": 0,
+      "write_seconds": 0,
+      "answer_input_tokens": 490,
+      "answer_output_tokens": 106,
+      "read_answer_seconds": 1.24282783200033,
+      "unknown_failure_token_counts": 0,
+      "output_cap_hits": 2
+    },
+    "full": {
+      "planned": 8,
+      "eligible": 8,
+      "correct": 0,
+      "errors": 0,
+      "by_type": {
+        "preference": {
+          "n": 2,
+          "correct": 0
+        },
+        "relation": {
+          "n": 2,
+          "correct": 0
+        },
+        "schedule_update": {
+          "n": 2,
+          "correct": 0
+        },
+        "updated_fact": {
+          "n": 2,
+          "correct": 0
+        }
+      },
+      "write_calls": 0,
+      "write_input_tokens": 0,
+      "write_output_tokens": 0,
+      "write_seconds": 0,
+      "answer_input_tokens": 1286,
+      "answer_output_tokens": 93,
+      "read_answer_seconds": 1.3082367100287229,
+      "unknown_failure_token_counts": 0,
+      "output_cap_hits": 0
+    },
+    "verbatim": {
+      "planned": 8,
+      "eligible": 8,
+      "correct": 0,
+      "errors": 0,
+      "by_type": {
+        "preference": {
+          "n": 2,
+          "correct": 0
+        },
+        "relation": {
+          "n": 2,
+          "correct": 0
+        },
+        "schedule_update": {
+          "n": 2,
+          "correct": 0
+        },
+        "updated_fact": {
+          "n": 2,
+          "correct": 0
+        }
+      },
+      "write_calls": 0,
+      "write_input_tokens": 0,
+      "write_output_tokens": 0,
+      "write_seconds": 0,
+      "answer_input_tokens": 685,
+      "answer_output_tokens": 87,
+      "read_answer_seconds": 1.1240661250194535,
+      "unknown_failure_token_counts": 0,
+      "output_cap_hits": 0
+    },
+    "extracted": {
+      "planned": 8,
+      "eligible": 8,
+      "correct": 0,
+      "errors": 0,
+      "by_type": {
+        "preference": {
+          "n": 2,
+          "correct": 0
+        },
+        "relation": {
+          "n": 2,
+          "correct": 0
+        },
+        "schedule_update": {
+          "n": 2,
+          "correct": 0
+        },
+        "updated_fact": {
+          "n": 2,
+          "correct": 0
+        }
+      },
+      "write_calls": 2,
+      "write_input_tokens": 301,
+      "write_output_tokens": 181,
+      "write_seconds": 2.1282602910650894,
+      "answer_input_tokens": 667,
+      "answer_output_tokens": 101,
+      "read_answer_seconds": 1.2886788318865001,
+      "unknown_failure_token_counts": 0,
+      "output_cap_hits": 2
+    }
+  },
+  "phase_wall_seconds": 6.330278957961127
+}

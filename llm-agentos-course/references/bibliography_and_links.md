@@ -379,3 +379,7 @@ Context-manager slides 12/13 use original inline SVGs for the [independent hando
 ## Hermes import / clone evidence — checked 2026-11-14 UTC
 
 The [execution note](hermes_import_contracts_2026_11.md) and [source ledger](hermes_import_sources_2026_11.json) identify v0.22.5 at `bf0203a794a07aac3ff764972ab9087baa4e4f4e` and v0.23.0 at `2bd378ed1b8d6bf2192cb26e0a55ff3091e6bd19`, especially `agent/context_engine.py` / `agent/memory_provider.py`. Real imported base classes and the course adapter’s provided clone were exercised; full session compaction/retry was not. EN/ZH slide 28 uses original course artwork; no vendor diagram is copied.
+
+## Measured local memory pilot — checked 2026-11-14 UTC
+
+[MemDelta v1](https://arxiv.org/html/2606.29914v1), §§3 / 4.4 and scope limitations; [SmolLM2-135M-Instruct pinned card](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct/blob/12fd25f77366fa6b3b4b768ec3050bf629380bac/README.md), CPU use and limitations. The [original course pilot](measured_memory_pilot_2026_11.md) runs eight matched questions across four conditions with real fixed-checkpoint generations, frozen strict scoring and actual token/time records. All strict scores are zero and require raw-output inspection; no paper-table replication, general ranking or semantic equivalence is claimed. Observability slide 19 is original bilingual course artwork.

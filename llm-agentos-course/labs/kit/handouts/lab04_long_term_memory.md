@@ -161,3 +161,7 @@ Submit your prediction, the declared controls, per-question records, a matched-s
 Primary reading: Kuan Wang, [MemDelta, arXiv:2606.29914v1](https://arxiv.org/html/2606.29914v1), §3 controlled comparisons, §4.4 costs and limitations. The paper's partial coverage and imperfect embedding matching limit general claims; this worksheet is an original teaching protocol, not a reproduction of its tables. LoCoMo and LongMemEval remain benchmark readings in the course bibliography; their historical results are not universal performance guarantees.
 
 中文检查：先固定问题、历史、模型、评分和预算，再比较四种条件。不同问题集合的百分比不能直接排名；共享 20 题的 +10 个百分点仅适用于该子集。真实实验需记录写入与读取总成本，缺失结果不能填成通过。
+
+## Measured standalone pilot — 2026-11-14 UTC
+
+The [real-model pilot](../../../references/measured_memory_pilot_2026_11.md) now supplies all four standalone conditions and measured write/answer records for eight matched synthetic questions. It does not use the student MemoryStore TODOs or the scripted answer model. The frozen primary strict scores are all 0/8; inspect the raw text, formatting false negatives and factual errors before interpreting them. Use the separate `memory_pilot.py` write/answer phases with the pinned protocol; the broader semantic/human/large-cohort benchmark remains open.
