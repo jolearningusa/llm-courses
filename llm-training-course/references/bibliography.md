@@ -196,3 +196,7 @@ Zeng et al., [Exploration via Activation-Space Steering for Reinforcement Learni
 ## Dated L1 table replay — 2026-11-15 UTC
 
 [PyTorch2.9 reproducibility](https://docs.pytorch.org/docs/2.9/notes/randomness.html) and [2.15 reproducibility](https://docs.pytorch.org/docs/2.15/notes/randomness.html) distinguish seeds, deterministic execution and cross-release/platform limits. The [executed course replay](l1_table_replay_2026_11.md) retains24 fresh workers for the unchanged600-step subset, all per-seed curves and rounded agreement:4/4 rows on2.9.1,3/4 on2.15.0. Original historical figures remain. Deck01 slide10 has an original result diagram; no optimizer ranking, clean held-out quality, original-environment identification or bitwise reproduction follows.
+
+## L7 historical demo replay — 2026-11-15 UTC
+
+[Liu et al. v1 §3.1–3.2](https://arxiv.org/html/2503.20783v1) gives the normalization change; [PyTorch2.15 reproducibility guidance](https://docs.pytorch.org/docs/2.15/notes/randomness.html) bounds cross-release replay. The [dated course demo record](l7_demo_replay_2026_11.md) executes six original workflows/18 printed rows and distinguishes shared-pool evaluation, printed agreement and historical mismatch from held-out quality, bitwise identity or paper reproduction. Deck28 slide5 has an original mechanism/result diagram; historical README examples remain intact.

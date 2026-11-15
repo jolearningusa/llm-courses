@@ -1,0 +1,627 @@
+{
+  "lane": "torch215",
+  "seed": 0,
+  "stdout": "after SFT on 30 prompts: mean reward 0.273 (length: correct 3.93, incorrect 4.80)\n     GRPO after 300 steps: mean reward 0.498 (length: correct 2.43, incorrect 2.82)\n Dr. GRPO after 300 steps: mean reward 0.484 (length: correct 2.44, incorrect 2.59)\n",
+  "printed_metrics": {
+    "SFT": [
+      0.273,
+      3.93,
+      4.8
+    ],
+    "GRPO": [
+      0.498,
+      2.43,
+      2.82
+    ],
+    "Dr. GRPO": [
+      0.484,
+      2.44,
+      2.59
+    ]
+  },
+  "protocol_sha256": "849fac599514006be26c2354b4603b42f377321704fd6482f9353e8695c69a76",
+  "runner_sha256": "4687827acad21df550cb579526cbbc61ab5b9205263357e5822da3038f98ff70",
+  "source_revision": "9afcec2a97132f1c33d26f6c26f2640642fa5ae1",
+  "source_sha256": {
+    "grpo.py": "2260a4eee07f3464b5bf9066098071288fb606ed19591d1adf154bf8ef0465f4",
+    "policy.py": "a11a71852335d2ed00edc32ffe6779012b43c2aec7260d07fe0a0b0370be773f",
+    "task.py": "6fc77c226f36ea788b77c79b64b75fe643883c02df20ce2561e5cb1058e80c92"
+  },
+  "demo_seconds": 1.769028375041671,
+  "worker_seconds": 2.1241929170209914,
+  "peak_process_rss_bytes": 304218112,
+  "environment": {
+    "python": "3.12.14",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "packages": {
+      "Jinja2": "3.1.6",
+      "MarkupSafe": "3.0.4",
+      "PyYAML": "6.0.3",
+      "antlr4-python3-runtime": "4.9.3",
+      "anyio": "4.16.0",
+      "attrs": "26.1.0",
+      "cattrs": "26.2.1",
+      "certifi": "2026.10.23",
+      "charset-normalizer": "3.5.2",
+      "click": "8.5.1",
+      "cloudpickle": "3.1.2",
+      "coremltools": "9.0",
+      "executorch": "1.6.0",
+      "filelock": "4.2.10",
+      "flatbuffers": "25.12.19",
+      "fsspec": "2026.9.0",
+      "h11": "0.16.0",
+      "hf-xet": "1.8.0",
+      "httpcore2": "2.16.0",
+      "httpx2": "2.16.0",
+      "huggingface_hub": "2.4.0",
+      "hydra-core": "1.3.8",
+      "idna": "3.20",
+      "joblib": "1.6.0",
+      "mpmath": "1.3.0",
+      "narwhals": "2.28.0",
+      "networkx": "3.7",
+      "numpy": "2.5.4",
+      "omegaconf": "2.3.1",
+      "packaging": "26.3",
+      "pandas": "3.1.1",
+      "pip": "25.0.1",
+      "protobuf": "7.36.2",
+      "py-cpuinfo": "9.0.0",
+      "pyaml": "26.7.0",
+      "python-dateutil": "4.0.0",
+      "pytorch_tokenizers": "1.6.0",
+      "regex": "2026.11.9",
+      "requests": "2.34.2",
+      "ruamel.yaml": "0.19.1",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "sentencepiece": "0.2.3",
+      "setuptools": "84.2.1",
+      "sympy": "1.14.0",
+      "tabulate": "0.10.0",
+      "threadpoolctl": "3.8.0",
+      "tiktoken": "0.14.0",
+      "tokenizers": "0.23.3",
+      "torch": "2.15.0",
+      "torchao": "0.18.0",
+      "tqdm": "4.70.1",
+      "truststore": "0.10.5",
+      "typing_extensions": "4.16.0",
+      "tzdata": "2026.6",
+      "urllib3": "2.8.0"
+    },
+    "torch_config": "PyTorch built with:\n  - GCC 4.2\n  - C++ Version: 202002\n  - clang 21.0.0\n  - OpenMP 202011\n  - LAPACK is enabled (usually provided by MKL)\n  - NNPACK is enabled\n  - CPU capability usage: DEFAULT\n  - Build settings: BLAS_INFO=accelerate, BUILD_TYPE=Release, COMMIT_SHA=d0f2af8b66b20da4baa50644c0cd3f887a2eae2e, CUDA_FLAGS= -DLIBCUDACXX_ENABLE_SIMPLIFIED_COMPLEX_OPERATIONS -Xfatbin -compress-all  -Wno-deprecated-gpu-targets --expt-extended-lambda -DCUB_WRAPPED_NAMESPACE=at_cuda_detail -DDISABLE_CUSPARSE_DEPRECATED -DCUDA_HAS_FP16=1 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -DC10_NODEPRECATED, CXX_COMPILER=/usr/bin/c++, CXX_FLAGS= -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DUSE_PYTORCH_QNNPACK -DAT_BUILD_ARM_VEC256_WITH_SLEEF -DUSE_PYTORCH_METAL_EXPORT -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -DUSE_COREML_DELEGATE -O2 -fPIC -DC10_NODEPRECATED -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=braced-scalar-init -Werror=range-loop-construct -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-unknown-pragmas -Wno-unused-parameter -Wno-strict-overflow -Wno-strict-aliasing -Wvla-extension -Wsuggest-override -Wnewline-eof -Winconsistent-missing-override -Winconsistent-missing-destructor-override -Wno-pass-failed -Wno-error=old-style-cast -Wconstant-conversion -Qunused-arguments -faligned-new -fno-math-errno -fno-trapping-math -Werror=format -fclang-abi-compat=17 -DUSE_MPS -Wno-missing-braces, LAPACK_INFO=accelerate, TORCH_VERSION=2.15.0, USE_CUDA=OFF, USE_CUDNN=OFF, USE_CUSPARSELT=OFF, USE_EIGEN_FOR_BLAS=ON, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_HIPSPARSELT=OFF, USE_MKL=OFF, USE_MKLDNN=OFF, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, USE_XCCL=OFF, USE_XPU=OFF, \n",
+    "intraop_threads": 1,
+    "interop_threads": 1,
+    "deterministic_algorithms": false
+  },
+  "sft_prompts": [
+    [
+      2,
+      3
+    ],
+    [
+      0,
+      8
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      0,
+      7
+    ],
+    [
+      4,
+      8
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      9,
+      1
+    ],
+    [
+      9,
+      4
+    ],
+    [
+      5,
+      4
+    ],
+    [
+      1,
+      6
+    ],
+    [
+      6,
+      3
+    ],
+    [
+      5,
+      2
+    ],
+    [
+      4,
+      1
+    ],
+    [
+      8,
+      0
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      4,
+      7
+    ],
+    [
+      8,
+      7
+    ],
+    [
+      7,
+      8
+    ],
+    [
+      6,
+      6
+    ],
+    [
+      1,
+      9
+    ],
+    [
+      0,
+      6
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      5,
+      9
+    ],
+    [
+      3,
+      0
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      2,
+      9
+    ],
+    [
+      8,
+      3
+    ],
+    [
+      3,
+      7
+    ]
+  ],
+  "rl_and_eval_prompts": [
+    [
+      0,
+      0
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      0,
+      6
+    ],
+    [
+      0,
+      7
+    ],
+    [
+      0,
+      8
+    ],
+    [
+      0,
+      9
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      1,
+      5
+    ],
+    [
+      1,
+      6
+    ],
+    [
+      1,
+      7
+    ],
+    [
+      1,
+      8
+    ],
+    [
+      1,
+      9
+    ],
+    [
+      2,
+      0
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      2,
+      7
+    ],
+    [
+      2,
+      8
+    ],
+    [
+      2,
+      9
+    ],
+    [
+      3,
+      0
+    ],
+    [
+      3,
+      1
+    ],
+    [
+      3,
+      2
+    ],
+    [
+      3,
+      3
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      3,
+      6
+    ],
+    [
+      3,
+      7
+    ],
+    [
+      3,
+      8
+    ],
+    [
+      3,
+      9
+    ],
+    [
+      4,
+      0
+    ],
+    [
+      4,
+      1
+    ],
+    [
+      4,
+      2
+    ],
+    [
+      4,
+      3
+    ],
+    [
+      4,
+      4
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      4,
+      6
+    ],
+    [
+      4,
+      7
+    ],
+    [
+      4,
+      8
+    ],
+    [
+      4,
+      9
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      5,
+      1
+    ],
+    [
+      5,
+      2
+    ],
+    [
+      5,
+      3
+    ],
+    [
+      5,
+      4
+    ],
+    [
+      5,
+      5
+    ],
+    [
+      5,
+      6
+    ],
+    [
+      5,
+      7
+    ],
+    [
+      5,
+      8
+    ],
+    [
+      5,
+      9
+    ],
+    [
+      6,
+      0
+    ],
+    [
+      6,
+      1
+    ],
+    [
+      6,
+      2
+    ],
+    [
+      6,
+      3
+    ],
+    [
+      6,
+      4
+    ],
+    [
+      6,
+      5
+    ],
+    [
+      6,
+      6
+    ],
+    [
+      6,
+      7
+    ],
+    [
+      6,
+      8
+    ],
+    [
+      6,
+      9
+    ],
+    [
+      7,
+      0
+    ],
+    [
+      7,
+      1
+    ],
+    [
+      7,
+      2
+    ],
+    [
+      7,
+      3
+    ],
+    [
+      7,
+      4
+    ],
+    [
+      7,
+      5
+    ],
+    [
+      7,
+      6
+    ],
+    [
+      7,
+      7
+    ],
+    [
+      7,
+      8
+    ],
+    [
+      7,
+      9
+    ],
+    [
+      8,
+      0
+    ],
+    [
+      8,
+      1
+    ],
+    [
+      8,
+      2
+    ],
+    [
+      8,
+      3
+    ],
+    [
+      8,
+      4
+    ],
+    [
+      8,
+      5
+    ],
+    [
+      8,
+      6
+    ],
+    [
+      8,
+      7
+    ],
+    [
+      8,
+      8
+    ],
+    [
+      8,
+      9
+    ],
+    [
+      9,
+      0
+    ],
+    [
+      9,
+      1
+    ],
+    [
+      9,
+      2
+    ],
+    [
+      9,
+      3
+    ],
+    [
+      9,
+      4
+    ],
+    [
+      9,
+      5
+    ],
+    [
+      9,
+      6
+    ],
+    [
+      9,
+      7
+    ],
+    [
+      9,
+      8
+    ],
+    [
+      9,
+      9
+    ]
+  ],
+  "max_len": 8,
+  "evaluation_seed": 0,
+  "evaluation_samples_per_prompt": 8,
+  "precision": "reward printed to 3dp, conditional lengths 2dp; no full-precision metrics or raw responses captured"
+}

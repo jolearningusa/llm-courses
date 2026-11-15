@@ -152,3 +152,9 @@ The observer and fingerprints are reproduction aids, not authenticated runtime a
 ## Optional: training-time steering with a frozen budget
 
 The [TRN-3 study](../../references/steering_ablation_2026_11.md) implements no/random/learned activation steering, freezes all final checkpoints before evaluation and records all nine runs. Held-out generalization is poor; inspect the per-seed outcomes and replay/time/memory costs before claiming a gain. This separate experiment does not change the coverage reference table above. See the evidence note for protocol, controls, raw outputs and commands.
+
+## Dated original-demo replay — 2026-11-15 UTC
+
+[Complete evidence and limits](../../references/l7_demo_replay_2026_11.md) now replays the unchanged300-step `grpo.main()` for seeds0/1/2 in existing Torch2.9.1 and2.15.0 CPU cohorts. Six fresh workers complete; both cohorts pass31 L7 tests and agree on all18 printed stage rows across their corresponding runs. Current seed0 GRPO/Dr. GRPO rewards0.498/0.484 differ from the historical0.506/0.489 above; the older example stays intact.
+
+This captures only existing printed precision (reward3dp, conditional lengths2dp), with no raw responses/checkpoints. Every stage evaluates the same100-prompt pool as RL, not a holdout; conditional lengths do not isolate a response-level treatment effect. `demo_replay.py` and `demo_replay_protocol.json` provide the frozen source/version/output guards. No general ranking, bitwise replay or original-environment identification follows; the separate coverage/steering experiments keep their own protocols and results.

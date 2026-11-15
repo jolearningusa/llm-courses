@@ -1,0 +1,9 @@
+{
+  "workers": 6,
+  "stage_rows": 18,
+  "raw_stdout_lines": 18,
+  "same_rl_and_eval_pool": true,
+  "all_sft_prompts_in_rl_and_eval_pool": true,
+  "source_revision": "9afcec2a97132f1c33d26f6c26f2640642fa5ae1",
+  "scope": "retained stdout/metadata source/thread/prompt-pool verification; no inference or training rerun"
+}

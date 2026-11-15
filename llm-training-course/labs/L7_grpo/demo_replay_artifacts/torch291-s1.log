@@ -1,0 +1,3 @@
+after SFT on 30 prompts: mean reward 0.282 (length: correct 3.83, incorrect 4.13)
+     GRPO after 300 steps: mean reward 0.419 (length: correct 4.48, incorrect 4.46)
+ Dr. GRPO after 300 steps: mean reward 0.416 (length: correct 4.27, incorrect 4.44)
