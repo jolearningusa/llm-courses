@@ -1,0 +1,4 @@
+{
+  "elapsed_seconds": 93.452142417,
+  "scope": "sequential driver including 24 interpreter startups and both L1 test suites; no concurrent workers; setup/install/download outside"
+}

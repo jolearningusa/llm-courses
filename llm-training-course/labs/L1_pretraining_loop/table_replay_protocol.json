@@ -1,0 +1,58 @@
+{
+  "date": "2026-11-15 UTC",
+  "scope": "Replay historical L1 600-step table in two existing CPU environments; not full historical reproduction or optimizer ranking",
+  "lanes": {
+    "torch291": {
+      "torch": "2.9.1",
+      "numpy": "2.3.5"
+    },
+    "torch215": {
+      "torch": "2.15.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "runs": [
+    "adamw-constant",
+    "adamw-cosine",
+    "adamw-wsd",
+    "muon-wsd"
+  ],
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "steps": 600,
+  "lr": 0.003,
+  "weight_decay": 0.1,
+  "warmup_frac": 0.05,
+  "log_every": 50,
+  "threads": 4,
+  "device": "cpu",
+  "dtype": "float32",
+  "selection": "all four fixed recipes and all three seeds, final step only; no tuning/selection/retries",
+  "historical_600": {
+    "adamw-constant": [
+      1.734,
+      0.018
+    ],
+    "adamw-cosine": [
+      1.748,
+      0.01
+    ],
+    "adamw-wsd": [
+      1.726,
+      0.015
+    ],
+    "muon-wsd": [
+      1.716,
+      0.006
+    ]
+  },
+  "source_sha256": {
+    "train.py": "046de05bef7fe4de9a73f6d6e7fd6885803c11020c52f334f34e7587d65fdc6d",
+    "model.py": "70ffcd2e597b6a2f2370eba75bd41c6a42b64022097175d42e59a4e76c1c7768",
+    "optim.py": "65efed3c06b4d5ba45caa7cfb6f44b2bc839b1095d3136aab98fa5099eeaa89d",
+    "schedules.py": "bb864e165eb0bb881689f1ab3439c2653082ddbdc126754e13938fdefee56805"
+  }
+}

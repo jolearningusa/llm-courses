@@ -1,0 +1,156 @@
+{
+  "lane": "torch215",
+  "run": "adamw-cosine",
+  "seed": 2,
+  "final": 1.7473875433206558,
+  "curve": [
+    [
+      50,
+      0.9975261884159287,
+      2.1817788183689117
+    ],
+    [
+      100,
+      0.967737581615816,
+      1.9015487879514694
+    ],
+    [
+      150,
+      0.9063146286205795,
+      1.8393628597259521
+    ],
+    [
+      200,
+      0.8179087542598027,
+      1.8111144602298737
+    ],
+    [
+      250,
+      0.7092147405169359,
+      1.8033529072999954
+    ],
+    [
+      300,
+      0.5884637454476638,
+      1.789388358592987
+    ],
+    [
+      350,
+      0.4647999757251129,
+      1.7884424179792404
+    ],
+    [
+      400,
+      0.3475882160259825,
+      1.7711678594350815
+    ],
+    [
+      450,
+      0.24570465453070814,
+      1.7620412707328796
+    ],
+    [
+      500,
+      0.16686470875922438,
+      1.7566245943307877
+    ],
+    [
+      550,
+      0.11703875401004482,
+      1.7505411207675934
+    ],
+    [
+      600,
+      0.1,
+      1.7473875433206558
+    ]
+  ],
+  "protocol_sha256": "9d5315e4be7d35b5fd63623b040418bbef872beacfd303d68407552fee6fedc0",
+  "runner_sha256": "54cefbb200969afd339dcb9ad4ca842c842b7f06031d088cd8732825b1dff4ca",
+  "source_revision": "16b09141befc16cd46e9c2cdcbce819c2099ddb5",
+  "source_sha256": {
+    "train.py": "046de05bef7fe4de9a73f6d6e7fd6885803c11020c52f334f34e7587d65fdc6d",
+    "model.py": "70ffcd2e597b6a2f2370eba75bd41c6a42b64022097175d42e59a4e76c1c7768",
+    "optim.py": "65efed3c06b4d5ba45caa7cfb6f44b2bc839b1095d3136aab98fa5099eeaa89d",
+    "schedules.py": "bb864e165eb0bb881689f1ab3439c2653082ddbdc126754e13938fdefee56805"
+  },
+  "train_seconds": 2.8532235409365967,
+  "in_worker_seconds": 3.2305127079598606,
+  "peak_process_rss_bytes": 327204864,
+  "environment": {
+    "python": "3.12.14",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "packages": {
+      "Jinja2": "3.1.6",
+      "MarkupSafe": "3.0.4",
+      "PyYAML": "6.0.3",
+      "antlr4-python3-runtime": "4.9.3",
+      "anyio": "4.16.0",
+      "attrs": "26.1.0",
+      "cattrs": "26.2.1",
+      "certifi": "2026.10.23",
+      "charset-normalizer": "3.5.2",
+      "click": "8.5.1",
+      "cloudpickle": "3.1.2",
+      "coremltools": "9.0",
+      "executorch": "1.6.0",
+      "filelock": "4.2.10",
+      "flatbuffers": "25.12.19",
+      "fsspec": "2026.9.0",
+      "h11": "0.16.0",
+      "hf-xet": "1.8.0",
+      "httpcore2": "2.16.0",
+      "httpx2": "2.16.0",
+      "huggingface_hub": "2.4.0",
+      "hydra-core": "1.3.8",
+      "idna": "3.20",
+      "joblib": "1.6.0",
+      "mpmath": "1.3.0",
+      "narwhals": "2.28.0",
+      "networkx": "3.7",
+      "numpy": "2.5.4",
+      "omegaconf": "2.3.1",
+      "packaging": "26.3",
+      "pandas": "3.1.1",
+      "pip": "25.0.1",
+      "protobuf": "7.36.2",
+      "py-cpuinfo": "9.0.0",
+      "pyaml": "26.7.0",
+      "python-dateutil": "4.0.0",
+      "pytorch_tokenizers": "1.6.0",
+      "regex": "2026.11.9",
+      "requests": "2.34.2",
+      "ruamel.yaml": "0.19.1",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "sentencepiece": "0.2.3",
+      "setuptools": "84.2.1",
+      "sympy": "1.14.0",
+      "tabulate": "0.10.0",
+      "threadpoolctl": "3.8.0",
+      "tiktoken": "0.14.0",
+      "tokenizers": "0.23.3",
+      "torch": "2.15.0",
+      "torchao": "0.18.0",
+      "tqdm": "4.70.1",
+      "truststore": "0.10.5",
+      "typing_extensions": "4.16.0",
+      "tzdata": "2026.6",
+      "urllib3": "2.8.0"
+    },
+    "torch_config": "PyTorch built with:\n  - GCC 4.2\n  - C++ Version: 202002\n  - clang 21.0.0\n  - OpenMP 202011\n  - LAPACK is enabled (usually provided by MKL)\n  - NNPACK is enabled\n  - CPU capability usage: DEFAULT\n  - Build settings: BLAS_INFO=accelerate, BUILD_TYPE=Release, COMMIT_SHA=d0f2af8b66b20da4baa50644c0cd3f887a2eae2e, CUDA_FLAGS= -DLIBCUDACXX_ENABLE_SIMPLIFIED_COMPLEX_OPERATIONS -Xfatbin -compress-all  -Wno-deprecated-gpu-targets --expt-extended-lambda -DCUB_WRAPPED_NAMESPACE=at_cuda_detail -DDISABLE_CUSPARSE_DEPRECATED -DCUDA_HAS_FP16=1 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -DC10_NODEPRECATED, CXX_COMPILER=/usr/bin/c++, CXX_FLAGS= -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DUSE_PYTORCH_QNNPACK -DAT_BUILD_ARM_VEC256_WITH_SLEEF -DUSE_PYTORCH_METAL_EXPORT -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -DUSE_COREML_DELEGATE -O2 -fPIC -DC10_NODEPRECATED -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=braced-scalar-init -Werror=range-loop-construct -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-unknown-pragmas -Wno-unused-parameter -Wno-strict-overflow -Wno-strict-aliasing -Wvla-extension -Wsuggest-override -Wnewline-eof -Winconsistent-missing-override -Winconsistent-missing-destructor-override -Wno-pass-failed -Wno-error=old-style-cast -Wconstant-conversion -Qunused-arguments -faligned-new -fno-math-errno -fno-trapping-math -Werror=format -fclang-abi-compat=17 -DUSE_MPS -Wno-missing-braces, LAPACK_INFO=accelerate, TORCH_VERSION=2.15.0, USE_CUDA=OFF, USE_CUDNN=OFF, USE_CUSPARSELT=OFF, USE_EIGEN_FOR_BLAS=ON, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_HIPSPARSELT=OFF, USE_MKL=OFF, USE_MKLDNN=OFF, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, USE_XCCL=OFF, USE_XPU=OFF, \n",
+    "intraop_threads": 4,
+    "interop_threads": 1,
+    "deterministic_algorithms": false,
+    "default_dtype": "torch.float32",
+    "device": "cpu"
+  },
+  "data": {
+    "train_sha256": "bccddf3ac2e88a6f7b1b679fb90fa1d08df79e3383385fdc729a86647ccdc5f4",
+    "validation_sha256": "541973d6057a5509560009dca6864472a06019df0fbb8b62e9fbd3bfdf73ef07",
+    "train_characters": 245456,
+    "validation_characters": 24543,
+    "exact_unique_line_overlap": 43,
+    "vocab": "0123456789+=;"
+  }
+}
