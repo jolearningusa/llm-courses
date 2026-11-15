@@ -53,3 +53,7 @@ OPENCLAW_STATE_DIR=/private/tmp/new-openclaw-state OPENCLAW_CONFIG_PATH=/private
 ```
 
 Use fresh state/output paths per cohort; results cannot be overwritten. Each output retains exact file identities. Complete installation and public plugin loading, real Gateway failed/retried sessions, actual Legacy/model compaction, provider/token budget, profile clone and persistent recovery remain open AGT-1 gates. This completes a bounded packaged-registry compatibility supplement; it does not close those gates or AGT-2's broader measured benchmark. PR#120 still completes only AGT-2 teaching/protocol.
+
+## Dated follow-up — 2026-11-14 UTC
+
+The subsequent [Python host correction](openclaw_host_errors_2026_11.md) now rethrows its first compact error before the model request. Earlier descriptions of its broad catch refer to the pre-fix host. Abort/full-registry equivalence remains unqualified.

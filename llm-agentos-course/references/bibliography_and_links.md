@@ -387,3 +387,7 @@ The [execution note](hermes_import_contracts_2026_11.md) and [source ledger](her
 ## OpenClaw registry execution supplement — verified 2026-11-14 UTC
 
 Official npm artifacts/metadata [2026.10.7](https://registry.npmjs.org/openclaw/2026.10.7) and [2026.11.3](https://registry.npmjs.org/openclaw/2026.11.3), shipped context-engine/manifest docs and hashed registry/runtime modules; [official release](https://github.com/openclaw/openclaw/releases/tag/v2026.11.3). The [dated execution note](openclaw_context_runtime_2026_11.md) records20 actual bundled-module control groups with deterministic course callbacks, distinguishing first compaction error, assembly fallback and caller abort. No live Gateway/model compaction, full installation or durable/profile qualification is implied. Deep-dive slide23 contains an original synchronized bilingual diagram.
+
+### Python compaction-error correction — 2026-11-14 UTC
+
+The [executed regression note](openclaw_host_errors_2026_11.md) aligns the teaching host’s first compact failure with the pinned npm registry guard above; old 2/3, fixed 3/3 controls, existing kit36/36. New-run fallback is not failed-task/history recovery. Context-manager slide14 has synchronized original EN/ZH diagrams; Gateway/abort/durability gates stay open.
