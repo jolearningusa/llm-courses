@@ -69,3 +69,7 @@ python table_replay.py collect --directory /tmp/replay-new --output /tmp/summary
 The wrapper refuses existing outputs and changed training source hashes. Its worker version guard requires the declared Torch/NumPy cohort. Environment setup is documented in the linked earlier qualification notes; it is not silently supplied by a broad `pip install torch` instruction. Data/build/platform differences need a separately labeled replay.
 
 **Completed:** bounded execution and full reporting of the historical600-step recipe subset in two recorded CPU cohorts. **Still open:** exact historical provenance/bitwise replay,1,500-step/high-LR/L7 tables, clean held-out learning, cross-platform/GPU/distributed qualification and default migration decisions. TRN-4 is not globally recertified; AGT-2's broader benchmark remains open and PR#120 remains teaching/protocol only. Deck01 slide10 shows the result, keeps original closing questions in notes, and has [before/after captures](../../docs/reviews/training-l1-table-replay/README.md). This course has no translated deck folder.
+
+## Later bounded follow-up — 2026-11-15 UTC
+
+The [remaining L1 supplement](l1_remaining_tables_2026_11.md) now executes the1,500-step and high-LR grids; the [L7 replay](l7_demo_replay_2026_11.md) separately executes that default demo. Earlier not-run statements describe this600-step record's original scope. Historical numbers and raw artifacts here remain unchanged; later execution coverage does not establish exact historical provenance or bitwise replay.

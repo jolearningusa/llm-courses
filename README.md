@@ -29,6 +29,7 @@ llm-courses/
 ├── docs/
 │   ├── reviews/
 │   │   ├── training-l7-demo-replay/ # Unchanged GRPO demo before/after capture
+│   │   ├── training-l1-remaining-tables/ # Remaining reference-grid before/after capture
 │   │   ├── training-l1-table-replay/ # Training table before/after capture
 │   │   ├── architecture-context-model-pilot/ # Actual context-grid EN/ZH before/after captures
 │   │   ├── agentos-openclaw-host-errors/ # Python first-compaction error before/after captures

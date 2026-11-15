@@ -91,3 +91,9 @@ In this Python 3.12.14 run, the generated train/validation cohorts (seeds 1/2) s
 [Full two-cohort evidence](../../references/l1_table_replay_2026_11.md) now executes the unchanged four-recipe600-step subset in existing Torch2.9.1/NumPy2.3.5 and Torch2.15.0/NumPy2.5.4 CPU environments, three seeds each. All24 workers complete; each lane passes14 L1 tests. Rounded mean/SD agreement is4/4 rows on2.9.1 and3/4 on2.15.0; the new2.15 constant-rate row is1.733±0.018 versus historical1.734±0.018.
 
 The historical tables above remain unchanged. Rounded agreement does not identify their original environment or prove bitwise replay. Known43 exact train/validation overlaps remain, with no held-out arithmetic-quality/ranking claim. The1,500-step, high-LR/QK/z-loss and L7 tables are not rerun by this pass. `table_replay.py` and `table_replay_protocol.json` supply the source/version/output guards and full-case collector; see the note for commands and retained per-seed logs.
+
+## Remaining reference-grid replay — 2026-11-15 UTC
+
+[Full evidence and all seeds](../../references/l1_remaining_tables_2026_11.md) now runs the1,500-step recipes and600-step high-LR pair in both recorded CPU cohorts:36 fresh fits,43,200 updates,864 finite curve points and18 passing L1 tests per lane. Each lane agrees with1/6 historical rounded mean/SD rows. All original table values remain unchanged; exact historical provenance/state replay is unresolved.
+
+Together with the earlier600-step replay, all10 printed L1 cells have current two-cohort execution records. The high-rate pair combines RMS QK normalization with z-loss, so it does not isolate either switch or measure learning-rate sensitivity across a range. Known43 exact train/validation overlaps remain. `remaining_table_replay.py` / `remaining_table_protocol.json` supply the separately frozen mixed-budget worker/collector; no optimizer ranking, clean holdout or platform-wide qualification follows.

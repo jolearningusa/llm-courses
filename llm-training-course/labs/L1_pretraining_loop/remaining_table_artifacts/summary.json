@@ -1,0 +1,473 @@
+{
+  "protocol": {
+    "date": "2026-11-15 UTC",
+    "scope": "Remaining L1 historical 1500-step and high-LR tables; source unchanged, no new tuning or optimizer ranking",
+    "lanes": {
+      "torch291": {
+        "torch": "2.9.1",
+        "numpy": "2.3.5"
+      },
+      "torch215": {
+        "torch": "2.15.0",
+        "numpy": "2.5.4"
+      }
+    },
+    "runs": [
+      "long-adamw-constant",
+      "long-adamw-cosine",
+      "long-adamw-wsd",
+      "long-muon-wsd",
+      "high-adamw-constant",
+      "high-adamw-constant-qk-z"
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "weight_decay": 0.1,
+    "warmup_frac": 0.05,
+    "log_every": 50,
+    "threads": 4,
+    "device": "cpu",
+    "dtype": "float32",
+    "selection": "all six preset table cells in both cohorts and all three seeds; final step only; no tuning, selection or retries",
+    "source_sha256": {
+      "train.py": "046de05bef7fe4de9a73f6d6e7fd6885803c11020c52f334f34e7587d65fdc6d",
+      "model.py": "70ffcd2e597b6a2f2370eba75bd41c6a42b64022097175d42e59a4e76c1c7768",
+      "optim.py": "65efed3c06b4d5ba45caa7cfb6f44b2bc839b1095d3136aab98fa5099eeaa89d",
+      "schedules.py": "bb864e165eb0bb881689f1ab3439c2653082ddbdc126754e13938fdefee56805"
+    },
+    "cases": {
+      "long-adamw-constant": {
+        "run": "adamw-constant",
+        "steps": 1500,
+        "lr": 0.003,
+        "historical": [
+          1.587,
+          0.114
+        ]
+      },
+      "long-adamw-cosine": {
+        "run": "adamw-cosine",
+        "steps": 1500,
+        "lr": 0.003,
+        "historical": [
+          1.655,
+          0.013
+        ]
+      },
+      "long-adamw-wsd": {
+        "run": "adamw-wsd",
+        "steps": 1500,
+        "lr": 0.003,
+        "historical": [
+          1.575,
+          0.102
+        ]
+      },
+      "long-muon-wsd": {
+        "run": "muon-wsd",
+        "steps": 1500,
+        "lr": 0.003,
+        "historical": [
+          1.538,
+          0.139
+        ]
+      },
+      "high-adamw-constant": {
+        "run": "adamw-constant",
+        "steps": 600,
+        "lr": 0.03,
+        "historical": [
+          1.758,
+          0.009
+        ]
+      },
+      "high-adamw-constant-qk-z": {
+        "run": "adamw-constant-qk-z",
+        "steps": 600,
+        "lr": 0.03,
+        "historical": [
+          1.717,
+          0.005
+        ]
+      }
+    },
+    "historical": {
+      "long-adamw-constant": [
+        1.587,
+        0.114
+      ],
+      "long-adamw-cosine": [
+        1.655,
+        0.013
+      ],
+      "long-adamw-wsd": [
+        1.575,
+        0.102
+      ],
+      "long-muon-wsd": [
+        1.538,
+        0.139
+      ],
+      "high-adamw-constant": [
+        1.758,
+        0.009
+      ],
+      "high-adamw-constant-qk-z": [
+        1.717,
+        0.005
+      ]
+    }
+  },
+  "protocol_sha256": "e60fcbe86657357490c24a1e38a35d78294d6535bb0493b7c6378361b1451a8b",
+  "runner_sha256": "1f7e9eaa98904866265e43c6963d9eb6b4e294e2cdf72059d2b636b58db79ab6",
+  "worker_files": {
+    "torch215-high-adamw-constant-qk-z-s0.json": "0f4405fd0d065ff212f8a62042c2a428decd4d4c090a7a6df118f1700b2a023f",
+    "torch215-high-adamw-constant-qk-z-s1.json": "f7c6936ae43fec352ddfdde5ab859ac1fc33b4e9b38283a1c955fedfdc28723e",
+    "torch215-high-adamw-constant-qk-z-s2.json": "73a5881c80ee4e019434237fc8ad94614b09344f9bdbf356469ce7ed837dd149",
+    "torch215-high-adamw-constant-s0.json": "378bb0537dccc1899d3ed473c20b8713525f2e84ac0885b10321800bfd85818c",
+    "torch215-high-adamw-constant-s1.json": "7ac46906889e4f04743b5d0e963f55d1fc4c1d9ed9143f71d00760ead03a0a44",
+    "torch215-high-adamw-constant-s2.json": "bf1c5bfaab62de54419e9e0d8bde137deedfb374dbb06692b9bb0c7306cbcc2f",
+    "torch215-long-adamw-constant-s0.json": "0e941ba71c7e28bd73bc19220aa7dbabb6ba0e15892ff2dc677d688c05aa56dc",
+    "torch215-long-adamw-constant-s1.json": "b46608ca3b85b2d588f4ccd32678c2ed6d1ad18ed70ba766219562d83af5724f",
+    "torch215-long-adamw-constant-s2.json": "a0e70d25d213b30154faef5dd05c1dc6ba80d6e21a5783be1ef2f6fa244fd9c2",
+    "torch215-long-adamw-cosine-s0.json": "7bec5cac4359e88303e250a955f9dae93c710f7318e267c6582bf53d507fc9cd",
+    "torch215-long-adamw-cosine-s1.json": "3c09a0bb5845168edf623e9a16dc5f6854345e9b63526f52c636ebfe34201ec8",
+    "torch215-long-adamw-cosine-s2.json": "56b9a780406c53191fb93292187d0a1442d0bc558f59d2467e085780a7d60cdb",
+    "torch215-long-adamw-wsd-s0.json": "7ef525f53c172957c1a91d4069a67027c811c5b3ea37a8068013b997a09a391d",
+    "torch215-long-adamw-wsd-s1.json": "e001ff976851b654beb0d8a50556265565a097ebf0ad733904139ad33970bb6d",
+    "torch215-long-adamw-wsd-s2.json": "fcf7381df28edff7b4406582ef9994c20f2b1366879e5e6494db8f9705959992",
+    "torch215-long-muon-wsd-s0.json": "c349ae126ba848993037176b8fdf9d889b24f77d09c24ff7aa63b94f6f330ad6",
+    "torch215-long-muon-wsd-s1.json": "8d340a7574cde7a9b65c35a5d8d7bc02d42df916e29c8962a0ecd4e38d07c476",
+    "torch215-long-muon-wsd-s2.json": "dcaedd488b6216b3538ff350f0597c1fb65909280b5ced133efe721f000120d5",
+    "torch291-high-adamw-constant-qk-z-s0.json": "c977e60b718c9aa6002dd38124a7f1be8e8a9c7174998ac0dc6b27f9430236a4",
+    "torch291-high-adamw-constant-qk-z-s1.json": "0c377012d4476f7b6576aabc299a4f741893a784ee62188cc1a66c9d9e7743a6",
+    "torch291-high-adamw-constant-qk-z-s2.json": "340531dd68832ce7518497c30515292f54e9b8ef3c5e12ef7a59cb31eedd2b64",
+    "torch291-high-adamw-constant-s0.json": "53ee6c2503812da00ea274ad34f53ab408f39f7675aada96740326098a03f4a8",
+    "torch291-high-adamw-constant-s1.json": "0a93c50bf93dfd47af44f970b234682311110d2608ce939cd5920643309654d5",
+    "torch291-high-adamw-constant-s2.json": "67b56da3cfbed5ca12ff93d741be53934458e70f5c1382dbe38115578b9840d6",
+    "torch291-long-adamw-constant-s0.json": "d98886d1849e42656056c7fc07fa50fc0ed4ca29f7e0748ddab21acf0e69affc",
+    "torch291-long-adamw-constant-s1.json": "26f29019a2014b251e8f5fd64ab3517e6a969f23e625437f11da98536c01f6ee",
+    "torch291-long-adamw-constant-s2.json": "cfcb9d7c1a1643a348a735c49fa44b3f7893b33ea7e599eeed9d097f28673b72",
+    "torch291-long-adamw-cosine-s0.json": "69092b79d8c35ca903f634c7916990a88466ae7f532efcb225752773b9390bdc",
+    "torch291-long-adamw-cosine-s1.json": "460527a7508430f418ec2a5085968d8c0ea965116e8daa53922117d6d95cd360",
+    "torch291-long-adamw-cosine-s2.json": "223e06e7487ca644725b08ce0fd9066f1e0648484d92b8bbd8b2968dff1b1a2a",
+    "torch291-long-adamw-wsd-s0.json": "6d7568103e5d980fdf9e207fa89ab217e2d5cf0661e8712a846e54557e2b8ee3",
+    "torch291-long-adamw-wsd-s1.json": "8b733fb2f0f94b34ca1a5c21af4b25206d659de1a90ae2d774b8b038ed6a35ba",
+    "torch291-long-adamw-wsd-s2.json": "1bccc7e9fa1aff5e88533a942fda82318095824617b33a41dc1c15fcfacce2e2",
+    "torch291-long-muon-wsd-s0.json": "f1fda1f65671e1802813f5a5ed937d42fc2f17dae1cdb36a87926c130f0077b7",
+    "torch291-long-muon-wsd-s1.json": "6a6239e109412b8ada70e8fcc9477583902508030fc966f0df00f505b1a71445",
+    "torch291-long-muon-wsd-s2.json": "4e0116b42c73aa0c420871d397a931efcf17dde824d1b67039756edfb837f95d"
+  },
+  "results": {
+    "torch291": {
+      "long-adamw-constant": {
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "finals": [
+          1.6502737551927567,
+          1.4530448764562607,
+          1.6628317385911942
+        ],
+        "mean": 1.5887167900800705,
+        "sample_sd": 0.11766297993217213,
+        "rounded_3dp": [
+          "1.589",
+          "0.118"
+        ],
+        "historical_rounded_3dp": [
+          "1.587",
+          "0.114"
+        ],
+        "mean_difference_from_rounded_historical": 0.0017167900800705294,
+        "rounded_mean_and_sd_match": false,
+        "seconds": 21.297017582925037
+      },
+      "long-adamw-cosine": {
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "finals": [
+          1.6405885517597198,
+          1.661199927330017,
+          1.6599637567996979
+        ],
+        "mean": 1.653917411963145,
+        "sample_sd": 0.011559667604946271,
+        "rounded_3dp": [
+          "1.654",
+          "0.012"
+        ],
+        "historical_rounded_3dp": [
+          "1.655",
+          "0.013"
+        ],
+        "mean_difference_from_rounded_historical": -0.0010825880368550145,
+        "rounded_mean_and_sd_match": false,
+        "seconds": 21.157453208928928
+      },
+      "long-adamw-wsd": {
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "finals": [
+          1.6262388974428177,
+          1.461730882525444,
+          1.6428713202476501
+        ],
+        "mean": 1.576947033405304,
+        "sample_sd": 0.10012607272717562,
+        "rounded_3dp": [
+          "1.577",
+          "0.100"
+        ],
+        "historical_rounded_3dp": [
+          "1.575",
+          "0.102"
+        ],
+        "mean_difference_from_rounded_historical": 0.0019470334053039995,
+        "rounded_mean_and_sd_match": false,
+        "seconds": 21.190259708208032
+      },
+      "long-muon-wsd": {
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "finals": [
+          1.614953026175499,
+          1.3770611882209778,
+          1.6217610388994217
+        ],
+        "mean": 1.537925084431966,
+        "sample_sd": 0.13935380184066382,
+        "rounded_3dp": [
+          "1.538",
+          "0.139"
+        ],
+        "historical_rounded_3dp": [
+          "1.538",
+          "0.139"
+        ],
+        "mean_difference_from_rounded_historical": -7.491556803396193e-05,
+        "rounded_mean_and_sd_match": true,
+        "seconds": 24.47334462602157
+      },
+      "high-adamw-constant": {
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "finals": [
+          1.731032744050026,
+          1.742477908730507,
+          1.7538153231143951
+        ],
+        "mean": 1.742441991964976,
+        "sample_sd": 0.011391331999226128,
+        "rounded_3dp": [
+          "1.742",
+          "0.011"
+        ],
+        "historical_rounded_3dp": [
+          "1.758",
+          "0.009"
+        ],
+        "mean_difference_from_rounded_historical": -0.01555800803502394,
+        "rounded_mean_and_sd_match": false,
+        "seconds": 9.029641291010194
+      },
+      "high-adamw-constant-qk-z": {
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "finals": [
+          1.707787647843361,
+          1.7177539467811584,
+          1.6965141147375107
+        ],
+        "mean": 1.7073519031206768,
+        "sample_sd": 0.010626618531221583,
+        "rounded_3dp": [
+          "1.707",
+          "0.011"
+        ],
+        "historical_rounded_3dp": [
+          "1.717",
+          "0.005"
+        ],
+        "mean_difference_from_rounded_historical": -0.009648096879323331,
+        "rounded_mean_and_sd_match": false,
+        "seconds": 11.116821500007063
+      }
+    },
+    "torch215": {
+      "long-adamw-constant": {
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "finals": [
+          1.6496580094099045,
+          1.468649759888649,
+          1.6642362773418427
+        ],
+        "mean": 1.594181348880132,
+        "sample_sd": 0.10895763557465267,
+        "rounded_3dp": [
+          "1.594",
+          "0.109"
+        ],
+        "historical_rounded_3dp": [
+          "1.587",
+          "0.114"
+        ],
+        "mean_difference_from_rounded_historical": 0.007181348880131999,
+        "rounded_mean_and_sd_match": false,
+        "seconds": 20.01451578992419
+      },
+      "long-adamw-cosine": {
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "finals": [
+          1.6402205377817154,
+          1.6614161878824234,
+          1.6613938212394714
+        ],
+        "mean": 1.6543435156345367,
+        "sample_sd": 0.01223086271037906,
+        "rounded_3dp": [
+          "1.654",
+          "0.012"
+        ],
+        "historical_rounded_3dp": [
+          "1.655",
+          "0.013"
+        ],
+        "mean_difference_from_rounded_historical": -0.0006564843654632835,
+        "rounded_mean_and_sd_match": false,
+        "seconds": 20.118648707983084
+      },
+      "long-adamw-wsd": {
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "finals": [
+          1.6264810413122177,
+          1.4665635079145432,
+          1.6412549018859863
+        ],
+        "mean": 1.5780998170375824,
+        "sample_sd": 0.09687532156672263,
+        "rounded_3dp": [
+          "1.578",
+          "0.097"
+        ],
+        "historical_rounded_3dp": [
+          "1.575",
+          "0.102"
+        ],
+        "mean_difference_from_rounded_historical": 0.003099817037582442,
+        "rounded_mean_and_sd_match": false,
+        "seconds": 20.21230225090403
+      },
+      "long-muon-wsd": {
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "finals": [
+          1.6150025427341461,
+          1.377264454960823,
+          1.6221998780965805
+        ],
+        "mean": 1.53815562526385,
+        "sample_sd": 0.13938230490341313,
+        "rounded_3dp": [
+          "1.538",
+          "0.139"
+        ],
+        "historical_rounded_3dp": [
+          "1.538",
+          "0.139"
+        ],
+        "mean_difference_from_rounded_historical": 0.00015562526384993447,
+        "rounded_mean_and_sd_match": true,
+        "seconds": 23.279864126001485
+      },
+      "high-adamw-constant": {
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "finals": [
+          1.7409887611865997,
+          1.753254696726799,
+          1.76397043466568
+        ],
+        "mean": 1.7527379641930263,
+        "sample_sd": 0.011499547311018769,
+        "rounded_3dp": [
+          "1.753",
+          "0.011"
+        ],
+        "historical_rounded_3dp": [
+          "1.758",
+          "0.009"
+        ],
+        "mean_difference_from_rounded_historical": -0.005262035806973708,
+        "rounded_mean_and_sd_match": false,
+        "seconds": 8.7287639999995
+      },
+      "high-adamw-constant-qk-z": {
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "finals": [
+          1.7185331135988235,
+          1.722146287560463,
+          1.7162966281175613
+        ],
+        "mean": 1.7189920097589493,
+        "sample_sd": 0.0029517059751634485,
+        "rounded_3dp": [
+          "1.719",
+          "0.003"
+        ],
+        "historical_rounded_3dp": [
+          "1.717",
+          "0.005"
+        ],
+        "mean_difference_from_rounded_historical": 0.001992009758949198,
+        "rounded_mean_and_sd_match": false,
+        "seconds": 10.900053999968804
+      }
+    }
+  },
+  "workers": 36,
+  "training_steps": 43200,
+  "summed_train_seconds": 211.51868679188192
+}
