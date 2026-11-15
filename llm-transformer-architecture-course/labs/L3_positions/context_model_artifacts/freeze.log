@@ -1,0 +1,10 @@
+{
+  "planned": 90,
+  "eligible": 90,
+  "sources": {
+    "context_model_pilot.py": "817a2f37c3540379990e15030e39fe33010cb145328393d0c02f80b2b4c9258f",
+    "context_model_protocol.json": "e4c03598d02e476c44251419795c457ec14a294972e69780701b2da324ab09fa",
+    "context_probes.py": "57caf89c9c4cd1a0d75b179f37e298efe24f10feed4069b91d4364777eba8778"
+  },
+  "model_generations": 0
+}
