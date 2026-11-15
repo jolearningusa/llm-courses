@@ -1,0 +1,4 @@
+{
+  "elapsed_seconds": 16.980971166,
+  "scope": "sequential six fresh demo workers plus both complete L7 test suites; imports/setup inside; previous installation/download outside"
+}

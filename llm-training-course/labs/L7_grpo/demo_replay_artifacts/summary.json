@@ -1,0 +1,177 @@
+{
+  "protocol": {
+    "date": "2026-11-15 UTC",
+    "lanes": {
+      "torch291": {
+        "torch": "2.9.1",
+        "numpy": "2.3.5"
+      },
+      "torch215": {
+        "torch": "2.15.0",
+        "numpy": "2.5.4"
+      }
+    },
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "steps": 300,
+    "intraop_threads": 1,
+    "interop_threads": 1,
+    "selection": "unchanged grpo.main default demo, all seeds/methods, no tuning/retries; final printed values only",
+    "historical_seed0": {
+      "SFT": [
+        0.273,
+        3.93,
+        4.8
+      ],
+      "GRPO": [
+        0.506,
+        2.43,
+        2.79
+      ],
+      "Dr. GRPO": [
+        0.489,
+        2.46,
+        2.49
+      ]
+    },
+    "source_sha256": {
+      "grpo.py": "2260a4eee07f3464b5bf9066098071288fb606ed19591d1adf154bf8ef0465f4",
+      "policy.py": "a11a71852335d2ed00edc32ffe6779012b43c2aec7260d07fe0a0b0370be773f",
+      "task.py": "6fc77c226f36ea788b77c79b64b75fe643883c02df20ce2561e5cb1058e80c92"
+    },
+    "scope": "printed historical L7 demo replay, all 100 RL-pool prompts evaluated; not held-out performance, algorithm ranking or full historical provenance"
+  },
+  "results": {
+    "torch291": {
+      "0": {
+        "SFT": [
+          0.273,
+          3.93,
+          4.8
+        ],
+        "GRPO": [
+          0.498,
+          2.43,
+          2.82
+        ],
+        "Dr. GRPO": [
+          0.484,
+          2.44,
+          2.59
+        ]
+      },
+      "1": {
+        "SFT": [
+          0.282,
+          3.83,
+          4.13
+        ],
+        "GRPO": [
+          0.419,
+          4.48,
+          4.46
+        ],
+        "Dr. GRPO": [
+          0.416,
+          4.27,
+          4.44
+        ]
+      },
+      "2": {
+        "SFT": [
+          0.27,
+          3.91,
+          4.33
+        ],
+        "GRPO": [
+          0.407,
+          3.98,
+          3.99
+        ],
+        "Dr. GRPO": [
+          0.389,
+          2.49,
+          2.47
+        ]
+      }
+    },
+    "torch215": {
+      "0": {
+        "SFT": [
+          0.273,
+          3.93,
+          4.8
+        ],
+        "GRPO": [
+          0.498,
+          2.43,
+          2.82
+        ],
+        "Dr. GRPO": [
+          0.484,
+          2.44,
+          2.59
+        ]
+      },
+      "1": {
+        "SFT": [
+          0.282,
+          3.83,
+          4.13
+        ],
+        "GRPO": [
+          0.419,
+          4.48,
+          4.46
+        ],
+        "Dr. GRPO": [
+          0.416,
+          4.27,
+          4.44
+        ]
+      },
+      "2": {
+        "SFT": [
+          0.27,
+          3.91,
+          4.33
+        ],
+        "GRPO": [
+          0.407,
+          3.98,
+          3.99
+        ],
+        "Dr. GRPO": [
+          0.389,
+          2.49,
+          2.47
+        ]
+      }
+    }
+  },
+  "worker_files": {
+    "torch215-s0.json": "e06777e6f8c92c2e152c80f53a8caf6c6a3e8b33889e36bdee10960e107fe9e7",
+    "torch215-s1.json": "d1d0a44d0e70cf8c5c10ce835cf966b3fc518d0ff30a96efe1121f82721486ef",
+    "torch215-s2.json": "58251c57e3eb6e9e52358d0163e60bcb3866be39a335da8b95a2d6257767f445",
+    "torch291-s0.json": "78b0abb935109ce078d19a39473448dc92fad6fce38d4808e217a0b974ce1738",
+    "torch291-s1.json": "13d0d34f2ff8080f13faa9e6f49445c38da571629f06593de56821fbf07454bf",
+    "torch291-s2.json": "e944c3d645951767481352e52ed211ddcd6f53a68d68a5a572855b3b33be2c2a"
+  },
+  "rounded_seed0_agreement": {
+    "torch291": {
+      "SFT": true,
+      "GRPO": false,
+      "Dr. GRPO": false
+    },
+    "torch215": {
+      "SFT": true,
+      "GRPO": false,
+      "Dr. GRPO": false
+    }
+  },
+  "summed_demo_seconds": 10.464269793126732,
+  "workers": 6
+}

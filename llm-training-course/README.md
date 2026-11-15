@@ -75,7 +75,7 @@ Classic architectures such as MLPs, CNNs, RNNs and LSTMs, and the basics of trai
 | [25 Verifiers and process rewards](slides/25_verifiers_process_rewards.html) (9 slides) | Week 12: GSM8K verifiers, STaR self-training, outcome against process reward models, automatic step labels; lab L7 |
 | [26 GRPO and REINFORCE baselines: DeepSeekMath and RLOO](slides/26_grpo_rloo.html) (9 slides) | Week 12: group baselines instead of a value model, one frame for SFT to GRPO, leave-one-out REINFORCE against PPO; lab L7 |
 | [27 RL with verifiable rewards: DeepSeek-R1, Kimi k1.5 and Tülu 3](slides/27_rlvr_r1.html) (9 slides) | Week 12: rule-based rewards, R1-Zero from a base model, R1's four stages, long-context RL and long-to-short; lab L7 |
-| [28 Fixing GRPO and spending test-time compute: DAPO, Dr. GRPO, Snell et al.](slides/28_dapo_drgrpo_test_time.html) (9 slides) | Week 13: Clip-Higher and dynamic sampling, length and difficulty biases, search against a verifier and revisions; frozen three-arm CPU steering study with poor held-out generalization; paper critique 2 |
+| [28 Fixing GRPO and spending test-time compute: DAPO, Dr. GRPO, Snell et al.](slides/28_dapo_drgrpo_test_time.html) (9 slides) | Week 13: Clip-Higher and dynamic sampling, length and difficulty biases, search against a verifier and revisions; frozen three-arm CPU steering study with poor held-out generalization; paper critique 2; dated L7 replay |
 | [29 Knowledge distillation: Hinton et al., sequence-level KD, DistilBERT](slides/29_knowledge_distillation.html) (10 slides) | Week 14: soft targets and the temperature, logit matching, distilling whole sequences, a distilled BERT; lab L8 |
 | [30 Distilling LLMs: MiniLLM, on-policy distillation, Gemma 2, R1's distilled models](slides/30_distilling_llms.html) (11 slides) | Week 14: forward against reverse KL, distilling on the student's own samples, distillation in pre-training, reasoning by SFT; lab L8 |
 | [31 Safety tuning and its attacks: red teaming, Safety-Tuned LLaMAs, fine-tuning attacks, GCG, deliberative alignment](slides/31_safety_tuning_attacks.html) (12 slides) | Week 14: red teaming with a language model, how much safety data, fine-tuning and suffix attacks, reasoning over a written policy |
@@ -190,6 +190,27 @@ llm-training-course/
 │   │   ├── README.md
 │   │   ├── task.py                  # Toy addition prompts, filler tokens, rule-based reward
 │   │   ├── policy.py                # Tiny autoregressive policy: masked log-probs and sampling
+│   │   ├── demo_replay.py           # Optional unchanged default-demo replay
+│   │   ├── demo_replay_protocol.json
+│   │   ├── test_demo_replay.py
+│   │   ├── demo_replay_artifacts/
+│   │   │   ├── driver_timing.json
+│   │   │   ├── summary.json
+│   │   │   ├── torch215-s0.json
+│   │   │   ├── torch215-s0.log
+│   │   │   ├── torch215-s1.json
+│   │   │   ├── torch215-s1.log
+│   │   │   ├── torch215-s2.json
+│   │   │   ├── torch215-s2.log
+│   │   │   ├── torch215-tests.log
+│   │   │   ├── torch291-s0.json
+│   │   │   ├── torch291-s0.log
+│   │   │   ├── torch291-s1.json
+│   │   │   ├── torch291-s1.log
+│   │   │   ├── torch291-s2.json
+│   │   │   ├── torch291-s2.log
+│   │   │   ├── torch291-tests.log
+│   │   │   ├── verification.json
 │   │   ├── grpo.py                  # Group advantages, GRPO and Dr. GRPO losses, SFT warm-up, RL loop
 │   │   ├── test_grpo.py
 │   │   ├── rollout_consistency.py   # Observed sampler / learner log-probability contracts
@@ -257,6 +278,7 @@ llm-training-course/
 │   ├── steering_ablation_2026_11.md
 │   ├── steering_ablation_summary_2026_11.json
 │   ├── steering_checkpoint_manifest_2026_11.json
+│   ├── l7_demo_replay_2026_11.md
 │   ├── l1_table_replay_2026_11.md
 │   ├── tested_cpu_lock_2026_11.md
 │   ├── cpu_lock_artifacts_2026_11.json
