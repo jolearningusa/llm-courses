@@ -56,7 +56,7 @@ Each row links the English deck and, on that same row, its Simplified Chinese tw
 | **Part III. Attention variants and the KV cache** | |
 | [12 Multi-query attention](slides/12_mqa.html) (9 slides) · [简体中文](slides/zh/12_mqa.html) | Week 5: memory-bound decoding, one shared key and value head; lab L5 |
 | [13 Grouped-query attention](slides/13_gqa.html) (9 slides) · [简体中文](slides/zh/13_gqa.html) | Week 6: groups of query heads, uptraining from multi-head checkpoints; lab L5 |
-| [14 FlashAttention](slides/14_flashattention.html) (9 slides) · [简体中文](slides/zh/14_flashattention.html) | Week 6: exact tiled attention and what it made trainable; lab L5 |
+| [14 FlashAttention](slides/14_flashattention.html) (9 slides) · [简体中文](slides/zh/14_flashattention.html) | Week 6: exact tiled attention and historical results; L5 and the compute12/35 execution-evidence handoff |
 | [15 Sliding windows and attention sinks](slides/15_sliding_window_sinks.html) (10 slides) · [简体中文](slides/zh/15_sliding_window_sinks.html) | Week 6: Mistral 7B's window, StreamingLLM's sinks; lab L5 |
 | [16 Multi-head latent attention](slides/16_mla.html) (10 slides) · [简体中文](slides/zh/16_mla.html) | Week 6: a latent KV cache, absorbed projections, decoupled RoPE; lab L5 |
 | **Part IV. The modern block** | |
@@ -173,6 +173,9 @@ llm-transformer-architecture-course/
 ├── references/
 │   ├── research_audit_2026_11.md
 │   ├── byte_chunk_accounting_2026_11.md
+│   ├── attention_execution_links_2026_11.md
+│   ├── attention_execution_sources_2026_11.json
+│   ├── attention_execution_blockwise_2026_11.txt
 │   ├── context_model_pilot_2026_11.md
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-01
 ├── slides/

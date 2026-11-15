@@ -156,3 +156,7 @@ The [dated source/execution note](byte_chunk_accounting_2026_11.md) pins inspect
 ## ARC-3 local-model execution — 2026-11-15 UTC
 
 The [measured pilot and retained failures](context_model_pilot_2026_11.md) use the pinned [SmolLM2-135M-Instruct model card/config](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct/tree/12fd25f77366fa6b3b4b768ec3050bf629380bac), including CPU inference and accuracy/instruction-following limitations. RULER v1 above motivates task-family/template/error controls; our90 calls use original course fixtures, not its benchmark. All completed, strict0/81 grid and0/9 short controls;60 output caps. Failed short controls prevent a length/position/effective-window conclusion. Deck10 slide9 has synchronized EN/ZH measured-result diagrams.
+
+## ARC-4 execution handoff — 2026-11-15 UTC
+
+[The dated map/source record](attention_execution_links_2026_11.md) links the existing FlashAttention v1 mathematics to pinned author FA4 interface/README and vLLM NIXL facade/compatibility files. Compute12 owns kernel dependency/target questions and compute35 the engine/source route; neither is a new runtime qualification. Architecture14’s EN/ZH original diagram preserves historical model/hardware results and mathematical questions. One existing NumPy equivalence fixture passed; no GPU, engine or model-quality claim is added.

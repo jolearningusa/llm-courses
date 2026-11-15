@@ -1,0 +1,6 @@
+test_blockwise_equals_direct (test_attention.TestMasksAndBlocks.test_blockwise_equals_direct) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.021s
+
+OK

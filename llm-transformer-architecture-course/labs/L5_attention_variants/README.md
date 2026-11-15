@@ -46,3 +46,7 @@ direct computation; and that MLA's absorbed decoding equals its explicit form.
 Use the [L3 controlled-context extension](../L3_positions/#context-evaluation) with deck 15's new closing page. Random-weight cache/recomputation equivalence checks the declared execution relationship; it cannot establish that a trained model retrieves or reasons over old evidence. Log the actual mask, visible information, tokenizer/template lengths and per-cell task outcomes before attributing a quality change to cache correctness. The new fixture builder performs zero model runs.
 
 The supplied cache/recomputation equivalence tests cover full causal execution. The custom rolling-window `step` in task 5 is a student extension; validate it against a reference using the **same window/sink mask** before making an implementation claim. Do not relabel a full-causal equivalence pass as validation of an unimplemented windowed decoder.
+
+## Mathematics → kernel → serving handoff — 2026-11-15 UTC
+
+Use the [ARC-4 evidence map](../../references/attention_execution_links_2026_11.md) with architecture14 slide9, compute12 (pinned FA4 kernel dependencies) and compute35 (engine/source/KV roles). The existing blockwise/direct fixture checks only its CPU numerical relationship. Device implementation and serving/transport completion/ownership need their own evidence under fixed shape/dtype/scale/mask and eligible target contracts. No lab or test code changed; the original mathematical checkpoints remain in slide notes.
