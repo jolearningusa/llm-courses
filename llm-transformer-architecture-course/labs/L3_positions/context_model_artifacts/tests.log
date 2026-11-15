@@ -1,0 +1,28 @@
+test_caps_and_generation_reserve (test_context_model_pilot.ModelPilotControls.test_caps_and_generation_reserve) ... ok
+test_errors_ineligible_and_cap_hits_stay_in_denominator (test_context_model_pilot.ModelPilotControls.test_errors_ineligible_and_cap_hits_stay_in_denominator) ... ok
+test_evidence_offsets_include_partial_token_overlap (test_context_model_pilot.ModelPilotControls.test_evidence_offsets_include_partial_token_overlap) ... ok
+test_full_grid_and_short_controls (test_context_model_pilot.ModelPilotControls.test_full_grid_and_short_controls) ... ok
+test_mutated_frozen_plan_rejected (test_context_model_pilot.ModelPilotControls.test_mutated_frozen_plan_rejected) ... ok
+test_prompt_does_not_accept_labels_or_case_metadata (test_context_model_pilot.ModelPilotControls.test_prompt_does_not_accept_labels_or_case_metadata) ... ok
+test_strict_score_preserves_prose_failures (test_context_model_pilot.ModelPilotControls.test_strict_score_preserves_prose_failures) ... ok
+test_grid_and_debug_oracles (test_context_probes.ContextProbes.test_grid_and_debug_oracles) ... ok
+test_invalid_configuration (test_context_probes.ContextProbes.test_invalid_configuration) ... ok
+test_lengths_preserve_task_and_answer_with_valid_indices (test_context_probes.ContextProbes.test_lengths_preserve_task_and_answer_with_valid_indices) ... ok
+test_literal_chain_oracle_and_broken_evidence (test_context_probes.ContextProbes.test_literal_chain_oracle_and_broken_evidence) ... ok
+test_move_evidence_without_changing_filler_or_question (test_context_probes.ContextProbes.test_move_evidence_without_changing_filler_or_question) ... ok
+test_nontrivial_replicas_and_repeatability (test_context_probes.ContextProbes.test_nontrivial_replicas_and_repeatability) ... ok
+test_scoring_and_prompt_boundary (test_context_probes.ContextProbes.test_scoring_and_prompt_boundary) ... ok
+test_bias_is_linear_in_distance_and_causal (test_positions.ALiBi.test_bias_is_linear_in_distance_and_causal) ... ok
+test_slopes_for_eight_heads (test_positions.ALiBi.test_slopes_for_eight_heads) ... ok
+test_interpolation_stays_in_trained_range (test_positions.ContextExtension.test_interpolation_stays_in_trained_range) ... ok
+test_pi_preserves_relative_property (test_positions.ContextExtension.test_pi_preserves_relative_property) ... ok
+test_yarn_keeps_fast_pairs_and_stretches_slow_pairs (test_positions.ContextExtension.test_yarn_keeps_fast_pairs_and_stretches_slow_pairs) ... ok
+test_yarn_temperature (test_positions.ContextExtension.test_yarn_temperature) ... ok
+test_frequencies_match_paper (test_positions.RoPE.test_frequencies_match_paper) ... ok
+test_rotation_preserves_norm (test_positions.RoPE.test_rotation_preserves_norm) ... ok
+test_score_depends_only_on_offset (test_positions.RoPE.test_score_depends_only_on_offset) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.024s
+
+OK

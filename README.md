@@ -28,6 +28,7 @@ llm-courses/
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
 │   ├── reviews/
+│   │   ├── architecture-context-model-pilot/ # Actual context-grid EN/ZH before/after captures
 │   │   ├── agentos-openclaw-host-errors/ # Python first-compaction error before/after captures
 │   │   ├── agentos-openclaw-context-runtime/
 │   │   │   ├── README.md

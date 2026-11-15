@@ -51,7 +51,7 @@ Each row links the English deck and, on that same row, its Simplified Chinese tw
 | [07 Subword tokenization](slides/07_subword_tokenization.html) (9 slides) · [简体中文](slides/zh/07_subword_tokenization.html) | Week 3: BPE, byte-level BPE, Unigram and SentencePiece, vocabulary size; lab L2 |
 | [08 RoPE](slides/08_rope.html) (9 slides) · [简体中文](slides/zh/08_rope.html) | Week 4: rotary position embedding, relative position from rotation; lab L3 |
 | [09 ALiBi](slides/09_alibi.html) (9 slides) · [简体中文](slides/zh/09_alibi.html) | Week 4: a linear distance bias instead of position embeddings; lab L3 |
-| [10 Position Interpolation and YaRN](slides/10_pi_yarn.html) (9 slides) · [简体中文](slides/zh/10_pi_yarn.html) | Week 4: extending a RoPE model's window after pre-training; lab L3 |
+| [10 Position Interpolation and YaRN](slides/10_pi_yarn.html) (9 slides) · [简体中文](slides/zh/10_pi_yarn.html) | Week 4: extending a RoPE model's window after pre-training; L3 includes a dated model-quality pilot with failed short controls |
 | [11 From conversation to tokens](slides/11_conversation_to_tokens.html) (10 slides) · [简体中文](slides/zh/11_conversation_to_tokens.html) | Week 5: chat templates, packing masks, context windows, lost in the middle; lab L4 |
 | **Part III. Attention variants and the KV cache** | |
 | [12 Multi-query attention](slides/12_mqa.html) (9 slides) · [简体中文](slides/zh/12_mqa.html) | Week 5: memory-bound decoding, one shared key and value head; lab L5 |
@@ -127,6 +127,18 @@ llm-transformer-architecture-course/
 │   ├── L3_positions/
 │   │   ├── context_probes.py         # Controlled record-based context fixtures; no model calls
 │   │   ├── test_context_probes.py
+│   │   ├── context_model_pilot.py   # Optional frozen local checkpoint adapter
+│   │   ├── context_model_protocol.json
+│   │   ├── context_model_requirements.txt
+│   │   ├── test_context_model_pilot.py
+│   │   ├── context_model_artifacts/
+│   │   │   ├── plan.json
+│   │   │   ├── results.json
+│   │   │   ├── verification.json
+│   │   │   ├── verify.py
+│   │   │   ├── freeze.log
+│   │   │   ├── run.log
+│   │   │   └── tests.log
 │   │   ├── README.md
 │   │   ├── positions.py             # Sinusoidal, RoPE, ALiBi, Position Interpolation, YaRN
 │   │   └── test_positions.py
@@ -161,6 +173,7 @@ llm-transformer-architecture-course/
 ├── references/
 │   ├── research_audit_2026_11.md
 │   ├── byte_chunk_accounting_2026_11.md
+│   ├── context_model_pilot_2026_11.md
 │   └── bibliography.md              # Every paper, grouped by deck; sources checked 2026-11-01
 ├── slides/
 │   ├── 00_course_map.html           # Course map deck

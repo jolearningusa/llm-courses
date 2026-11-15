@@ -152,3 +152,7 @@ The new diagrams are original teaching schematics. No new paper result table or 
 | 07 / L2 optional | Dynamic Chunking for End-to-End Hierarchical Sequence Modeling | Hwang, 2025 | [arXiv:2507.07955](https://arxiv.org/html/2507.07955v1) (v1), §§2.2/2.4, Fig. 1/2 |
 
 The [dated source/execution note](byte_chunk_accounting_2026_11.md) pins inspected author files, records their hashes, attributes the original inline diagrams, and separates actual CPU segmentation/algebra from declared neural-stage counts and unmeasured model quality/performance. No author implementation was executed.
+
+## ARC-3 local-model execution — 2026-11-15 UTC
+
+The [measured pilot and retained failures](context_model_pilot_2026_11.md) use the pinned [SmolLM2-135M-Instruct model card/config](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct/tree/12fd25f77366fa6b3b4b768ec3050bf629380bac), including CPU inference and accuracy/instruction-following limitations. RULER v1 above motivates task-family/template/error controls; our90 calls use original course fixtures, not its benchmark. All completed, strict0/81 grid and0/9 short controls;60 output caps. Failed short controls prevent a length/position/effective-window conclusion. Deck10 slide9 has synchronized EN/ZH measured-result diagrams.

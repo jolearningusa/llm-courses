@@ -65,14 +65,20 @@ For a fixed task/variant, moving evidence preserves its question, expected answe
 | Position mathematics | Relative-position identities / norm preservation | Existing L3 NumPy checks |
 | Execution with a declared mask | Cached versus recomputed outputs within tolerance | Existing full-causal cache and mask fixtures; custom window steps need their own comparison |
 | Fixture construction | Preserved facts, coverage, debug oracle and rejected wrong answer | New seven-test fixture suite |
-| Learned context quality | Frozen trained checkpoint, task outputs and per-cell scoring | Not measured by this release |
+| Learned context quality | Frozen trained checkpoint, task outputs and per-cell scoring | Optional dated pilot below; failed short controls prevent length/position attribution |
 
 ### Predict and submit
 
 A model fits a long prompt and passes one passkey lookup. Does that establish multi-hop tracking or aggregation across that window? **No.** Likewise, a streaming implementation may reproduce its intended windowed computation while failing a task that needs older evidence. Diagnose the workload and available information before calling that a cache bug.
 
-Submit the manifest/seed, prompt-construction boundary, your planned tokenized matrix, preserved paired controls, one rejected answer, and a report with explicit not-run cells. If you execute a model, add raw outputs and all failure denominators. The course does not supply a model adapter or measured model scores here.
+Submit the manifest/seed, prompt-construction boundary, your planned tokenized matrix, preserved paired controls, one rejected answer, and a report with explicit not-run cells. If you execute a model, add raw outputs and all failure denominators. The base builder supplies neither a model adapter nor measured scores; the separately dated optional pilot below now supplies one bounded execution.
 
 Retain deck 10's mathematical checkpoints: PI maps token 20,000 to 2,500 when extending 4,096 to 32,768; derive YaRN's temperature for scales 16/32 and explain pre-rotation key caching for dynamic scaling. Retain deck 15's questions on theoretical receptive span, rolling-buffer slots, sink eviction and caching before RoPE. The new plan complements those implementation questions rather than treating them as comprehension tests.
 
 中文提示：长度 × 证据位置 × 任务类型要分别记录结果。这里生成的是“记录数”网格，不是 token 长度网格；81 个调试判定通过不等于模型准确率 100%。真实模型测试需固定分词/模板、保留失败和缺失，并区分位置数学、缓存正确性与任务质量。
+
+## Optional actual checkpoint pilot — 2026-11-15 UTC
+
+[Protocol, raw results and limits](../../references/context_model_pilot_2026_11.md): `context_model_pilot.py` adds a local-only adapter without changing `context_probes.py` or the position mathematics.90/90 planned calls completed:81 grid fixtures plus9 evidence-only controls. Strict scores0/81 and0/9;60 output caps. Actual input ranges and evidence token indices are retained, with no truncation or changed scoring after observation. Failed short controls mean this run cannot isolate a length/position effect or estimate an effective context window.
+
+Use the separate observed `context_model_requirements.txt` environment (tested CPython3.12.14/macOS arm64), pinned local model and freeze-before-run workflow in the note. Base L3 still needs only NumPy; the seven new adapter-boundary tests are standard library. All23 L3 tests pass separately from model quality. These original fixtures are not RULER and no PI/YaRN/cache/mask intervention was run.

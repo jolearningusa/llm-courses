@@ -1,0 +1,304 @@
+{
+  "scope": "tokenizer/scorer replay only; no regenerated responses",
+  "source_revision": "309b8ae79461938161d6a44159054912a6615d69",
+  "results_sha256": "26b850b178aa55ec675f6ec3fdd6daf8fb85e9a6d0e91a4bc20ba8a83a4bea98",
+  "plan_sha256": "f2a82d6e4e969f9579474aaef99a55a11787f89277fa7b705029056f126a1bf9",
+  "verified_cases": 90,
+  "completed": 90,
+  "strict_correct": 0,
+  "cap_hits": 60,
+  "input_token_ranges": {
+    "evidence-only": [
+      107,
+      151
+    ],
+    "128": [
+      1879,
+      1901
+    ],
+    "32": [
+      535,
+      557
+    ],
+    "64": [
+      983,
+      1005
+    ]
+  },
+  "first_evidence_start_fraction_of_complete_input": {
+    "evidence-only": [
+      0.4503311258278146,
+      0.6355140186915887
+    ],
+    "early": [
+      0.12414518674381904,
+      0.20408163265306123
+    ],
+    "late": [
+      0.7755834829443446,
+      0.8827586206896552
+    ],
+    "middle": [
+      0.473967684021544,
+      0.5157699443413729
+    ]
+  },
+  "cells": {
+    "1:evidence-only:lookup": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 0,
+      "errors": 0
+    },
+    "3:evidence-only:chain": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "2:evidence-only:count": {
+      "planned": 1,
+      "eligible": 1,
+      "completed": 1,
+      "correct": 0,
+      "cap_hits": 1,
+      "errors": 0
+    },
+    "3:evidence-only:count": {
+      "planned": 1,
+      "eligible": 1,
+      "completed": 1,
+      "correct": 0,
+      "cap_hits": 0,
+      "errors": 0
+    },
+    "4:evidence-only:count": {
+      "planned": 1,
+      "eligible": 1,
+      "completed": 1,
+      "correct": 0,
+      "cap_hits": 1,
+      "errors": 0
+    },
+    "128:early:count": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "32:late:lookup": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 0,
+      "errors": 0
+    },
+    "128:middle:count": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "32:late:count": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "32:early:lookup": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 0,
+      "errors": 0
+    },
+    "64:late:lookup": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 0,
+      "errors": 0
+    },
+    "32:middle:count": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "64:middle:lookup": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 0,
+      "errors": 0
+    },
+    "64:early:chain": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "32:early:chain": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "64:middle:count": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "128:middle:lookup": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 0,
+      "errors": 0
+    },
+    "128:late:count": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "32:middle:lookup": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 1,
+      "errors": 0
+    },
+    "32:early:count": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "64:early:lookup": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 0,
+      "errors": 0
+    },
+    "64:middle:chain": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "64:late:chain": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "32:middle:chain": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "64:early:count": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "128:late:lookup": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 0,
+      "errors": 0
+    },
+    "128:middle:chain": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "64:late:count": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "128:early:chain": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "128:early:lookup": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 0,
+      "errors": 0
+    },
+    "32:late:chain": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    },
+    "128:late:chain": {
+      "planned": 3,
+      "eligible": 3,
+      "completed": 3,
+      "correct": 0,
+      "cap_hits": 3,
+      "errors": 0
+    }
+  }
+}
