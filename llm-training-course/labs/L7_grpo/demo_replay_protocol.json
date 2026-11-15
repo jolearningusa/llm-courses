@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-15 UTC",
+  "lanes": {
+    "torch291": {
+      "torch": "2.9.1",
+      "numpy": "2.3.5"
+    },
+    "torch215": {
+      "torch": "2.15.0",
+      "numpy": "2.5.4"
+    }
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "steps": 300,
+  "intraop_threads": 1,
+  "interop_threads": 1,
+  "selection": "unchanged grpo.main default demo, all seeds/methods, no tuning/retries; final printed values only",
+  "historical_seed0": {
+    "SFT": [
+      0.273,
+      3.93,
+      4.8
+    ],
+    "GRPO": [
+      0.506,
+      2.43,
+      2.79
+    ],
+    "Dr. GRPO": [
+      0.489,
+      2.46,
+      2.49
+    ]
+  },
+  "source_sha256": {
+    "grpo.py": "2260a4eee07f3464b5bf9066098071288fb606ed19591d1adf154bf8ef0465f4",
+    "policy.py": "a11a71852335d2ed00edc32ffe6779012b43c2aec7260d07fe0a0b0370be773f",
+    "task.py": "6fc77c226f36ea788b77c79b64b75fe643883c02df20ce2561e5cb1058e80c92"
+  },
+  "scope": "printed historical L7 demo replay, all 100 RL-pool prompts evaluated; not held-out performance, algorithm ranking or full historical provenance"
+}
