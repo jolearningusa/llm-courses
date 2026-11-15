@@ -43,3 +43,7 @@ Deck 20 slides 9/10 and the [shared worksheet](decoder_bridge_worksheet_2026_11.
 ## FND-2 validation-selected learning study — 2026-11-12 UTC
 
 The [executed NumPy study](heldout_optimizer_study_2026_11.md) reuses L0 regression loss/gradient and L2 optimizers on disjoint fixed train/validation/test IDs. Eighteen complete fits use 2,700 updates per optimizer; committed validation selection precedes six held-out scores with no refit. All 16 L2 tests pass, including leakage/selection/overflow/checkpoint controls. Deck 08 slide 10 visualizes actual outcomes. This completes the bounded FND-2 reference learning experiment, not a universal ranking or classroom pilot. Other audit items and AGT-2's measured benchmark beyond PR #120 remain open.
+
+## Audit-pass disposition — 2026-11-15 UTC
+
+The [26-row closeout and explicit deferrals](../../docs/research-audit-2026-11-15-closeout.md) records this course's 4 original recommendations: 3 bounded implementations, 1 retain decisions and 0 deferred remainders with completed evidence preserved. This is proposed on the closeout PR branch; adoption requires the user's approval and actual merge. No partial/physical/quality gate becomes a pass, and no old result is overwritten. Optional research/qualification extensions are explicitly deferred from this bounded pass; see the concrete resumption gates and monitor rule. PR #120 remains AGT-2 teaching/protocol only, with later measured pilots separately dated.

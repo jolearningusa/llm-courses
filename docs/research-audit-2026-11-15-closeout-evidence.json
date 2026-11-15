@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-15 UTC",
+  "host_eligibility_observation": {
+    "observed_utc": "2026-11-15T03:52:49.154534+00:00",
+    "system": "Darwin",
+    "release": "27.0.0",
+    "machine": "arm64",
+    "python": "3.12.14",
+    "torch": "2.9.1",
+    "cuda_build": null,
+    "hip_build": null,
+    "cuda_available": false,
+    "cuda_devices": 0,
+    "tools": {
+      "nvidia-smi": null,
+      "nvcc": null,
+      "rocminfo": null,
+      "hipcc": null
+    },
+    "scope": "this local Python process and command path only; no remote inventory, target qualification or inference about Apple Metal availability"
+  },
+  "primary_source_rechecks": [
+    {
+      "name": "verl-rollout-correction",
+      "url": "https://raw.githubusercontent.com/verl-project/verl/2b4ed6826a39205838d0ca004bdd942334dbe4b6/docs/algo/rollout_corr.md",
+      "sha256": "ff28e1d7f3aba632a33d673e8389a0c06ea71f26265e4ff3a10c05c32da1b387",
+      "bytes": 60934,
+      "matches_prior_anchor": true
+    },
+    {
+      "name": "torchtitan-checkpointer",
+      "url": "https://raw.githubusercontent.com/pytorch/torchtitan/631d544b1f6794ecfeca734a7bba861e03ddd5e3/torchtitan/components/checkpointer/README.md",
+      "sha256": "b290cf2357c28c4e927b2fee2b1bd40ae2fc3398ce6ebc726285bf63a29b9100",
+      "bytes": 8085,
+      "matches_prior_anchor": true
+    },
+    {
+      "name": "fa4-readme",
+      "url": "https://raw.githubusercontent.com/Dao-AILab/flash-attention/c055bdc6444a1a1984082a64b7fd62d6cb42a93d/flash_attn/cute/README.md",
+      "sha256": "69e70ec669e9a5e1b843e5b8e5e8ec1366c67e70098b84ee0d79b612cb9bad1d",
+      "bytes": 688,
+      "matches_prior_anchor": true
+    }
+  ],
+  "execution_scope": "read-only source/host evidence review; no new training, package install, GPU/driver or model-service experiment"
+}

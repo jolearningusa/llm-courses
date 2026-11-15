@@ -2,6 +2,24 @@
 
 This round covers **all six courses** at baseline `aeadc78`: ML foundations, Transformer architecture, training/post-training, efficient computing systems, AgentOS and accelerator software. It is a literature/tutorial/repository and compatibility-triage pass, not a benchmark run or a declaration that every slide has been fact-checked. The result is six course-specific reading reviews, 26 retain/update recommendations and ten potential projects with execution and acceptance gates.
 
+## Current disposition — 2026-11-15
+
+**16 bounded implementations · 4 retain decisions · 6 explicit deferrals.**
+
+This is the closeout proposal for the original 26 recommendations. The six deferred rows retain their completed pilot/source evidence and **do not receive an execution pass**. Merging this closeout PR with the required user approval adopts the deferrals; until that merge is confirmed, the monitor waits rather than declaring completion. [Full 26-row evidence/decision ledger](research-audit-2026-11-15-closeout.md) · [machine-readable record](research-audit-2026-11-15-closeout.json).
+
+| Deferred gate | Work that remains |
+| --- | --- |
+| AGT-1 | Integrated provider/SDK/Gateway compaction and session/profile persistence |
+| AGT-2 | Broader matched memory utility/quality benchmark beyond the tiny strict pilot |
+| TRN-2 | Actual multi-worker rollout/learner backend and queue/staleness timing |
+| CMP-2 | Qualified vLLM/NIXL deployment, failure/cancel and prefix controls |
+| CMP-3 | Generated kernel/device numerical, tail, safety and matched performance evidence |
+| CMP-5 | Actual TorchTitan/FSDP2 target and declared failure/durability profile |
+
+The existing GPU/physical/quality limits remain. PR #120 is AGT-2 teaching/protocol only; later measured pilots are separately dated. Original findings and raw records below are historical evidence, not superseded test results.
+
+
 ## Course reports
 
 | Course | Current inventory | Main result | Detailed evidence and execution plans |
