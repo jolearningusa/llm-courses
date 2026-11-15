@@ -97,3 +97,7 @@ The [executed two-artifact supplement](openclaw_context_runtime_2026_11.md) impo
 ## AGT-1 Python first-compaction-error correction — 2026-11-14 UTC
 
 The [Python host correction](openclaw_host_errors_2026_11.md) exposes the original first compaction exception before any model request. Three regression controls pass (the old code fails the error-visibility control); all 36 existing kit tests pass. Assembly fallback and successful compaction retain their behavior. A later explicit run can use per-host fallback but starts a new transcript, without automatic task/history recovery. Context-manager slide14 has synchronized EN/ZH diagrams. This completes the narrow teaching-host fix, not full Gateway, caller-abort or durable/profile qualification. AGT-1 and broader AGT-2 benchmark gates remain open; PR #120 is teaching/protocol only.
+
+## Audit-pass disposition — 2026-11-15 UTC
+
+The [26-row closeout and explicit deferrals](../../docs/research-audit-2026-11-15-closeout.md) records this course's 4 original recommendations: 2 bounded implementations, 0 retain decisions and 2 deferred remainders with completed evidence preserved. This is proposed on the closeout PR branch; adoption requires the user's approval and actual merge. No partial/physical/quality gate becomes a pass, and no old result is overwritten. Optional research/qualification extensions are explicitly deferred from this bounded pass; see the concrete resumption gates and monitor rule. PR #120 remains AGT-2 teaching/protocol only, with later measured pilots separately dated.

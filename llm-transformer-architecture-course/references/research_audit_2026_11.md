@@ -49,3 +49,7 @@ The [frozen local-model pilot](context_model_pilot_2026_11.md) executes all81 re
 ## ARC-4 attention-to-execution links — 2026-11-15 UTC
 
 The [three-contract attention map](attention_execution_links_2026_11.md) completes ARC-4’s specified links from architecture14 to compute12/35 in both languages, preserving the2022 paper cohort and old mathematical questions. Four official pinned source files were re-fetched; three prior digest anchors match. The existing NumPy blockwise/direct unittest passes for its fixed causal/noncausal cases. No lab/test implementation, model-family deck, dependency/tracker or target qualification changes. Kernel/device numerics and KV transport/recovery require separate evidence; CMP-2/3 and broader AGT-2 gates remain open, with PR#120 teaching/protocol only.
+
+## Audit-pass disposition — 2026-11-15 UTC
+
+The [26-row closeout and explicit deferrals](../../docs/research-audit-2026-11-15-closeout.md) records this course's 4 original recommendations: 3 bounded implementations, 1 retain decisions and 0 deferred remainders with completed evidence preserved. This is proposed on the closeout PR branch; adoption requires the user's approval and actual merge. No partial/physical/quality gate becomes a pass, and no old result is overwritten. Optional research/qualification extensions are explicitly deferred from this bounded pass; see the concrete resumption gates and monitor rule. PR #120 remains AGT-2 teaching/protocol only, with later measured pilots separately dated.

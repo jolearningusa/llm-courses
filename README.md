@@ -27,10 +27,14 @@ llm-courses/
 ├── README.md                    # This file
 ├── AGENTS.md                    # Rules for contributors and coding agents (CLAUDE.md points here)
 ├── docs/
+│   ├── research-audit-2026-11-15-closeout.md
+│   ├── research-audit-2026-11-15-closeout.json
+│   ├── research-audit-2026-11-15-closeout-evidence.json
 │   ├── reviews/
 │   │   ├── training-l7-demo-replay/ # Unchanged GRPO demo before/after capture
 │   │   ├── training-l1-remaining-tables/ # Remaining reference-grid before/after capture
 │   │   ├── training-l1-table-replay/ # Training table before/after capture
+│   │   ├── research-audit-closeout/ # Actual audit disposition before/after capture
 │   │   ├── architecture-attention-execution-links/ # Bilingual attention handoff before/after
 │   │   ├── architecture-context-model-pilot/ # Actual context-grid EN/ZH before/after captures
 │   │   ├── agentos-openclaw-host-errors/ # Python first-compaction error before/after captures

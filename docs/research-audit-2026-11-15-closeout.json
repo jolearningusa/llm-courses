@@ -1,0 +1,248 @@
+{
+  "date": "2026-11-15 UTC",
+  "base_main": "ca4d098",
+  "scope": "disposition of the original 26 recommendations, not an exhaustive course certification",
+  "approval": "Proposed on this PR branch. Merging with the user approval required by the standing workflow adopts the explicit deferrals. Until actual merge is confirmed, the monitor waits and must not report completion.",
+  "counts": {
+    "implemented": 16,
+    "retained": 4,
+    "deferred": 6
+  },
+  "rows": [
+    {
+      "id": "FND-1",
+      "course": "ml101-neural-networks-course",
+      "disposition": "implemented",
+      "completed_evidence": "Smooth-step/kink diagnostics, explicit scales and rejected wrong gradients.",
+      "evidence": "ml101-neural-networks-course/labs/L1_autograd_mlp/README.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "FND-2",
+      "course": "ml101-neural-networks-course",
+      "disposition": "implemented",
+      "completed_evidence": "Equal tuning budgets, validation selection frozen before held-out learning scores; all trials retained.",
+      "evidence": "ml101-neural-networks-course/references/heldout_optimizer_study_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "FND-3",
+      "course": "ml101-neural-networks-course",
+      "disposition": "implemented",
+      "completed_evidence": "Shared shape/gradient/causality worksheet and reproduced future-leakage failure with restoration.",
+      "evidence": "ml101-neural-networks-course/references/decoder_bridge_worksheet_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "FND-4",
+      "course": "ml101-neural-networks-course",
+      "disposition": "retained",
+      "completed_evidence": "Canonical sequence and executable examples retained; no unsolicited model catalogue.",
+      "evidence": "ml101-neural-networks-course/references/research_audit_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "ARC-1",
+      "course": "llm-transformer-architecture-course",
+      "disposition": "implemented",
+      "completed_evidence": "Mamba-3 mechanism, streamed/unrolled recurrence, carry/complex/MIMO fixtures and EN/ZH diagrams.",
+      "evidence": "llm-transformer-architecture-course/labs/L6_block_variants/README.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "ARC-2",
+      "course": "llm-transformer-architecture-course",
+      "disposition": "implemented",
+      "completed_evidence": "Fixed-byte reading/accounting fixture: local/global position ledger, causal boundaries and round-trip controls; neural work is not measured.",
+      "evidence": "llm-transformer-architecture-course/references/byte_chunk_accounting_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "ARC-3",
+      "course": "llm-transformer-architecture-course",
+      "disposition": "implemented",
+      "completed_evidence": "Length/placement/task plan plus a frozen real-checkpoint pilot, actual token spans and retained failed short controls.",
+      "evidence": "llm-transformer-architecture-course/references/context_model_pilot_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "ARC-4",
+      "course": "llm-transformer-architecture-course",
+      "disposition": "retained",
+      "completed_evidence": "Historical paper/model cohorts retained and missing compute 12/35 EN/ZH handoff implemented in #162.",
+      "evidence": "llm-transformer-architecture-course/references/attention_execution_links_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "TRN-1",
+      "course": "llm-training-course",
+      "disposition": "implemented",
+      "completed_evidence": "Coverage/reward ablation, gaming controls, fixed holdout, seed-level cost/quality ledger and negative outcomes.",
+      "evidence": "llm-training-course/labs/L7_grpo/README.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "TRN-2",
+      "course": "llm-training-course",
+      "disposition": "deferred",
+      "completed_evidence": "Pinned verl path and executed CPU behavior/anchor/learner probability controls.",
+      "evidence": "llm-training-course/references/rollout_consistency_2026_11.md",
+      "deferred_scope": "Actual selected rollout/learner backend, worker/queue staleness, distributed timing and end-to-end version/weight publication qualification."
+    },
+    {
+      "id": "TRN-3",
+      "course": "llm-training-course",
+      "disposition": "implemented",
+      "completed_evidence": "No/random/learned steering with frozen checkpoints, held-out scores and replay/time/memory accounting; poor toy generalization retained.",
+      "evidence": "llm-training-course/references/steering_ablation_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "TRN-4",
+      "course": "llm-training-course",
+      "disposition": "implemented",
+      "completed_evidence": "Fresh joint hashed CPU lock plus all-course CPU checks; all L1 reference cells and original L7 demo have separately dated two-cohort replay records.",
+      "evidence": "llm-training-course/references/l1_remaining_tables_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "TRN-5",
+      "course": "llm-training-course",
+      "disposition": "retained",
+      "completed_evidence": "Canonical objectives/derivations retained; small demo differences are not a universal ranking.",
+      "evidence": "llm-training-course/references/research_audit_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "CMP-1",
+      "course": "llm-compute-systems-course",
+      "disposition": "implemented",
+      "completed_evidence": "Two isolated export/lower/load/execute cohorts, four cross-version CPU cells, actual partitions, input rejection and cold/warm samples.",
+      "evidence": "llm-compute-systems-course/references/executorch_cpu_compatibility_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "CMP-2",
+      "course": "llm-compute-systems-course",
+      "disposition": "deferred",
+      "completed_evidence": "vLLM 0.33 sdist/tag/source identity and NIXL interface reading.",
+      "evidence": "llm-compute-systems-course/references/vllm_source_identity_2026_11.md",
+      "deferred_scope": "Install/qualify the selected vLLM/NIXL target cohort; execute connector failure/cancellation/ownership and cold/shared-prefix controls."
+    },
+    {
+      "id": "CMP-3",
+      "course": "llm-compute-systems-course",
+      "disposition": "deferred",
+      "completed_evidence": "Pinned TileLang/FA4 walkthrough pair, integer coverage and scalar rescale negative controls.",
+      "evidence": "llm-compute-systems-course/references/fa4_sm100_walkthrough_2026_11.md",
+      "deferred_scope": "Author-kernel compilation/dispatch, generated code, numerical/tail/safety checks and matched supported-device/cross-backend measurements."
+    },
+    {
+      "id": "CMP-4",
+      "course": "llm-compute-systems-course",
+      "disposition": "implemented",
+      "completed_evidence": "Dated Rubin, Ironwood, Zhenwu, AMD and Ascend evidence ledgers distinguish boundaries/units/support/status; unresolved claims stay flagged.",
+      "evidence": "llm-compute-systems-course/references/research_audit_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "CMP-5",
+      "course": "llm-compute-systems-course",
+      "disposition": "deferred",
+      "completed_evidence": "Pinned TorchTitan path and real two-rank CPU DDP/Gloo/DCP restart, cursor/RNG/optimizer comparisons, omission controls and stall/work records.",
+      "evidence": "llm-compute-systems-course/references/distributed_resume_2026_11.md",
+      "deferred_scope": "The selected actual TorchTitan/FSDP2 target profile and its worker-loss/topology/async or crash-durability qualification; CPU results do not establish these."
+    },
+    {
+      "id": "AGT-1",
+      "course": "llm-agentos-course",
+      "disposition": "deferred",
+      "completed_evidence": "Imported old/new Hermes bases/clone controls, actual old/new OpenClaw registry error/abort probes and teaching-host first-compaction fix.",
+      "evidence": "llm-agentos-course/references/openclaw_context_runtime_2026_11.md",
+      "deferred_scope": "Full integrated provider/SDK/Gateway/Legacy compaction, clone/profile/persistence and failed/retried-session qualification in a frozen old/new deployment cohort."
+    },
+    {
+      "id": "AGT-2",
+      "course": "llm-agentos-course",
+      "disposition": "deferred",
+      "completed_evidence": "Teaching/protocol plus later actual four-arm fixed-checkpoint pilot with write/read costs and strict per-type zeros; #120 itself is teaching only.",
+      "evidence": "llm-agentos-course/references/measured_memory_pilot_2026_11.md",
+      "deferred_scope": "The broader matched memory benchmark: qualified larger/adverse paired cohorts, utility/scoring adjudication, uncertainty and generalization beyond the tiny strict pilot."
+    },
+    {
+      "id": "AGT-3",
+      "course": "llm-agentos-course",
+      "disposition": "implemented",
+      "completed_evidence": "Multi-round source/write/retrieval/action-proposal fixture, benign correction, deletion/supersession, negative controls and recontamination.",
+      "evidence": "llm-agentos-course/references/memory_repair_controls_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "AGT-4",
+      "course": "llm-agentos-course",
+      "disposition": "implemented",
+      "completed_evidence": "Fresh-process equal-cap handoff/truncation comparisons with goals, pending tool state, fake receipts and acknowledgement-loss controls.",
+      "evidence": "llm-agentos-course/references/session_handoff_controls_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "ACC-1",
+      "course": "ai-accelerator-software-course",
+      "disposition": "implemented",
+      "completed_evidence": "Harness-owned CPU execution-coverage protocol, no-launch/malformed/replay/error/legal controls; no sanitizer pass inferred.",
+      "evidence": "ai-accelerator-software-course/labs/examples/execution_coverage_report.json",
+      "deferred_scope": ""
+    },
+    {
+      "id": "ACC-2",
+      "course": "ai-accelerator-software-course",
+      "disposition": "implemented",
+      "completed_evidence": "Stage/outcome/scope policy with actual bytecode build/model run and unavailable-board rejection.",
+      "evidence": "ai-accelerator-software-course/references/qualification_matrix_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "ACC-3",
+      "course": "ai-accelerator-software-course",
+      "disposition": "implemented",
+      "completed_evidence": "Actual Metal shared-buffer ownership/cancel/drain and known-good recovery pilot; host pointers/runtime boundary documented.",
+      "evidence": "ai-accelerator-software-course/references/metal_lifetime_2026_11.md",
+      "deferred_scope": ""
+    },
+    {
+      "id": "ACC-4",
+      "course": "ai-accelerator-software-course",
+      "disposition": "retained",
+      "completed_evidence": "Physical/PVT/power/thermal/interrupt evidence stays distinct from emulation/model observations.",
+      "evidence": "ai-accelerator-software-course/references/research_audit_2026_11.md",
+      "deferred_scope": ""
+    }
+  ],
+  "deferred_gate_resumption": {
+    "AGT-1": {
+      "reason": "Scope choice, not a demonstrated hardware impossibility. Imported base/registry fixtures are narrower than full host/provider execution.",
+      "resume_requires": "Select an integrated old/new host installation, provider (local or service), session/clone/persistence protocol and supported model/configuration; record full installation/import/retry results."
+    },
+    "AGT-2": {
+      "reason": "Scope choice, not a GPU prerequisite. The tiny pilot completed but strict scoring/formatting failures and two profiles do not establish broad useful memory behavior.",
+      "resume_requires": "Freeze a fresh larger/adverse matched cohort, model/retriever/budgets and appropriate predeclared quality adjudication; retain all writes/reads, failures and uncertainty. Do not overwrite old zeros."
+    },
+    "TRN-2": {
+      "reason": "The executed evidence is a local CPU probability contract. It does not run the pinned upstream multi-worker backend/queue path.",
+      "resume_requires": "Choose and qualify the actual rollout/learner/backend deployment and worker resources; log behavior/anchor/learner identities, queue/staleness, masks and stage timing under fixed workload."
+    },
+    "CMP-2": {
+      "reason": "The current host/process is Darwin arm64 with no CUDA/HIP build/device; the observed vLLM wheels are Linux candidates. No separate qualified deployment is recorded.",
+      "resume_requires": "Provide or choose an eligible Linux/target cohort and supported NIXL/backend/layout profile; install, import and run failure/cancel/ownership and cold/shared-prefix comparisons."
+    },
+    "CMP-3": {
+      "reason": "The selected FA4 SM100/CUDA kernel and TileLang target contracts have no eligible local CUDA/ROCm execution evidence. Source/scalar checks cannot supply it.",
+      "resume_requires": "Use supported owned target(s), pinned compiler/runtime/builds and actual dispatch; predeclare independent numerical tolerances/tails/safety and equal-work timing before cross-backend comparison."
+    },
+    "CMP-5": {
+      "reason": "The executed restart is real CPU DDP/DCP, not the pinned TorchTitan/FSDP2 target recipe. Local eligibility observations do not qualify that GPU deployment.",
+      "resume_requires": "Choose the target/process topology and checkpoint/storage/failure contract; execute actual recipe uninterrupted/resumed state/data/RNG/work/stall comparisons and declared worker-loss/durability controls."
+    }
+  },
+  "optional_projects": "The ten potential projects and broader learned-quality/physical/device/portability extensions are explicitly deferred from this bounded audit pass; they are not proven completed or novel."
+}
