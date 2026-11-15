@@ -1,0 +1,16 @@
+{
+  "scope": "independent stdlib mean/sample-SD and retained-case/source/data/thread/finite-curve verification; no retraining",
+  "workers": 36,
+  "curve_points": 864,
+  "training_updates": 43200,
+  "source_revision": "95e9ddff46c1d45cc0e8d25d7098290c972d8a8f",
+  "rounded_row_agreement": {
+    "torch291": 1,
+    "torch215": 1
+  },
+  "summary_sha256": "d1c471736958ca31d5638c937b19b605fc04128f6f6246ce9ffd828617775a56",
+  "rss_bytes_range": [
+    298139648,
+    329383936
+  ]
+}

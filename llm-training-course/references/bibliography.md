@@ -200,3 +200,7 @@ Zeng et al., [Exploration via Activation-Space Steering for Reinforcement Learni
 ## L7 historical demo replay — 2026-11-15 UTC
 
 [Liu et al. v1 §3.1–3.2](https://arxiv.org/html/2503.20783v1) gives the normalization change; [PyTorch2.15 reproducibility guidance](https://docs.pytorch.org/docs/2.15/notes/randomness.html) bounds cross-release replay. The [dated course demo record](l7_demo_replay_2026_11.md) executes six original workflows/18 printed rows and distinguishes shared-pool evaluation, printed agreement and historical mismatch from held-out quality, bitwise identity or paper reproduction. Deck28 slide5 has an original mechanism/result diagram; historical README examples remain intact.
+
+## Remaining L1 reference-grid replay — 2026-11-15 UTC
+
+[Wortsman et al. v1 §§2.2/3.1](https://arxiv.org/html/2309.14322v1) separates LR-range sensitivity and logit diagnostics from a one-rate intervention; [PyTorch2.15 reproducibility](https://docs.pytorch.org/docs/2.15/notes/randomness.html) bounds cross-release replay. The [dated course supplement](l1_remaining_tables_2026_11.md) records36 unchanged-source fits, the six remaining historical cells and complete discrepancies. Its high-rate pair combines RMS QK normalization and z-loss rather than isolating them or reproducing the author's model/data. Deck03 slide10 has an original result table; historical values remain intact.

@@ -42,7 +42,7 @@ Classic architectures such as MLPs, CNNs, RNNs and LSTMs, and the basics of trai
 | **Part I. The pre-training recipe** | |
 | [01 The training loop: AdamW and learning-rate schedules](slides/01_training_loop.html) (10 slides) | Week 1: Adam, decoupled weight decay, warm-up/cosine/WSD; L1 includes a dated600-step CPU table replay |
 | [02 Batch size and hyperparameter transfer](slides/02_batch_size_mup.html) (11 slides) | Week 1: the gradient noise scale and critical batch, batch ramps, μP and μTransfer; lab L0 |
-| [03 Training stability](slides/03_training_stability.html) (10 slides) | Week 2: PaLM's loss spikes and z-loss, small-scale proxies and QK-norm, the OLMo 2 recipe; lab L1 |
+| [03 Training stability](slides/03_training_stability.html) (10 slides) | Week 2: PaLM's loss spikes and z-loss, small-scale proxies and QK-norm, the OLMo 2 recipe; lab L1; remaining L1 replay |
 | [04 Muon](slides/04_muon.html) (10 slides) | Week 2: orthogonalized updates by Newton-Schulz, Moonlight's scaling, QK-Clip in Kimi K2; labs L0, L1 |
 | **Part II. Pre-training data** | |
 | [05 Web corpora](slides/05_web_corpora.html) (10 slides) | Week 3: CCNet, The Pile, RefinedWeb and Dolma; the stages every pipeline shares; lab L2 |
@@ -96,6 +96,87 @@ llm-training-course/
 │   │   ├── model.py                 # Tiny decoder with optional QK-norm and z-loss
 │   │   ├── optim.py                 # AdamW and Muon written out step by step
 │   │   ├── schedules.py             # Constant, warm-up + cosine, WSD
+│   │   ├── remaining_table_replay.py # Frozen 1500-step/high-LR replay
+│   │   ├── remaining_table_protocol.json
+│   │   ├── test_remaining_table_replay.py
+│   │   ├── remaining_table_artifacts/
+│   │   │   ├── driver_timing.json
+│   │   │   ├── summary.json
+│   │   │   ├── torch215-high-adamw-constant-qk-z-s0.json
+│   │   │   ├── torch215-high-adamw-constant-qk-z-s0.log
+│   │   │   ├── torch215-high-adamw-constant-qk-z-s1.json
+│   │   │   ├── torch215-high-adamw-constant-qk-z-s1.log
+│   │   │   ├── torch215-high-adamw-constant-qk-z-s2.json
+│   │   │   ├── torch215-high-adamw-constant-qk-z-s2.log
+│   │   │   ├── torch215-high-adamw-constant-s0.json
+│   │   │   ├── torch215-high-adamw-constant-s0.log
+│   │   │   ├── torch215-high-adamw-constant-s1.json
+│   │   │   ├── torch215-high-adamw-constant-s1.log
+│   │   │   ├── torch215-high-adamw-constant-s2.json
+│   │   │   ├── torch215-high-adamw-constant-s2.log
+│   │   │   ├── torch215-long-adamw-constant-s0.json
+│   │   │   ├── torch215-long-adamw-constant-s0.log
+│   │   │   ├── torch215-long-adamw-constant-s1.json
+│   │   │   ├── torch215-long-adamw-constant-s1.log
+│   │   │   ├── torch215-long-adamw-constant-s2.json
+│   │   │   ├── torch215-long-adamw-constant-s2.log
+│   │   │   ├── torch215-long-adamw-cosine-s0.json
+│   │   │   ├── torch215-long-adamw-cosine-s0.log
+│   │   │   ├── torch215-long-adamw-cosine-s1.json
+│   │   │   ├── torch215-long-adamw-cosine-s1.log
+│   │   │   ├── torch215-long-adamw-cosine-s2.json
+│   │   │   ├── torch215-long-adamw-cosine-s2.log
+│   │   │   ├── torch215-long-adamw-wsd-s0.json
+│   │   │   ├── torch215-long-adamw-wsd-s0.log
+│   │   │   ├── torch215-long-adamw-wsd-s1.json
+│   │   │   ├── torch215-long-adamw-wsd-s1.log
+│   │   │   ├── torch215-long-adamw-wsd-s2.json
+│   │   │   ├── torch215-long-adamw-wsd-s2.log
+│   │   │   ├── torch215-long-muon-wsd-s0.json
+│   │   │   ├── torch215-long-muon-wsd-s0.log
+│   │   │   ├── torch215-long-muon-wsd-s1.json
+│   │   │   ├── torch215-long-muon-wsd-s1.log
+│   │   │   ├── torch215-long-muon-wsd-s2.json
+│   │   │   ├── torch215-long-muon-wsd-s2.log
+│   │   │   ├── torch215-tests.log
+│   │   │   ├── torch291-high-adamw-constant-qk-z-s0.json
+│   │   │   ├── torch291-high-adamw-constant-qk-z-s0.log
+│   │   │   ├── torch291-high-adamw-constant-qk-z-s1.json
+│   │   │   ├── torch291-high-adamw-constant-qk-z-s1.log
+│   │   │   ├── torch291-high-adamw-constant-qk-z-s2.json
+│   │   │   ├── torch291-high-adamw-constant-qk-z-s2.log
+│   │   │   ├── torch291-high-adamw-constant-s0.json
+│   │   │   ├── torch291-high-adamw-constant-s0.log
+│   │   │   ├── torch291-high-adamw-constant-s1.json
+│   │   │   ├── torch291-high-adamw-constant-s1.log
+│   │   │   ├── torch291-high-adamw-constant-s2.json
+│   │   │   ├── torch291-high-adamw-constant-s2.log
+│   │   │   ├── torch291-long-adamw-constant-s0.json
+│   │   │   ├── torch291-long-adamw-constant-s0.log
+│   │   │   ├── torch291-long-adamw-constant-s1.json
+│   │   │   ├── torch291-long-adamw-constant-s1.log
+│   │   │   ├── torch291-long-adamw-constant-s2.json
+│   │   │   ├── torch291-long-adamw-constant-s2.log
+│   │   │   ├── torch291-long-adamw-cosine-s0.json
+│   │   │   ├── torch291-long-adamw-cosine-s0.log
+│   │   │   ├── torch291-long-adamw-cosine-s1.json
+│   │   │   ├── torch291-long-adamw-cosine-s1.log
+│   │   │   ├── torch291-long-adamw-cosine-s2.json
+│   │   │   ├── torch291-long-adamw-cosine-s2.log
+│   │   │   ├── torch291-long-adamw-wsd-s0.json
+│   │   │   ├── torch291-long-adamw-wsd-s0.log
+│   │   │   ├── torch291-long-adamw-wsd-s1.json
+│   │   │   ├── torch291-long-adamw-wsd-s1.log
+│   │   │   ├── torch291-long-adamw-wsd-s2.json
+│   │   │   ├── torch291-long-adamw-wsd-s2.log
+│   │   │   ├── torch291-long-muon-wsd-s0.json
+│   │   │   ├── torch291-long-muon-wsd-s0.log
+│   │   │   ├── torch291-long-muon-wsd-s1.json
+│   │   │   ├── torch291-long-muon-wsd-s1.log
+│   │   │   ├── torch291-long-muon-wsd-s2.json
+│   │   │   ├── torch291-long-muon-wsd-s2.log
+│   │   │   ├── torch291-tests.log
+│   │   │   ├── verification.json
 │   │   ├── test_pretraining.py
 │   │   ├── table_replay.py          # Optional frozen 600-step replay worker/collector
 │   │   ├── table_replay_protocol.json
@@ -279,6 +360,7 @@ llm-training-course/
 │   ├── steering_ablation_summary_2026_11.json
 │   ├── steering_checkpoint_manifest_2026_11.json
 │   ├── l7_demo_replay_2026_11.md
+│   ├── l1_remaining_tables_2026_11.md
 │   ├── l1_table_replay_2026_11.md
 │   ├── tested_cpu_lock_2026_11.md
 │   ├── cpu_lock_artifacts_2026_11.json
