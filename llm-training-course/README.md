@@ -40,7 +40,7 @@ Classic architectures such as MLPs, CNNs, RNNs and LSTMs, and the basics of trai
 |---|---|
 | [Course map](slides/00_course_map.html) (11 slides) | Week 1: the stages from web text to a chat model, the loss each stage optimizes, how each paper deck is built |
 | **Part I. The pre-training recipe** | |
-| [01 The training loop: AdamW and learning-rate schedules](slides/01_training_loop.html) (10 slides) | Week 1: Adam, decoupled weight decay, warm-up and cosine, WSD and cool-downs; labs L0, L1 |
+| [01 The training loop: AdamW and learning-rate schedules](slides/01_training_loop.html) (10 slides) | Week 1: Adam, decoupled weight decay, warm-up/cosine/WSD; L1 includes a dated600-step CPU table replay |
 | [02 Batch size and hyperparameter transfer](slides/02_batch_size_mup.html) (11 slides) | Week 1: the gradient noise scale and critical batch, batch ramps, μP and μTransfer; lab L0 |
 | [03 Training stability](slides/03_training_stability.html) (10 slides) | Week 2: PaLM's loss spikes and z-loss, small-scale proxies and QK-norm, the OLMo 2 recipe; lab L1 |
 | [04 Muon](slides/04_muon.html) (10 slides) | Week 2: orthogonalized updates by Newton-Schulz, Moonlight's scaling, QK-Clip in Kimi K2; labs L0, L1 |
@@ -97,6 +97,63 @@ llm-training-course/
 │   │   ├── optim.py                 # AdamW and Muon written out step by step
 │   │   ├── schedules.py             # Constant, warm-up + cosine, WSD
 │   │   ├── test_pretraining.py
+│   │   ├── table_replay.py          # Optional frozen 600-step replay worker/collector
+│   │   ├── table_replay_protocol.json
+│   │   ├── test_table_replay.py
+│   │   ├── table_replay_artifacts/
+│   │   │   ├── driver_timing.json
+│   │   │   ├── summary.json
+│   │   │   ├── torch215-adamw-constant-s0.json
+│   │   │   ├── torch215-adamw-constant-s0.log
+│   │   │   ├── torch215-adamw-constant-s1.json
+│   │   │   ├── torch215-adamw-constant-s1.log
+│   │   │   ├── torch215-adamw-constant-s2.json
+│   │   │   ├── torch215-adamw-constant-s2.log
+│   │   │   ├── torch215-adamw-cosine-s0.json
+│   │   │   ├── torch215-adamw-cosine-s0.log
+│   │   │   ├── torch215-adamw-cosine-s1.json
+│   │   │   ├── torch215-adamw-cosine-s1.log
+│   │   │   ├── torch215-adamw-cosine-s2.json
+│   │   │   ├── torch215-adamw-cosine-s2.log
+│   │   │   ├── torch215-adamw-wsd-s0.json
+│   │   │   ├── torch215-adamw-wsd-s0.log
+│   │   │   ├── torch215-adamw-wsd-s1.json
+│   │   │   ├── torch215-adamw-wsd-s1.log
+│   │   │   ├── torch215-adamw-wsd-s2.json
+│   │   │   ├── torch215-adamw-wsd-s2.log
+│   │   │   ├── torch215-muon-wsd-s0.json
+│   │   │   ├── torch215-muon-wsd-s0.log
+│   │   │   ├── torch215-muon-wsd-s1.json
+│   │   │   ├── torch215-muon-wsd-s1.log
+│   │   │   ├── torch215-muon-wsd-s2.json
+│   │   │   ├── torch215-muon-wsd-s2.log
+│   │   │   ├── torch215-tests.log
+│   │   │   ├── torch291-adamw-constant-s0.json
+│   │   │   ├── torch291-adamw-constant-s0.log
+│   │   │   ├── torch291-adamw-constant-s1.json
+│   │   │   ├── torch291-adamw-constant-s1.log
+│   │   │   ├── torch291-adamw-constant-s2.json
+│   │   │   ├── torch291-adamw-constant-s2.log
+│   │   │   ├── torch291-adamw-cosine-s0.json
+│   │   │   ├── torch291-adamw-cosine-s0.log
+│   │   │   ├── torch291-adamw-cosine-s1.json
+│   │   │   ├── torch291-adamw-cosine-s1.log
+│   │   │   ├── torch291-adamw-cosine-s2.json
+│   │   │   ├── torch291-adamw-cosine-s2.log
+│   │   │   ├── torch291-adamw-wsd-s0.json
+│   │   │   ├── torch291-adamw-wsd-s0.log
+│   │   │   ├── torch291-adamw-wsd-s1.json
+│   │   │   ├── torch291-adamw-wsd-s1.log
+│   │   │   ├── torch291-adamw-wsd-s2.json
+│   │   │   ├── torch291-adamw-wsd-s2.log
+│   │   │   ├── torch291-muon-wsd-s0.json
+│   │   │   ├── torch291-muon-wsd-s0.log
+│   │   │   ├── torch291-muon-wsd-s1.json
+│   │   │   ├── torch291-muon-wsd-s1.log
+│   │   │   ├── torch291-muon-wsd-s2.json
+│   │   │   ├── torch291-muon-wsd-s2.log
+│   │   │   ├── torch291-tests.log
+│   │   │   ├── verification.json
 │   │   └── train.py                 # Same data, budget and seeds across optimizers and schedules
 │   ├── L2_data_pipeline/
 │   │   ├── README.md
@@ -200,6 +257,7 @@ llm-training-course/
 │   ├── steering_ablation_2026_11.md
 │   ├── steering_ablation_summary_2026_11.json
 │   ├── steering_checkpoint_manifest_2026_11.json
+│   ├── l1_table_replay_2026_11.md
 │   ├── tested_cpu_lock_2026_11.md
 │   ├── cpu_lock_artifacts_2026_11.json
 │   ├── cpu_lock_manifest_2026_11.json

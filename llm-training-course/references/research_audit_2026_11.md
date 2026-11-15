@@ -50,3 +50,7 @@ The [fresh joint CPU installation](tested_cpu_lock_2026_11.md) installs 11 hashe
 ## TRN-3 bounded CPU steering ablation — 2026-11-14 UTC
 
 The [nine-run frozen study](steering_ablation_2026_11.md) compares no/random/learned steering on a disjoint-operand tiny MLP with identical sampled-response budgets, final checkpoints frozen before evaluation, raw outputs, replay/bank work, timing and memory. Eight new controls and all 28 L7 tests pass. Held-out response successes are only 1/648, 2/648 and 4/648; learned does not win every seed. This completes the bounded toy TRN-3 experiment, not an ASE Qwen3 replication, reliable quality/speed ranking or real-task transfer study. AGT-2’s broader measured benchmark remains open.
+
+## TRN-4 L1 600-step replay — 2026-11-15 UTC
+
+The [two-cohort L1 replay](l1_table_replay_2026_11.md) runs all four600-step recipes ×three seeds in both existing CPU environments,24 fresh workers and14,400 updates. Torch2.9.1 matches4/4 historical rounded mean/SD rows; Torch2.15.0 matches3/4, with constant-rate1.733±0.018 versus historical1.734±0.018. All per-seed curves, environment/data identities and14 passing L1 tests per lane are retained. Deck01 slide10 distinguishes rounded agreement from historical provenance/bitwise replay. This completes the bounded600-step subset, not1,500-step/high-LR/L7 tables, clean holdout, a ranking or cross-platform/GPU qualification. The known43 exact train/validation overlaps and broader AGT-2 benchmark gate remain; PR#120 is teaching/protocol only.

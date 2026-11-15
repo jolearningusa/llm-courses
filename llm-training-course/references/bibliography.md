@@ -192,3 +192,7 @@ Deck 20 / L7 optional supplement: [verl at 2b4ed6826a39205838d0ca004bdd942334dbe
 Source ID: arXiv:2610.27012 (version 1).
 
 Zeng et al., [Exploration via Activation-Space Steering for Reinforcement Learning with Verifiable Rewards, 2610.27012v1](https://arxiv.org/html/2610.27012v1), §§3, 4.4–4.7, Appendices B–C. [Local reading and experiment](steering_ablation_2026_11.md) records method adaptations, fixed selection, poor held-out performance, replay/time/memory boundaries and all nine runs. Deck28 slide9 is an original course diagram, not copied artwork or a reproduced paper benchmark.
+
+## Dated L1 table replay — 2026-11-15 UTC
+
+[PyTorch2.9 reproducibility](https://docs.pytorch.org/docs/2.9/notes/randomness.html) and [2.15 reproducibility](https://docs.pytorch.org/docs/2.15/notes/randomness.html) distinguish seeds, deterministic execution and cross-release/platform limits. The [executed course replay](l1_table_replay_2026_11.md) retains24 fresh workers for the unchanged600-step subset, all per-seed curves and rounded agreement:4/4 rows on2.9.1,3/4 on2.15.0. Original historical figures remain. Deck01 slide10 has an original result diagram; no optimizer ranking, clean held-out quality, original-environment identification or bitwise reproduction follows.

@@ -1,0 +1,15 @@
+{
+  "scope": "independent stdlib aggregation and retained-worker verification; no training rerun",
+  "workers": 24,
+  "curves": 288,
+  "source_revision": "16b09141befc16cd46e9c2cdcbce819c2099ddb5",
+  "sources_and_data_identical_across_workers": true,
+  "all_steps_finite": true,
+  "intraop_threads": 4,
+  "interop_threads": 1,
+  "historical_rounded_agreement": {
+    "torch291": 4,
+    "torch215": 3
+  },
+  "summary_sha256": "b72a9901929d601285a5f54fcbdeadc519879723a4447948f079e711f3870e6f"
+}
